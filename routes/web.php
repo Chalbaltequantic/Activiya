@@ -570,7 +570,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
     [App\Http\Controllers\Admin\ManualLoadSummaryController::class, 'vendorAutoAllocationProcess']
 	)->name('manualloadsummary.vendor.allocation.process');
 	
+	/////////////////InVOICE GENERATE & list
 
+	Route::get('/invoice/create',[App\Http\Controllers\Admin\InvoiceController::class,'create'])
+		->name('invoice.create');
+
+	Route::post('/invoice/store',[App\Http\Controllers\Admin\InvoiceController::class,'store'])
+		->name('invoice.store');
+
+	Route::get('/invoice/pdf/{id}',[App\Http\Controllers\Admin\InvoiceController::class,'pdf'])
+		->name('invoice.pdf');
+	
+	Route::get('/invoice/list', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])
+    ->name('invoice.list');	
 
 });
 
