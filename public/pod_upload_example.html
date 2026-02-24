@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POD File Upload - Activiya Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .app-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .badge-hybrid {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-browser {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-camera {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-gallery {
+            background-color: #9b59b6;
+            color: white;
+        }
+
+        .btn-file {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-upload {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .preview-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .preview-section h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 10px 0;
+        }
+
+        .status-message {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .image-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .image-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .image-info strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📦 POD File Upload</h2>
+
+        <!-- Environment Badge -->
+        <div id="environmentBadge"></div>
+
+        <!-- Status Message -->
+        <div id="statusMessage" class="status-message"></div>
+
+        <!-- Upload Buttons -->
+        <div id="uploadButtons" class="button-group">
+            <!-- Camera Button (Hybrid App Only) -->
+            <button id="cameraBtn" class="btn btn-camera hidden" onclick="takePhotoFromCamera()">
+                <span>📸</span>
+                <span>Take Photo</span>
+            </button>
+
+            <!-- Gallery Button (Hybrid App Only) -->
+            <button id="galleryBtn" class="btn btn-gallery hidden" onclick="selectFromGallery()">
+                <span>🖼️</span>
+                <span>Choose from Gallery</span>
+            </button>
+
+            <!-- File Input Button (Always Available) -->
+            <button id="fileBtn" class="btn btn-file" onclick="selectFile()">
+                <span>📁</span>
+                <span>Upload File</span>
+            </button>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+        </div>
+
+        <!-- Preview Section -->
+        <div id="previewSection" class="preview-section hidden">
+            <h3>Preview</h3>
+            <img id="previewImage" class="preview-image" alt="Preview">
+
+            <!-- Image Info -->
+            <div id="imageInfo" class="image-info">
+                <p><strong>Format:</strong> <span id="infoFormat">-</span></p>
+                <p><strong>Source:</strong> <span id="infoSource">-</span></p>
+                <p><strong>Size:</strong> <span id="infoSize">-</span></p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button class="btn btn-upload" onclick="uploadToServer()">
+                    <span>⬆️</span>
+                    <span>Upload to Server</span>
+                </button>
+                <button class="btn btn-cancel" onclick="cancelUpload()">
+                    <span>❌</span>
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentImageData = null;
+        let Camera;
+
+        // Initialize Camera plugin from Capacitor
+        async function initializeCamera() {
+            try {
+                if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Camera) {
+                    Camera = window.Capacitor.Plugins.Camera;
+                    console.log('✅ Camera plugin initialized from Capacitor');
+                    return true;
+                }
+            } catch (error) {
+                console.error('Camera initialization error:', error);
+            }
+            return false;
+        }
+
+        function isHybridApp() {
+            return typeof window.Capacitor !== 'undefined' && window.Capacitor.Plugins;
+        }
+
+        async function initializeUI() {
+            const badge = document.getElementById('environmentBadge');
+
+            // Initialize camera first
+            await initializeCamera();
+
+            if (isHybridApp() && Camera) {
+                console.log('✅ Running in Activiya Hybrid App');
+
+                // Show hybrid badge
+                badge.innerHTML = '<span class="app-badge badge-hybrid">📱 Hybrid App Mode - Camera Enabled</span>';
+
+                // Show camera and gallery buttons
+                document.getElementById('cameraBtn').classList.remove('hidden');
+                document.getElementById('galleryBtn').classList.remove('hidden');
+
+                showStatus('Camera features available! Click "Take Photo" to test.', 'success');
+            } else {
+                console.log('ℹ️ Running in Browser or Camera not available');
+
+                // Show browser badge
+                badge.innerHTML = '<span class="app-badge badge-browser">🌐 Browser Mode</span>';
+
+                showStatus('File upload only (camera not available in browser)', 'info');
+            }
+        }
+         async function takePhotoFromCamera() {
+            if (!Camera) {
+                showStatus('Camera not available', 'error');
+                return;
+            }
+
+            try {
+                showStatus('Opening camera...', 'info');
+
+                const photo = await Camera.getPhoto({
+                    quality: 90,
+                    allowEditing: false,
+                    resultType: 'Base64',
+                    source: 'Camera',
+                    saveToGallery: false,
+                    correctOrientation: true,
+                    width: 1920,
+                    height: 1080
+                });
+
+                if (photo) {
+                    console.log('✅ Photo captured:', {
+                        format: photo.format,
+                        size: photo.base64String.length
+                    });
+
+                    currentImageData = {
+                        base64: photo.base64String,
+                        format: photo.format,
+                        dataUrl: `data:image/${photo.format};base64,${photo.base64String}`,
+                        source: 'Camera',
+                        timestamp: new Date().toISOString()
+                    };
+
+                    showPreview();
+                    showStatus('Photo captured successfully!', 'success');
+                } else {
+                    showStatus('Photo capture cancelled', 'error');
+                }
+            } catch (error) {
+                console.error('Camera error:', error);
+                showStatus('Camera error: ' + error.message, 'error');
+            }
+        }
+
+        async function selectFromGallery() {
+            if (!Camera) {
+                showStatus('Gallery not available', 'error');
+                return;
+            }
+
+            try {
+                showStatus('Opening gallery...', 'info');
+
+                const photo = await Camera.getPhoto({
+                    quality: 90,
+                    allowEditing: false,
+                    resultType: 'Base64',
+                    source: 'Photos'
+                });
+
+                if (photo) {
+                    console.log('✅ Photo selected from gallery');
+
+                    currentImageData = {
+                        base64: photo.base64String,
+                        format: photo.format,
+                        dataUrl: `data:image/${photo.format};base64,${photo.base64String}`,
+                        source: 'Gallery',
+                        timestamp: new Date().toISOString()
+                    };
+
+                    showPreview();
+                    showStatus('Photo selected successfully!', 'success');
+                } else {
+                    showStatus('Selection cancelled', 'error');
+                }
+            } catch (error) {
+                console.error('Gallery error:', error);
+                showStatus('Gallery error: ' + error.message, 'error');
+            }
+        }
+
+        
+        function selectFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                showStatus('Please select an image file', 'error');
+                return;
+            }
+
+            showStatus('Reading file...', 'info');
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const base64 = e.target.result.split(',')[1];
+                const dataUrl = e.target.result;
+
+                currentImageData = {
+                    base64: base64,
+                    format: file.type.split('/')[1],
+                    dataUrl: dataUrl,
+                    source: 'File Upload',
+                    filename: file.name,
+                    timestamp: new Date().toISOString()
+                };
+
+                showPreview();
+                showStatus('File loaded successfully!', 'success');
+            };
+
+            reader.onerror = function(error) {
+                console.error('FileReader error:', error);
+                showStatus('Error reading file', 'error');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        
+        function showPreview() {
+            if (!currentImageData) return;
+
+            // Show preview image
+            document.getElementById('previewImage').src = currentImageData.dataUrl;
+            document.getElementById('previewSection').classList.remove('hidden');
+
+            // Update image info
+            document.getElementById('infoFormat').textContent = currentImageData.format.toUpperCase();
+            document.getElementById('infoSource').textContent = currentImageData.source;
+
+            // Calculate size
+            const sizeKB = Math.round(currentImageData.base64.length * 0.75 / 1024);
+            document.getElementById('infoSize').textContent = sizeKB + ' KB';
+
+            // Hide upload buttons
+            document.getElementById('uploadButtons').classList.add('hidden');
+        }
+
+        function cancelUpload() {
+            currentImageData = null;
+
+            // Hide preview
+            document.getElementById('previewSection').classList.add('hidden');
+
+            // Show upload buttons
+            document.getElementById('uploadButtons').classList.remove('hidden');
+
+            // Reset file input
+            document.getElementById('fileInput').value = '';
+
+            showStatus('Upload cancelled', 'info');
+        }
+
+        
+        async function uploadToServer() {
+            if (!currentImageData) {
+                showStatus('No image to upload', 'error');
+                return;
+            }
+
+            try {
+                showStatus('Uploading to server...', 'info');
+
+                // Prepare payload
+                const payload = {
+                    image: currentImageData.base64,
+                    format: currentImageData.format,
+                    source: currentImageData.source,
+                    timestamp: currentImageData.timestamp,
+                    filename: currentImageData.filename || `pod_${Date.now()}.${currentImageData.format}`
+                };
+
+                console.log('Uploading:', {
+                    format: payload.format,
+                    source: payload.source,
+                    size: payload.image.length
+                });
+
+                // TODO: Replace with your actual API endpoint
+                const response = await fetch('/api/pod/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Add authentication if needed
+                        // 'Authorization': 'Bearer YOUR_TOKEN'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('✅ Upload successful:', result);
+
+                    showStatus('Upload successful! ✓', 'success');
+
+                    // Reset after 2 seconds
+                    setTimeout(() => {
+                        cancelUpload();
+                    }, 2000);
+                } else {
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                }
+
+            } catch (error) {
+                console.error('Upload error:', error);
+
+                // For demo purposes, simulate success
+                if (error.message.includes('Failed to fetch')) {
+                    showStatus('⚠️ Demo mode: Upload endpoint not configured. But image capture works!', 'info');
+                    console.log('Image data ready to upload:', {
+                        format: currentImageData.format,
+                        base64Length: currentImageData.base64.length,
+                        source: currentImageData.source
+                    });
+                } else {
+                    showStatus('Upload failed: ' + error.message, 'error');
+                }
+            }
+        }
+
+       
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message status-' + type;
+            statusDiv.style.display = 'block';
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('POD Upload page initialized');
+            initializeUI();
+        });
+    </script>
+</body>
+</html>

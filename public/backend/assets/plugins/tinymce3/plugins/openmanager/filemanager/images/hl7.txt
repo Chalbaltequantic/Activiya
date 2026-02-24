@@ -1,0 +1,23 @@
+MSH|^~\&|LAB|PHS|SOARR1||201412080734||ORU^R01|2014342277697941||2.2
+                                PID||00004833722^4|000000036836^^^PHS^MR|000001045727|RODRIGUEZ^ARGELIA||19450320|F||1||||||||48337224^^^PHS^PN|071364391
+                                PV1|0001|I|3E^33602^^PHS|||||||MED||||||||IP|000001045727|3|||||||||||||||||||PHS
+                                ORC|RE|4665449|||SC||1^^^201412080500^^ROUTINE|4665449|201412071541||||3E||201412080734||PHS^PHS^L
+                                OBR|1|4665449^4665449|342.00048|CBC-DIFF^CBC WITH DIFFERENTIAL^L|||201412080717|||LAB|||||BLOOD&BLOOD&L^BLOOD|^GABELMAN^MARK||||1||201412080734|||P||1^^^201412080717^^ROUTINE||4665449
+                                OBX|18|NM|WBC^WBC^L^33256-9^WBC nRBC cor # Bld Auto^LOINC||4.7|THOU^thou|4.8-10.8|L^N|||F||010.00.005|201412080717|PM
+                                OBX|19|NM|RBC^RBC^L^789-8^RBC # Bld Auto^LOINC||3.96|MIL^mil|4.2-5.4|L^N|||F||010.00.010|201412080717|PM
+                                OBX|20|NM|HGB^HGB^L^718-7^Hgb Bld-mCnc^LOINC||10.6|G/DL^g/dl|12.0-16.0|L^N|||F||010.00.015|201412080717|PM
+                                OBX|21|NM|HCT^HCT^L^4544-3^Hct VFr Bld Auto^LOINC||33.2|%^%|37.0-47.0|L^N|||F||010.00.020|201412080717|PM
+                                OBX|22|NM|MCV^MCV^L^787-2^MCV RBC Auto^LOINC||83.8|FL^fl|81-99|^N|||F||010.00.025|201412080717|PM
+                                OBX|23|NM|MCH^MCH^L^785-6^MCH RBC Qn Auto^LOINC||26.7|PG^pg|27-31|L^N|||F||010.00.035|201412080717|PM
+                                OBX|24|NM|MCHC^MCHC^L^786-4^MCHC RBC Auto-mCnc^LOINC||31.9|G/DL^g/dl|33-37|L^N|||F||010.00.040|201412080717|PM
+                                OBX|25|NM|RDW^RDW^L^788-0^RDW RBC Auto-Rto^LOINC||18.4|%^%|11.5-14.5|H^N|||F||010.00.045|201412080717|PM
+                                OBX|26|NM|%GR^%GR^L^770-8^Neutrophils NFr Bld Auto^LOINC||70.0|%^%|45-70|^N|||F||010.00.060|201412080717|PM
+                                OBX|27|NM|%LY^%LY^L^736-9^Lymphocytes NFr Bld Auto^LOINC||16.3|%^%|20-40|L^N|||F||010.00.065|201412080717|PM
+                                OBX|28|NM|%MO^%MO^L^5905-5^Monocytes NFr Bld Auto^LOINC||11.4|%^%|0-10|H^N|||F||010.00.070|201412080717|PM
+                                OBX|29|NM|%EO^%EO^L^713-8^Eosinophil NFr Bld Auto^LOINC||2.0|%^%|0-8|^N|||F||010.00.075|201412080717|PM
+                                OBX|30|NM|%BA^%BA^L^706-2^Basophils NFr Bld Auto^LOINC||0.3|%^%|0-2|^N|||F||010.00.080|201412080717|PM
+                                OBX|31|NM|#LY^#LY^L^731-0^Lymphocytes # Bld Auto^LOINC||0.8|THOU^thou||^N|||F||010.00.085|201412080717|PM
+                                OBX|32|NM|#MO^#MO^L^742-7^Monocytes # Bld Auto^LOINC||0.5|THOU^thou||^N|||F||010.00.090|201412080717|PM
+                                OBX|33|NM|#GR^#GR^L^751-8^Neutrophils # Bld Auto^LOINC||3.3|THOU^thou||^N|||F||010.00.095|201412080717|PM
+                                OBX|34|NM|#EO^#EO^L^711-2^Eosinophil # Bld Auto^LOINC||0.1|THOU^thou||^N|||F||010.00.100|201412080717|PM
+                                OBX|35|NM|#BA^#BA^L^704-7^Basophils # Bld Auto^LOINC||0.0|THOU^thou||^N|||F||010.00.105|201412080717|PM
