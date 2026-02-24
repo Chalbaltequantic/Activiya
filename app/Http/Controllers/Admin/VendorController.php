@@ -51,6 +51,7 @@ class VendorController extends Controller
 	{
 			$id = $request->id;
 			$created_by = Auth::user()->id;
+			$file = $request->file('file');
 			if(!empty($id))
 			{
 			
@@ -95,6 +96,19 @@ class VendorController extends Controller
 				if (!is_null($request->parent_id)) {
 					$data['parent_id'] = $request->parent_id;
 				}
+				///vendor logo uploads/vendorlogo
+				if(!empty($file))
+				{
+					$originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+					$extension = $file->getClientOriginalExtension();
+					$fileName = time().'_'.str_replace(" ","_",$originalName). '.' . $extension;
+
+					$destinationPath = public_path('uploads/vendorlogo');
+					$file->move($destinationPath, $fileName);
+					$relativePath = 'uploads/vendorlogo/' . $fileName;
+					$data['logo'] = $relativePath;
+				}	
+				
 				Vendor::find($id)->update($data);
 				
 			return Redirect('/admin/vendor')->with('success', 'Vendor data updated successfully!');
@@ -102,19 +116,19 @@ class VendorController extends Controller
 			else
 			{
 				$validatedData = $request->validate(
-													[
-														'vendor_code' => 'required|unique:vendors,vendor_code',
-														'vendor_type' => 'required',
-														'vendor_name' => 'required',
-														'company_code' => 'required',
-													],
-													[
-														'vendor_code.required' => 'Please enter vendor code',
-														'vendor_type.required' => 'Please enter vendor type',
-														'vendor_name.required' => 'Please enter vendor name',
-														'company_code.required' => 'Please enter company code',
-													]
-													);
+									[
+										'vendor_code' => 'required|unique:vendors,vendor_code',
+										'vendor_type' => 'required',
+										'vendor_name' => 'required',
+										'company_code' => 'required',
+									],
+									[
+										'vendor_code.required' => 'Please enter vendor code',
+										'vendor_type.required' => 'Please enter vendor type',
+										'vendor_name.required' => 'Please enter vendor name',
+										'company_code.required' => 'Please enter company code',
+									]
+									);
 				
 				
 				$data = [
@@ -151,6 +165,18 @@ class VendorController extends Controller
 					if (!is_null($request->parent_id)) {
 					$data['parent_id'] = $request->parent_id;
 					}
+					
+					if(!empty($file))
+					{
+						$originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+						$extension = $file->getClientOriginalExtension();
+						$fileName = time().'_'.str_replace(" ","_",$originalName). '.' . $extension;
+
+						$destinationPath = public_path('uploads/vendorlogo');
+						$file->move($destinationPath, $fileName);
+						$relativePath = 'uploads/vendorlogo/' . $fileName;
+						$data['logo'] = $relativePath;
+					}	
 					
 					Vendor::create($data);
 					

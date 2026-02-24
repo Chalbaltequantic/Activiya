@@ -22,7 +22,8 @@ class VendorAddress extends Model
 								'is_current',
 								'created_at',
 								'updated_at',
-								'status'
+								'status',
+								'address_type'
 								
 							];
 	

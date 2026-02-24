@@ -123,7 +123,7 @@
 						  
 						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Zip Code</th>
 						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">country</th>
-						
+						 <th style="background: #fce4d6; color: #0070c0;" class="col-width">Type</th>
 						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Created Date</th>
 						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Status </th>						  
 						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Action</th>
@@ -142,6 +142,7 @@
 							<td>{{ $address->state }}</td>
 							<td>{{ $address->zip_code }}</td>
 							<td>{{ $address->country }}</td>
+							<td>{{ $address->address_type }}</td>
 
 							<td>{{$address->created_at}}</td>
 							<td>@if($address->status == 1)

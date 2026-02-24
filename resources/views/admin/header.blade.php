@@ -292,6 +292,10 @@
 				</li>
 				@endif
 				
+				<li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a>
+                </li>
+				
             </ul>
 
             <!-- Right navbar links -->

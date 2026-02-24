@@ -5,8 +5,7 @@
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Admin :: Activiya App</title>
-	
-
+	<link rel="icon" href="{{asset('favicon.png')}}" type="image/png" />
 	<meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -17,10 +16,25 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/dist/css/adminlte.min.css') }}">
     <!-- jQuery -->
     <script src="{{ asset('backend/assets/plugins/jquery/jquery.min.js') }}"></script>
+	
     @stack('css')
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 <style>
+/*input, textarea {
+  field-sizing: content; /* Makes the field resize to fit its content */
+  min-width: 50px;      /* Prevents it from becoming too small */
+  max-width: 200px;      /* Prevents it from becoming too wide */
+  /* Add other styling like font, padding, border etc., to ensure proper sizing */
+  font: inherit;
+  padding: 1px 2px;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 1.5lh;     /* Sets a minimum height in line units */
+  resize: none;          /* Optional: removes the manual resize handle */
+}*/
 .dataTables_filter {
     float: left !important;
 }

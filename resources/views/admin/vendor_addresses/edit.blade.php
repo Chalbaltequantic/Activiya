@@ -41,6 +41,20 @@
 			@method('PUT')
 			  
 			<div class="row">	
+			<div class="form-group col-md-3">
+                <label for="address_line1">Address Type</label>
+				<select name="address_type" id="address_type" class="form-control">
+					<option value="">Select Address Type</option>
+					<option value="Registered" {{ $address->address_type == 'Registered' ? 'selected' : '' }}>Registered</option>
+					<option value="Billing" {{ $address->address_type == 'Billing' ? 'selected' : '' }}>Billing</option>
+					<option value="Branch" {{ $address->address_type == 'Branch' ? 'selected' : '' }}>Branch</option>
+				</select>
+				
+				@error('address_type')
+				<span class="text-danger">{{$message}}</span>
+				@enderror
+              </div>
+			
 			  <div class="form-group col-md-3">
                 <label for="address_line1">Address Line 1</label>
                 <input type="text" id="address_line1" name="address_line1" class="form-control" value="{{ $address->address_line1 }}" placeholder="Enter address line 1" autocomplete=

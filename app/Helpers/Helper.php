@@ -52,3 +52,24 @@ if (!function_exists('role_permission_list_format')) {
     }
 }
 
+if (!function_exists('amountInWords')) {
+
+    function amountInWords($number)
+    {
+        $formatter = new \NumberFormatter("en", \NumberFormatter::SPELLOUT);
+
+        $number = round($number, 2);
+
+        $integerPart = floor($number);
+        $decimalPart = round(($number - $integerPart) * 100);
+
+        $words = ucfirst($formatter->format($integerPart)) . " Rupees";
+
+        if ($decimalPart > 0) {
+            $words .= " and " . $formatter->format($decimalPart) . " Paise";
+        }
+
+        return $words . " Only";
+    }
+}
+
