@@ -424,6 +424,7 @@ class SpotbyController extends Controller
 
 		} else {
 			// Logged-in vendor
+			$user = Auth::user();
 			$vendor_code = $user->vendor_code;
 
 			$vendorId = Vendor::where('vendor_code', $vendor_code)->value('id');
