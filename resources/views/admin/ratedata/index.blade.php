@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
+      left: 100px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -59,14 +59,14 @@
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row">
           <div class="col-sm-6">
-            <h1 class="m-0">Rate master Data Upload</h1>
+            <h1 class="m-0">Rate Master</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
              <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-             <li class="breadcrumb-item active">Rate Master Data </li>
+             <li class="breadcrumb-item active">Rate Master </li>
 				
             </ol>
           </div><!-- /.col -->
@@ -80,7 +80,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card" style="height:100px !important;">
 			@if(session('success'))
 				<div class="alert alert-success alert-dismissible fade show ">
 			<strong>{{session('success')}}</strong>
@@ -101,22 +101,20 @@
 						 <form action="{{ route('admin.ratemasterexcel.import') }}" method="POST" enctype="multipart/form-data">
 							@csrf	
 							
-							<label for="excel_file">Select Excel File to Upload Rate Master Data</label>
+							<label for="excel_file">Upload Rate</label>
 							<input type="file" name="excel_file" id="excel_file" required>
 								<button type="submit" class="btn btn-primary">Import</button>
 							
 						</form>
+						<a href="{{ URL::asset('consignmentapp_SampleDATA/rate_upload.xlsx') }}">Download Sample Data</a>
 					</div>
-					<div class="form-group col-md-6 border-left text-right">						
-							<label for="excel_file"> &nbsp; </label><br />
-							<a href="{{route('admin.ratedatamanualupload')}}" target="" class="btn btn-warning">Manual Upload Rate Master Data</a>
+					<div class="form-group col-md-3 border-left text-right">						
+							
+							<a href="{{route('admin.ratedatamanualupload')}}" target="" class="btn btn-warning">Manual Upload Rate</a>
 						
 					</div>
 				</div>
 				
-				<div class="row">
-				<div class="form-group col-md-6"><a href="{{ URL::asset('consignmentapp_SampleDATA/rate_upload.xlsx') }}">Download Sample Data</a></div>
-				</div>
 				
 			  </div>
        
@@ -133,44 +131,44 @@
 		 <div class="row">
           <div class="col-lg-12">
             <div class="card">
-			
+			 
               <div class="card-body p-0">
-			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table">
+			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 					<table class="table table-bordered border-dark table-hover" id="billDataTable">
 					  <thead>
 						<tr>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 col-width">Consignor name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 col-width">Consignor code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignor location</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">S5 consignor short<br>name & location</th>
+						  <th style="background: #fce4d6; color: #0070c0; z-index:999;" class="sticky-col-1">Consignor name</th>
+						  <th style="background: #fce4d6; color: #0070c0; z-index:999;" class="sticky-col-2">Consignor<br>code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignor<br>location</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">S5 consignor short<br>name & location</th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee Name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee Code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee Location</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">D5 consignor short<br>name & location</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Mode</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Logic</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignee Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignee<br>Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignee<br>Location</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">D5 consignor short<br>name & location</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Mode</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Logic</th>
 
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Code</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Name</th>
-						 <th style="background: #ddebf7; color: #0070c0;" class="col-width">T code</th> 
-						 <th style="background: #ddebf7; color: #0070c0;" class="col-width">Truck type</th> 
-						 <th style="background: #fce4d6; color: #0070c0;" class="col-width">A amount </th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Validity start	</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Validity end	</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">TAT</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Rank</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Distance</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 1</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 2</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 3</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 4</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 5</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Vendor Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Vendor Name</th>
+						 <th style="background: #fce4d6; color: #0070c0;" class="">T code</th> 
+						 <th style="background: #fce4d6; color: #0070c0;" class="">Truck type</th> 
+						 <th style="background: #fce4d6; color: #0070c0;" class="">A amount </th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Validity start	</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Validity end	</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">TAT</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Rank</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Distance</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 1</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 2</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 3</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 4</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 5</th>
 						 
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Created date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">status </th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Action</th>
+						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
 						</tr>
 					  </thead>
 					  <tbody>
@@ -180,8 +178,8 @@
 						  @foreach($ratedatalist as $ratedata)
 					  
 					   <tr>
-						  <td class="sticky-col-1 col-width">{{$ratedata->consignor_name}}</td>
-						  <td class="sticky-col-2 col-width">{{$ratedata->consignor_code}}</td>
+						  <td class="sticky-col-1">{{$ratedata->consignor_name}}</td>
+						  <td class="sticky-col-2">{{$ratedata->consignor_code}}</td>
 						  <td>{{$ratedata->consignor_location}}</td>
 						  <td>{{$ratedata->s5_consignor_short_name_and_location}}</td>
 						  <td>{{$ratedata->consignee_name}}</td>

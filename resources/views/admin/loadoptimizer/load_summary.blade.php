@@ -173,9 +173,9 @@
 								<th style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>
 								<th style="background: #fce4d6; color: #0070c0;">Status</th>
-								<th style="background: #fce4d6; color: #0070c0;">Reason for<br>approval</th>
-								<th style="background: #fce4d6; color: #0070c0;">Send for <br>Approval</th>
-								<th style="background: #fce4d6; color: #0070c0;">Action</th>
+								<th style="background: #c6e0b4; color: #0070c0;">Reason for<br>approval</th>
+								<th style="background: #c6e0b4; color: #0070c0;">Send for <br>Approval</th>
+								<th style="background: #c6e0b4; color: #0070c0;">Action</th>
 													  
 								</tr>
 						  </thead>

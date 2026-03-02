@@ -179,13 +179,13 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #ddebf7; color: #0070c0;" class="">Unloading<br> charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Unloading<br> charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Special instruction</th> 
 						<th style="background: #fce4d6; color: #0070c0;" class="">RFQ start date time</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">RFQ end date time</th>						
-						  <th style="background: #c6e0b4; color: #0070c0;">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Created date</th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;">Action</th>
+						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
 						</tr>
 					  </thead>
 					  <tbody>

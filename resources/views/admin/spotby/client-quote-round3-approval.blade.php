@@ -175,19 +175,19 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #ddebf7; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Special instruction</th> 
 						<th style="background: #fce4d6; color: #0070c0;">Market<br>Average Price</th>
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Price</th>
 						<th style="background: #fce4d6; color: #0070c0;">Transit Time<br>Freight Price</th>
 						<th style="background: #fce4d6; color: #0070c0;">Final<br>Vendor Name</th>
 						
 						<th style="background: #fce4d6; color: #0070c0;"><br>Final Rate</th>
-						<th style="background: #fce4d6; color: #0070c0;">
+						<th style="background: #c6e0b4; color: #0070c0;">
 						Approve<br>
 						  <input type="checkbox" id="selectAllApprove">
 					</th>
-					<th style="background: #fce4d6; color: #0070c0;">
+					<th style="background: #c6e0b4; color: #0070c0;">
 						Reject<br>
 						<input type="checkbox" id="selectAllReject">
 					</th>
@@ -270,8 +270,8 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #ddebf7; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Special instruction</th> 
 						<th style="background: #fce4d6; color: #0070c0;">Market<br>Average Price</th>
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Price</th>
 						<th style="background: #fce4d6; color: #0070c0;">Transit Time<br>Freight Price</th>

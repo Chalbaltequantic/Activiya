@@ -240,7 +240,7 @@
 					</table>
 					<input type="hidden" name="round" value="2">
 
-					<div class="text-right my-3">
+					<div class="col-12 text-right my-1">
 						<button type="submit" id="saveAllVendors" class="btn btn-success">💾 Save All Quote</button>
 					</div>
 					</form>
@@ -267,8 +267,8 @@
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank4</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank5</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">R1 Vendor</th>
-						<th style="background: #ddebf7; color: #0070c0;width: 40px;" class="">R2 Vendor</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">R3 Vendor</th> 						
+						<th style="background: #fce4d6; color: #0070c0;width: 40px;" class="">R2 Vendor</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">R3 Vendor</th> 						
 						<th style="background: #fce4d6; color: #0070c0;">R4 Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;">R5 Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;">L1 Freight<br>Rate</th>

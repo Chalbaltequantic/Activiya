@@ -182,14 +182,14 @@
 									{{--<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight Invoice</th>
 									<th style="background: #fce4d6; color: #0070c0;" class="col-width">POD</th>
 									<th style="background: #fce4d6; color: #0070c0;" class="col-width">Approvals</th>						
-									 <th style="background: #ddebf7; color: #0070c0;" class="col-width">Validate</th> 
-									 <th style="background: #ddebf7; color: #0070c0;" class="col-width">Submit</th> 
+									 <th style="background: #fce4d6; color: #0070c0;" class="col-width">Validate</th> 
+									 <th style="background: #fce4d6; color: #0070c0;" class="col-width">Submit</th> 
 									  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Return</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Remark</th>
 									   <th style="background: #fce4d6; color: #0070c0;" class="col-width">Custom </th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Custom 1</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Custom 2</th>
-									  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 3</th>--}}
+									  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Custom 3</th>--}}
 									  
 									</tr>
 								  </thead>

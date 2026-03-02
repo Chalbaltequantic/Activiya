@@ -169,15 +169,15 @@
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid upto</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">No of<br> vehicles</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" class="">Goods<br> qty</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Goods<br>qty</th>
 						
 						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #ddebf7; color: #0070c0;" class="">Unloading<br> charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Unloading<br> charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Special<br>instruction</th> 
 						
-						  <th style="background: #fce4d6; color: #0070c0;">Freight Rate</th>
-						   <th style="background: #fce4d6; color: #0070c0;">Transit Time</th>
+						  <th style="background: #c6e0b4; color: #0070c0;">Freight Rate</th>
+						   <th style="background: #c6e0b4; color: #0070c0;">Transit Time</th>
 						</tr>
 					  </thead>
 					  <tbody>

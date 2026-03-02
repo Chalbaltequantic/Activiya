@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
+      left: 70px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -100,21 +100,19 @@
 					<div class="form-group col-md-6">
 						 <form action="{{ route('admin.siteplantexcel.import') }}" method="POST" enctype="multipart/form-data">
 							@csrf								
-							<label for="excel_file">Select Excel file to upload Site plant Data</label>
+							<label for="excel_file"> upload Site Master</label>
 							<input type="file" name="excel_file" id="excel_file" required>
 							<button type="submit" class="btn btn-primary">Import</button>
 						</form>
+						<a href="{{ URL::asset('consignmentapp_SampleDATA/locationmaster.xlsx') }}">Download Sample Data</a>
 					</div>
-					<div class="form-group col-md-6 border-left text-right">						
-						<label for="excel_file"> &nbsp; </label><br />
-						<a href="{{route('admin.siteplantmanualupload')}}" class="btn btn-warning">Manual Upload Site plant Data</a>
+					<div class="form-group col-md-4 border-left text-right">						
+						
+						<a href="{{route('admin.siteplantmanualupload')}}" class="btn btn-warning">Manual Upload Site Master</a>
 						
 					</div>
 				</div>
 				
-				<div class="row">
-				<div class="form-group col-md-6"><a href="{{ URL::asset('consignmentapp_SampleDATA/locationmaster.xlsx') }}">Download Sample Data</a></div>
-				</div>
 				
 			  </div>
        
@@ -133,44 +131,44 @@
             <div class="card">
 			
               <div class="card-body p-0">
-			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table">
+			  <div class="table-responsive-fixed border rounded shadow-sm bg-white table-container">
 					<table class="table table-bordered border-dark table-hover" id="billDataTable">
 					  <thead>
 						<tr>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 col-width">PLANT Site Code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 col-width">Plant/Site Location Name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Site Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 ">PLANT <br>Site Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 ">Plant/Site<br>Location Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Code</th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Plant/Site Name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">S5 & D5</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Street/House number</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">STREET1</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">STREET2</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">CITY</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">POST CODE</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">STATE</th>
-						 <th style="background: #ddebf7; color: #0070c0;" class="col-width">STATE DESC</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="col-width">PAN NO</th> 
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Food License No.</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Food License Expiry</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">GSTIN Number </th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Site Executive Name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Site Executive Contact No.</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Executive Mail ID	</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Incharge Name</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Incharge Contact No.	</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Incharge Mail ID</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Manager Name</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Manager Contact No.</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Manager Mail ID</th>
-						   <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Site Region</th>
-						    <th style="background: #fce4d6; color: #0070c0;" class="col-width">Company Code</th>
-							 <th style="background: #fce4d6; color: #0070c0;" class="col-width">Company Type</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Plant/Site<br> Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">S5 & D5</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Street/House<br> number</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Street1</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Street2</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">City</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Post Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">State</th>
+						 <th style="background: #ddebf7; color: #0070c0;" class="">State Desc</th> 
+						<th style="background: #ddebf7; color: #0070c0;" class="">PAN NO</th> 
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Food<br>License No.</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Food<br>License Expiry</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">GSTIN Number </th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site<br>Executive Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Executive<br> Contact No.</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Executive <br>Mail ID	</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Incharge Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Incharge Contact No.	</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Incharge Mail ID</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Manager Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Manager Contact No.</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Site Manager Mail ID</th>
+						   <th style="background: #fce4d6; color: #0070c0;" class="">Site Region</th>
+						    <th style="background: #fce4d6; color: #0070c0;" class="">Company Code</th>
+							 <th style="background: #fce4d6; color: #0070c0;" class="">Company Type</th>
 						   
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Created date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">status </th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
 						 @if(Auth::user() && (Auth::user()->role_id == 1))			
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Action</th>
+						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
 					    @endif
 						</tr>
 					  </thead>
@@ -181,8 +179,8 @@
 						  @foreach($siteplantlist as $siteplantdata)
 					  
 					   <tr>
-						  <td class="sticky-col-1 col-width">{{$siteplantdata->plant_site_code}}</td>
-						  <td class="sticky-col-2 col-width">{{$siteplantdata->plant_site_location_name}}</td>
+						  <td class="sticky-col-1 ">{{$siteplantdata->plant_site_code}}</td>
+						  <td class="sticky-col-2 ">{{$siteplantdata->plant_site_location_name}}</td>
 						  <td>{{$siteplantdata->site_code}}</td>
 						  <td>{{$siteplantdata->plant_site_name}}</td>
 						  <td>{{$siteplantdata->s5_d5_short_name}}</td>

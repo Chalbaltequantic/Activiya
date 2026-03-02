@@ -159,25 +159,25 @@
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">Material description</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-3">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;">Division</th>
-						<th style="background: #fce4d6; color: #0070c0;">Piece<br> per box</th>
-						<th style="background: #fce4d6; color: #0070c0;">Length(cm)</th>
-						<th style="background: #fce4d6; color: #0070c0;">Width(cm)</th>
-						<th style="background: #fce4d6; color: #0070c0;">Height(cm)</th>
-						<th style="background: #fce4d6; color: #0070c0;">Net weight(kg)</th>
-						<th style="background: #fce4d6; color: #0070c0;">Gross(kg)</th>
-						<th style="background: #fce4d6; color: #0070c0;">Volume(cft)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Piece<br>(per box)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Length<br>(cm)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Width<br>(cm)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Height<br>(cm)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Net weight<br>kg)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Gross<br>(kg)</th>
+						<th style="background: #fce4d6; color: #0070c0;">Volume<br>(cft)</th>
 						<th style="background: #fce4d6; color: #0070c0;">Category</th>
 						<th style="background: #fce4d6; color: #0070c0;">Pallets</th>
 						<th style="background: #fce4d6; color: #0070c0;">Brand</th>
 						<th style="background: #fce4d6; color: #0070c0;">Sub brand</th>
-						<th style="background: #fce4d6; color: #0070c0;">Thickness</th>
-						<th style="background: #fce4d6; color: #0070c0;">Load<br/>sequence</th>
-						<th style="background: #fce4d6; color: #0070c0;">Associated</th>
+						<th style="background: #fce4d6; color: #0070c0;">Stack norms</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom 1</th>
 						<th style="background: #fce4d6; color: #0070c0;">Parent</th>
 						<th style="background: #fce4d6; color: #0070c0;">Child</th>
 						<th style="background: #fce4d6; color: #0070c0;">Created at</th>
 						<th style="background: #fce4d6; color: #0070c0;">Status</th>
-						<th style="background: #fce4d6; color: #0070c0;">Action</th>
+						<th style="background: #c6e0b4; color: #0070c0;">Action</th>
 						
 					  </thead>
 					  <tbody>

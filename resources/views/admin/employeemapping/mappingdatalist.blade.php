@@ -36,19 +36,19 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 100px; /* Adjust based on col-1 width */
+      left: 135px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 180px; /* Adjust based on col-1 width */
+      left: 280px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 230px; /* Adjust based on col-1 width */
+      left: 380px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -102,12 +102,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Freight Shipment History</h1>
+            <h1 class="m-0">Employee mapping</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
              <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-             <li class="breadcrumb-item active">Freight Shipment History</li>
+             <li class="breadcrumb-item active">Employee mapping</li>
 				
             </ol>
           </div><!-- /.col -->
@@ -145,81 +145,60 @@
 			
               <div class="card-body p-0">
 			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
-					<table id="billDataTable" class="table table-bordered border-dark table-hover">
+					<table class="table table-bordered border-dark table-hover"  id="billDataTable">
 					  <thead>
-
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-4">Vehicle type</th>				
-
-						<th style="background: #fce4d6; color: #0070c0;" class="">Valid from</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="">Valid upto</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="">No of<br> vehicles</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" class="">Goods<br> qty</th>
-						
-						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
-						<th style="background: #fce4d6; color: #0070c0;" class="">Special instruction</th> 
-						<th style="background: #fce4d6; color: #0070c0;" class="">RFQ start<br>date time</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="">RFQ end<br>date time</th>
-						
-						  <th style="background: #fce4d6; color: #0070c0;">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 ">Company code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 ">Consignor code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignee code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Vendor Code</th>
 						  
-						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">SubVendor code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Employee code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
+						   @if(Auth::user() && (Auth::user()->role_id == 1))	
+						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
+						 @endif
 						</tr>
 					  </thead>
 					  <tbody>
 				  
 						  @php($i=1)
-						  @if(count($spotbylist) > 0)
-						  @foreach($spotbylist as $spotbydata)
+						  @if(count($mappingdatalist) > 0)
+						  @foreach($mappingdatalist as $mappingdata)
 					  
 					   <tr>
-						<td class="sticky-col-1">{{$spotbydata->reference_no}}</td>
-						<td class="sticky-col-2">{{$spotbydata->from}}</td>
-						<td class="sticky-col-3">{{$spotbydata->to}}</td>
-						<td class="sticky-col-4">{{$spotbydata->vehicle_type}}</td>
-						<td>{{$spotbydata->valid_from}}</td>
-						  <td>{{$spotbydata->valid_upto}}</td>
-						  <td>{{$spotbydata->no_of_vehicles}}</td>
-						  <td>{{$spotbydata->goods_qty}}</td>
-						  
-						  <td>{{$spotbydata->uom}}</td>
-						  <td>{{$spotbydata->loading_charges}}</td>
-						  <td>{{$spotbydata->unloading_charges}}</td>
-						  
-						  <td>{{$spotbydata->special_instruction}}</td>
-						  <td>{{$spotbydata->rfq_start_date_time}}</td>					  
-						  <td>{{$spotbydata->rfq_end_date_time}}</td>					  
-						  <td>{{$spotbydata->created_at}}</td>
-						  
-						  
-						  <td>
-							@if($user_role==1)
-							  <a class="btn btn-info btn-sm" href="{{url('admin/spotby/editspotby/'.$spotbydata->id)}}">
-								  <i class="fas fa-pencil-alt">
-								  </i>
-								  Edit
-							  </a>
-							  <a class="btn btn-danger btn-sm" href="{{url('admin/deletespotbydata/'.$spotbydata->id)}}" onclick="return confirm('Are your sure you want to delete this data');">
-								  <i class="fas fa-trash">
-								  </i>
-								  Delete
-							  </a>
-							@endif
-						  </td>
-						  
+						 
+						  <td class="sticky-col-1 ">{{$mappingdata->company_code}}</td>
+						  <td class="sticky-col-2 ">{{$mappingdata->consignor_code}}</td>
+						  <td>{{$mappingdata->consignee_code}}</td>
+						  <td>{{$mappingdata->vendor_code}}</td>
+						  <td>{{$mappingdata->subvendor_code}}</td>
+						  <td>{{$mappingdata->employee_code}}</td>
+						  <td>{{$mappingdata->created_at}}</td>
+						    <td>{!! ($mappingdata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
+						   @if(Auth::user() && (Auth::user()->role_id == 1))	
+						  <td><a class="btn btn-info btn-sm" href="{{url('admin/employeemapping/editployee-mappingdata/'.$mappingdata->id)}}">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                          </a>
+                          <a class="btn btn-danger btn-sm" href="{{url('admin/employeemapping/delete/'.$mappingdata->id)}}" onclick="return confirm('Are your sure you want to delete this data');">
+                              <i class="fas fa-trash"></i>
+                              Delete
+                          </a></td>
+						  @endif
 						</tr>
 						  
-						  @endforeach
-						  @endif
+             	  @endforeach
+				  @else
+					  <tr><td colspan="7">No data found</td></tr>
+				  @endif
 				  
-						</tbody>
-					</table>
+               </tbody>
+          </table>
 				</div>
             </div>
           </div>

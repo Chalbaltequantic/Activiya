@@ -145,21 +145,21 @@
 			
               <div class="card-body p-0">
 			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
-					<table class="table table-bordered border-dark table-hover">
+					<table class="table table-bordered border-dark table-hover" id="billDataTable">
 					  <thead>
 						<tr>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 col-width">Operation Type</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 col-width">Company code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignor code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 ">Operation Type</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 ">Company code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignor code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Consignee code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Vendor Code</th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">SubVendor code</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Created date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">status </th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">SubVendor code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
 						   @if(Auth::user() && (Auth::user()->role_id == 1))	
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Action</th>
-						   @endif	
+						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
+						 @endif
 						</tr>
 					  </thead>
 					  <tbody>
@@ -169,8 +169,8 @@
 						  @foreach($mappingdatalist as $mappingdata)
 					  
 					   <tr>
-						  <td class="sticky-col-1 col-width">{{$mappingdata->operation_type}}</td>
-						  <td class="sticky-col-2 col-width">{{$mappingdata->company_code}}</td>
+						  <td class="sticky-col-1 ">{{$mappingdata->operation_type}}</td>
+						  <td class="sticky-col-2 ">{{$mappingdata->company_code}}</td>
 						  <td>{{$mappingdata->consignor_code}}</td>
 						  <td>{{$mappingdata->consignee_code}}</td>
 						  <td>{{$mappingdata->vendor_code}}</td>
@@ -178,7 +178,7 @@
 						 
 						  <td>{{$mappingdata->created_at}}</td>
 						    <td>{!! ($mappingdata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
-						  @if(Auth::user() && (Auth::user()->role_id == 1))	
+						   @if(Auth::user() && (Auth::user()->role_id == 1))	
 						  <td><a class="btn btn-info btn-sm" href="{{url('admin/mapping/editmappingdata/'.$mappingdata->id)}}">
                               <i class="fas fa-pencil-alt">
                               </i>
@@ -190,7 +190,6 @@
                               Delete
                           </a></td>
 						  @endif
-						  
 						</tr>
 						  
              	  @endforeach

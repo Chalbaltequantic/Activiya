@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
+      left:60px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -113,31 +113,29 @@
             <div class="card">
 			
               <div class="card-body p-0">
-			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table">
-					<table class="table table-bordered border-dark table-hover">
-				
-					
+			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
+					<table class="table table-bordered border-dark table-hover" id="billDataTable">
 					
 					  <thead>
 						<tr>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 col-width">Code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 col-width">Description</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Short Name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Length</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">Description</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Short Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Length</th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Width</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Height</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Weight capacity(KG)</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Max Volume Capacity <br>(CFT)</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Min capacity<br>(CFT)</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Utilities(%)</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Width</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Height</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Weight<br>capacity(KG)</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Max Volume<br>Capacity (CFT)</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Min capacity<br>CFT)</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Utilities(%)</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">T body	</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">T body</th>
 				 
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Status </th>		
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Created Date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Status</th>		
+						<th style="background: #fce4d6; color: #0070c0;" class="">Created Date</th>
 						 @if(Auth::user() && (Auth::user()->role_id == 1))		
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Action</th>
+						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
 					    @endif
 						</tr>
 					  </thead>
@@ -148,8 +146,8 @@
 						  @foreach($trucks as $truck)
 					  
 					   <tr>
-						  <td class="sticky-col-1 col-width">{{ $truck->code}}</td>
-						  <td class="sticky-col-2 col-width">{{$truck->description}}</td>
+						  <td class="sticky-col-1 ">{{ $truck->code}}</td>
+						  <td class="sticky-col-2 ">{{$truck->description}}</td>
 						  <td>{{$truck->short_name}}</td>
 						  <td>{{$truck->length}}</td>
 						  <td>{{$truck->width}}</td>

@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
+      left: 100px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -142,39 +142,39 @@
 					<table class="table table-bordered border-dark table-hover" id="billDataTable">
 					  <thead>
 						<tr>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1 col-width">Vendor Code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2 col-width">Vendor Desc</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Company Code</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Name 1</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Name 2</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Vendor<br>Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">Vendor Desc</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Company<br>Code</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Vendor Name 1</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Vendor Name 2</th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Authorized Person Name</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Authorized Person Phone</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Authorized Person Mail</th>
-						   <th style="background: #fce4d6; color: #0070c0;" class="col-width">Email</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Receipt Type 1</th>
-						  {{-- <th style="background: #fce4d6; color: #0070c0;" class="col-width">Withholding Tax Type</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">TDS Section 1</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Authorized<br>Person Name</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Authorized<br>Person Phone</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Authorized<br>Person Mail</th>
+						   <th style="background: #fce4d6; color: #0070c0;" class="">Email</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Receipt Type 1</th>
+						  {{-- <th style="background: #fce4d6; color: #0070c0;" class="">Withholding<br> Tax Type</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">TDS Section 1</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Receipt Name</th>
-						 <th style="background: #ddebf7; color: #0070c0;" class="col-width">Withholding Tax Type 2</th> 
-						 <th style="background: #ddebf7; color: #0070c0;" class="col-width">TDS Section 2</th> 
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Pan no</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Receipt Name</th>
+						 <th style="background: #ddebf7; color: #0070c0;" class="">Withholding<br>Tax Type 2</th> 
+						 <th style="background: #ddebf7; color: #0070c0;" class="">TDS Section 2</th> 
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Pan no</th>
 						 
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">GSTin number </th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Pan GSTin Check</th>
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">terms of Payment Key</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Account Group</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">GSTin number </th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Pan GSTin<br>Check</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">terms of<br>Payment Key</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Account Group</th>
 						 
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Posting Block Overall</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Purchase Block Overall</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Service Block</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Purchase Shipment Block</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Posting Block Overall</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Purchase Block Overall</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Service Block</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Purchase Shipment Block</th>
 						  --}}
 						  
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Created Date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;" class="col-width">Status </th>						  
-						  <th style="background: #fce4d6; color: #0070c0;" class="col-width">Action</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Created Date</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Status </th>						  
+						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
 						</tr>
 					  </thead>
 					  <tbody>
@@ -184,8 +184,8 @@
 						  @foreach($vendorlist as $vendordata)
 					  
 					   <tr>
-						  <td class="sticky-col-1 col-width">{{$vendordata->vendor_code}}</td>
-						  <td class="sticky-col-2 col-width">{{$vendordata->vendor_type}}</td>
+						  <td class="sticky-col-1 ">{{$vendordata->vendor_code}}</td>
+						  <td class="sticky-col-2 ">{{$vendordata->vendor_type}}</td>
 						  <td>{{$vendordata->company_code}}</td>
 						  <td>{{$vendordata->vendor_name}}</td>
 						  <td>{{$vendordata->vendor_short_name}}</td>

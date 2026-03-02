@@ -164,24 +164,24 @@
 						<th style="background: #fce4d6; color: #0070c0;">Dispatch Date</th>
 						
 						<th style="background: #fce4d6; color: #0070c0;">Dispatch Time</th>
-						 <th style="background: #ddebf7; color: #0070c0;">Lead Time</th> 
+						 <th style="background: #fce4d6; color: #0070c0;">Lead Time</th> 
 						
 						  <th style="background: #fce4d6; color: #0070c0;">Distance<br>in km</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Delivery<br>Due Date</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Shipment Status</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Transit Status</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Distance<br>Covered (KM)</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Current<br>Location</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Distance to<br>be covered (KM)</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Tracking Links</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Reporting Date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Reporting Time</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Release Date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Release Time</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Detention Days </th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Created_date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Current<br>Location</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Distance to<br>be covered (KM)</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Tracking Links</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Reporting Date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Reporting Time</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Release Date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Release Time</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Detention Days </th>
+						  <th style="background: #fce4d6; color: #0070c0;">Created_date</th>
 						  @if(Auth::user() && (Auth::user()->role_id == 1))
-						  <th style="background: #fce4d6; color: #0070c0;">Action</th>
+						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
 						@endif
 						</tr>
 					  </thead>

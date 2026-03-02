@@ -173,8 +173,8 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #ddebf7; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;width: 40px" class="">Unloading<br> charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Special instruction</th> 
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;">Target<br>Freight Rate</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;">Transit Time</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;">Target<br>Revised <br>Freight Rate</th>
