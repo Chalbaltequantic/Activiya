@@ -185,17 +185,17 @@
 										<th style="background: #fce4d6; color: #0070c0;" class="col-width">POD</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
 																			
-										<th style="background: #ddebf7; color: #0070c0;" class="">Validate<br>
+										<th style="background: #c6e0b4; color: #0070c0;" class="">Validate<br>
 										<input type="checkbox" id="selectAllValidate"></th> 
 										
-										<th style="background: #fce4d6; color: #0070c0;" class="">Submit<br>
+										<th style="background: #c6e0b4; color: #0070c0;" class="">Submit<br>
 										<input type="checkbox" id="selectAllSubmit"></th>
 										
-										<th style="background: #fce4d6; color: #0070c0;" class="">Return<br>
+										<th style="background: #c6e0b4; color: #0070c0;" class="">Return<br>
 										<input type="checkbox" id="selectAllReturn"></th>
 
-										<th style="background: #fce4d6; color: #0070c0;" class="">Status</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Remark</th>
+										<th style="background: #c6e0b4; color: #0070c0;" class="">Status</th>
+										<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Remark</th>
 									  
 									</tr>
 								  </thead>
@@ -305,8 +305,8 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight Invoice</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">POD</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
-								<th style="background: #ddebf7; color: #0070c0;" class="">Validate</th> 
-								<th style="background: #ddebf7; color: #0070c0;" class="">Submit</th> 
+								<th style="background: #fce4d6; color: #0070c0;" class="">Validate</th> 
+								<th style="background: #fce4d6; color: #0070c0;" class="">Submit</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Return</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Remark</th>
 								

@@ -6,11 +6,7 @@
       position: relative;
     }
 
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
+   
     .consign-data-table th, .consign-data-table td {
       white-space: nowrap;
       vertical-align: middle;
@@ -23,67 +19,87 @@
     }
 
     .consign-data-table .table th, .consign-data-table .table td {
-      padding: 3px 3px;
+      padding: 1px 0px;
     }
 
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-      }
-
-      .sticky-col-2 {
-        left: 5px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
+ .table-container {
+    max-height: 400px;   
     overflow-y: auto;
-    border: 1px solid #ccc;
+  
 }
 
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    padding: 2px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
 
 #table th {
     position: sticky;
     top: 0;
     z-index: 2;
 }	
+/*
+#table {
+    table-layout: auto !important;
+    width: auto !important;
+}
+
+*/
 
 
+/* Input should define column width */
+#table td input {
+    width: auto !important;
+    min-width: 40px;
+    display: inline-block;
+    border: none;
+}
+#table td input {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 2px 4px;
+}
+
+#table td input:focus {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+#table td input:focus {
+    background-color: #fffbe6;
+}
+
+#table td input {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 2px 4px;
+    width: auto;
+}
+
+/* Character based widths */
+#table td input.char-3  { width: 3ch !important; }
+#table td input.char-4  { width: 4ch !important; }
+#table td input.char-6  { width: 6ch !important; }
+#table td input.char-10 { width: 10ch !important; }
+
+/* Prevent column expansion */
+#table th,
+#table td {
+    white-space: nowrap !important;
+    width: 1% !important;
+}
+
+/* Prevent header from collapsing */
+#table th {
+    min-width: max-content;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+/* If you want header in single line but not crushed */
+#table th {
+    text-align: left;
+}
 
 
 </style>      
@@ -92,11 +108,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Upload bill data by copy & paste</h1>
+            <h1 class="m-0">Manual Shipment Upload</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-               <li class="breadcrumb-item"><a href="{{url('admin/billdata')}}" class="btn btn-info">View Bill data</a></li>
+               <li class="breadcrumb-item"><a href="{{url('admin/billdata')}}" class="btn btn-info">View Shipments</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -158,19 +174,19 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;">Vendor Code</th>
 						<th style="background: #fce4d6; color: #0070c0;">Vendor Name</th>
-						<th style="background: #ddebf7; color: #0070c0;">T code</th> 
-						<th style="background: #ddebf7; color: #0070c0;">Truck type</th> 
+						<th style="background: #fce4d6; color: #0070c0;">T code</th> 
+						<th style="background: #fce4d6; color: #0070c0;">Truck type</th> 
 						<th style="background: #fce4d6; color: #0070c0;">LR No.</th>
 						<th style="background: #fce4d6; color: #0070c0;">LR CN Date</th>
 						<th style="background: #fce4d6; color: #0070c0;">A amount </th>
 						<th style="background: #fce4d6; color: #0070c0;">Ref2</th>
 						<th style="background: #fce4d6; color: #0070c0;">Ref3</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Freight type</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Ap status</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Mode</th>
-						<th style="background: #c6e0b4; color: #0070c0;">cases</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Driver number</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Truck no</th>
+						<th style="background: #fce4d6; color: #0070c0;">Freight type</th>
+						<th style="background: #fce4d6; color: #0070c0;">Ap status</th>
+						<th style="background: #fce4d6; color: #0070c0;">Mode</th>
+						<th style="background: #fce4d6; color: #0070c0;">cases</th>
+						<th style="background: #fce4d6; color: #0070c0;">Driver number</th>
+						<th style="background: #fce4d6; color: #0070c0;">Truck no</th>
 
 					  
 					</tr>
@@ -181,29 +197,29 @@
 					<tr>
 					 <td class="">
 					 <input type="text" name="consignor_name[]" id="consignor_name{{$i}}" value="{{ old('consignor_name')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
-						  <td class=""><input type="text" name="consignor_code[]" id="" value="{{ old('consignor_code')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
+						  <td class=""><input type="text" name="consignor_code[]" id="" value="{{ old('consignor_code')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }} class="char-10"></td>
 						  <td><input type="text" name="consignor_location[]" id="" value="{{ old('consignor_location')[$i] ?? '' }}"></td>
 							  {{-- <td><input type="text" name="s5_consignor_short_name_and_location[]" id="" value="{{ old('s5_consignor_short_name_and_location')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>--}}
 						  <td><input type="text" name="consignee_name[]" id="" value="{{ old('consignee_name')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="consignee_code[]" id="" value="{{ old('consignee_code')[$i] ?? '' }}"></td>
+						  <td><input type="text" name="consignee_code[]" id="" value="{{ old('consignee_code')[$i] ?? '' }}" class="char-10"></td>
 						  <td><input type="text" name="consignee_location[]" id="" value="{{ old('consignee_location')[$i] ?? '' }}"></td>
 							  {{--  <td><input type="text" name="d5_consignor_short_name_and_location[]" id="" value="{{ old('d5_consignor_short_name_and_location')[$i] ?? '' }}"></td>--}}
-						  <td><input type="text" name="ref1[]" id="" value="{{ old('ref1')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="vendor_code[]" id="" value="{{ old('vendor_code')[$i] ?? '' }}"></td>
+						  <td><input type="text" name="ref1[]" id="" value="{{ old('ref1')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="vendor_code[]" id="" value="{{ old('vendor_code')[$i] ?? '' }}" class="char-10"></td>
 						  <td><input type="text" name="vendor_name[]" id="" value="{{ old('vendor_name')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="t_code[]" id="" value="{{ old('t_code')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="truck_type[]" id="" value="{{ old('truck_type')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="lr_no[]" id="" value="{{ old('lr_no')[$i] ?? '' }}"></td>
+						  <td><input type="text" name="t_code[]" id="" value="{{ old('t_code')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="truck_type[]" id="" value="{{ old('truck_type')[$i] ?? '' }}" class="char-6"></td>
+						  <td><input type="text" name="lr_no[]" id="" value="{{ old('lr_no')[$i] ?? '' }}" class="char-10"></td>
 						  <td><input type="text" name="lr_cn_date[]" id="" value="{{ old('lr_cn_date')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="a_amount[]" id="" value="{{ old('a_amount')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="ref2[]" id="" value="{{ old('ref2')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="ref3[]" id="" value="{{ old('ref3')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="freight_type[]" id="" value="{{ old('freight_type')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="ap_status[]" id="" value="{{ old('ap_status')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="custom[]" id="" value="{{ old('custom')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="custom1[]" id="" value="{{ old('custom1')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="custom2[]" id="" value="{{ old('custom2')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="custom3[]" id="" value="{{ old('custom3')[$i] ?? '' }}"></td>
+						  <td><input type="text" name="a_amount[]" id="" value="{{ old('a_amount')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="ref2[]" id="" value="{{ old('ref2')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="ref3[]" id="" value="{{ old('ref3')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="freight_type[]" id="" value="{{ old('freight_type')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="ap_status[]" id="" value="{{ old('ap_status')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="custom[]" id="" value="{{ old('custom')[$i] ?? '' }}" class="char-4"></td>
+						  <td><input type="text" name="custom1[]" id="" value="{{ old('custom1')[$i] ?? '' }}" class="char-4"></td>
+						  <td><input type="text" name="custom2[]" id="" value="{{ old('custom2')[$i] ?? '' }}" class="char-10"></td>
+						  <td><input type="text" name="custom3[]" id="" value="{{ old('custom3')[$i] ?? '' }}" class="char-10"></td>
 						</tr>  
 					@endfor	
 				  </tbody>
@@ -267,6 +283,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
 
+document.querySelectorAll('#table input').forEach(function(input) {
+    input.addEventListener('input', function() {
+        this.style.width = ((this.value.length + 1) * 8) + 'px';
+    });
+});
+
+/*resize column on drag*/
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("table");
+    const ths = table.querySelectorAll("th");
+
+    ths.forEach((th, colIndex) => {
+
+        // Set initial width to current computed width
+        th.style.width = th.offsetWidth + "px";
+
+        const handle = document.createElement("div");
+        handle.classList.add("resize-handle");
+        th.appendChild(handle);
+
+        let startX, startWidth;
+
+        handle.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            const newWidth = startWidth + (e.pageX - startX);
+            if (newWidth < 40) return; // minimum width
+
+            th.style.width = newWidth + "px";
+
+            table.querySelectorAll("tr").forEach(row => {
+                if (row.children[colIndex]) {
+                    row.children[colIndex].style.width = newWidth + "px";
+                }
+            });
+        }
+
+        function onMouseUp() {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+        }
+    });
+});
+</script>
 @endsection

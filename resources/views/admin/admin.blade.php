@@ -49,6 +49,20 @@ textarea {
     color: rgba(255, 255, 255, 1);
 }
 
+ th {
+        vertical-align: top !important;
+    }
+
+.table-container {
+    max-height: 400px; 
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+#billDataTable{
+    max-height: 400px;   
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
 </style>
 </head>
 

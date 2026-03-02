@@ -176,9 +176,9 @@
 									  <th style="background: #fce4d6; color: #0070c0;" class="">LR/CN Date</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="">Ref 1<br />FPO NO.</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="">Ref 2 <br />FGRN</th>
-								 	<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight <br>Invoice No.</th>
-									<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice Dt.</th>
-									<th style="background: #fce4d6; color: #0070c0;">Amount</th>
+								 	<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Freight <br>Invoice No.</th>
+									<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Invoice Dt.</th>
+									<th style="background: #c6e0b4; color: #0070c0;">Amount</th>
 									{{--<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight Invoice</th>
 									<th style="background: #fce4d6; color: #0070c0;" class="col-width">POD</th>
 									<th style="background: #fce4d6; color: #0070c0;" class="col-width">Approvals</th>						
@@ -239,16 +239,19 @@
 							  @endif
 							  
 						   </tbody>
-						    <tr><td colspan="8"></td>
-							<td colspan="2"> <button type="submit" class="btn btn-primary">Submit</button></td>
-							<td colspan="5"></td>
-							</tr>
+						   
 						   
 					  </table>
 					  
-					</form>
+					
 					 
 					</div>
+					<div class="row text-right">
+						<div class="col-md-10">
+						<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</div>
+					</form>
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="timeline">

@@ -1,4 +1,3 @@
-
   <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
 		<a href="/" class="navbar-brand">

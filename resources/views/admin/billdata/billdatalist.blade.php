@@ -152,7 +152,7 @@
 							<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-1">S5 consignor short<br> name & location</th>
 							<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-2">D5 consignor short<br> name & location</th>
 							<th style="background: #fce4d6; color: #0070c0;z-index:999;width:90px;" class="sticky-col-3">Vendor Name</th>
-							<th style="background: #ddebf7; color: #0070c0;z-index:999;" class="sticky-col-4">Truck type</th> 
+							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Truck type</th> 
 							<th style="background: #fce4d6; color: #0070c0;">Consignor name</th>
 							<th style="background: #fce4d6; color: #0070c0;">Consignor<br> code</th>
 							<th style="background: #fce4d6; color: #0070c0;">Consignor location</th>
@@ -165,19 +165,19 @@
 						<th style="background: #fce4d6; color: #0070c0;">Ref1</th>
 						
 						<th style="background: #fce4d6; color: #0070c0;">Vendor Code</th>
-						 <th style="background: #ddebf7; color: #0070c0;">T code</th> 
+						 <th style="background: #fce4d6; color: #0070c0;">T code</th> 
 						
 						  <th style="background: #fce4d6; color: #0070c0;">LR/CN No.</th>
 						  <th style="background: #fce4d6; color: #0070c0;">LR CN Date</th>
 						  <th style="background: #fce4d6; color: #0070c0;">A amount </th>
 						  <th style="background: #fce4d6; color: #0070c0;">Ref2</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Ref3</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Freight type</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Ap status</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">Created_date</th>
-						  <th style="background: #c6e0b4; color: #0070c0;">status </th>
+						  <th style="background: #fce4d6; color: #0070c0;">Freight type</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Ap status</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Created_date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">status </th>
 						  
-						  <th style="background: #fce4d6; color: #0070c0;">Action</th>
+						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
 						</tr>
 					  </thead>
 					  <tbody>
