@@ -1,89 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
- .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 3px 3px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-      }
-
-      .sticky-col-2 {
-        left: 5px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    padding: 2px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-</style>      
+  <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+     
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -173,22 +91,22 @@
 					  
 					  <td class=""><input type="text" name="po_date[]" id="po_date{{$i}}" value="{{ old('po_date')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
 					  
-					  <td><input type="text" name="consignor_code[]" id="" value="{{ old('consignor_code')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="consignor_code[]" id="" value="{{ old('consignor_code')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="consignor_name[]" id="" value="{{ old('consignor_name')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="consignor_location[]" id="" value="{{ old('consignor_location')[$i] ?? '' }}"></td>
 					
-					  <td><input type="text" name="consignee_code[]" id="" value="{{ old('consignee_code')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="consignee_code[]" id="" value="{{ old('consignee_code')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="consignee_name[]" id="" value="{{ old('consignee_name')[$i] ?? '' }}"></td>
 					  
 					  <td><input type="text" name="consignee_location[]" id="" value="{{ old('consignee_location')[$i] ?? '' }}"></td>
 					
-					  <td><input type="text" name="v_code[]" id="" value="{{ old('v_code')[$i] ?? '' }}"></td>
+					  <td class="char-10"><input type="text" name="v_code[]" id="" value="{{ old('v_code')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="vendor_name[]" id="" value="{{ old('vendor_name')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="no_of_cases_sale[]" id="" value="{{ old('no_of_cases_sale')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="no_of_cases_sale[]" id="" value="{{ old('no_of_cases_sale')[$i] ?? '' }}"></td>
 					  
-					  <td><input type="text" name="shipment_inv_value[]" id="" value="{{ old('shipment_inv_value')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="delivery_gross_weight[]" id="" value="{{ old('delivery_gross_weight')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="company_code[]" id="" value="{{ old('company_code')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="shipment_inv_value[]" id="" value="{{ old('shipment_inv_value')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="delivery_gross_weight[]" id="" value="{{ old('delivery_gross_weight')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="company_code[]" id="" value="{{ old('company_code')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="remarks[]" id="" value="{{ old('remarks')[$i] ?? '' }}"></td>
 					  
 				</tr>  

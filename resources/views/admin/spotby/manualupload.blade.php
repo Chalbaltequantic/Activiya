@@ -1,92 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
-    .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 3px 3px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-      }
-
-      .sticky-col-2 {
-        left: 5px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    padding: 2px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-
-
-
-</style>      
+ <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+      
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -158,8 +73,8 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Loading charges</th>
-						<th style="background: #ddebf7; color: #0070c0;width: 40px" class="col-width">Unloading charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;width: 140px" class="col-width">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;width: 40px" class="col-width">Unloading charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Special instruction</th> 
 						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">RFQ start date time</th>
 						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">RFQ end date time</th>
 						
@@ -176,11 +91,11 @@
 						  
 					  <td><input type="text" name="valid_from[]" id="valid_from{{$i}}" value="{{ old('valid_from')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="valid_upto[]" id="valid_upto{{$i}}" value="{{ old('valid_upto')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="no_of_vehicles[]" id="no_of_vehicles{{$i}}" value="{{ old('no_of_vehicles')[$i] ?? '' }}"></td>
+					  <td class="char-4"><input type="text" name="no_of_vehicles[]" id="no_of_vehicles{{$i}}" value="{{ old('no_of_vehicles')[$i] ?? '' }}"></td>
 						
-					  <td><input type="text" name="goods_qty[]" id="goods_qty{{$i}}" value="{{ old('goods_qty')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="uom[]" id="uom{{$i}}" value="{{ old('uom')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="loading_charges[]" id="loading_charges{{$i}}" value="{{ old('loading_charges')[$i] ?? '' }}"></td>
+					  <td class="char-4"><input type="text" name="goods_qty[]" id="goods_qty{{$i}}" value="{{ old('goods_qty')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="uom[]" id="uom{{$i}}" value="{{ old('uom')[$i] ?? '' }}"></td>
+					  <td class="char-10"><input type="text" name="loading_charges[]" id="loading_charges{{$i}}" value="{{ old('loading_charges')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="unloading_charges[]" id="unloading_charges{{$i}}" value="{{ old('unloading_charges')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="special_instruction[]" id="special_instruction{{$i}}" value="{{ old('special_instruction')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="rfq_start_date_time[]" id="rfq_start_date_time{{$i}}" value="{{ old('rfq_start_date_time')[$i] ?? '' }}"></td>

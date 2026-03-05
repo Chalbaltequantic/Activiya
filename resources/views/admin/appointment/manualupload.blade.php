@@ -1,95 +1,13 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
- .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 3px 3px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-      }
-
-      .sticky-col-2 {
-        left: 5px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    padding: 2px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-</style>      
+ <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+      
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Upload appoinment data by copy & paste</h1>
+            <h1 class="m-0">Upload appoinment data</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -167,28 +85,28 @@ Cases sale</th>
 				  <tbody>
 				  @for ($i = 0; $i <= 10; $i++)				  
 					<tr>
-					 <td class=""><input type="text" name="inv_number[]" id="inv_number{{$i}}" value="{{ old('inv_number')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
-						  <td class=""><input type="text" name="inv_doc_date[]" id="inv_doc_date{{$i}}" value="{{ old('inv_doc_date')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
-						  <td><input type="text" name="lr_no[]" id="lr_no{{$i}}" value="{{ old('lr_no')[$i] ?? '' }}"></td>
+					 <td class="char-10"><input type="text" name="inv_number[]" id="inv_number{{$i}}" value="{{ old('inv_number')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
+						  <td class="char-10"><input type="text" name="inv_doc_date[]" id="inv_doc_date{{$i}}" value="{{ old('inv_doc_date')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
+						  <td class="char-10"><input type="text" name="lr_no[]" id="lr_no{{$i}}" value="{{ old('lr_no')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="lr_date[]" id="lr_date{{$i}}" value="{{ old('lr_date')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
-						  <td><input type="text" name="consignor_code[]" id="" value="{{ old('consignor_code')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="consignor_code[]" id="" value="{{ old('consignor_code')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="consignor_name[]" id="" value="{{ old('consignor_name')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="consignor_location[]" id="" value="{{ old('consignor_location')[$i] ?? '' }}"></td>
 						
 						  
 						  <td><input type="text" name="consignee_name[]" id="" value="{{ old('consignee_name')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="consignee_code[]" id="" value="{{ old('consignee_code')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="consignee_code[]" id="" value="{{ old('consignee_code')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="consignee_location[]" id="" value="{{ old('consignee_location')[$i] ?? '' }}"></td>
 						
-						  <td><input type="text" name="v_code[]" id="" value="{{ old('v_code')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="v_code[]" id="" value="{{ old('v_code')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="vendor_name[]" id="" value="{{ old('vendor_name')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="no_of_cases_sale[]" id="" value="{{ old('no_of_cases_sale')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="t_code[]" id="" value="{{ old('t_code')[$i] ?? '' }}"></td>
+						  <td class="char-3"><input type="text" name="no_of_cases_sale[]" id="" value="{{ old('no_of_cases_sale')[$i] ?? '' }}"></td>
+						  <td class="char-3"><input type="text" name="t_code[]" id="" value="{{ old('t_code')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="truck_type[]" id="" value="{{ old('truck_type')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="vehicle_no[]" id="" value="{{ old('vehicle_no')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="vehicle_no[]" id="" value="{{ old('vehicle_no')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="shipment_inv_value[]" id="" value="{{ old('shipment_inv_value')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="delivery_gross_weight[]" id="" value="{{ old('delivery_gross_weight')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="company_code[]" id="" value="{{ old('company_code')[$i] ?? '' }}"></td>
+						  <td class="char-6"><input type="text" name="company_code[]" id="" value="{{ old('company_code')[$i] ?? '' }}"></td>
 						  
 						</tr>  
 					@endfor	

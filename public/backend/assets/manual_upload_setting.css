@@ -1,0 +1,70 @@
+.table-responsive-fixed {
+    overflow-x: auto;
+    position: relative;
+}
+
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+
+#table {
+    table-layout: auto;       
+    width: max-content;     
+    border-collapse: collapse;
+}
+
+/* Sticky header */
+#table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f8f9fa;
+    white-space: nowrap;
+    padding: 4px 10px;
+    text-align: left;
+}
+
+
+#table th,
+#table td {
+    white-space: nowrap;
+    vertical-align: middle;
+	font-size: 12px;
+}
+
+
+#table td {
+    padding: 2px 4px;
+}
+
+
+#table td input:focus {
+    background-color: #fffbe6;
+}
+
+#table td {
+    padding: 0 !important;   /* remove td padding */
+}
+
+#table td input {
+    display: block;          /* important */
+    width: 100%;
+    padding: 0 2px;          /* minimal safe padding */
+    margin: 0;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+
+    box-sizing: border-box;  /* IMPORTANT CHANGE */
+}
+
+/* Character-based column width controlled by TD */
+#table td.char-3  { width: 3ch; }
+#table td.char-4  { width: 4ch; }
+#table td.char-6  { width: 6ch; }
+#table td.char-10 { width: 11ch; }
+

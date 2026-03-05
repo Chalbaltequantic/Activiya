@@ -1,102 +1,17 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
-    .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
+ <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
 
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-      min-width: 160px;
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-        min-width: 90px;
-      }
-
-      .sticky-col-2 {
-        left: 80px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 50%;
-   
-}
-
-#input-table th,
-#input-table td {
-    min-width: 120px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-</style>      
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Upload Mapping data by copy & paste</h1>
+            <h1 class="m-0">Upload Vendor & Sub Vendor Mapping</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-               <li class="breadcrumb-item"><a href="{{url('admin/mappingdata')}}" class="btn btn-info">View Bill data</a></li>
+               <li class="breadcrumb-item"><a href="{{url('admin/mappingdata')}}" class="btn btn-info">View Vendor & Sub Vendor Mapping</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -138,11 +53,11 @@
 					<option value="Centralize">Centralize</option>
 				</select></td></tr>
 					<tr>
-						<th style="background: #fce4d6; color: #0070c0;width:60px;" class="">Company code</th>
-						<th style="background: #fce4d6; color: #0070c0;width:60px;" class="">Consignor code</th>
-						<th style="background: #fce4d6; color: #0070c0;width:60px;">Consigee code</th>
-						<th style="background: #fce4d6; color: #0070c0;width:60px;">Vendor Code</th>
-						<th style="background: #fce4d6; color: #0070c0;width:60px;">Sub Vendor Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Company code</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="">Consignor code</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consigee code</th>
+						<th style="background: #fce4d6; color: #0070c0;">Vendor Code</th>
+						<th style="background: #fce4d6; color: #0070c0;">Sub Vendor Code</th>
 						
 					  
 					</tr>

@@ -1,98 +1,13 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
-    .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
+ <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
 
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 3px 3px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-      }
-
-      .sticky-col-2 {
-        left: 5px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    padding: 2px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-
-
-
-</style>      
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Upload Tracking data by copy & paste</h1>
+            <h1 class="m-0">Manual Upload Tracking data</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -146,7 +61,7 @@
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-1">Indent No</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-2">Customer<br />PO No.</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:90px;" class="sticky-col-3">Origin</th>
-						<th style="background: #ddebf7; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
 						<th style="background: #fce4d6; color: #0070c0;">Vendor name</th>
 						<th style="background: #fce4d6; color: #0070c0;">Vendor Code</th>
 						<th style="background: #fce4d6; color: #0070c0;">Type of<br> vehicle</th>
@@ -156,7 +71,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">Driver<br>Mobile No</th>
 						<th style="background: #fce4d6; color: #0070c0;">Dispatch Date</th>
 						<th style="background: #fce4d6; color: #0070c0;">Dispatch Time</th>
-						<th style="background: #ddebf7; color: #0070c0;">Lead Time</th>
+						<th style="background: #fce4d6; color: #0070c0;">Lead Time</th>
 						<th style="background: #fce4d6; color: #0070c0;">Distance<br>in km</th>
 					</tr>
 				  </thead>
@@ -164,29 +79,29 @@
 				  @for ($i = 0; $i <= 9; $i++)
 				  
 					<tr>
-					 <td class="">
+					 <td class="char-10">
 					 <input type="text" name="indent_no[]" id="indent_no{{$i}}" value="{{ old('indent_no')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
 					
-					 <td class=""><input type="text" name="customer_po_no[]" id="" value="{{ old('customer_po_no')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
+					 <td class="char-10"><input type="text" name="customer_po_no[]" id="" value="{{ old('customer_po_no')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
 					<td><input type="text" name="origin[]" id="" value="{{ old('origin')[$i] ?? '' }}"></td>
 					
 					<td><input type="text" name="destination[]" id="" value="{{ old('destination')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
 
 					<td><input type="text" name="vendor_name[]" id="" value="{{ old('vendor_name')[$i] ?? '' }}"></td>
-					<td><input type="text" name="vendor_code[]" id="" value="{{ old('vendor_code')[$i] ?? '' }}"></td>
+					<td class="char-10"><input type="text" name="vendor_code[]" id="" value="{{ old('vendor_code')[$i] ?? '' }}"></td>
 					
 					<td><input type="text" name="vehicle_type[]" id="" value="{{ old('vehicle_type')[$i] ?? '' }}"></td>
 					
-					<td><input type="text" name="lr_no[]" id="" value="{{ old('lr_no')[$i] ?? '' }}"></td>
+					<td class="char-10"><input type="text" name="lr_no[]" id="" value="{{ old('lr_no')[$i] ?? '' }}"></td>
 					
-					<td><input type="text" name="cases[]" id="" value="{{ old('cases')[$i] ?? '' }}"></td>
+					<td class="char-14"><input type="text" name="cases[]" id="" value="{{ old('cases')[$i] ?? '' }}"></td>
 					
 					<td><input type="text" name="truck_no[]" id="" value="{{ old('truck_no')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="driver_number[]" id="" value="{{ old('driver_number')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="dispatch_date[]" id="" value="{{ old('dispatch_date')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="dispatch_time[]" id="" value="{{ old('dispatch_time')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="lead_time[]" id="" value="{{ old('lead_time')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="distance[]" id="" value="{{ old('distance')[$i] ?? '' }}"></td>
+					  <td class="char-4"><input type="text" name="lead_time[]" id="" value="{{ old('lead_time')[$i] ?? '' }}"></td>
+					  <td class="char-6"><input type="text" name="distance[]" id="" value="{{ old('distance')[$i] ?? '' }}"></td>
 					  
 					</tr>  
 					@endfor	

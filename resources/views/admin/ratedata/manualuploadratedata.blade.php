@@ -1,98 +1,13 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
-    .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
+ <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
 
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 99;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 99;
-    }
-
-    /* Column widths */
-    .col-width {
-      min-width: 160px;
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-        min-width: 90px;
-      }
-
-      .sticky-col-2 {
-        left: 80px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    min-width: 120px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-</style>      
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Upload Rate data by copy & paste</h1>
+            <h1 class="m-0">Manual Upload Rate master</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -135,33 +50,33 @@
 					<tr>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Consignor name</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Consignor code</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignor location</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">S5 consignor <br>short name & location</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Consignor location</th>
+						<th style="background: #fce4d6; color: #0070c0;" >S5 consignor <br>short name & location</th>
 
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee Name</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee Code</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Consignee Location</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">D5 consignor short <br>name & location</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Mode</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Logic</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Consignee Name</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Consignee Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Consignee Location</th>
+						<th style="background: #fce4d6; color: #0070c0;" >D5 consignor short <br>name & location</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Mode</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Logic</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Code</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Name</th>
-						<th style="background: #ddebf7; color: #0070c0;" class="col-width">T code</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="col-width">Truck type</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">A amount </th>
+						<th style="background: #fce4d6; color: #0070c0;" >Vendor Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Vendor Name</th>
+						<th style="background: #fce4d6; color: #0070c0;" >T code</th> 
+						<th style="background: #fce4d6; color: #0070c0;" >Truck type</th>
+						<th style="background: #fce4d6; color: #0070c0;" >A amount </th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Validity start</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Validity end</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">TAT</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Rank</th>
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Distance</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Validity start</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Validity end</th>
+						<th style="background: #fce4d6; color: #0070c0;" >TAT</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Rank</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Distance</th>
 						
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 1</th>
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 2</th>
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 3</th>
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 4</th>
-						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Custom 5</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Custom 1</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Custom 2</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Custom 3</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Custom 4</th>
+						<th style="background: #fce4d6; color: #0070c0;" >Custom 5</th>
 						
 					  
 					</tr>
@@ -171,29 +86,29 @@
 				  
 					<tr>
 					 <td class=""><input type="text" name="consignor_name[]" id="consignor_name{{$i}}" value="" {{ $i == 1 ? 'required' : '' }}></td>
-						  <td class=""><input type="text" name="consignor_code[]" id="" value=""  {{ $i == 1 ? 'required' : '' }}></td>
+						  <td class="char-6"><input type="text" name="consignor_code[]" id="" value=""  {{ $i == 1 ? 'required' : '' }}></td>
 						  <td><input type="text" name="consignor_location[]" id="" value=""></td>
 						  <td><input type="text" name="s5_consignor_short_name_and_location[]" id="" value="" {{ $i == 1 ? 'required' : '' }}></td>
 						  <td><input type="text" name="consignee_name[]" id="" value=""></td>
-						  <td><input type="text" name="consignee_code[]" id="" value=""></td>
+						  <td class="char-6"><input type="text" name="consignee_code[]" id="" value=""></td>
 						  <td><input type="text" name="consignee_location[]" id="" value=""></td>
 						  <td><input type="text" name="d5_consignor_short_name_and_location[]" id="" value=""></td>
-						  <td><input type="text" name="mode[]" id="" value=""></td>
-						  <td><input type="text" name="logic[]" id="" value=""></td>
-						  <td><input type="text" name="vendor_code[]" id="" value=""></td>
+						  <td class="char-4"><input type="text" name="mode[]" id="" value=""></td>
+						  <td class="char-10"><input type="text" name="logic[]" id="" value=""></td>
+						  <td class="char-10"><input type="text" name="vendor_code[]" id="" value=""></td>
 						  <td><input type="text" name="vendor_name[]" id="" value=""></td>
-						  <td><input type="text" name="t_code[]" id="" value=""></td>
+						  <td class="char-4"><input type="text" name="t_code[]" id="" value=""></td>
 						  <td><input type="text" name="truck_type[]" id="" value=""></td>
-						  <td><input type="text" name="a_amount[]" id="" value=""></td>
+						  <td class="char-6"><input type="text" name="a_amount[]" id="" value=""></td>
 						  <td><input type="text" name="validity_start[]" id="" value=""></td>
 						  <td><input type="text" name="validity_end[]" id="" value=""></td>
 						  
-						  <td><input type="text" name="tat[]" id="" value=""></td>
-						  <td><input type="text" name="rank[]" id="" value=""></td>
-						  <td><input type="text" name="distance[]" id="" value=""></td>
-						  <td><input type="text" name="custom1[]" id="" value=""></td>
-						  <td><input type="text" name="custom2[]" id="" value=""></td>
-						  <td><input type="text" name="custom3[]" id="" value=""></td>
+						  <td class="char-3"><input type="text" name="tat[]" id="" value=""></td>
+						  <td class="char-3"><input type="text" name="rank[]" id="" value=""></td>
+						  <td class="char-6"><input type="text" name="distance[]" id="" value=""></td>
+						  <td class="char-4"><input type="text" name="custom1[]" id="" value=""></td>
+						  <td  class="char-4"><input type="text" name="custom2[]" id="" value=""></td>
+						  <td class="char-4"><input type="text" name="custom3[]" id="" value=""></td>
 						  <td><input type="text" name="custom4[]" id="" value=""></td>
 						  <td><input type="text" name="custom5[]" id="" value=""></td>
 						</tr>  

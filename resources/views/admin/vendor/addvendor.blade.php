@@ -1,92 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
-    .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 3px 3px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-      }
-
-      .sticky-col-2 {
-        left: 5px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    padding: 2px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-
-
-
-</style>        
+  <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+    
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -144,6 +59,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">Authorized person phone</th>
 						<th style="background: #fce4d6; color: #0070c0;">Authorized person Email</th>
 						<th style="background: #fce4d6; color: #0070c0;">Email</th>
+						<th style="background: #fce4d6; color: #0070c0;">Logo</th>
 						<th style="background: #ddebf7; color: #0070c0;">Receipt type 1</th>
 						
 						{{-- <th style="background: #fce4d6; color: #0070c0;">Withholding tax type</th>
@@ -199,6 +115,9 @@
 						  <td><input type="text" id="authorized_person_mail" name="authorized_person_mail" class="" value="{{old('authorized_person_mail')}}" placeholder=" authorized person email">	</td>
 						   <td>
 							<input  type="text" id="email" name="email" value="{{old('email')}}" autocomplete="off" class="" placeholder="Email">
+						  </td>
+						   <td>
+							<input  type="file" id="file" name="file" autocomplete="off">
 						  </td>
 						   <td>
 							<input  type="text" id="receipt_type_1" name="receipt_type_1" value="{{old('receipt_type_1')}}" autocomplete="off" class=" hide-on-parent" placeholder=" Receipt type 1">

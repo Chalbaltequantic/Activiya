@@ -1,92 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
-    .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 9999;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 160px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 9999;
-    }
-
-    /* Column widths */
-    .col-width {
-      min-width: 160px;
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-        min-width: 90px;
-      }
-
-      .sticky-col-2 {
-        left: 80px;
-      }
-    }
-	
-/*css   */
-
-
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 50%;
-   
-}
-
-#input-table th,
-#input-table td {
-    min-width: 120px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-
-</style>      
+ <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+    
 		<!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -162,29 +77,29 @@
 				  @for ($i = 1; $i <= 10; $i++)
 				  
 					<tr>
-					 <td class=""><input type="text" name="material_code[]" id="material_code{{$i}}" value="{{ old('material_code')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
+					 <td class="char-10"><input type="text" name="material_code[]" id="material_code{{$i}}" value="{{ old('material_code')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
 						  <td class=""><input type="text" name="material_description[]" id="material_description{{$i}}" value="{{ old('material_description')[$i] ?? '' }}"  {{ $i == 0 ? 'required' : '' }}></td>
-						  <td><input type="text" name="uom[]" id="uom{{$i}}" value="{{ old('uom')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="division[]" id="division{{$i}}" value="{{ old('division')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
-						  <td><input type="text" name="piece_per_box[]" id="" value="{{ old('piece_per_box')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="length_cm[]" id="" value="{{ old('length_cm')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="width_cm[]" id="" value="{{ old('width_cm')[$i] ?? '' }}"></td>
+						  <td class="char-6"><input type="text" name="uom[]" id="uom{{$i}}" value="{{ old('uom')[$i] ?? '' }}"></td>
+						  <td class="char-6"><input type="text" name="division[]" id="division{{$i}}" value="{{ old('division')[$i] ?? '' }}" {{ $i == 0 ? 'required' : '' }}></td>
+						  <td class="char-3"><input type="text" name="piece_per_box[]" id="" value="{{ old('piece_per_box')[$i] ?? '' }}"></td>
+						  <td class="char-4"><input type="text" name="length_cm[]" id="" value="{{ old('length_cm')[$i] ?? '' }}"></td>
+						  <td class="char-4"><input type="text" name="width_cm[]" id="" value="{{ old('width_cm')[$i] ?? '' }}"></td>
 						
 						  
-						  <td><input type="text" name="height_cm[]" id="" value="{{ old('height_cm')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="net_weight_kg[]" id="" value="{{ old('net_weight_kg')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="gross_weight_kg[]" id="" value="{{ old('gross_weight_kg')[$i] ?? '' }}"></td>
+						  <td class="char-4"><input type="text" name="height_cm[]" id="" value="{{ old('height_cm')[$i] ?? '' }}"></td>
+						  <td class="char-6"><input type="text" name="net_weight_kg[]" id="" value="{{ old('net_weight_kg')[$i] ?? '' }}"></td>
+						  <td class="char-6"><input type="text" name="gross_weight_kg[]" id="" value="{{ old('gross_weight_kg')[$i] ?? '' }}"></td>
 						
-						  <td><input type="text" name="volume_cft[]" id="" value="{{ old('volume_cft')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="category[]" id="" value="{{ old('category')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="pallets[]" id="" value="{{ old('pallets')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="volume_cft[]" id="" value="{{ old('volume_cft')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="category[]" id="" value="{{ old('category')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="pallets[]" id="" value="{{ old('pallets')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="brand[]" id="" value="{{ old('brand')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="sub_brand[]" id="" value="{{ old('sub_brand')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="thickness[]" id="" value="{{ old('thickness')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="load_sequence[]" id="" value="{{ old('load_sequence')[$i] ?? '' }}"></td>
+						  <td class="char-6"><input type="text" name="thickness[]" id="" value="{{ old('thickness')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="load_sequence[]" id="" value="{{ old('load_sequence')[$i] ?? '' }}"></td>
 						  <td><input type="text" name="associated[]" id="" value="{{ old('associated')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="parent[]" id="" value="{{ old('parent')[$i] ?? '' }}"></td>
-						  <td><input type="text" name="child[]" id="" value="{{ old('child')[$i] ?? '' }}"></td>
+						  <td class="char-4"><input type="text" name="parent[]" id="" value="{{ old('parent')[$i] ?? '' }}"></td>
+						  <td class="char-4"><input type="text" name="child[]" id="" value="{{ old('child')[$i] ?? '' }}"></td>
 						  
 						</tr>  
 					@endfor	
