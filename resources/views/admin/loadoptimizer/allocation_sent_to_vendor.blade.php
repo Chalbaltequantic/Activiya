@@ -168,12 +168,12 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Destination<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Mode</th>
 								<th style="background: #fce4d6; color: #0070c0;">Truck Type</th>
-								<th style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
-								<th style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
-								<th style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>
-								<th style="background: #c6e0b4; color: #0070c0;">Vendor<br>name</th>
-								<th style="background: #c6e0b4; color: #0070c0;">Remarks</th>
-								<th style="background: #c6e0b4; color: #0070c0;">Sent at</th>
+								<th  class="mobile-hide" style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
+								<th class="mobile-hide" style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
+								<th  class="mobile-hide" style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>
+								<th class="mobile-hide" style="background: #c6e0b4; color: #0070c0;">Vendor<br>name</th>
+								<th class="mobile-hide" style="background: #c6e0b4; color: #0070c0;">Remarks</th>
+								<th class="mobile-hide" style="background: #c6e0b4; color: #0070c0;">Sent at</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Action</th>
 								
 													  
@@ -188,12 +188,13 @@
 								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_city }}</td>
 								<td>{{ $row->t_mode }}</td>
 								<td>{{ $row->truck->description ?? 'NA' }}</td>
-								<td>{{ $row->zw_util }}%</td>
-								<td>{{ $row->zv_util }}%</td>
-								<td class="fw-bold">{{ $row->gross_util }}%</td>
-								<td class="fw-bold">{{ $row->vendor_name }}</td>
-								<td class="fw-bold">{{ $row->sent_remarks  }}</td>
-								<td class="fw-bold">{{ $row->sent_at  }}</td>
+								<td class="mobile-hide">{{ $row->zw_util }}%</td>
+								<td class="mobile-hide">{{ $row->zv_util }}%</td>
+								<td class="fw-bold mobile-hide">{{ $row->gross_util }}%</td>
+								<td class="fw-bold mobile-hide">{{ $row->vendor_name }}</td>
+								<td class="fw-bold mobile-hide">{{ $row->sent_remarks  }}</td>
+								<td class="fw-bold mobile-hide">{{ $row->sent_at  }}</td>
+								
 								<td>
 								@if( $row->sent_status!='accepted')
 									<button
