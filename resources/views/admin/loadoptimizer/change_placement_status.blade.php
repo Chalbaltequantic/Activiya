@@ -170,10 +170,10 @@
 								{{-- <th style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>--}}
-								<th style="background: #fce4d6; color: #0070c0;">Total<br>Wt</th>
-								<th style="background: #fce4d6; color: #0070c0;">Total<br>Vol</th>
-								<th style="background: #fce4d6; color: #0070c0;">Vendor<br>name</th>
-								<th style="background: #fce4d6; color: #0070c0;">Sent<br>Date</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Total<br>Wt</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Total<br>Vol</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Vendor<br>name</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Sent<br>Date</th>
 								<th style="background: #fce4d6; color: #0070c0;">Last<br>Status</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Placement<br>Status</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Remarks</th>
@@ -196,10 +196,10 @@
 								<td>{{ $row->zv_util }}%</td>
 									<td>{{ $row->gross_util }}%</td>--}}
 								
-								<td>{{ $row->total_weight }}</td>
-								<td>{{ $row->total_volume }}</td>
-								<td>{{ $row->vendor_name }}</td>
-								<td>{{ $row->sent_at  }}</td>
+								<td class="mobile-hide">{{ $row->total_weight }}</td>
+								<td class="mobile-hide">{{ $row->total_volume }}</td>
+								<td class="mobile-hide">{{ $row->vendor_name }}</td>
+								<td class="mobile-hide">{{ $row->sent_at  }}</td>
 								<td>
 									@if($row->latestPlacement)
 										<span class="badge bg-info">
