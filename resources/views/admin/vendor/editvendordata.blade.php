@@ -96,6 +96,19 @@
 				<span class="text-danger">{{$message}}</span>
 				@enderror
               </div>
+			  @if($vendordata->logo)
+			   <div class="form-group col-md-4">
+                <img src="{{$vendordata->logo}}">
+              </div>
+			  @endif
+			  <div class="form-group col-md-4">
+                <label for="file">Vendor Logo</label>
+                <input type="file" id="file" name="file" class="form-control">
+				@error('vendor_short_name')
+				<span class="text-danger">{{$message}}</span>
+				@enderror
+              </div>
+			  
 
 			  <div class="form-group col-md-4">
                 <label for="authorized_person_name">Authorized person name</label>
@@ -187,6 +200,38 @@
 					<label for="gstin_number">GSTIN number</label>
 					<input  type="text" id="gstin_number" name="gstin_number" value="{{$vendordata->gstin_number}}" autocomplete="off" class="form-control hide-on-parent">
 					@error('gstin_number')
+					<span class="text-danger">{{$message}}</span>
+					@enderror
+				 </div>
+				 
+				  <div class="form-group col-md-4">
+					<label for="gstin_number">FSSAI No</label>
+					<input  type="text" id="fssai_no" name="fssai_no" value="{{$vendordata->fssai_no}}" autocomplete="off" class="form-control">
+					@error('fssai_no')
+					<span class="text-danger">{{$message}}</span>
+					@enderror
+				 </div>
+				 
+				 <div class="form-group col-md-4">
+					<label for="gstin_number">MSME No</label>
+					<input  type="text" id="msme_no" name="msme_no" value="{{$vendordata->msme_no}}" autocomplete="off" class="form-control">
+					@error('fssai_no')
+					<span class="text-danger">{{$message}}</span>
+					@enderror
+				 </div>
+				 
+				 <div class="form-group col-md-4">
+					<label for="gstin_number">Caution Note</label>
+					<textarea  id="caution" name="caution" autocomplete="off" class="form-control">{{$vendordata->caution}}</textarea>
+					@error('caution')
+					<span class="text-danger">{{$message}}</span>
+					@enderror
+				 </div>
+				 
+				 <div class="form-group col-md-4">
+					<label for="gstin_number">Notice</label>
+					<textarea id="notice" name="notice" autocomplete="off" class="form-control">{{$vendordata->notice}}</textarea>
+					@error('notice')
 					<span class="text-danger">{{$message}}</span>
 					@enderror
 				 </div>

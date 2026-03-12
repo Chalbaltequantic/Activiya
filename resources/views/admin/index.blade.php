@@ -69,7 +69,7 @@
 							<a class="nav-link" id="freight-tab" data-toggle="pill"
 							   href="#freight" role="tab">Freight Shipment</a>
 						</li>
-
+		
 						<li class="nav-item">
 							<a class="nav-link" id="appointment-tab" data-toggle="pill"
 							   href="#appointment" role="tab">Appointment</a>
@@ -202,7 +202,6 @@
 									</a>
 								</div>
 								@endif
-								
 								@if(Gate::allows('admin.returnmanualupload'))
 								<div class="col-md-2 col-6 mb-4">
 									<a href="{{ route('admin.returnmanualupload') }}" class="dashboard-link">
@@ -578,12 +577,12 @@
         <!-- /.row -->
 		
 		 <!-- Small boxes (Stat box) -->
-	 @if(Auth::user() && (Auth::user()->role_id != 12))
+	 @if(Auth::user() && (Auth::user()->role_id == 1))
 		 
-      <div class="row">
+    {{--   <div class="row">
         <!-- Total Freight Upload -->
-		 @if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 4 ))
-        <div class="col-lg-3 col-6">
+		 @if(Auth::user() && (Auth::user()->role_id == 1))
+		 <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $totalFreightUpload ?? 0 }}</h3>
@@ -595,10 +594,10 @@
                 </a>
             </div>
         </div>
-		@endif
+		@endif  --}}
         <!-- Total Appointments -->
-		 @if(Auth::user() && (Auth::user()->role_id != 5 || Auth::user()->role_id != 4))
-        <div class="col-lg-3 col-6">
+		 @if(Auth::user() && (Auth::user()->role_id ==1))
+		 {{-- <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $totalAppointments ?? 0 }}</h3>
@@ -609,10 +608,10 @@
                     More info <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
-        </div>
+		 </div> --}}
 		@endif
         <!-- Spotby Approved -->
-        <div class="col-lg-3 col-6">
+		{{--   <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ $totalSpotbyApproved ?? 0 }}</h3>
@@ -666,7 +665,7 @@
                 </a>
             </div>
         </div>
-    </div>
+		</div>--}}
         <!-- /.row -->
         <!-- Main row -->
 		{{-- <div class="row">
@@ -719,8 +718,8 @@
         <!-- /.row (main row) -->
       
 	@endif	
-	 @if(Auth::user() && (Auth::user()->role_id == 12))	
-		 <div class="row">
+	 @if(Auth::user() && (Auth::user()->role_id == 1))	
+	 {{-- <div class="row">
         
 
         <!-- On Track -->
@@ -750,9 +749,9 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> --}}
       
-	 @endif
+	 @endif 
 	 
       </div><!-- /.container-fluid -->
     </div>

@@ -41,7 +41,12 @@ class Vendor extends Model
 								'updated_by',
 								'created_at',
 								'updated_at',
-								'logo'
+								'logo', 
+								'caution', 
+								'notice', 
+								'msme_no', 
+								'fssai_no' 
+								
 							];
 
     public function addresses()

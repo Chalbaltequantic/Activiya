@@ -62,6 +62,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">Logo</th>
 						<th style="background: #ddebf7; color: #0070c0;">Receipt type 1</th>
 						
+						
 						{{-- <th style="background: #fce4d6; color: #0070c0;">Withholding tax type</th>
 						<th style="background: #ddebf7; color: #0070c0;">TDS section 1</th> 
 						 
@@ -79,6 +80,12 @@
 						<th style="background: #c6e0b4; color: #0070c0;">Purchase Block-Purch Org</th>
 						<th style="background: #c6e0b4; color: #0070c0;">Payment Block</th>
 						--}}
+						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">GSTIN</th>
+						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">MSME No</th>
+						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">FSSAI NO</th>
+						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Caution</th>
+						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Notice</th>
+						
 						<th style="background: #c6e0b4; color: #0070c0;">Status</th>
 
 					  
@@ -166,6 +173,12 @@
 							<input  type="text" id="payment_block" name="payment_block" value="{{old('payment_block')}}" autocomplete="off" class="" placeholder=" Payment Block">
 						  </td>
 						  --}}
+						   <td><input type="text" name="gstin_number" id="gstin_number" value="" autocomplete="off"></td>
+						  <td><input type="text" name="msme_no" id="msme_no" value="" autocomplete="off"></td>
+						  <td><input type="text" name="fssai_no" id="fssai_no" value="" autocomplete="off"></td>
+						  <td><input type="text" name="caution" id="caution" value="" autocomplete="off"></td>
+						  <td><input type="text" name="notice" id="notice" value="" autocomplete="off"></td>
+						  
 						   <td>
 							<select id="inputStatus" name="status" class=" custom-select">             
 							<option value="1">Active</option>
