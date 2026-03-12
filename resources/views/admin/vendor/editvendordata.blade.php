@@ -174,7 +174,7 @@
 				 </div>
 				 <div class="form-group col-md-4">
 					<label for="tds_section_2">TDS section 2</label>
-					<input  type="text" id="tds_section_2" name="tds_section_2" value="{{$vendordata->tds_section_2}}" autocomplete="off" class="form-control hide-on-parent" placeholder="Enter Receipt name">
+					<input  type="text" id="tds_section_2" name="tds_section_2" value="{{$vendordata->tds_section_2}}" autocomplete="off" class="form-control hide-on-parent" placeholder="Enter TDS Section 2">
 					@error('tds_section_2')
 					<span class="text-danger">{{$message}}</span>
 					@enderror
@@ -182,8 +182,15 @@
 				 
 				 <div class="form-group col-md-4">
 					<label for="pan_no">PAN no</label>
-					<input  type="text" id="pan_no" name="pan_no" value="{{$vendordata->pan_no}}" autocomplete="off" class="form-control hide-on-parent" placeholder="Enter Receipt name">
+					<input  type="text" id="pan_no" name="pan_no" value="{{$vendordata->pan_no}}" autocomplete="off" class="form-control hide-on-parent" placeholder="Enter PAN no">
 					@error('pan_no')
+					<span class="text-danger">{{$message}}</span>
+					@enderror
+				 </div>
+				 <div class="form-group col-md-4">
+					<label for="cin_no">CIN no</label>
+					<input  type="text" id="cin_no" name="cin_no" value="{{$vendordata->cin_no}}" autocomplete="off" class="form-control hide-on-parent" placeholder="Enter CIN no">
+					@error('cin_no')
 					<span class="text-danger">{{$message}}</span>
 					@enderror
 				 </div>

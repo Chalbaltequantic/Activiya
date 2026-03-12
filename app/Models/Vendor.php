@@ -45,7 +45,8 @@ class Vendor extends Model
 								'caution', 
 								'notice', 
 								'msme_no', 
-								'fssai_no' 
+								'fssai_no' ,
+								'cin' 
 								
 							];
 

@@ -70,7 +70,6 @@
 						<th style="background: #fce4d6; color: #0070c0;">Withholding tax type_2</th>
 						<th style="background: #fce4d6; color: #0070c0;">TDS section 2</th>
 						<th style="background: #fce4d6; color: #0070c0;">PAN no</th>
-						 <th style="background: #c6e0b4; color: #0070c0;">GSTIN number</th>
 						<th style="background: #c6e0b4; color: #0070c0;">PAN GSTIN Check</th>
 						<th style="background: #c6e0b4; color: #0070c0;">Terms of Payment Key</th>
 						<th style="background: #c6e0b4; color: #0070c0;">Account Group</th>
@@ -81,6 +80,7 @@
 						<th style="background: #c6e0b4; color: #0070c0;">Payment Block</th>
 						--}}
 						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">GSTIN</th>
+						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">CIN No</th>
 						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">MSME No</th>
 						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">FSSAI NO</th>
 						<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Caution</th>
@@ -148,9 +148,10 @@
 							<input  type="text" id="pan_no" name="pan_no" value="{{old('pan_no')}}" autocomplete="off" class=" hide-on-parent" placeholder=" Receipt name">
 						  </td>
 						 
+						  
+						    
 						  <td>
-							<input  type="text" id="gstin_number" name="gstin_number" value="{{old('gstin_number')}}" autocomplete="off" class=" hide-on-parent">
-						  </td>
+						  
 						  <td>
 							<input  type="text" id="pan_gstin_check" name="pan_gstin_check" value="{{old('pan_gstin_check')}}" autocomplete="off" class=" hide-on-parent" placeholder=" Receipt name">
 						  </td>
@@ -174,6 +175,9 @@
 						  </td>
 						  --}}
 						   <td><input type="text" name="gstin_number" id="gstin_number" value="" autocomplete="off"></td>
+						   <td>
+							<input  type="text" id="cin_no" name="cin_no" value="{{old('cin_no')}}" autocomplete="off" class=" hide-on-parent">
+						  </td>
 						  <td><input type="text" name="msme_no" id="msme_no" value="" autocomplete="off"></td>
 						  <td><input type="text" name="fssai_no" id="fssai_no" value="" autocomplete="off"></td>
 						  <td><input type="text" name="caution" id="caution" value="" autocomplete="off"></td>
