@@ -1,3 +1,4 @@
+
   <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
 		<a href="/" class="navbar-brand">
@@ -94,10 +95,10 @@
 					
 					
 					
-					@if(Gate::allows('admin.mapping'))
+					@if(Gate::allows('admin.consignee-return-duration.data-list'))
 						<li class="{{ request()->is('admin/consignee-return-duration*') ? 'active' : '' }}"  style="z-index:1100;"><a href="{{ url('admin/consignee-return-duration/data-list') }}" class="dropdown-item">Consignee Return Duration</a></li>
 					@endif
-					@if(Gate::allows('admin.mappingdatalist'))
+					@if(Gate::allows('admin.returnmanualupload'))
 						<li class="{{ request()->is('admin/consignee-return-duration*') ? 'active' : '' }}"  style="z-index:1100;"><a href="{{ route('admin.returnmanualupload') }}" class="dropdown-item">Upload Consignee Return Duration</a></li>
 					@endif
 						<li class="dropdown-divider"></li>
@@ -248,6 +249,9 @@
 					@if(Gate::allows('admin.V_Placement_Status'))	
 						<li class=""><a href="{{ route('admin.update.placement.status') }}" class="dropdown-item">V_Placement Status</a></li>	
 					@endif
+					
+					<li class=""><a href="{{ route('admin.lr.list') }}" class="dropdown-item">LR Copy</a></li>
+					
 					@if(Gate::allows('admin.Track_Placement_Status'))
 						<li class=""><a href="{{ route('admin.track.placement.status') }}" class="dropdown-item">Track Placement Status</a></li>
 					@endif
@@ -260,40 +264,38 @@
 				</li>
 				@endif
 				
-				@if(Auth::user() && (Auth::user()->role_id == 1)) 
+				 @if(Gate::allows('admin.preappointment.adduploadd.shipments') || Gate::allows('admin.pre.appointment.shipment.history') || Gate::allows('admin.pre.appointment.request.board') || Gate::allows('admin.update.preappointment.status') || Gate::allows('admin.preappointment.delivery.stage.status') || Gate::allows('admin.pre.appointment.upload.pod'))
 				 <li class="nav-item dropdown">
 					<a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pre Appointment</a>
 					<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">	
-					@if(Gate::allows('admin.appointment'))
+					@if(Gate::allows('admin.preappointment.adduploadd.shipments'))
 					 <li class=""><a href="{{ route('admin.preappointment') }}" class="dropdown-item">Add/Upload Shipments</a></li>
 					@endif
-					@if(Gate::allows('admin.appointmentdatalist'))
+					@if(Gate::allows('admin.pre.appointment.shipment.history'))
 					 <li class=""><a href="{{ route('admin.preappointmentdatalist') }}" class="dropdown-item">Shipments History</a></li>
 					@endif
 					
-					{{-- @if(Gate::allows('admin.appointment_send_ho_consignee')) --}}
+					@if(Gate::allows('admin.pre.appointment.request.board'))
 					<li class=""><a href="{{ route('admin.pre_appointment_request_boards') }}" class="dropdown-item">Appointment Request Board</a></li>
-					{{-- @endif	--}}				
+					@endif				
 					
-					{{-- @if(Gate::allows('admin.appointmentdata')) --}}
+					@if(Gate::allows('admin.update.preappointment.status'))
 					<li class=""><a href="{{ route('admin.appointmentlr.detail.data.update') }}" class="dropdown-item">Update Appointment Status</a></li>
-					{{-- @endif --}}
+					@endif
 					
 					
-					{{-- @if(Gate::allows('admin.appointments.deliverystatus')) --}}
+					@if(Gate::allows('admin.preappointment.delivery.stage.status'))
 					<li class=""><a href="{{ route('admin.preappointments.deliverystatus') }}" class="dropdown-item">Delivery Stage/Status</a></li>
-					{{-- @endif --}}
+					@endif
 					
-				{{-- 	@if(Gate::allows('admin.appointments.podfile')) --}}
-					  <li class=""><a href="{{ route('admin.appointments.podfile') }}" class="dropdown-item">Upload POD</a></li>
-				{{-- 	 @endif --}}
+					@if(Gate::allows('admin.pre.appointment.upload.pod'))
+					  <li class=""><a href="{{ route('admin.preappointments.podfile') }}" class="dropdown-item">Upload POD</a></li>
+					@endif 
 					</ul>
 				</li>
 				@endif
 				
-				<li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a>
-                </li>
+				<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
 				
             </ul>
 
