@@ -50,18 +50,17 @@
 			@endif
               <div class="card-body">
 				<div class="row">
-					<div class="form-group col-md-8">
+					<div class="form-group col-md-6">
 						 <form action="{{ route('admin.lopexcel.import') }}" method="POST" enctype="multipart/form-data">
 							@csrf	
 							
-							<label for="excel_file">Upload Excel File</label>
+							<label for="excel_file">Import LoP Data </label>
 							<input type="file" name="excel_file" id="excel_file" required>
 								<button type="submit" class="btn btn-primary">Import</button>
 							
 						</form>
 					</div>
-					<div class="form-group col-md-4 border-left text-right">						
-							<label for="excel_file"> &nbsp; </label><br />
+					<div class="form-group col-md-3 border-left text-right">					
 							<a href="{{route('admin.lopmanualupload')}}" class="btn btn-warning">Create Manually</a>
 						
 					</div>

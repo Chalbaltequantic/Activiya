@@ -51,7 +51,7 @@
 			
               <div class="card-body">
 				<div class="row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-8">
 						 <form action="{{ route('admin.excel.import') }}" method="POST" enctype="multipart/form-data">
 							@csrf	
 							

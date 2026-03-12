@@ -60,8 +60,7 @@
 							
 						</form>
 					</div>
-					<div class="form-group col-md-4 border-left text-right">
-							<label for="excel_file"> &nbsp; </label>
+					<div class="form-group col-md-3 border-left text-right">
 							<a href="{{route('admin.spotbymanualupload')}}" class="btn btn-warning">Manual Upload Spot By Data</a>
 					</div>
 				</div>

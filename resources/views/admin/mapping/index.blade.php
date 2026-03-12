@@ -83,8 +83,7 @@
             <div class="card">
               <div class="card-body">
 				<div class="row">
-					<div class="form-group col-md-6 border-left text-right">						
-							<label for="excel_file"> &nbsp; </label><br />
+					<div class="form-group col-md-6 border-left text-right">	
 							<a href="{{route('admin.mappingmanualupload')}}" class="btn btn-warning">Manual Upload Mapping Data</a>
 					</div>
 				</div>

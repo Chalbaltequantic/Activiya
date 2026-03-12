@@ -61,8 +61,7 @@
 							
 						</form>
 					</div>
-					<div class="form-group col-md-4 border-left text-right">						
-							<label for="excel_file"> &nbsp; </label>
+					<div class="form-group col-md-4 border-left text-right">	
 							<a href="{{route('admin.manualupload.tracking')}}" class="btn btn-warning">Manual Upload Tracking Data</a>
 						
 					</div>

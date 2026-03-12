@@ -101,14 +101,14 @@
 						 <form action="{{ route('admin.ratemasterexcel.import') }}" method="POST" enctype="multipart/form-data">
 							@csrf	
 							
-							<label for="excel_file">Upload Rate</label>
+							<label for="excel_file">Import Rate</label>
 							<input type="file" name="excel_file" id="excel_file" required>
 								<button type="submit" class="btn btn-primary">Import</button>
 							
 						</form>
 						<a href="{{ URL::asset('consignmentapp_SampleDATA/rate_upload.xlsx') }}">Download Sample Data</a>
 					</div>
-					<div class="form-group col-md-3 border-left text-right">						
+					<div class="form-group col-md-3 border-left text-right">
 							
 							<a href="{{route('admin.ratedatamanualupload')}}" target="" class="btn btn-warning">Manual Upload Rate</a>
 						
