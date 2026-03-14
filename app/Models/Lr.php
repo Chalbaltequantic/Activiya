@@ -15,7 +15,8 @@ class Lr extends Model
 		'lr_no', 'bill_date', 'vehicle_no', 'insurance', 'fssai_no', 'gstin','msme',
 		'consignor', 'consignee', 'consignor_id', 'consignee_id','origin', 'destination', 'packages', 'description',
 		'actual_weight', 'charged', 'rate', 'amount', 'invoice_value', 'surcharge',
-		'hamali', 'risk_charge', 'b_charge', 'other_charge', 'total_amount', 'caution', 'notice'
+		'hamali', 'risk_charge', 'b_charge', 'other_charge', 'total_amount', 'caution', 
+		'notice', 'indent_no', 'invoice_date', 'arrival_date', 'dispatch_date','truck_type'
       
     ];
 

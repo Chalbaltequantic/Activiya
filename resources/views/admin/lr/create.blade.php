@@ -106,44 +106,65 @@
 
 
 <div class="card-body">
-
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <form method="POST" action="{{ route('admin.lr.store') }}">
 @csrf
 
-
 <div class="row form-row-4">
 
-
 <div class="form-group col-md-4">
-<label>Invoice No</label>
+<label>Customer Invoice No</label>
 <input type="text" name="invoice_no" value="{{ $invoiceNo }}" class="form-control">
 </div>
 
-
+<div class="form-group col-md-4">
+<label>Customer Invoice Date</label>
+<input type="date" name="invoice_date" value="" class="form-control">
+</div>
 <div class="form-group col-md-4">
 <label>LR No.</label>
-<input type="text" name="lr_no" class="form-control" required>
+<input type="text" name="lr_no" class="form-control" value="{{ old('lr_no') }}"  required>
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Date</label>
-<input type="date" name="bill_date" class="form-control" required>
+<input type="date" name="bill_date" class="form-control" value="{{ old('bill_date') }}" required>
+</div>
+<div class="form-group col-md-4">
+<label>Truck Arrival Date</label>
+<input type="date" name="arrival_date" value="{{ old('arrival_date') }}" class="form-control" >
 </div>
 
+<div class="form-group col-md-4">
+<label>Truck Dispatch Date</label>
+<input type="date" name="dispatch_date" value="{{ old('dispatch_date') }}" class="form-control" >
+</div>
+
+<div class="form-group col-md-4">
+<label>Truck Type</label>
+<input type="text" name="truck_type" value="{{ old('truck_type') }}" class="form-control" >
+</div>
 
 <div class="form-group col-md-4">
 <label>Vehicle No</label>
-<input type="text" name="vehicle_no" class="form-control" required>
+<input type="text" name="vehicle_no" class="form-control" value="{{ old('vehicle_no') }}" required>
 </div>
-
 
 <div class="form-group col-md-4">
 <label>Consignor</label>
 <select name="consignor" class="form-control select2" required>
 <option value="">Select</option>
 @foreach($plants as $p)
-<option value="{{ $p->id }}">{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
+<option value="{{ $p->id }}" {{old('consignor')==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
 @endforeach
 </select>
 </div>
@@ -154,7 +175,7 @@
 <select name="consignee" class="form-control select2" required>
 <option value="">Select</option>
 @foreach($plants as $p)
-<option value="{{ $p->id }}">{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
+<option value="{{ $p->id }}" {{old('consignee')==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
 @endforeach
 </select>
 </div>
@@ -175,98 +196,83 @@
 <input type="text" name="indent_no" class="form-control">
 </div>
 
-
-<div class="form-group col-md-4">
-<label>FSSAI No</label>
-<input type="text" name="fssai_no" value="{{$vendor->fssai_no}}" class="form-control">
-</div>
-
-
-<div class="form-group col-md-4">
-<label>GSTIN</label>
-<input type="text" name="gstin" value="{{$vendor->gstin_number}}" class="form-control">
-</div>
-
-
-<div class="form-group col-md-4">
-<label>MSME</label>
-<input type="text" name="msme" value="{{$vendor->msme_no}}" class="form-control">
-</div>
-
+<input type="hidden" name="fssai_no" value="{{$vendor->fssai_no}}" class="form-control">
+<input type="hidden" name="gstin" value="{{$vendor->gstin_number}}" class="form-control">
+<input type="hidden" name="msme" value="{{$vendor->msme_no}}" class="form-control">
 
 <div class="form-group col-md-4">
 <label>Packages</label>
-<input type="text" name="packages" class="form-control">
+<input type="number" name="packages" value="{{ old('packages') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Description</label>
-<textarea name="description" class="form-control" rows="4"></textarea>
+<textarea name="description" class="form-control" rows="2">{{ old('description') }}</textarea>
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Actual Weight</label>
-<input type="text" name="actual_weight" class="form-control">
+<input type="text" name="actual_weight" value="{{ old('actual_weight') }}" class="form-control" placeholder="Enter wt in kg">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Charged Weight</label>
-<input type="text" name="charged" class="form-control">
+<input type="text" name="charged" value="{{ old('charged') }}" class="form-control" placeholder="Enter wt in kg">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Invoice Value</label>
-<input type="number" step="0.01" id="invoice_value" name="invoice_value" class="form-control">
+<input type="number" step="0.01" id="invoice_value" name="invoice_value" value="{{ old('invoice_value') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Surcharge</label>
-<input type="number" step="0.01" id="surcharge" name="surcharge" class="form-control">
+<input type="number" step="0.01" id="surcharge" name="surcharge" value="{{ old('surcharge') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Hamali</label>
-<input type="number" step="0.01" id="hamali" name="hamali" class="form-control">
+<input type="number" step="0.01" id="hamali" name="hamali" value="{{ old('hamali') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Risk Ch</label>
-<input type="text" id="risk_charge" name="risk_charge" class="form-control">
+<input type="text" id="risk_charge" name="risk_charge"  value="{{ old('risk_charge') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>B Charge</label>
-<input type="number" step="0.01" id="b_charge" name="b_charge" class="form-control">
+<input type="number" step="0.01" id="b_charge" name="b_charge" value="{{ old('b_charge') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Other Charge</label>
-<input type="number" step="0.01" id="other_charge" name="other_charge" class="form-control">
+<input type="number" step="0.01" id="other_charge" name="other_charge" value="{{ old('other_charge') }}" class="form-control">
 </div>
 
 
 <div class="form-group col-md-4">
 <label>Total Amount</label>
-<input type="number" id="total_amount" name="total_amount" class="form-control" readonly>
+<input type="number" id="total_amount" name="total_amount" value="{{ old('total_amount') }}" class="form-control" readonly>
 </div>
 
 
-<div class="form-group col-md-4">
+<div class="form-group col-md-4" style="display:none;">
 <label>Notice</label>
 <textarea name="notice" class="form-control" rows="4">{{$vendor->notice}}</textarea>
 </div>
 
 
-<div class="form-group col-md-4">
+<div class="form-group col-md-4" style="display:none;">
 <label>Caution</label>
 <textarea name="caution" class="form-control" rows="4">{{$vendor->caution}}</textarea>
 </div>

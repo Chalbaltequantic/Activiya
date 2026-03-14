@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use App\Models\{Lr,Vendor,VendorAddress,Siteplant};
+use Illuminate\Database\QueryException;
 
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -78,11 +79,12 @@ class LrController extends Controller
     public function store(Request $request)
 	{
 		$request->validate([
-			'lr_no'=>'required',
-			'invoice_no'=>'required'
-			
+        'lr_no' => 'required|unique:lrs,lr_no',
+        'invoice_no' => 'required'
+		],[
+			'lr_no.unique' => 'This LR Number already exists. Please enter a different LR No.'
 		]);
-	//	echo "retert". $request->consignor . "==". $request->consignee; exit;
+
 		
 		$vendorCode = Auth::user()->vendor_code;
 		$vendor = Vendor::where('vendor_code',$vendorCode)->first(); // simplify login logic
@@ -133,7 +135,11 @@ class LrController extends Controller
         'risk_charge' => $request->risk_charge,
         'b_charge' => $request->b_charge,
         'other_charge' => $request->other_charge,
-        'total_amount' => $request->total_amount
+        'total_amount' => $request->total_amount,
+        'invoice_date' => $request->invoice_date,
+        'arrival_date' => $request->arrival_date,
+        'dispatch_date' => $request->dispatch_date,
+        'truck_type' => $request->truck_type
     ]);
 
 		return redirect()->route('admin.lr.list');

@@ -84,15 +84,14 @@ Address of Delivery Office:
 <div style="margin-top:5px;text-align:center;">
 {{$invoice->insurance}}
 </div>
-
 </td>
 
 <td style="width:30%;border:1px solid #000;padding:8px;vertical-align:top;">
 
 <div style="border:1px solid #000;padding:5px;margin-bottom:10px;">
-FSSAI No. {{$invoice->fssai_no}}<br>
-GSTIN : {{$invoice->gstin}}<br>
-MSME : {{$invoice->msme}}
+<b>FSSAI No:</b> {{$invoice->fssai_no}}<br>
+<b>GSTIN:</b> {{$invoice->gstin}}<br>
+<b>MSME:</b> {{$invoice->msme}}
 </div>
 
 <div style="border:1px solid #000;padding:5px;font-size:12px;">
@@ -119,20 +118,25 @@ Date {{ date('d/m/Y',strtotime($invoice->bill_date)) }}
 </td>
 
 <td style="border:1px solid #000;padding:8px;">
-<b>TRUCK No.</b><br>
-<span style="font-size:18px;">{{ $invoice->vehicle_no }}</span>
+<b>TRUCK Type: </b>
+<span style="font-size:14px;">{{ $invoice->truck_type ?? '' }}</span><br>
+<b>TRUCK No:</b>
+<span style="font-size:14px;">{{ $invoice->vehicle_no ?? '' }}</span>
 </td>
 
 <td style="border:1px solid #000;width:150px;padding:8px;">
-From : <br>
-<b>{{ $invoice->origin ?? '' }}</b><br>
-To :<br>
-<b>{{ $invoice->destination ?? '' }}</b>
+<b>From:</b>
+{{ $invoice->origin ?? '' }}<br>
+<b>To:</b>
+{{ $invoice->destination ?? '' }}
 </td>
 
-<td style="border:1px solid #000;width:150px;padding:8px;">
-Indent / Reference No<br><br>
-<b>{{ $invoice->indent_no ?? '' }}</b>
+<td style="border:1px solid #000;width:150px;padding:2px;">
+<b>Indent / Reference No:</b> 
+{{ $invoice->indent_no ?? '' }}
+<br>
+<b>Arrival Date:</b> {{$invoice->arrival_date}}<br>
+<b>Dispatch Date:</b><br>{{$invoice->dispatch_date}}<br>
 </td>
 
 </tr>
@@ -176,7 +180,7 @@ Consignee's Name & Address :
 
 <tr>
 
-<td style="border:1px solid #000;padding:5px;font-size:18px;">
+<td style="border:1px solid #000;padding:5px;font-size:14px;">
 {{ $invoice->packages }}
 </td>
 
