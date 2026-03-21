@@ -832,11 +832,11 @@ class SpotbyController extends Controller
 				return response()->json(['success' => true, 'message' => 'Client offers saved for all vendors!']);
 			}
 			catch(\Exception $e){
-					/* \Log::error('Error saving client offers: '.$e->getMessage(), [
+					 \Log::error('Error saving client offers: '.$e->getMessage(), [
 					'trace' => $e->getTraceAsString()
 					]);
-					*/
-                 echo 'Error saving client offers: '.$e->getMessage(); exit;
+					
+               //  echo 'Error saving client offers: '.$e->getMessage(); exit;
 					return response()->json([
 					'success' => false,
 					'message' => 'Client offers cant be saved for vendors!']);		
