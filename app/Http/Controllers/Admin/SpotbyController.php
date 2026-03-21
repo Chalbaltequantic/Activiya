@@ -724,6 +724,7 @@ class SpotbyController extends Controller
 							 ->where('r1.round', 1);
 					})
 					->whereNotNull('spotby_vendor_quotes.price')
+					->whereNull('spotby_vendor_quotes.client_revised_price')
 					->where('spotby_vendor_quotes.round', 2)
 					->orderBy('spotby_vendor_quotes.price', 'asc')
 					->orderBy('spotby_vendor_quotes.transit_time', 'asc')
@@ -746,6 +747,7 @@ class SpotbyController extends Controller
 							 ->where('r1.round', 1);
 					})
 					->whereNotNull('spotby_vendor_quotes.price')
+					->whereNotNull('spotby_vendor_quotes.client_revised_price')
 					->where('spotby_vendor_quotes.round', 2)
 					->orderBy('spotby_vendor_quotes.price', 'asc')
 					->orderBy('spotby_vendor_quotes.transit_time', 'asc')
