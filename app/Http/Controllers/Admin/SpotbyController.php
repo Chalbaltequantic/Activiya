@@ -817,14 +817,14 @@ class SpotbyController extends Controller
 						];
 
 						
-						Mail::send('mail.soptbuy_approval_mail', $data, function($message) use ($to_email, $subject, $files) {
+						/*Mail::send('mail.soptbuy_approval_mail', $data, function($message) use ($to_email, $subject, $files) {
 							$message->to($to_email)->subject($subject);
 							$message->from(env("MAIL_USERNAME"), 'Activiya.com');
 
 							foreach ($files as $file) {
 								$message->attach($file);
 							}
-						});
+						});*/
 					}
 				
 					}					
