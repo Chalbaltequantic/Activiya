@@ -672,7 +672,7 @@ class SpotbyController extends Controller
 	}
 	
 	//User B1 _Round 3 (Buyer) Add revised price and time by Buyer client after round 2 price submitted by vendor
-	public function buyerRevisedQuoteB1R3()
+	/*public function buyerRevisedQuoteB1R3()
     {
         $vendor_code = Auth::user()->vendor_code; // assuming vendor is logged in
 		
@@ -703,17 +703,69 @@ class SpotbyController extends Controller
 			}])->get();			
         return view('admin.spotby.client-quote-b1-r3-revised', compact('spotbylist', 'historyQuotes'));
     }
+	*/
 	
+	public function buyerRevisedQuoteB1R3()
+	{
+		$vendor_code = Auth::user()->vendor_code;
+
+		$vendorId = Vendor::where('vendor_code', $vendor_code)->value('id');
+
+		$spotbylist = Spotby::with([
+			'quotes' => function ($q) {
+				$q->select(
+						'spotby_vendor_quotes.*',
+						DB::raw('r1.client_revised_price as round1_client_revised_price'),
+						DB::raw('r1.transit_time as round1_client_transit_time')
+					)
+					->leftJoin('spotby_vendor_quotes as r1', function ($join) {
+						$join->on('spotby_vendor_quotes.spotby_id', '=', 'r1.spotby_id')
+							 ->on('spotby_vendor_quotes.vendor_id', '=', 'r1.vendor_id')
+							 ->where('r1.round', 1);
+					})
+					->whereNotNull('spotby_vendor_quotes.price')
+					->where('spotby_vendor_quotes.round', 2)
+					->orderBy('spotby_vendor_quotes.price', 'asc')
+					->orderBy('spotby_vendor_quotes.transit_time', 'asc')
+					->with('vendor');
+			},
+			'vendors'
+		])->get();
+
+		// History with round1 data
+		$historyQuotes = Spotby::with([
+			'quotes' => function ($q) {
+				$q->select(
+						'spotby_vendor_quotes.*',
+						DB::raw('r1.client_revised_price as round1_client_revised_price'),
+						DB::raw('r1.transit_time as round1_client_transit_time')
+					)
+					->leftJoin('spotby_vendor_quotes as r1', function ($join) {
+						$join->on('spotby_vendor_quotes.spotby_id', '=', 'r1.spotby_id')
+							 ->on('spotby_vendor_quotes.vendor_id', '=', 'r1.vendor_id')
+							 ->where('r1.round', 1);
+					})
+					->whereNotNull('spotby_vendor_quotes.price')
+					->where('spotby_vendor_quotes.round', 2)
+					->orderBy('spotby_vendor_quotes.price', 'asc')
+					->orderBy('spotby_vendor_quotes.transit_time', 'asc')
+					->with('vendor');
+			}
+		])->get();
+
+		return view('admin.spotby.client-quote-b1-r3-revised', compact('spotbylist', 'historyQuotes'));
+	}
 	public function storeClientOffersB1R3(Request $request)
 	{
 		$spotbyIds   = $request->input('spotby_id');
-		$prices      = $request->input('client_price');
+		//$prices      = $request->input('client_price');
 		$times       = $request->input('client_time');
 		$round		= $request->input('round');
 		$freezeVendors		= $request->input('freeze_vendor_name');
 		$finalRates		= $request->input('final_price');
 		$created_by = Auth::user()->id;		
 		$createddate = date('Y-m-d H:i:s');
+		$body = '';
 		
 		//print_r($freezeVendors); exit;
 		try {
@@ -722,7 +774,7 @@ class SpotbyController extends Controller
 					SpotbyVendorQuote::where('spotby_id', $spotby_id)
 						->where('round',$round) 
 						->update([
-							'client_revised_price'        => $prices[$i],
+							'client_revised_price'        => $finalRates[$i],
 							'client_revised_transit_time' => $times[$i],
 						]);	
 
@@ -738,7 +790,8 @@ class SpotbyController extends Controller
 						]);	
 					if($spotbuy_upd)
 					{
-						$spotbuy_data = Spotby::where('id', $spotby_id);
+						//$spotbuy_data = Spotby::where('id', $spotby_id);
+						$spotbuy_data = Spotby::where('id', $spotby_id)->first();
 						$from = $spotbuy_data->from;
 						$to = $spotbuy_data->to;
 						$valid_from = $spotbuy_data->valid_from;
@@ -758,7 +811,7 @@ class SpotbyController extends Controller
 							'to' => $to,
 							'valid_from' => $valid_from,
 							'valid_upto' => $valid_upto,
-							'vendorname' => $freeze_vendor_name, 
+							'vendor_name' => $freeze_vendor_name, 
 							'freeze_date' => $freeze_date, 
 							'body' => $body, // assuming $body is already defined
 						];
@@ -783,7 +836,7 @@ class SpotbyController extends Controller
 					'trace' => $e->getTraceAsString()
 					]);
 					*/
-
+                 echo 'Error saving client offers: '.$e->getMessage(); exit;
 					return response()->json([
 					'success' => false,
 					'message' => 'Client offers cant be saved for vendors!']);		

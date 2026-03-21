@@ -197,6 +197,7 @@
 						<td class="sticky-col-2">{{$spotbydata->from}}</td>
 						<td class="sticky-col-3">{{$spotbydata->to}}</td>
 						<td class="sticky-col-4">{{$spotbydata->vehicle_type}}</td>
+						<input type="hidden" name="spotby_id[]" value="{{ $spotbydata->id }}">
 						
 						@for($i=0; $i<5; $i++)
                         <td>{{ $ranks[$i]->price ?? '' }}</td>
@@ -208,16 +209,14 @@
 						@endfor
 						 					  
 						<td>{{ $ranks[0]->price ?? '' }}</td>
-						<td>{{ $ranks[0]->transit_time ?? '' }}</td>
-						<td>
-							<input type="hidden" name="spotby_id[]" value="{{ $spotbydata->id }}">
-							<input type="number" step="0.01" name="client_price[]"
-                               class="" placeholder="Enter Price">
+						<td>{{ $ranks[0]->transit_time ?? '' }}
+							
+							{{-- considering vendor 2nd round time as client trasit time to insert in database table --}}
+						<input type="hidden" name="client_time[]" value="{{ $ranks[0]->transit_time ?? '' }}">
+						
 						</td>
-						<td>
-							<input type="number" name="client_time[]"
-                               placeholder="Enter Transit Time">			
-						</td>
+						<td>{{ $ranks[0]->round1_client_revised_price ?? '' }}</td>
+						<td>{{ $ranks[0]->round1_client_transit_time ?? '' }}</td>		
 						<td>
 							<select name="freeze_vendor_name[]" class="form-control">
 								<option value="">-- Select Vendor --</option>
