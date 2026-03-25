@@ -307,7 +307,7 @@
 						<li class="user-footer">
 
 							<!-- Change Password -->
-							<a href="{{ route('change.password') }}" class="btn btn-default btn-flat">
+							<a href="{{ route('admin.change.password') }}" class="btn btn-default btn-flat">
 								<i class="fas fa-key"></i> Change Password
 							</a>
 
