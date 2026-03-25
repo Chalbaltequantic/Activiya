@@ -1,8 +1,9 @@
-@extends('adminlte::page')
+@extends('admin.admin')
+
 
 @section('title', 'Change Password')
 
-@section('content')
+@section('bodycontent')
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-6">
