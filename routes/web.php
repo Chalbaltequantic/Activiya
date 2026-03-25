@@ -60,6 +60,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
 	
+	Route::get('change-password', [App\Http\Controllers\Admin\PasswordController::class, 'index'])->name('change.password');
+    Route::post('change-password', [App\Http\Controllers\Admin\PasswordController::class, 'update'])->name('change.password.update');
+	
+	
+	
 	Route::get('dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
 	

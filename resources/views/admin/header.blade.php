@@ -297,10 +297,38 @@
 				
 				<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
 				
+				<li class="nav-item dropdown user-menu">
+					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+						<span class="d-none d-md-inline">Welcome {{ auth()->user()->name }}</span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+
+						<!-- Menu Footer -->
+						<li class="user-footer">
+
+							<!-- Change Password -->
+							<a href="{{ route('change.password') }}" class="btn btn-default btn-flat">
+								<i class="fas fa-key"></i> Change Password
+							</a>
+
+							<!-- Logout -->
+							<a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat float-right"
+							   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+								<i class="fas fa-sign-out-alt"></i> Logout
+							</a>
+
+							<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+								@csrf
+							</form>
+
+						</li>
+					</ul>
+				</li>
+				
             </ul>
 
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
+            {{-- <ul class="navbar-nav ml-auto">
                 <li id="lgout_li_header">          
 					<a class="btn btn-warning mr-3" href="{{ route('logout') }}" onclick = "event.preventDefault(); document.getElementById('logout-form').submit();" style="color:#fff;">
                      {{ __('Logout') }}</a>
@@ -314,7 +342,7 @@
                     Welcome {{ auth()->user()->name }}
                    
                 </li>
-            </ul>
+            </ul> --}}
         
 			</div>
 		</nav>
