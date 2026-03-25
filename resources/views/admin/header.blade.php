@@ -312,7 +312,7 @@
 							</a>
 
 							<!-- Logout -->
-							<a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat float-right"
+							<a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right"
 							   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 								<i class="fas fa-sign-out-alt"></i> Logout
 							</a>
