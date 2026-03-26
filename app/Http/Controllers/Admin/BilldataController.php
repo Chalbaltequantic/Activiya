@@ -679,11 +679,11 @@ class BilldataController extends Controller
         $title = 'Bill Data freight details Validate';
         $pagetitle = $title.' Listing';
 		$created_by = Auth::user()->role_id;
-		$entries = Billdata::where('freight_invoice_no','<>','')
-						->where('freight_invoice_date', '<>','')
-						->where('freight_amount', '<>','')
-						//->whereNull('validated_status')
-					   ->get();
+		$entries = Billdata::whereNotNull('freight_invoice_no')
+				->where('freight_invoice_no', '!=', '')
+				->whereNotNull('freight_invoice_date')
+				->whereNotNull('freight_amount')
+				->get()
 					   
 		$updatedentries[] = ''; 
       // if (Auth::user()->role_id === '4' || Auth::user()->role_id === '1')  ////Account
