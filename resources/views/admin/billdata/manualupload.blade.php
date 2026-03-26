@@ -68,7 +68,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">Consignee Code</th>
 						<th style="background: #fce4d6; color: #0070c0;">Consignee Location</th>
 						{{--<th style="background: #fce4d6; color: #0070c0;">D5 consignor short <br>name & location</th>--}}
-						<th style="background: #fce4d6; color: #0070c0;">Ref1 </th>
+						<th style="background: #fce4d6; color: #0070c0;">Ref1</th>
 						
 						<th style="background: #fce4d6; color: #0070c0;">Vendor Code</th>
 						<th style="background: #fce4d6; color: #0070c0;">Vendor Name</th>
@@ -77,8 +77,8 @@
 						<th style="background: #fce4d6; color: #0070c0;">LR No.</th>
 						<th style="background: #fce4d6; color: #0070c0;">LR CN Date</th>
 						<th style="background: #fce4d6; color: #0070c0;">A amount </th>
-						<th style="background: #fce4d6; color: #0070c0;">Ref2 </th>
-						<th style="background: #fce4d6; color: #0070c0;">Ref3 </th>
+						<th style="background: #fce4d6; color: #0070c0;">Freight PO</th>
+						<th style="background: #fce4d6; color: #0070c0;">Freight GRN</th>
 						<th style="background: #fce4d6; color: #0070c0;">Freight type</th>
 						<th style="background: #fce4d6; color: #0070c0;">Ap status</th>
 						<th style="background: #fce4d6; color: #0070c0;">Mode </th>

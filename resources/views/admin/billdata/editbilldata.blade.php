@@ -139,14 +139,14 @@
           </div>
 
 			  <div class="form-group col-md-6">
-                <label for="ref2">Ref2</label>
+                <label for="ref2">Freight PO</label>
                 <input type="text" id="ref2" name="ref2" class="form-control" value="{{$billdata->ref2}}">
                 @error('ref2')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
 			  </div>
 			<div class="form-group col-md-6">
-                <label for="ref3">Ref3</label>
+                <label for="ref3">Freight GRN</label>
                 <input type="text" id="ref3" name="ref3" class="form-control" value="{{$billdata->ref3}}">
                 @error('ref3')
                 <span class="text-danger">{{$message}}</span>
