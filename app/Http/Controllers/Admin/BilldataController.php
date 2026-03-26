@@ -875,7 +875,7 @@ class BilldataController extends Controller
 						});
 					}
 					$to_name = 'Roshan Jha';
-					$to_email = 'roshan.scm@gmail.com, jhachalbal@gmail.com';
+					$to_email = 'roshan.scm@gmail.com';
 					Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
 							$message->to($to_email)->subject($subject);
 							$message->from(config('mail.from.address'), 'Activiya.com');
