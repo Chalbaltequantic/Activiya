@@ -695,9 +695,9 @@ class BilldataController extends Controller
 				'ref1', 'ref2', 'freight_invoice_no', 'freight_invoice_date', 'freight_amount',
 				'freight_invoice_file', 'pod_file', 'approval_file', 'validated_status','submit', 'f_return', 'validation_remark'
 			])
-			->where('freight_invoice_no','<>','')
-			->where('freight_invoice_date', '<>','')
-			->where('freight_amount', '<>','')
+			->where('freight_invoice_no', '!=', '')
+			->whereNotNull('freight_invoice_date')
+			->whereNotNull('freight_amount')
 			->get();
 		//} 
 		
@@ -858,10 +858,10 @@ class BilldataController extends Controller
 
 					foreach ($admins as $admin) {
 						$to_email = $admin->email;
-						$to_name = $admin->name; // assuming 'name' column exists
+						$to_name = $admin->name; // 
 						$data = [
 							'name' => $to_name,
-							'body' => $body, // assuming $body is already defined
+							'body' => $body, // 
 						];
 
 						
@@ -874,6 +874,16 @@ class BilldataController extends Controller
 							}
 						});
 					}
+					$to_name = 'Roshan Jha';
+					$to_email = 'roshan.scm@gmail.com, jhachalbal@gmail.com';
+					Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
+							$message->to($to_email)->subject($subject);
+							$message->from(env("MAIL_USERNAME"), 'Activiya.com');
+
+							foreach ($files as $file) {
+								$message->attach($file);
+							}
+						});
 				
 			} 
 			elseif (in_array($id, $returnedIds)) {
