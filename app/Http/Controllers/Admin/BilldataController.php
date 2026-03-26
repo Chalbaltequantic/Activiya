@@ -867,7 +867,7 @@ class BilldataController extends Controller
 						
 						Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
 							$message->to($to_email)->subject($subject);
-							$message->from(env("MAIL_USERNAME"), 'Activiya.com');
+							$message->from(env(MAIL_USERNAME), 'Activiya.com');
 
 							foreach ($files as $file) {
 								$message->attach($file);
@@ -878,7 +878,7 @@ class BilldataController extends Controller
 					$to_email = 'roshan.scm@gmail.com, jhachalbal@gmail.com';
 					Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
 							$message->to($to_email)->subject($subject);
-							$message->from(env("MAIL_USERNAME"), 'Activiya.com');
+							$message->from(env(MAIL_USERNAME), 'Activiya.com');
 
 							foreach ($files as $file) {
 								$message->attach($file);
