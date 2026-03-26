@@ -683,6 +683,7 @@ class BilldataController extends Controller
 				->where('freight_invoice_no', '!=', '')
 				->whereNotNull('freight_invoice_date')
 				->whereNotNull('freight_amount')
+				->where('validated_status', '!=', 'submitted')
 				->get();
 					   
 		$updatedentries[] = ''; 
