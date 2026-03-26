@@ -209,8 +209,8 @@
 										<td class="sticky-col-4">{{$billdata->truck_type}}</td>
 										<td class="sticky-col-5">{{$billdata->lr_no}}</td>
 										<td>{{$billdata->lr_cn_date}}</td>
+										<td>{{$billdata->ref1}}</td>
 										<td>{{$billdata->ref2}}</td>
-										<td>{{$billdata->ref3}}</td>
 									  
 										<td>
 											<input type="text" name="data[{{ $loop->index }}][freight_invoice_no]" value="{{ $billdata->freight_invoice_no }}">
