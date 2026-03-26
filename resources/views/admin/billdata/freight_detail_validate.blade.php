@@ -176,8 +176,8 @@
 										<th style="background: #fce4d6; color: #0070c0;z-index:999;width:60px;" class="sticky-col-5">LR/CN No.</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="col-width">LR/CN Date</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="">Charged<br /><small>Truck Type</small></th>
-										<th style="background: #fce4d6; color: #0070c0;" class="">Ref 1<br />FPO NO.</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Ref 2 <br />FGRN</th>
+										<th style="background: #fce4d6; color: #0070c0;" class="">Ref 1</th>
+										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight PO</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight <br>Invoice No.</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice Dt.</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Amount</th>

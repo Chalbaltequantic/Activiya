@@ -170,8 +170,8 @@
 						  <th style="background: #fce4d6; color: #0070c0;">LR/CN No.</th>
 						  <th style="background: #fce4d6; color: #0070c0;">LR CN Date</th>
 						  <th style="background: #fce4d6; color: #0070c0;">A amount </th>
-						  <th style="background: #fce4d6; color: #0070c0;">Ref2</th>
-						  <th style="background: #fce4d6; color: #0070c0;">Ref3</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Freight PO</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Freight GRN</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Freight type</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Ap status</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Created_date</th>
