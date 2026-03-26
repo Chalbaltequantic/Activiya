@@ -683,8 +683,9 @@ class BilldataController extends Controller
 				->where('freight_invoice_no', '!=', '')
 				->whereNotNull('freight_invoice_date')
 				->whereNotNull('freight_amount')
-				->get()
-		
+				->get();
+					   
+		$updatedentries[] = ''; 
       // if (Auth::user()->role_id === '4' || Auth::user()->role_id === '1')  ////Account
 	 //  { 
         
