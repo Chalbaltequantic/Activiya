@@ -76,7 +76,7 @@
 					</tr>
 				  </thead>
 				  <tbody>
-				  @for ($i = 0; $i <= 9; $i++)
+				  @for ($i = 0; $i <= 29; $i++)
 				  
 					<tr>
 					 <td class="char-10">
