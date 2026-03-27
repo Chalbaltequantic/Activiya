@@ -7,11 +7,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Upload Spot By data by copy & paste</h1>
+            <h1 class="m-0">Upload Spot Buy Lanes</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-               <li class="breadcrumb-item"><a href="{{url('admin/billdata/history')}}" class="btn btn-info">View Spot By data</a></li>
+               <li class="breadcrumb-item"><a href="{{url('admin/billdata/history')}}" class="btn btn-info">View Spot Buy data</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -107,7 +107,7 @@
 			  </div>
 				<div class="row text-right">
 				<div class="col-md-6">
-				<button type="submit" class="btn btn-primary text-right" name="submit">Upload Spot By data</button>
+				<button type="submit" class="btn btn-primary text-right" name="submit">Upload Spot Buy data</button>
 				</div>
 				</div>
 			  
