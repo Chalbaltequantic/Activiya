@@ -168,9 +168,12 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Destination<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Mode</th>
 								<th style="background: #fce4d6; color: #0070c0;">Truck Type</th>
-								<th  class="mobile-hide" style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
+								{{-- <th  class="mobile-hide" style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
 								<th class="mobile-hide" style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
 								<th  class="mobile-hide" style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>
+								--}}
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Total<br>Wt</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Total<br>Vol</th>
 								<th class="mobile-hide" style="background: #c6e0b4; color: #0070c0;">Vendor<br>name</th>
 								<th class="mobile-hide" style="background: #c6e0b4; color: #0070c0;">Remarks</th>
 								<th class="mobile-hide" style="background: #c6e0b4; color: #0070c0;">Sent at</th>
@@ -181,16 +184,23 @@
 						  </thead>
 						<tbody>
 							@if(count($loads) > 0)
-							 @foreach($loads as $row)							  
-							<tr>
+							 @foreach($loads as $row)	
+								@php
+									$truck = $truckMasters[$row->truck_code] ?? null;
+								@endphp
+															<tr>
 								<td class="sticky-col-1">{{ $row->reference_no }}</td>
-								<td class="sticky-col-2">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>								
-								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_city }}</td>
+								<td class="sticky-col-2">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>
+							
+								<td class="sticky-col-3">{{ $row->destination_name_code }}</td>
 								<td>{{ $row->t_mode }}</td>
-								<td>{{ $row->truck->description ?? 'NA' }}</td>
-								<td class="mobile-hide">{{ $row->zw_util }}%</td>
+								<td>{{ $truck->description ?? 'NA' }}</td>
+						{{--	<td class="mobile-hide">{{ $row->zw_util }}%</td>
 								<td class="mobile-hide">{{ $row->zv_util }}%</td>
 								<td class="fw-bold mobile-hide">{{ $row->gross_util }}%</td>
+						--}}
+								<td class="mobile-hide">{{ $row->total_weight }}</td>
+								<td class="mobile-hide">{{ $row->total_volume }}</td>	
 								<td class="fw-bold mobile-hide">{{ $row->vendor_name }}</td>
 								<td class="fw-bold mobile-hide">{{ $row->sent_remarks  }}</td>
 								<td class="fw-bold mobile-hide">{{ $row->sent_at  }}</td>
