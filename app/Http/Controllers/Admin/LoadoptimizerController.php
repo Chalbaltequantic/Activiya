@@ -28,6 +28,7 @@ use App\Models\AllocationHistory;
 use App\Models\AllocationEditHistory;
 use App\Models\LoadSendHistory;
 use App\Models\LoadPlacementStatusLog;
+use App\Models\TruckMaster;
 use App\Services\LoadOptimizerService;
 
 use Auth;
@@ -1223,11 +1224,15 @@ class LoadoptimizerController extends Controller
 				'reference_no',
 				'origin_name_code',
 				'destination_name_code',
+				'origin_name',
+				'destination_name',
 				't_mode',
 				'truck_code',
 				'zw_util',
 				'zv_util',
 				'gross_util',
+				'total_weight',
+				'total_volume',
 				'vendor_code',
 				'vendor_name',
 				'sent_remarks',
@@ -1257,12 +1262,16 @@ class LoadoptimizerController extends Controller
 			'mls.reference_no',
 			'mls.origin_name_code',
 			'mls.destination_name_code',
+			'origin_name',
+			'destination_name',
 			'mls.t_mode',
 			'mls.truck_code',
 			DB::raw('NULL as zw_util'),
 			DB::raw('NULL as zv_util'),
 			DB::raw('NULL as gross_util'),
 			'mls.vendor_code',
+			'total_weight',
+			'total_volume',
 			'mls.vendor_name',
 			'mls.sent_remarks',
 			'mls.sent_status',
@@ -1275,10 +1284,13 @@ class LoadoptimizerController extends Controller
 			->unionAll($manualLoads)
 			->orderByDesc('sent_at')
 			->get();
+			
+		$truckCodes = $loads->pluck('truck_code')->filter()->unique()->values()->toArray();
 
+		$truckMasters = TruckMaster::whereIn('code', $truckCodes)->get()->keyBy('code');
 		return view(
 			'admin.loadoptimizer.allocation_sent_to_vendor',
-			compact('loads')
+			compact('loads', 'truckMasters')
 		);
 	}
 

@@ -393,6 +393,7 @@ class TrackingController extends Controller
 			 try{
 					if(!empty($row['shipment_status']) && !empty($row['distance_covered']))
 					{
+						$entry->driver_number = $row['driver_number'];
 						$entry->shipment_status = $row['shipment_status'];
 						$entry->transit_status = $transit_status;
 						$entry->distance_covered = $row['distance_covered'];
