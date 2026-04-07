@@ -162,25 +162,27 @@
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-1">Indent No</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">Customer<br />PO No.</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-3">Origin</th>
-								<th style="background: #ddebf7; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
+								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
 								<th style="background: #fce4d6; color: #0070c0;">Vendor name</th>
 								<th style="background: #fce4d6; color: #0070c0;">Vendor code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Type of<br> vehicle</th>
 								<th style="background: #fce4d6; color: #0070c0;">LR No</th>
 							  <th style="background: #fce4d6; color: #0070c0;">Cases</th>
 							  <th style="background: #fce4d6; color: #0070c0;">Truck<br>No</th>
-							  <th style="background: #fce4d6; color: #0070c0;">Driver<br>Mobile No</th>
+							 
 							  
 							<th style="background: #fce4d6; color: #0070c0;">Dispatch Date</th>
 							
 							<th style="background: #fce4d6; color: #0070c0;">Dispatch Time</th>
-							 <th style="background: #ddebf7; color: #0070c0;">Lead Time</th> 
+							 <th style="background: #fce4d6; color: #0070c0;">Lead Time</th> 
 							
 							  <th style="background: #fce4d6; color: #0070c0;">Distance<br>in km</th>
 							  <th style="background: #fce4d6; color: #0070c0;">Delivery<br>Due Date</th>
-							  <th style="background: #fce4d6; color: #0070c0;">Shipment Status</th>
+							   <th style="background: #c6e0b4; color: #0070c0;">Driver<br>Mobile No</th>
+							  
+							  <th style="background: #c6e0b4; color: #0070c0;">Shipment Status</th>
 							<!--  <th style="background: #fce4d6; color: #0070c0;">Transit Status</th>-->
-							  <th style="background: #fce4d6; color: #0070c0;">Distance<br>Covered (KM)</th>
+							  <th style="background: #c6e0b4; color: #0070c0;">Distance<br>Covered (KM)</th>
 							  <th style="background: #c6e0b4; color: #0070c0;">Current<br>Location</th>
 							  <th style="background: #c6e0b4; color: #0070c0;">Distance to<br>be covered (KM)</th>
 							  <th style="background: #c6e0b4; color: #0070c0;">Tracking Links</th>
@@ -209,7 +211,7 @@
 							  
 							  <td>{{$trackingdata->cases}}</td>
 							  <td>{{$trackingdata->truck_no}}</td>
-							  <td>{{$trackingdata->driver_number}}</td>
+							 
 							  
 							  <td>{{$trackingdata->dispatch_date}}</td>
 							  <td>{{$trackingdata->dispatch_time}}</td>
@@ -218,6 +220,9 @@
 							  
 							  <td>{{$trackingdata->distance}}</td>
 							  <td>{{$trackingdata->delivery_due_date}}</td>
+							   <td>
+							   <input type="text" name="data[{{ $loop->index }}][driver_number]" value="{{$trackingdata->driver_number ?? ''}}">
+							   </td>
 							  <td><input type="text" name="data[{{ $loop->index }}][shipment_status]" value="{{ $trackingdata->shipment_status }}"></td>
 							
 							<!--   <td><input type="text" name="data[{{ $loop->index }}][transit_status]" value="{{ $trackingdata->transit_status }}"></td>-->
