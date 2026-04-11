@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 135px; /* Adjust based on col-1 width */
+      left: 132px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -167,12 +167,12 @@
 								<table class="table table-bordered border-dark table-hover" id="table"  style="table-layout:auto; width:auto;">
 								  <thead>
 									<tr>
-									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:125px;" class="sticky-col-1">S5 consignor short<br> name & location</th>
-									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:125px;" class="sticky-col-2">D5 consignor short<br> name & location</th>
-									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:90px;" class="sticky-col-3">Order Ref No.<br />( <small>Indent ID</small>)
+									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:125px;" class="{{ count($entries)>0 ? 'sticky-col-1' : '' }}">S5 consignor short<br> name & location</th>
+									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:125px;" class="{{ count($entries)>0 ? 'sticky-col-2' : '' }}">D5 consignor short<br> name & location</th>
+									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:90px;" class="{{ count($entries)>0 ? 'sticky-col-3' : '' }}">Order Ref No.<br />( <small>Indent ID</small>)
 										</th>
-									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:80px;"class="sticky-col-4">Charged<br /><small>Truck Type</small></th>
-									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:60px;" class="sticky-col-5">LR/CN No.</th>
+									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:80px;"class="{{ count($entries)>0 ? 'sticky-col-4' : '' }}">Charged<br /><small>Truck Type</small></th>
+									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:60px;" class="{{ count($entries)>0 ? 'sticky-col-5' :'' }}">LR/CN No.</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="">LR/CN Date</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="">Ref1</th>
 									  <th style="background: #fce4d6; color: #0070c0;" class="">Freight PO</th>
@@ -274,8 +274,8 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight Invoice</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">POD</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
-								<th style="background: #ddebf7; color: #0070c0;" class="">Validate</th> 
-								<th style="background: #ddebf7; color: #0070c0;" class="">Submit</th> 
+								<th style="background: #fce4d6; color: #0070c0;" class="">Validate</th> 
+								<th style="background: #fce4d6; color: #0070c0;" class="">Submit</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Return</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Remark</th>
 								
