@@ -98,8 +98,8 @@
 					  <td class="char-10"><input type="text" name="loading_charges[]" id="loading_charges{{$i}}" value="{{ old('loading_charges')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="unloading_charges[]" id="unloading_charges{{$i}}" value="{{ old('unloading_charges')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="special_instruction[]" id="special_instruction{{$i}}" value="{{ old('special_instruction')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="rfq_start_date_time[]" id="rfq_start_date_time{{$i}}" value="{{ old('rfq_start_date_time')[$i] ?? '' }}"></td>
-					  <td><input type="text" name="rfq_end_date_time[]" id="rfq_end_date_time{{$i}}" value="{{ old('rfq_end_date_time')[$i] ?? '' }}"></td>
+					  <td><input type="text" class="quick-datetime" name="rfq_start_date_time[]" id="rfq_start_date_time{{$i}}" value="{{ old('rfq_start_date_time')[$i] ?? '' }}"></td>
+					  <td><input type="text" class="quick-datetime" name="rfq_end_date_time[]" id="rfq_end_date_time{{$i}}" value="{{ old('rfq_end_date_time')[$i] ?? '' }}"></td>
 					</tr>  
 					@endfor	
 				  </tbody>
@@ -165,4 +165,30 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.21/build/jquery.datetimepicker.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.21/build/jquery.datetimepicker.full.min.js"></script>
+<script>
+$(document).ready(function(){
+
+ $('.quick-datetime').datetimepicker({
+        format:'Y-m-d H:i',    // 24-hour format
+        step: 1,               // minutes step
+        inline:false,
+        scrollMonth:false,
+        scrollInput:false,
+        defaultTime:'09:00',   // optional default
+        defaultDate: new Date(),
+        onSelectDate: function(ct,$i){
+            // When a date is clicked, it automatically sets the current time
+            // you can customize this if needed
+        },
+        onShow:function(ct,$i){
+            // Prevent extra popups
+            $i.val('');
+        }
+    });
+
+});
+</script>
 @endsection
