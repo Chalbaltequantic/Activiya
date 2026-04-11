@@ -149,10 +149,10 @@
 					  <thead>
 
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($spotbylist) > 0 ? 'sticky-col-1' : '' }}">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($spotbylist) > 0 ? 'sticky-col-2' : '' }}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($spotbylist) > 0 ? 'sticky-col-3' : '' }}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($spotbylist) > 0 ? 'sticky-col-4' :'' }}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid from</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid upto</th>

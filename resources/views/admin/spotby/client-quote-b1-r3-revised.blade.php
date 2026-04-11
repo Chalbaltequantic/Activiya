@@ -161,10 +161,10 @@
 					  <thead>
 
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-1">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($spotbylist) > 0 ? 'sticky-col-1' : '' }}">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($spotbylist) > 0 ? 'sticky-col-2; : '' }}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($spotbylist) > 0 ? 'sticky-col-3' : '' }}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($spotbylist) > 0 ? 'sticky-col-4' : '' }}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank1</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank2</th>
@@ -255,10 +255,10 @@
 					<table id="appointdataTable" class="table table-bordered border-dark table-hover">
 						<thead>
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($historyQuotes) > 0 ? 'sticky-col-1' : '' }}">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($historyQuotes) > 0 ? 'sticky-col-2' }}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($historyQuotes) > 0 ? 'sticky-col-3' : '' }}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="{{ count($historyQuotes) > 0 ? 'sticky-col-4' : '' }}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank1</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank2</th>
