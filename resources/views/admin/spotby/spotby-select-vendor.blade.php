@@ -5,10 +5,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-
-
-
- <style>
+<style>
    .table-responsive-fixed {
       overflow-x: auto;
       position: relative;
@@ -50,13 +47,13 @@
     }
  .sticky-col-3 {
       position: sticky;
-      left: 150px; /* Adjust based on col-1 width */
+      left: 210px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 230px; /* Adjust based on col-1 width */
+      left: 298px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -102,6 +99,7 @@
     top: 0;
     z-index: 2;
 }	
+	
 	
   </style>
 <!-- Content Header (Page header) -->
@@ -166,10 +164,10 @@
 					  <thead>
 
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-1;">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-1':''}}">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-2':''}}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-3':''}}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-4':''}}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid from</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid upto</th>
@@ -196,8 +194,8 @@
 					  
 					   <tr>
 						<td class="sticky-col-1" style="">{{$spotbydata->reference_no}}</td>
-						<td class="sticky-col-2">{{$spotbydata->from}}</td>
-						<td class="sticky-col-3">{{$spotbydata->to}}</td>
+						<td class="sticky-col-2">{{$spotbydata->from}} - {{$spotbydata->source_city}}</td>
+						<td class="sticky-col-3">{{$spotbydata->to}} - {{$spotbydata->destination_city}}</td>
 						<td class="sticky-col-4">{{$spotbydata->vehicle_type}}</td>
 						<td>{{$spotbydata->valid_from}}</td>
 						  <td>{{$spotbydata->valid_upto}}</td>
@@ -251,10 +249,10 @@
 					  <thead>
 
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-1;">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;width:95px;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyspotbylist)>0 ? 'sticky-col-1' :''}}">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyspotbylist)>0 ? 'sticky-col-2' : '' }}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyspotbylist)>0 ? 'sticky-col-3' : ''}}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyspotbylist)>0 ? 'sticky-col-4' : '' }}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid from</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Valid upto</th>
@@ -264,11 +262,11 @@
 						
 						<th style="background: #fce4d6; color: #0070c0;" class="">UOM</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Loading <br>charges</th>
-						<th style="background: #ddebf7; color: #0070c0;" class="">Unloading<br> charges</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Unloading<br> charges</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">Special instruction</th> 
 						<th style="background: #fce4d6; color: #0070c0;" class="">RFQ start date time</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">RFQ end date time</th>						
-						  <th style="background: #c6e0b4; color: #0070c0;">Created date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Created date</th>
 						  
 						  <th style="background: #fce4d6; color: #0070c0;">Vendors</th>
 						</tr>
@@ -281,8 +279,8 @@
 					  
 					   <tr>
 						<td class="sticky-col-1" style="">{{$historyspotbydata->reference_no}}</td>
-						<td class="sticky-col-2">{{$historyspotbydata->from}}</td>
-						<td class="sticky-col-3">{{$historyspotbydata->to}}</td>
+						<td class="sticky-col-2">{{$historyspotbydata->from}} - {{$historyspotbydata->source_city}}</td>
+						<td class="sticky-col-3">{{$historyspotbydata->to}} - {{$historyspotbydata->destination_city}}</td>
 						<td class="sticky-col-4">{{$historyspotbydata->vehicle_type}}</td>
 						<td>{{$historyspotbydata->valid_from}}</td>
 						  <td>{{$historyspotbydata->valid_upto}}</td>

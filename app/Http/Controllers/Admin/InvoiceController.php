@@ -104,7 +104,8 @@ class InvoiceController extends Controller
 				'gst_type'=>$gstType,
 				'registered_address_id'=>$registered->id,
 				'billing_address_id'=>$request->billing_address_id,
-				'branch_address_id'=>$request->branch_address_id
+				'branch_address_id'=>$request->branch_address_id,
+				'indent_id'=>$request->indent_id;
 			]);
 
 			/* ================= MAIN ITEMS ================= */

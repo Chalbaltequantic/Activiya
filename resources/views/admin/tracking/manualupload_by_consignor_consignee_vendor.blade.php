@@ -162,7 +162,7 @@
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-1">Indent No</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">Customer<br />PO No.</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-3">Origin</th>
-								<th style="background: #ddebf7; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
+								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
 								<th style="background: #fce4d6; color: #0070c0;">Vendor name</th>
 								<th style="background: #fce4d6; color: #0070c0;">Vendor code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Type of<br> vehicle</th>
@@ -174,7 +174,7 @@
 							<th style="background: #fce4d6; color: #0070c0;">Dispatch Date</th>
 							
 							<th style="background: #fce4d6; color: #0070c0;">Dispatch Time</th>
-							 <th style="background: #ddebf7; color: #0070c0;">Lead Time</th> 
+							 <th style="background: #fce4d6; color: #0070c0;">Lead Time</th> 
 							
 							  <th style="background: #fce4d6; color: #0070c0;">Distance<br>in km</th>
 							  <th style="background: #fce4d6; color: #0070c0;">Delivery<br>Due Date</th>
@@ -267,7 +267,7 @@
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-1">Indent No</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">Customer<br />PO No.</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-3">Origin</th>
-								<th style="background: #ddebf7; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
+								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Destination</th> 
 								<th style="background: #fce4d6; color: #0070c0;">Vendor name</th>
 								<th style="background: #fce4d6; color: #0070c0;">Vendor code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Type of<br> vehicle</th>
@@ -279,7 +279,7 @@
 							<th style="background: #fce4d6; color: #0070c0;">Dispatch Date</th>
 							
 							<th style="background: #fce4d6; color: #0070c0;">Dispatch Time</th>
-							 <th style="background: #ddebf7; color: #0070c0;">Lead Time</th> 
+							 <th style="background: #fce4d6; color: #0070c0;">Lead Time</th> 
 							
 							  <th style="background: #fce4d6; color: #0070c0;">Distance<br>in km</th>
 							  <th style="background: #fce4d6; color: #0070c0;">Delivery<br>Due Date</th>

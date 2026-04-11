@@ -42,13 +42,13 @@
     }
  .sticky-col-3 {
       position: sticky;
-      left: 180px; /* Adjust based on col-1 width */
+      left: 210px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 230px; /* Adjust based on col-1 width */
+      left: 298px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -180,8 +180,8 @@
 					  
 					   <tr>
 						<td class="sticky-col-1">{{$spotbydata->reference_no}}</td>
-						<td class="sticky-col-2">{{$spotbydata->from}}</td>
-						<td class="sticky-col-3">{{$spotbydata->to}}</td>
+						<td class="sticky-col-2">{{$spotbydata->from}} - {{$spotbydata->source_city}}</td>
+						<td class="sticky-col-3">{{$spotbydata->to}} - {{$spotbydata->destination_city}}</td>
 						<td class="sticky-col-4">{{$spotbydata->vehicle_type}}</td>
 						<td>{{$spotbydata->valid_from}}</td>
 						  <td>{{$spotbydata->valid_upto}}</td>

@@ -42,13 +42,13 @@
     }
  .sticky-col-3 {
       position: sticky;
-      left: 170px; /* Adjust based on col-1 width */
+      left: 200px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 220px; /* Adjust based on col-1 width */
+      left: 285px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -194,8 +194,8 @@
 					  
 					   <tr data-spotby-id="{{ $spotbydata->id }}">
 						<td class="sticky-col-1">{{$spotbydata->reference_no}}</td>
-						<td class="sticky-col-2">{{$spotbydata->from}}</td>
-						<td class="sticky-col-3">{{$spotbydata->to}}</td>
+						<td class="sticky-col-2">{{$spotbydata->from}} - {{$spotbydata->source_city}}</td>
+						<td class="sticky-col-3">{{$spotbydata->to}} - {{$spotbydata->destination_city}}</td>
 						<td class="sticky-col-4">{{$spotbydata->vehicle_type}}</td>
 						<input type="hidden" name="spotby_id[]" value="{{ $spotbydata->id }}">
 						
@@ -291,8 +291,8 @@
 					  
 							   <tr data-spotby-id="{{ $historyspotbydata->id }}">
 								<td class="sticky-col-1" style="z-index:999;">{{$historyspotbydata->reference_no}}</td>
-								<td class="sticky-col-2" style="z-index:999;">{{$historyspotbydata->from}}</td>
-								<td class="sticky-col-3" style="z-index:999;">{{$historyspotbydata->to}}</td>
+								<td class="sticky-col-2" style="z-index:999;">{{$historyspotbydata->from}} - {{$historyspotbydata->source_city}}</td>
+								<td class="sticky-col-3" style="z-index:999;">{{$historyspotbydata->to}} - {{$historyspotbydata->destination_city }}</td>
 								<td class="sticky-col-4" style="z-index:999;">{{$historyspotbydata->vehicle_type}}</td>
 								
 								@for($i=0; $i<5; $i++)

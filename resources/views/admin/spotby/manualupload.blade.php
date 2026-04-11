@@ -60,23 +60,23 @@
 				<table class="table table-bordered border-dark table-hover" id="table">
 				  <thead>
 					<tr>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">From</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">To</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Vehicle type</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Source Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Destination Code</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vehicle type</th>
 						
 
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Valid from</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Valid upto</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">No of vehicles</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Valid from</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Valid upto</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">No of vehicles</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Goods qty</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Goods qty</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">UOM</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Loading charges</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">UOM</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Loading charges</th>
 						<th style="background: #fce4d6; color: #0070c0;width: 40px" class="col-width">Unloading charges</th> 
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">Special instruction</th> 
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">RFQ start date time</th>
-						<th style="background: #fce4d6; color: #0070c0;width: 140px" class="col-width">RFQ end date time</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">Special instruction</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">RFQ start date time</th>
+						<th style="background: #fce4d6; color: #0070c0;" class="col-width">RFQ end date time</th>
 						
 					  
 					</tr>

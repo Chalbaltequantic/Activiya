@@ -66,228 +66,233 @@
 
 <!-- Content Header -->
 <div class="content-header">
-<div class="container-fluid">
-<div class="row mb-2">
-<div class="col-sm-6">
-<h1 class="m-0">Create LR</h1>
-</div>
-<div class="col-sm-6">
-<ol class="breadcrumb float-sm-right">
-<li class="breadcrumb-item">Home</li>
-</ol>
-</div>
-</div>
-</div>
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0">Create LR</h1>
+			</div>
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+				<li class="breadcrumb-item">Home</li>
+				</ol>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 <div class="content">
-<div class="container-fluid">
-<div class="row">
-<div class="col-lg-12">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
 
-<div class="card">
-
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show">
-<strong>{{session('success')}}</strong>
-<button type="button" class="close" data-dismiss="alert"></button>
-</div>
-@endif
-
-
-<div class="card-body p-0">
-
-<div class="card card-primary">
-
-<div class="card-header" style="background:#fce4d6;color:#0070c0;">
-<h3 class="card-title">Generate LR</h3>
-</div>
+					@if(session('success'))
+					<div class="alert alert-success alert-dismissible fade show">
+						<strong>{{session('success')}}</strong>
+						<button type="button" class="close" data-dismiss="alert"></button>
+					</div>
+					@endif
 
 
-<div class="card-body">
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-<form method="POST" action="{{ route('admin.lr.store') }}">
-@csrf
+				<div class="card-body p-0">
 
-<div class="row form-row-4">
+					<div class="card card-primary">
 
-<div class="form-group col-md-4">
-<label>Customer Invoice No</label>
-<input type="text" name="invoice_no" value="{{ $invoiceNo }}" class="form-control">
-</div>
-
-<div class="form-group col-md-4">
-<label>Customer Invoice Date</label>
-<input type="date" name="invoice_date" value="" class="form-control">
-</div>
-<div class="form-group col-md-4">
-<label>LR No.</label>
-<input type="text" name="lr_no" class="form-control" value="{{ old('lr_no') }}"  required>
-</div>
+						<div class="card-header" style="background:#fce4d6;color:#0070c0;">
+						<h3 class="card-title">Generate LR</h3>
+						</div>
 
 
-<div class="form-group col-md-4">
-<label>Date</label>
-<input type="date" name="bill_date" class="form-control" value="{{ old('bill_date') }}" required>
-</div>
-<div class="form-group col-md-4">
-<label>Truck Arrival Date</label>
-<input type="date" name="arrival_date" value="{{ old('arrival_date') }}" class="form-control" >
-</div>
+			<div class="card-body">
+			@if ($errors->any())
+			<div class="alert alert-danger">
+				<ul>
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+			@endif
+			<form method="POST" action="{{ route('admin.lr.store') }}">
+			@csrf
 
-<div class="form-group col-md-4">
-<label>Truck Dispatch Date</label>
-<input type="date" name="dispatch_date" value="{{ old('dispatch_date') }}" class="form-control" >
-</div>
-
-<div class="form-group col-md-4">
-<label>Truck Type</label>
-<input type="text" name="truck_type" value="{{ old('truck_type') }}" class="form-control" >
-</div>
-
-<div class="form-group col-md-4">
-<label>Vehicle No</label>
-<input type="text" name="vehicle_no" class="form-control" value="{{ old('vehicle_no') }}" required>
-</div>
-
-<div class="form-group col-md-4">
-<label>Consignor</label>
-<select name="consignor" class="form-control select2" required>
-<option value="">Select</option>
-@foreach($plants as $p)
-<option value="{{ $p->id }}" {{old('consignor')==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
-@endforeach
-</select>
-</div>
+			<div class="row form-row-4">
+				
+			<div class="form-group col-md-4">
+			<label>Indent / Ref</label>
+			<input type="text" name="indent_no" class="form-control">
+			</div>	
+				
+			<div class="form-group col-md-4">
+			<label>Consignor</label>
+			<select name="consignor" class="form-control select2" required>
+			<option value="">Select</option>
+			@foreach($plants as $p)
+			<option value="{{ $p->id }}" {{old('consignor')==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
+			@endforeach
+			</select>
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Consignee</label>
-<select name="consignee" class="form-control select2" required>
-<option value="">Select</option>
-@foreach($plants as $p)
-<option value="{{ $p->id }}" {{old('consignee')==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
-@endforeach
-</select>
-</div>
+			<div class="form-group col-md-4">
+			<label>Consignee</label>
+			<select name="consignee" class="form-control select2" required>
+			<option value="">Select</option>
+			@foreach($plants as $p)
+			<option value="{{ $p->id }}" {{old('consignee')==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
+			@endforeach
+			</select>
+			</div>	
+			
+			<div class="form-group col-md-4">
+			<label>Customer Invoice No</label>
+			<input type="text" name="invoice_no" value="{{ $invoiceNo }}" class="form-control">
+			</div>
+
+			<div class="form-group col-md-4">
+			<label>Customer Invoice Date</label>
+			<input type="date" name="invoice_date" value="" class="form-control">
+			</div>
+			<div class="form-group col-md-4">
+			<label>LR No.</label>
+			<input type="text" name="lr_no" class="form-control" value="{{ old('lr_no') }}"  required>
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Insurance</label>
-<select name="insurance" class="form-control">
-<option value="">Select</option>
-<option>Yes</option>
-<option>No</option>
-</select>
-</div>
+			<div class="form-group col-md-4">
+			<label>LR Date</label>
+			<input type="date" name="bill_date" class="form-control" value="{{ old('bill_date') }}" required>
+			</div>
+			<div class="form-group col-md-4">
+			<label>Truck Arrival Date</label>
+			<input type="date" name="arrival_date" value="{{ old('arrival_date') }}" class="form-control" >
+			</div>
+
+			<div class="form-group col-md-4">
+			<label>Truck Dispatch Date</label>
+			<input type="date" name="dispatch_date" value="{{ old('dispatch_date') }}" class="form-control" >
+			</div>
+
+			<div class="form-group col-md-4">
+			<label>Truck Type</label>
+			<input type="text" name="truck_type" value="{{ old('truck_type') }}" class="form-control" >
+			</div>
+
+			<div class="form-group col-md-4">
+			<label>Truck No.</label>
+			<input type="text" name="vehicle_no" class="form-control" value="{{ old('vehicle_no') }}" required>
+			</div>
+			
+			<div class="form-group col-md-4">
+			<label>Eway Bill No.</label>
+			<input type="text" name="eway_bill_no" class="form-control" value="{{ old('eway_bill_no') }}" required>
+			</div>
+
+			<div class="form-group col-md-4">
+			<label>Insurance</label>
+			<select name="insurance" class="form-control">
+			<option value="">Select</option>
+			<option value="At Owner Risk">At Owner Risk</option>
+			<option value="At Career Risk">At Career Risk</option>
+			</select>
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Indent / Ref</label>
-<input type="text" name="indent_no" class="form-control">
-</div>
+			
 
-<input type="hidden" name="fssai_no" value="{{$vendor->fssai_no}}" class="form-control">
-<input type="hidden" name="gstin" value="{{$vendor->gstin_number}}" class="form-control">
-<input type="hidden" name="msme" value="{{$vendor->msme_no}}" class="form-control">
+			<input type="hidden" name="fssai_no" value="{{$vendor->fssai_no}}" class="form-control">
+			<input type="hidden" name="gstin" value="{{$vendor->gstin_number}}" class="form-control">
+			<input type="hidden" name="msme" value="{{$vendor->msme_no}}" class="form-control">
 
-<div class="form-group col-md-4">
-<label>Packages</label>
-<input type="number" name="packages" value="{{ old('packages') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>Packages</label>
+			<input type="number" name="packages" value="{{ old('packages') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Description</label>
-<textarea name="description" class="form-control" rows="2">{{ old('description') }}</textarea>
-</div>
+			<div class="form-group col-md-4">
+			<label>Description</label>
+			<textarea name="description" class="form-control" rows="2">{{ old('description') }}</textarea>
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Actual Weight</label>
-<input type="text" name="actual_weight" value="{{ old('actual_weight') }}" class="form-control" placeholder="Enter wt in kg">
-</div>
+			<div class="form-group col-md-4">
+			<label>Actual Weight</label>
+			<input type="text" name="actual_weight" value="{{ old('actual_weight') }}" class="form-control" placeholder="Enter wt in kg">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Charged Weight</label>
-<input type="text" name="charged" value="{{ old('charged') }}" class="form-control" placeholder="Enter wt in kg">
-</div>
+			<div class="form-group col-md-4">
+			<label>Charged Weight</label>
+			<input type="text" name="charged" value="{{ old('charged') }}" class="form-control" placeholder="Enter wt in kg">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Invoice Value</label>
-<input type="number" step="0.01" id="invoice_value" name="invoice_value" value="{{ old('invoice_value') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>Invoice Value</label>
+			<input type="number" step="0.01" id="invoice_value" name="invoice_value" value="{{ old('invoice_value') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Surcharge</label>
-<input type="number" step="0.01" id="surcharge" name="surcharge" value="{{ old('surcharge') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>Surcharge</label>
+			<input type="number" step="0.01" id="surcharge" name="surcharge" value="{{ old('surcharge') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Hamali</label>
-<input type="number" step="0.01" id="hamali" name="hamali" value="{{ old('hamali') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>Hamali</label>
+			<input type="number" step="0.01" id="hamali" name="hamali" value="{{ old('hamali') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Risk Ch</label>
-<input type="text" id="risk_charge" name="risk_charge"  value="{{ old('risk_charge') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>Risk Ch</label>
+			<input type="text" id="risk_charge" name="risk_charge"  value="{{ old('risk_charge') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>B Charge</label>
-<input type="number" step="0.01" id="b_charge" name="b_charge" value="{{ old('b_charge') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>B Charge</label>
+			<input type="number" step="0.01" id="b_charge" name="b_charge" value="{{ old('b_charge') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Other Charge</label>
-<input type="number" step="0.01" id="other_charge" name="other_charge" value="{{ old('other_charge') }}" class="form-control">
-</div>
+			<div class="form-group col-md-4">
+			<label>Other Charge</label>
+			<input type="number" step="0.01" id="other_charge" name="other_charge" value="{{ old('other_charge') }}" class="form-control">
+			</div>
 
 
-<div class="form-group col-md-4">
-<label>Total Amount</label>
-<input type="number" id="total_amount" name="total_amount" value="{{ old('total_amount') }}" class="form-control" readonly>
-</div>
+			<div class="form-group col-md-4">
+			<label>Total Amount</label>
+			<input type="number" id="total_amount" name="total_amount" value="{{ old('total_amount') }}" class="form-control" readonly>
+			</div>
 
 
-<div class="form-group col-md-4" style="display:none;">
-<label>Notice</label>
-<textarea name="notice" class="form-control" rows="4">{{$vendor->notice}}</textarea>
-</div>
+			<div class="form-group col-md-4" style="display:none;">
+			<label>Notice</label>
+			<textarea name="notice" class="form-control" rows="4">{{$vendor->notice}}</textarea>
+			</div>
 
 
-<div class="form-group col-md-4" style="display:none;">
-<label>Caution</label>
-<textarea name="caution" class="form-control" rows="4">{{$vendor->caution}}</textarea>
-</div>
+			<div class="form-group col-md-4" style="display:none;">
+			<label>Caution</label>
+			<textarea name="caution" class="form-control" rows="4">{{$vendor->caution}}</textarea>
+			</div>
 
 
-</div>
+			</div>
 
 
-<div class="form-group mt-3 text-right">
-<button type="submit" class="btn btn-primary">Submit</button>
-</div>
+			<div class="form-group mt-3 text-right">
+			<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
 
-</form>
+			</form>
 
-</div>
+			</div>
 </div>
 </div>
 </div>

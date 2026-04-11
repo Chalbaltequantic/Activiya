@@ -77,13 +77,13 @@ Address of Delivery Office:
 </td>
 
 <td style="width:40%;border:1px solid #000;padding:8px;text-align:center;vertical-align:top;">
-<div style="font-weight:bold;font-size:15px;">LORRY COPY</div>
-<div style="font-weight:bold;">AT OWNER'S RISK</div>
-<div style="font-weight:bold;">INSURANCE</div>
+{{-- <div style="font-weight:bold;font-size:15px;">LORRY COPY</div> --}}
+<div style="font-weight:bold;">INSURANCE </div>
 
 <div style="margin-top:5px;text-align:center;">
 {{$invoice->insurance}}
 </div>
+
 </td>
 
 <td style="width:30%;border:1px solid #000;padding:8px;vertical-align:top;">
@@ -113,8 +113,8 @@ Address of Delivery Office:
 
 <td style="border:1px solid #000;width:200px;padding:8px;">
 <b>CONSIGNMENT NOTE</b><br>
-No. <span>{{$invoice->invoice_no}}</span><br>
-Date {{ date('d/m/Y',strtotime($invoice->bill_date)) }}
+LR No. <span>{{$invoice->invoice_no}}</span><br>
+LR Date {{ date('d/m/Y',strtotime($invoice->bill_date)) }}
 </td>
 
 <td style="border:1px solid #000;padding:8px;">
@@ -128,7 +128,9 @@ Date {{ date('d/m/Y',strtotime($invoice->bill_date)) }}
 <b>From:</b>
 {{ $invoice->origin ?? '' }}<br>
 <b>To:</b>
-{{ $invoice->destination ?? '' }}
+{{ $invoice->destination ?? '' }}<br><br>
+<b>EWAY Bill No:</b> {{$invoice->eway_bill_no}}<br>
+
 </td>
 
 <td style="border:1px solid #000;width:150px;padding:2px;">

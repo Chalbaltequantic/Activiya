@@ -94,13 +94,46 @@ class SpotbyController extends Controller
 				$rfq_end_date_time_data = $row['M'] ?? null;
 				$rfq_end_date_time = Carbon::parse($rfq_end_date_time_data)->format('Y-m-d H:i:s');
 				
+				$origin = $row['A'];
+				$destination = $row['B'];
 				
-				$first2_char_from  = strtoupper(substr($row['A'],0,2));
-				$first2_char_to  = strtoupper(substr($row['B'],0,2));
+				 $originCity = DB::table('site_plants')
+					->where('plant_site_code', $origin)
+					->value('city');
+					
+				if (empty($originCity)) {
+					$errorRows[] = [
+									'row' => $rowNumber,
+									'from' => $origin,
+									'to' => $destination,
+									'message' => 'Invalid origin master data. Source city not found for From code: ' . $origin
+								];
+					continue;
+				}
+
+				$destinationCity = DB::table('site_plants')
+					->where('plant_site_code', $destination)
+					->value('city');
+					
+				 if (empty($destinationCity)) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'from' => $origin,
+							'to' => $destination,
+							'message' => 'Invalid destination master data. Destination city not found for To code: ' . $destination
+						];
+						continue;
+				}
+				
+				
+				$first2_char_from  = strtoupper(substr($originCity,0,2));
+				$first2_char_to  = strtoupper(substr($destinationCity,0,2));
 			
                 $data = [
                     'from' => $row['A'] ?? null,
                     'to' => $row['B'] ?? null,
+                    'source_city' => $originCity ?? null,
+                    'destination_city' => $destinationCity ?? null,
                     'vehicle_type' => $row['C'] ?? null,
                     'valid_from' => $valid_from ?? null,
                     'valid_upto' => $valid_to ?? null,
@@ -189,11 +222,28 @@ class SpotbyController extends Controller
 			$rfq_end_date_time_data = $request->rfq_end_date_time;
 			$rfq_end_date_time = Carbon::parse($rfq_end_date_time_data)->format('Y-m-d H:i:s');
 			
+			$originCity = DB::table('site_plants')
+					->where('plant_site_code', $request->from)
+					->value('city');
+					
+					if (empty($originCity)) {
+					return response()->json(['error'=>'Invalid origin master data']);
+				}
+
+				$destinationCity = DB::table('site_plants')
+					->where('plant_site_code', $request->to)
+					->value('city');
+					
+				if (empty($destinationCity)) {
+					return response()->json(['error'=>'Invalid destinationCity master data']);
+				}
 			
 			Spotby::find($id)->update([
 				
 				'from' => $request->from,
 				'to' => $request->to,
+				'source_city' => $originCity,
+				'destination_city' => $destinationCity,
 				'vehicle_type' => $request->vehicle_type,
 				'valid_from' => $valid_from,
 				'valid_upto' => $valid_to,
@@ -236,21 +286,21 @@ class SpotbyController extends Controller
 		
 		$createddate = date('Y-m-d H:i:s');
 		
-			$from     = $request->input('from', []);
-			$to     = $request->input('to', []);
-			$vehicle_type = $request->input('vehicle_type', []);
-			$valid_from = $request->input('valid_from', []);
-			$valid_upto = $request->input('valid_upto', []);
-			$no_of_vehicles = $request->input('no_of_vehicles', []);
-			$goods_qty = $request->input('goods_qty', []);
-			$uom = $request->input('uom', []);
-			$loading_charges = $request->input('loading_charges', []);
-			$unloading_charges = $request->input('unloading_charges', []);
-			$special_instruction = $request->input('special_instruction', []);
-			$rfq_start_date_time = $request->input('rfq_start_date_time', []);
-			$rfq_end_date_time = $request->input('rfq_end_date_time', []);
-			
-			$count = count($from);
+		$from     = $request->input('from', []);
+		$to     = $request->input('to', []);
+		$vehicle_type = $request->input('vehicle_type', []);
+		$valid_from = $request->input('valid_from', []);
+		$valid_upto = $request->input('valid_upto', []);
+		$no_of_vehicles = $request->input('no_of_vehicles', []);
+		$goods_qty = $request->input('goods_qty', []);
+		$uom = $request->input('uom', []);
+		$loading_charges = $request->input('loading_charges', []);
+		$unloading_charges = $request->input('unloading_charges', []);
+		$special_instruction = $request->input('special_instruction', []);
+		$rfq_start_date_time = $request->input('rfq_start_date_time', []);
+		$rfq_end_date_time = $request->input('rfq_end_date_time', []);
+		
+		$count = count($from);
 		
 		$errorRows = [];
 		$insertedCount = 0;
@@ -289,15 +339,48 @@ class SpotbyController extends Controller
 					$rfq_end_date_time_ins = null;
 				}
 				
+				$origin = $from[$i];
+				$destination = $to[$i];
 				
-				$first2_char_from  = strtoupper(substr($from[$i],0,2));
-				$first2_char_to  = strtoupper(substr($to[$i],0,2));
+				 $originCity = DB::table('site_plants')
+					->where('plant_site_code', $origin)
+					->value('city');
+					
+				if (empty($originCity)) {
+					$errorRows[] = [
+									'row' => $rowNumber,
+									'from' => $origin,
+									'to' => $destination,
+									'message' => 'Invalid origin master data. Source city not found for From code: ' . $origin
+								];
+					continue;
+				}
+
+				$destinationCity = DB::table('site_plants')
+					->where('plant_site_code', $destination)
+					->value('city');
+					
+				 if (empty($destinationCity)) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'from' => $origin,
+							'to' => $destination,
+							'message' => 'Invalid destination master data. Destination city not found for To code: ' . $destination
+						];
+						continue;
+				}
+				
+				
+				$first2_char_from  = strtoupper(substr($originCity,0,2));
+				$first2_char_to  = strtoupper(substr($destinationCity,0,2));
 			
 				
 					
 					$data = [
 					'from' => $from[$i] ?? null,
 					'to' => $to[$i] ?? null,
+					'source_city' => $originCity ?? null,
+                    'destination_city' => $destinationCity ?? null,
 					'vehicle_type' => $vehicle_type[$i] ?? null,
 					'valid_from' => $valid_from ?? null,
 					'valid_upto' => $valid_to ?? null,
@@ -368,39 +451,7 @@ class SpotbyController extends Controller
 	
 	
 	// Vendor - show list of Spotby assigned
-    /*public function vendorQuote()
-    {  echo $roleName = Auth::user()->role->name;
-        $vendor_code = Auth::user()->vendor_code; // assuming vendor is logged in
-		//print_r(Auth::user());
-		$vendorId = Vendor::where('vendor_code', $vendor_code)->value('id');	
-		//Get vendor master Id using vendor code	
-				
-		 // Tab 1: Spotbys assigned to vendor but not yet quoted (no entry in quotes table for this vendor)
-		$spotbylist = Spotby::whereHas('vendors', function($q) use ($vendorId) {
-            $q->where('vendor_id', $vendorId);
-        })
-        ->whereDoesntHave('quotes', function($q) use ($vendorId) {
-            $q->where('vendor_id', $vendorId)
-              ->where('round', 1); // check only round 1
-        })
-        ->get();
 
-		//Tab 2: Spotbys already quoted by vendor (history)
-		$historyQuotes = Spotby::whereHas('quotes', function($q) use ($vendorId) {
-            $q->where('vendor_id', $vendorId)
-              ->where('round', 1);
-        })
-        ->with(['quotes' => function($q) use ($vendorId) {
-            $q->where('vendor_id', $vendorId)
-              ->where('round', 1);
-        }])
-        ->get();
-		
-	//	print_r($historyQuotes->quotes);
-		
-        return view('admin.spotby.spotby-vendor-quote', compact('spotbylist', 'historyQuotes'));
-    }*/
-	
 	public function vendorQuote()
 	{
 		
@@ -672,38 +723,7 @@ class SpotbyController extends Controller
 	}
 	
 	//User B1 _Round 3 (Buyer) Add revised price and time by Buyer client after round 2 price submitted by vendor
-	/*public function buyerRevisedQuoteB1R3()
-    {
-        $vendor_code = Auth::user()->vendor_code; // assuming vendor is logged in
-		
-		$vendorId = Vendor::where('vendor_code', $vendor_code)->value('id');	
-		//Get vendor master Id using vendor code	
-		 
-		  $spotbylist = Spotby::with([
-				'quotes' => function ($q) {
-					$q->whereNotNull('price')
-					  ->whereNull('client_revised_price')
-					  ->where('round', 2)
-					  ->orderBy('price', 'asc')
-					  ->orderBy('transit_time', 'asc')
-					  ->with('vendor');
-				},
-				'vendors' 
-				])->get();
-		
-		//Tab 2: Spotbys already quoted by vendor (history)
-				
-		$historyQuotes = Spotby::with(['quotes' => function ($q) {
-            $q->whereNotNull('price')
-			  ->whereNotNull('client_revised_price')
-              ->where('round', 2)
-              ->orderBy('price', 'asc')
-              ->orderBy('transit_time', 'asc')
-              ->with('vendor'); // vendor relation
-			}])->get();			
-        return view('admin.spotby.client-quote-b1-r3-revised', compact('spotbylist', 'historyQuotes'));
-    }
-	*/
+	
 	
 	public function buyerRevisedQuoteB1R3()
 	{
@@ -847,50 +867,7 @@ class SpotbyController extends Controller
 	//USER 3 ROUND 3 Approval
 	
 		//User B1 _Round 3 (Buyer) Add revised price and time by Buyer client after round 2 price submitted by vendor
-	/*public function buyerQuoteRound3Approver()
-    {
-        $vendor_code = Auth::user()->vendor_code; // assuming vendor is logged in
-		
-		$vendorId = Vendor::where('vendor_code', $vendor_code)->value('id');	
-		//Get vendor master Id using vendor code	
-		 
-		  $spotbylist = Spotby::with(['quotes.vendor'])
-        ->get()
-        ->map(function ($spotby) {
-            $spotby->market_avg_price = $spotby->quotes
-                ->where('round', 1)
-                ->avg('price');
-
-            $spotby->target_freight_rate = optional(
-                $spotby->quotes
-                    ->where('round', 2)
-                    ->whereNotNull('client_revised_price')
-                    ->first()
-            )->client_revised_price;
-
-            $spotby->target_transit_time = optional(
-                $spotby->quotes
-                    ->where('round', 2)
-                    ->whereNotNull('client_revised_transit_time')
-                    ->first()
-            )->client_revised_transit_time;
-
-            return $spotby;
-        });
-
 	
-	//Tab 2: Spotbys already quoted by vendor (history)
-				
-		$historyQuotes = Spotby::with(['quotes' => function ($q) {
-            $q->whereNotNull('price')
-			  ->whereNotNull('client_revised_price')
-              ->where('round', 2)
-              ->orderBy('price', 'asc')
-              ->orderBy('transit_time', 'asc')
-              ->with('vendor'); // vendor relation
-			}])->get();			
-        return view('admin.spotby.client-quote-round3-approval', compact('spotbylist', 'historyQuotes'));
-    }*/
 	
 	public function buyerQuoteRound3Approver()
 	{

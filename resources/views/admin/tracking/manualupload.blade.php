@@ -94,7 +94,7 @@
 					
 					<td class="char-10"><input type="text" name="lr_no[]" id="" value="{{ old('lr_no')[$i] ?? '' }}"></td>
 					
-					<td class="char-14"><input type="text" name="cases[]" id="" value="{{ old('cases')[$i] ?? '' }}"></td>
+					<td class="char-4"><input type="text" name="cases[]" id="" value="{{ old('cases')[$i] ?? '' }}"></td>
 					
 					<td><input type="text" name="truck_no[]" id="" value="{{ old('truck_no')[$i] ?? '' }}"></td>
 					  <td><input type="text" name="driver_number[]" id="" value="{{ old('driver_number')[$i] ?? '' }}"></td>

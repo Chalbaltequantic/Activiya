@@ -13,6 +13,8 @@ class Spotby extends Model
 	protected $fillable = [
 							'from',
 							'to' ,
+							'source_city',
+							'destination_city',
 							'vehicle_type',
 							'valid_from',
 							'valid_upto',

@@ -103,8 +103,9 @@ class LrController extends Controller
 		
 		 Lr::create([
         'vendor_id' => $vendor->id,
-        'invoice_no' => $request->invoice_no,
-        'lr_no' => $request->lr_no,
+		'eway_bill_no' =>$request->eway_bill_no ?? null,
+        'invoice_no' => $request->invoice_no ?? null,
+        'lr_no' => $request->lr_no ?? null,
         'registered_address_id' => $registered->id ?? null,
         'billing_address_id' => $billing->id ?? null,
         'branch_address_id' => $branch->id ?? null,

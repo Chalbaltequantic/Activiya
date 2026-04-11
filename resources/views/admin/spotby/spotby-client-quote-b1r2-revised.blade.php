@@ -36,19 +36,19 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 90px; /* Adjust based on col-1 width */
+      left: 100px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 170px; /* Adjust based on col-1 width */
+      left: 220px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 220px; /* Adjust based on col-1 width */
+      left: 310px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -161,10 +161,10 @@
 					  <thead>
 
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-1':''}}sticky-col-1">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-2' : '' }}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-3' ? '' }}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-4' ? ''}}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank1</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank2</th>
@@ -191,8 +191,8 @@
 					  
 					   <tr data-spotby-id="{{ $spotbydata->id }}">
 						<td class="sticky-col-1">{{$spotbydata->reference_no}}</td>
-						<td class="sticky-col-2">{{$spotbydata->from}}</td>
-						<td class="sticky-col-3">{{$spotbydata->to}}</td>
+						<td class="sticky-col-2">{{$spotbydata->from}} - {{$spotbydata->source_city}}</td>
+						<td class="sticky-col-3">{{$spotbydata->to}} - {{$spotbydata->destination_city}}</td>
 						<td class="sticky-col-4">{{$spotbydata->vehicle_type}}</td>
 						
 						@for($i=0; $i<5; $i++)
@@ -239,10 +239,10 @@
 					<table id="appointdataTable" class="table table-bordered border-dark table-hover">
 						<thead>
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-1">Reference No</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-2">From</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">To</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-4">Vehicle type</th>				
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyQuotes)>0 ? 'sticky-col-1' : '' }}">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyQuotes)>0 ? 'sticky-col-2' ? '' }}">From</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyQuotes)>0 ? 'sticky-col-3' ? '' }}">To</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($historyQuotes)>0 ? 'sticky-col-4' : '' }}">Vehicle type</th>				
 
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank1</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank2</th>
@@ -250,8 +250,8 @@
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank4</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">Rank5</th>
 						<th style="background: #fce4d6; color: #0070c0;" class="">R1 Vendor</th>
-						<th style="background: #ddebf7; color: #0070c0;width: 40px;" class="">R2 Vendor</th> 
-						<th style="background: #ddebf7; color: #0070c0;" class="">R3 Vendor</th> 						
+						<th style="background: #fce4d6; color: #0070c0;width: 40px;" class="">R2 Vendor</th> 
+						<th style="background: #fce4d6; color: #0070c0;" class="">R3 Vendor</th> 						
 						<th style="background: #fce4d6; color: #0070c0;">R4 Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;">R5 Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;">L1 Freight<br>Rate</th>
@@ -272,8 +272,8 @@
 					  
 							   <tr data-spotby-id="{{ $historyspotbydata->id }}">
 								<td class="sticky-col-1" style="z-index:999;">{{$historyspotbydata->reference_no}}</td>
-								<td class="sticky-col-2" style="z-index:999;">{{$historyspotbydata->from}}</td>
-								<td class="sticky-col-3" style="z-index:999;">{{$historyspotbydata->to}}</td>
+								<td class="sticky-col-2" style="z-index:999;">{{$historyspotbydata->from}} - {{$historyspotbydata->source_city}}</td>
+								<td class="sticky-col-3" style="z-index:999;">{{$historyspotbydata->to}} - {{$historyspotbydata->destination_city}}</td>
 								<td class="sticky-col-4" style="z-index:999;">{{$historyspotbydata->vehicle_type}}</td>
 								
 								@for($i=0; $i<5; $i++)

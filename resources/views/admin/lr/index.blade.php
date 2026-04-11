@@ -79,10 +79,10 @@ table {
 <div class="card-header p-2">
 <ul class="nav nav-pills">
 <li class="nav-item">
-<a class="nav-link active" href="javascript:void(0);">Invoice List</a>
+<a class="nav-link active" href="javascript:void(0);">LR List</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" href="{{route('admin.lr.create')}}">Generate Invoice</a>
+<a class="nav-link" href="{{route('admin.lr.create')}}">Generate LR</a>
 </li>				
 </ul>
 </div>
@@ -123,7 +123,7 @@ table {
 			<th style="background:#fce4d6;color:#0070c0;">Reg. Add</th>
 			
 
-			<th style="background:#fce4d6;color:#0070c0;" width="120">Action</th>
+			<th style="background:#fce4d6;color:#0070c0;">Action</th>
 			</tr>
 			</thead>
 
