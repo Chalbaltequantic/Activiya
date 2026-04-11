@@ -36,19 +36,19 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 140px; /* Adjust based on col-1 width */
+      left: 132px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 240px; /* Adjust based on col-1 width */
+      left: 242px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 330px; /* Adjust based on col-1 width */
+      left: 332px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -149,10 +149,10 @@
 					  <thead>
 
 						<tr>
-							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-1">S5 consignor short<br> name & location</th>
-							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">D5 consignor short<br> name & location</th>
-							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-3">Vendor Name</th>
-							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-4">Truck type</th> 
+							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($billdatalist) > 0 ? 'sticky-col-1' : '' }}">S5 consignor short<br> name & location</th>
+							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($billdatalist) > 0 ? 'sticky-col-2' : '' }}">D5 consignor short<br> name & location</th>
+							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($billdatalist) > 0 ? 'sticky-col-3' : '' }}">Vendor Name</th>
+							<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{ count($billdatalist) > 0 ? 'sticky-col-4' : '' }}">Truck type</th> 
 							<th style="background: #fce4d6; color: #0070c0;">Consignor name</th>
 							<th style="background: #fce4d6; color: #0070c0;">Consignor<br> code</th>
 							<th style="background: #fce4d6; color: #0070c0;">Consignor location</th>
