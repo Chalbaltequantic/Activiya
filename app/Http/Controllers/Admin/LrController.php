@@ -178,6 +178,64 @@ class LrController extends Controller
 		return redirect()->route('admin.lr.list')
         ->with('success', $action == 'final' ? 'LR Final Saved' : 'LR Saved as Draft');
 	}
+	
+	public function update(Request $request, $id)
+	{
+		$lr = Lr::findOrFail($id);
+
+		
+		if ($lr->status === 'final') {
+			return redirect()->back()->with('error', 'Final LR cannot be edited.');
+		}
+
+	
+		$request->validate([
+			'invoice_no' => 'required',
+		]);
+
+		
+		$status = $request->action === 'final' ? 'final' : 'draft';
+		$consignor = Siteplant::find($request->consignor);
+		$consignee = Siteplant::find($request->consignee);
+		
+		$lr->update([
+		
+		'eway_bill_no' =>$request->eway_bill_no ?? null,
+        'billing_address_id' => $billing->id ?? null,
+        'branch_address_id' => $branch->id ?? null,
+        'bill_date' => $request->bill_date ?? null,
+        'vehicle_no' => $request->vehicle_no ?? null,
+        'insurance' => $request->insurance ?? null,        
+        'indent_no' => $request->indent_no ?? null, 
+        'consignor_id' => $request->consignor ?? null,
+        'consignee_id' => $request->consignee ?? null,
+        'origin' => $consignor->city ?? null,
+        'destination' => $consignee->city ?? null,
+		'consignor' =>$consignor->plant_site_name ?? null,
+		'consignee' =>$consignee->plant_site_name ?? null,
+        'packages' => $request->packages ?? null,
+        'description' => $request->description ?? null,
+        'actual_weight' => $request->actual_weight ?? null,
+        'charged' => $request->charged ?? null,
+        'rate' => $request->rate ?? null,
+        'amount' => $request->amount ?? null,
+        'invoice_value' => $request->invoice_value ?? null,
+        'surcharge' => $request->surcharge ?? null,
+        'hamali' => $request->hamali ?? null,
+        'risk_charge' => $request->risk_charge ?? null,
+        'b_charge' => $request->b_charge ?? null,
+        'other_charge' => $request->other_charge ?? null,
+        'total_amount' => $request->total_amount ?? null,
+        'invoice_date' => $request->invoice_date ?? null,
+        'arrival_date' => $request->arrival_date ?? null,
+        'dispatch_date' => $request->dispatch_date ?? null,
+        'truck_type' => $request->truck_type ?? null,
+		'status' => $status
+		]);
+
+		return redirect()->route('admin.lr.list')
+			->with('success', 'LR updated successfully as ' . strtoupper($status));
+	}
    
 	public function pdf($id)
 	{
