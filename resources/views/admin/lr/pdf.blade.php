@@ -33,12 +33,12 @@ td,th{
 
 .draft-watermark {
 	position: fixed;
-	top: 38%;
+	top: 5px;
 	left: 18%;
 	width: 100%;
 	text-align: center;
 	transform: rotate(-30deg);
-	font-size: 90px;
+	font-size: 25px;
 	color: rgba(200, 0, 0, 0.18);
 	font-weight: bold;
 	z-index: -1;
@@ -51,14 +51,10 @@ td,th{
 
 <div class="main-container">
 
-<!-- TOP BAR -->
-@if($invoice->status === 'draft')
-    <div class="draft-watermark">DRAFT</div>
-@endif
 <table style="width:100%;font-size:14px;">
 @if($invoice->status === 'draft')
 <tr>
-<td class="draft-watermark" colspan="3" style="text-align:center;">CIN {{$vendor->cin ?? '-'}}</td>
+<td class="" colspan="3" style="text-align:center;"><div class="draft-watermark">DRAFT</div></td>
 </td>
 </tr>
 @endif
