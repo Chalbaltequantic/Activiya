@@ -591,19 +591,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	/////////////////LR GENERATE & list
 
-	Route::get('/lr/create',[App\Http\Controllers\Admin\LrController::class,'create'])
+	Route::get('lr/create',[App\Http\Controllers\Admin\LrController::class,'create'])
 		->name('lr.create');
 
-	Route::post('/lr/store',[App\Http\Controllers\Admin\LrController::class,'store'])
+	Route::post('lr/store',[App\Http\Controllers\Admin\LrController::class,'store'])
 		->name('lr.store');
 		
-	Route::get('/lr/{id}/edit', [App\Http\Controllers\Admin\LrController::class,'edit'])->name('admin.lr.edit');
-	Route::post('lr/{id}/update', [App\Http\Controllers\Admin\LrController::class,'update'])->name('admin.lr.update');	
+	Route::get('lr/{id}/edit', [App\Http\Controllers\Admin\LrController::class,'edit'])->name('lr.edit');
+	Route::post('lr/{id}/update', [App\Http\Controllers\Admin\LrController::class,'update'])->name('lr.update');	
 
-	Route::get('/lr/pdf/{id}',[App\Http\Controllers\Admin\LrController::class,'pdf'])
+	Route::get('lr/pdf/{id}',[App\Http\Controllers\Admin\LrController::class,'pdf'])
 		->name('lr.pdf');
 	
-	Route::get('/lr/list', [App\Http\Controllers\Admin\LrController::class, 'index'])
+	Route::get('lr/list', [App\Http\Controllers\Admin\LrController::class, 'index'])
     ->name('lr.list');	
 
 });

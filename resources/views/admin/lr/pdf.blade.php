@@ -31,6 +31,19 @@ td,th{
     box-sizing:border-box;
 }
 
+.draft-watermark {
+	position: fixed;
+	top: 38%;
+	left: 18%;
+	width: 100%;
+	text-align: center;
+	transform: rotate(-30deg);
+	font-size: 90px;
+	color: rgba(200, 0, 0, 0.18);
+	font-weight: bold;
+	z-index: -1;
+}
+
 </style>
 </head>
 
@@ -39,8 +52,16 @@ td,th{
 <div class="main-container">
 
 <!-- TOP BAR -->
-
+@if($invoice->status === 'draft')
+    <div class="draft-watermark">DRAFT</div>
+@endif
 <table style="width:100%;font-size:14px;">
+@if($invoice->status === 'draft')
+<tr>
+<td class="draft-watermark" colspan="3" style="text-align:center;">CIN {{$vendor->cin ?? '-'}}</td>
+</td>
+</tr>
+@endif
 <tr>
 <td>CIN {{$vendor->cin ?? '-'}}</td>
 <td style="text-align:center;">Subject to Bangalore Jurisdiction only</td>

@@ -48,6 +48,33 @@ class LrController extends Controller
 		return view('admin.lr.index', compact('invoices'));
 	}
 	
+	public function edit($id)
+	{
+		$lr = Lr::findOrFail($id);
+
+		if(Auth::user()->vendor_code)
+		{
+			$vendorCode = Auth::user()->vendor_code;
+			$vendor = Vendor::where('vendor_code',$vendorCode)->first();
+		}
+		else
+		{
+			$vendor = Vendor::first();
+		}
+        $registered = $vendor->addresses()
+            ->where('address_type','Registered')->first();
+
+        $billing = $vendor->addresses()
+            ->where('address_type','Billing')->get();
+
+        $branch = $vendor->addresses()
+            ->where('address_type','Branch')->get();
+
+        $plants = Siteplant::all();
+
+		return view('admin.lr.edit', compact('lr','vendor','registered','billing','branch','plants'));
+	}
+	
 	public function create()
     {
 		if(Auth::user()->vendor_code)
@@ -86,6 +113,7 @@ class LrController extends Controller
 		]);
 
 		
+		 
 		$vendorCode = Auth::user()->vendor_code;
 		$vendor = Vendor::where('vendor_code',$vendorCode)->first(); // simplify login logic
 		$registered = $vendor->addresses()
@@ -100,7 +128,9 @@ class LrController extends Controller
 
 		$consignor = Siteplant::find($request->consignor);
 		$consignee = Siteplant::find($request->consignee);
-		
+		 
+		$action = $request->input('action');
+		 
 		 Lr::create([
         'vendor_id' => $vendor->id,
 		'eway_bill_no' =>$request->eway_bill_no ?? null,
@@ -140,10 +170,13 @@ class LrController extends Controller
         'invoice_date' => $request->invoice_date ?? null,
         'arrival_date' => $request->arrival_date ?? null,
         'dispatch_date' => $request->dispatch_date ?? null,
-        'truck_type' => $request->truck_type ?? null
+        'truck_type' => $request->truck_type ?? null,
+		'status' => $action == 'final' ? 'final' : 'draft'
     ]);
 
-		return redirect()->route('admin.lr.list');
+		//return redirect()->route('admin.lr.list');
+		return redirect()->route('admin.lr.list')
+        ->with('success', $action == 'final' ? 'LR Final Saved' : 'LR Saved as Draft');
 	}
    
 	public function pdf($id)

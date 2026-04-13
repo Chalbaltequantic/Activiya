@@ -285,10 +285,16 @@
 
 			</div>
 
-
 			<div class="form-group mt-3 text-right">
-			<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" name="action" value="draft" class="btn btn-warning">
+					Save as Draft
+				</button>
+
+				<button type="submit" name="action" value="final" class="btn btn-success">
+					Save Final
+				</button>
 			</div>
+			
 
 			</form>
 

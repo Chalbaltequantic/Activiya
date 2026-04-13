@@ -164,6 +164,10 @@ table {
 			
 
 			<td>
+			@if($invoice->status == 'draft')
+				<a href="{{ route('admin.lr.edit',$invoice->id) }}" class="btn btn-info btn-sm">Edit</a>
+			@endif
+			
 			<a href="{{ route('admin.lr.pdf',$invoice->id) }}"
 			   class="btn btn-sm btn-danger"
 			   target="_blank">

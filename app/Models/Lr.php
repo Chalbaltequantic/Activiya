@@ -16,7 +16,7 @@ class Lr extends Model
 		'consignor', 'consignee', 'consignor_id', 'consignee_id','origin', 'destination', 'packages', 'description',
 		'actual_weight', 'charged', 'rate', 'amount', 'invoice_value', 'surcharge',
 		'hamali', 'risk_charge', 'b_charge', 'other_charge', 'total_amount', 'caution', 
-		'notice', 'indent_no', 'invoice_date', 'arrival_date', 'dispatch_date','truck_type','eway_bill_no'
+		'notice', 'indent_no', 'invoice_date', 'arrival_date', 'dispatch_date','truck_type','eway_bill_no', 'status'
       
     ];
 
