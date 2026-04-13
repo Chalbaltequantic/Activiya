@@ -33,12 +33,12 @@ td,th{
 
 .draft-watermark {
 	position: fixed;
-	top: 5px;
+	top: 38%;
 	left: 18%;
 	width: 100%;
 	text-align: center;
 	transform: rotate(-30deg);
-	font-size: 25px;
+	font-size: 90px;
 	color: rgba(200, 0, 0, 0.18);
 	font-weight: bold;
 	z-index: -1;
