@@ -33,8 +33,8 @@ td,th{
 
 .draft-watermark {
 	position: fixed;
-	top: 38%;
-	left: 18%;
+	top: 18%;
+	left: 12%;
 	width: 100%;
 	text-align: center;
 	transform: rotate(-30deg);
