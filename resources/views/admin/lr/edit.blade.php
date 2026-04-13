@@ -46,7 +46,7 @@
 		<select name="consignor" class="form-control select2" required>
 		<option value="">Select</option>
 		@foreach($plants as $p)
-		<option value="{{ $p->id }}" {{$lr->consignor_id==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
+		<option value="{{ $p->id }}" {{ $lr->consignor_id == $p->id ? 'selected' : '' }}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
 		@endforeach
 		</select>
 		</div>
@@ -57,7 +57,7 @@
 		<select name="consignee" class="form-control select2" required>
 		<option value="">Select</option>
 		@foreach($plants as $p)
-		<option value="{{ $p->id }}" {{$lr->consignee_id ==$p->id ?? 'selected'}}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
+		<option value="{{ $p->id }}" {{ $lr->consignee_id == $p->id ? 'selected' :'' }}>{{ $p->plant_site_name }} ({{ $p->plant_site_code }})</option>
 		@endforeach
 		</select>
 		</div>	
@@ -115,8 +115,8 @@
 		<label>Insurance</label>
 		<select name="insurance" class="form-control">
 		<option value="">Select</option>
-		<option value="At Owner Risk" {{$lr->insurance ==='At Owner Risk' ?? 'selected'}}>At Owner Risk</option>
-		<option value="At Career Risk" {{$lr->insurance ==='At Career Risk' ?? 'selected'}}>At Career Risk</option>
+		<option value="At Owner Risk" {{$lr->insurance =='At Owner Risk' ? 'selected' : '' }}>At Owner Risk</option>
+		<option value="At Career Risk" {{$lr->insurance =='At Career Risk' ? 'selected' : ''}}>At Career Risk</option>
 		</select>
 		</div>
 
