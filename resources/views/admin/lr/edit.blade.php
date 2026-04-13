@@ -28,7 +28,7 @@
 
 <form method="POST" action="{{ route('admin.lr.update',$lr->id) }}">
 @csrf
-@method('PUT')
+
 
 @php
     $isFinal = $lr->status === 'final';
