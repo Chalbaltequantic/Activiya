@@ -101,7 +101,7 @@ Address of Delivery Office:
 </div>
 @if(!empty($invoice->shipping_instruction))
 <div style="margin-top:5px;">
-Shipping Instruction : {{$invoice->shipping_instruction}}
+<b>Shipping Instruction :</b> <br>{{$invoice->shipping_instruction}}
 </div>
 @endif
 </td>
