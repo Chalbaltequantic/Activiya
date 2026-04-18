@@ -86,7 +86,6 @@ Ph. {{$vendor->authorized_person_phone}}
 
 <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;">
 <tr>
-
 <td style="width:30%;border:1px solid #000;padding:8px;vertical-align:top;">
 <b>CAUTION</b><br>
 {{$invoice->caution}}<br><br>
@@ -100,7 +99,11 @@ Address of Delivery Office:
 <div style="margin-top:5px;text-align:center;">
 {{$invoice->insurance}}
 </div>
-
+@if(!empty($invoice->shipping_instruction))
+<div style="margin-top:5px;">
+Shipping Instruction : {{$invoice->shipping_instruction}}
+</div>
+@endif
 </td>
 
 <td style="width:30%;border:1px solid #000;padding:8px;vertical-align:top;">
@@ -120,7 +123,6 @@ Address of Delivery Office:
 
 </tr>
 </table>
-
 
 <!-- CONSIGNMENT NOTE -->
 
@@ -191,8 +193,8 @@ Consignee's Name & Address :
 <tr style="font-weight:bold;">
 <td style="border:1px solid #000;padding:5px;width:80px;">Packages</td>
 <td style="border:1px solid #000;padding:5px;">Description <small>(Said to Contain)</td>
-<td style="border:1px solid #000;padding:5px;width:80px;">Actual</td>
-<td style="border:1px solid #000;padding:5px;width:90px;">Weight Charged</td>
+<td style="border:1px solid #000;padding:5px;width:80px;">Actual Weight(kg)</td>
+<td style="border:1px solid #000;padding:5px;width:90px;">Weight Charged(kg)</td>
 <td style="border:1px solid #000;padding:5px;width:60px;">Rate</td>
 <td style="border:1px solid #000;padding:5px;width:50px;">Amount</td>
 </tr>

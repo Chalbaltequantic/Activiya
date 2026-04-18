@@ -198,6 +198,10 @@
 			</select>
 			</div>
 
+			<div class="form-group col-md-4">
+			<label>Shipping Instruction.</label>
+			<input type="text" name="shipping_instruction" class="form-control" value="{{ old('shipping_instruction') }}">
+			</div>
 
 			
 

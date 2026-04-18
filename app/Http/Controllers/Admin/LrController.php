@@ -171,6 +171,7 @@ class LrController extends Controller
         'arrival_date' => $request->arrival_date ?? null,
         'dispatch_date' => $request->dispatch_date ?? null,
         'truck_type' => $request->truck_type ?? null,
+        'shipping_instruction' => $request->shipping_instruction ?? null,
 		'status' => $action == 'final' ? 'final' : 'draft'
     ]);
 
@@ -230,6 +231,7 @@ class LrController extends Controller
         'arrival_date' => $request->arrival_date ?? null,
         'dispatch_date' => $request->dispatch_date ?? null,
         'truck_type' => $request->truck_type ?? null,
+        'shipping_instruction' => $request->shipping_instruction ?? null,
 		'status' => $status
 		]);
 
