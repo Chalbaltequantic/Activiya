@@ -435,13 +435,13 @@ class InvoiceController extends Controller
 				}
 
 				if (collect($row)->filter(fn ($v) => $v !== null && trim((string) $v) !== '')->isEmpty()) {
-					continue;
+				continue;
 				}
 
-				if(empty($row[0]))
-					{
-						continue;
-					}
+				if (!isset($row[0]) || trim((string) $row[0]) === '') {
+					continue;
+				}
+				
 					
 				$arrival_date = !empty($row[3]) ? date('Y-m-d', strtotime($row[3])) : null;
 				$dispatch_date = !empty($row[4]) ? date('Y-m-d', strtotime($row[4])) : null;
