@@ -577,17 +577,26 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	/////////////////InVOICE GENERATE & list
 
-	Route::get('/invoice/create',[App\Http\Controllers\Admin\InvoiceController::class,'create'])
+	Route::get('invoice/create',[App\Http\Controllers\Admin\InvoiceController::class,'create'])
 		->name('invoice.create');
 
-	Route::post('/invoice/store',[App\Http\Controllers\Admin\InvoiceController::class,'store'])
+	Route::post('invoice/store',[App\Http\Controllers\Admin\InvoiceController::class,'store'])
 		->name('invoice.store');
 
-	Route::get('/invoice/pdf/{id}',[App\Http\Controllers\Admin\InvoiceController::class,'pdf'])
+	Route::get('invoice/pdf/{id}',[App\Http\Controllers\Admin\InvoiceController::class,'pdf'])
 		->name('invoice.pdf');
 	
-	Route::get('/invoice/list', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])
+	Route::get('invoice/list', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])
     ->name('invoice.list');	
+	
+	// Edit invoice (invoice + invoice_items only)
+	Route::get('invoice/{id}/edit', [App\Http\Controllers\Admin\InvoiceController::class, 'edit'])->name('invoice.edit');
+	Route::post('invoice/{id}/update', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('invoice.update');
+
+	// Upload annexure from XLS/XLSX
+	Route::get('invoice/{id}/upload-annexure', [App\Http\Controllers\Admin\InvoiceController::class, 'uploadAnnexureForm'])->name('invoice.upload_annexure_form');
+	Route::post('invoice/{id}/upload-annexure', [App\Http\Controllers\Admin\InvoiceController::class, 'uploadAnnexureStore'])->name('invoice.upload_annexure_store');
+
 	
 	/////////////////LR GENERATE & list
 

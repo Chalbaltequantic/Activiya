@@ -112,6 +112,7 @@ table {
 			<th style="background:#fce4d6;color:#0070c0;">Reg. Add</th>
 			<th style="background:#fce4d6;color:#0070c0;">Billing Add</th>
 			<th style="background:#fce4d6;color:#0070c0;">Branch Add</th>
+			<th style="background:#fce4d6;color:#0070c0;">Status</th>
 
 			<th style="background:#fce4d6;color:#0070c0;" width="120">Action</th>
 			</tr>
@@ -159,8 +160,26 @@ table {
 			<td>{{ $invoice->branchAddress->address_line1 ?? ''  }}, {{ $invoice->branchAddress->address_line2 ?? ''  }}, {{ $invoice->branchAddress->city ?? ''  }}, 
 			{{ $invoice->branchAddress->state ?? ''  }} - {{ $invoice->branchAddress->zip_code ?? ''  }}
 			</td>
+			<td>
+				@if($invoice->status === 'final')
+					<span class="badge badge-success">Final</span>
+				@else
+					<span class="badge badge-warning">Draft</span>
+				@endif
+			</td>
 
 			<td>
+			@if($invoice->status === 'draft')
+				<a href="{{ route('admin.invoice.edit', $invoice->id) }}"
+				   class="btn btn-sm btn-primary mb-1">
+					<i class="fas fa-edit"></i> Edit
+				</a>
+			@endif
+
+			<a href="{{ route('admin.invoice.upload_annexure_form', $invoice->id) }}"
+			   class="btn btn-sm btn-warning mb-1">
+				<i class="fas fa-file-upload"></i> Upload Annexure
+			</a>
 			<a href="{{ route('admin.invoice.pdf',$invoice->id) }}"
 			   class="btn btn-sm btn-danger"
 			   target="_blank">
@@ -170,11 +189,7 @@ table {
 			</tr>
 
 			@empty
-			<tr>
-			<td colspan="17" class="text-center text-muted">
-			No invoices found
-			</td>
-			</tr>
+			
 			@endforelse
 			</tbody>
 
@@ -188,7 +203,7 @@ table {
 	</div>
 </div>
 </div>
-
+</div>
 </div>
 </div>
 </div>

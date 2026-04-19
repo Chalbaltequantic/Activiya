@@ -166,7 +166,7 @@
 
 <div class="form-group col-md-4">
 <label>LR No</label>
-<input type="text" name="items[0][lr_no]" class="form-control">
+<input type="text" name="items[0][lr_no]" class="form-control" maxlength="10">
 </div>
 
 <div class="form-group col-md-4">
@@ -208,12 +208,12 @@
 
 <div class="form-group col-md-4">
 <label>Taxable</label>
- <input type="text"  name="items[0][taxable]" class="form-control">
+ <input type="text"  name="items[0][taxable]" class="form-control" readonly>
 </div>
 <div class="form-group col-md-4">
 
 <label>GST</label>
- <input type="text" name="items[0][gst]" class="form-control">
+ <input type="number" name="items[0][gst]" class="form-control">
 </div>
 
 
@@ -243,12 +243,12 @@
 
 			<div class="form-group col-md-4">
 			<label>Customer Ref / Indent Id</label>
-			<input type="text" name="annexures[0][customer_ref_no]" class="form-control">
+			<input type="text" name="annexures[0][customer_ref_no]" class="form-control" maxlength="10">
 			</div>
 
 			<div class="form-group col-md-4">
-			<label>OBD / PO No.</label>
-			<input type="text" name="annexures[0][obd_po_no]" class="form-control">
+			<label>OBD / LR No.</label>
+			<input type="text" name="annexures[0][obd_po_no]" class="form-control" maxlength="10" >
 			</div>
 
 
@@ -264,23 +264,23 @@
 			<div class="form-group col-md-4">
 
 			<label>Detention Days</label>
-			<input type="text" name="annexures[0][detention_days]" class="form-control" readonly>
+			<input type="text" name="annexures[0][loading_detention_days]" class="form-control" readonly>
 			</div>
 
 
 			<div class="form-group col-md-4">
 			<label>Detention Charge</label>
-			<input type="text" name="annexures[0][detention_charge]" class="form-control">
+			<input type="number" name="annexures[0][loading_detention_charge]" class="form-control">
 			</div>
 
 			<div class="form-group col-md-4">
 			<label>Loading Charge</label>
-			<input type="text" name="annexures[0][loading_charge]" class="form-control">
+			<input type="number" name="annexures[0][loading_charge]" class="form-control">
 			</div>
 
 			<div class="form-group col-md-4">
 			<label>Two Point Loading Charge</label>
-			<input type="text" name="annexures[0][two_point_loading_charge]" class="form-control">
+			<input type="number" name="annexures[0][two_point_loading_charge]" class="form-control">
 			</div>
 
 
@@ -302,7 +302,7 @@
 			</div>
 			<div class="form-group col-md-4">
 			<label>Detention Days</label>
-			<input type="text" name="annexures[0][detention_days]" class="form-control" readonly>
+			<input type="text" name="annexures[0][unloading_detention_days]" class="form-control" readonly>
 			</div>
 			<div class="form-group col-md-4">
 			<label>Transit Days</label>
@@ -310,21 +310,21 @@
 			</div>
 			<div class="form-group col-md-4">
 			<label>Detention Charge</label>
-			<input type="number" name="annexures[0][detention_chrge]" class="form-control">
+			<input type="number" name="annexures[0][unloading_detention_charge]" class="form-control">
 			</div>
 			<div class="form-group col-md-4">
 			<label>Unloading Charge</label>
-			<input type="number" name="annexures[0][unloading_chrge]" class="form-control">
+			<input type="number" name="annexures[0][unloading_charge]" class="form-control">
 			</div>
 			<div class="form-group col-md-4">
 			<label>Two Point Delivery Charge</label>
 			<input type="number" name="annexures[0][two_point_delivery_charge]" class="form-control">
 			</div>
 			
-			{{--<div class="form-group col-md-4">
+			<div class="form-group col-md-4">
 			<label>Freight</label>
 			<input type="text" name="annexures[0][freight]" class="form-control">
-			</div>--}}
+			</div>
 			<div class="form-group col-md-4">
 			<label>GR Charges</label>
 			<input type="number" name="annexures[0][gr_charges]" class="form-control">
@@ -356,10 +356,16 @@
 	</div>
 	</div>
 </div>
-
 <div class="mt-3">
-<button class="btn btn-primary">Submit</button>
+    <button type="submit" name="action" value="draft" class="btn btn-warning">
+        Save as Draft
+    </button>
+
+    <button type="submit" name="action" value="final" class="btn btn-success">
+        Save Final
+    </button>
 </div>
+
 
 </form>
 
@@ -369,29 +375,26 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('.select2').select2({
+        theme: 'bootstrap4'
+    });
 
-<script>
-$(function(){
-$('.select2').select2({
-theme:'bootstrap4'
+    recalculateInvoiceAmounts();
 });
-});
-</script>
-<script>
+
 let annexureIndex = 1;
 
-$('#addAnnexure').click(function(){
 
+$('#addAnnexure').click(function () {
     let newBlock = $('.annexure-block:first').clone();
 
     newBlock.attr('data-index', annexureIndex);
 
-    // Update heading text
-    newBlock.find('.annexure-title span')
-        .text('Annexure ' + (annexureIndex + 1));
+    newBlock.find('.annexure-title span').text('Annexure ' + (annexureIndex + 1));
 
-    // ADD REMOVE BUTTON ONLY FOR NEW BLOCK
-    if(newBlock.find('.remove-annexure').length === 0){
+    if (newBlock.find('.remove-annexure').length === 0) {
         newBlock.find('.annexure-title').append(`
             <button type="button" class="btn btn-danger btn-sm remove-annexure">
                 Remove
@@ -399,12 +402,11 @@ $('#addAnnexure').click(function(){
         `);
     }
 
-    // Update input names & clear values
-    newBlock.find('input').each(function(){
-        let name = $(this).attr('name');
+    newBlock.find('input').each(function () {
+        let oldName = $(this).attr('name');
 
-        if(name){
-            let newName = name.replace(/\[\d+\]/, '['+annexureIndex+']');
+        if (oldName) {
+            let newName = oldName.replace(/\[\d+\]/, '[' + annexureIndex + ']');
             $(this).attr('name', newName);
         }
 
@@ -414,66 +416,201 @@ $('#addAnnexure').click(function(){
     $('#annexureContainer').append(newBlock);
 
     annexureIndex++;
+
+    setTimeout(function () {
+        recalculateInvoiceAmounts();
+    }, 100);
 });
 
 
-/* REMOVE ANNEXURE */
-$(document).on('click', '.remove-annexure', function(){
+$(document).on('click', '.remove-annexure', function () {
     $(this).closest('.annexure-block').remove();
+
+    setTimeout(function () {
+        recalculateInvoiceAmounts();
+    }, 100);
 });
-</script>
-<script>
-/* ================= CALCULATE ANNEXURE TOTAL ================= */
 
-function calculateAnnexureTotal(){
 
-    let total = 0;
-
-    $('#annexureContainer').find('input').each(function(){
-
-        let name = $(this).attr('name');
-
-        if(!name) return;
-
-        // Only sum numeric charge fields
-        if(
-           
-            name.includes('[loading_charge]') ||
-            name.includes('[unloading_charge]') ||
-            name.includes('[two_point_loading_charge]') ||
-            name.includes('[detention_charge]') ||
-            name.includes('[fix_rental]') ||
-            name.includes('[green_tax]') ||
-            name.includes('[toll_tax]')
-        ){
-            let val = parseFloat($(this).val());
-            if(!isNaN(val)){
-                total += val;
-            }
-        }
-
-    });
-	let basefreight = $('input[name="items[0][base_freight]"]').val();
-	
-	let sumtotal = total + basefreight;
-    // Set total to Taxable field
-    $('input[name="items[0][taxable]"]').val(sumtotal.toFixed(2));
+function getNumber(value) {
+    let num = parseFloat(value);
+    return isNaN(num) ? 0 : num;
 }
 
 
-/* ================= EVENTS ================= */
+function parseDate(value) {
+    if (!value) return null;
 
-// Trigger on typing
-$(document).on('keyup change', '#annexureContainer input', function(){
-    calculateAnnexureTotal();
+    value = value.trim();
+
+    // yyyy-mm-dd
+    if (value.indexOf('-') > -1) {
+        let parts = value.split('-');
+        if (parts.length === 3) {
+            let year = parseInt(parts[0], 10);
+            let month = parseInt(parts[1], 10) - 1;
+            let day = parseInt(parts[2], 10);
+
+            let date = new Date(year, month, day);
+            return isNaN(date.getTime()) ? null : date;
+        }
+    }
+
+    // mm/dd/yyyy
+    if (value.indexOf('/') > -1) {
+        let parts = value.split('/');
+        if (parts.length === 3) {
+            let month = parseInt(parts[0], 10) - 1;
+            let day = parseInt(parts[1], 10);
+            let year = parseInt(parts[2], 10);
+
+            let date = new Date(year, month, day);
+            return isNaN(date.getTime()) ? null : date;
+        }
+    }
+
+    return null;
+}
+
+function getDayDifference(fromDate, toDate) {
+    let startDate = parseDate(fromDate);
+    let endDate = parseDate(toDate);
+
+    if (!startDate || !endDate) {
+        return 0;
+    }
+
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+
+    let difference = endDate.getTime() - startDate.getTime();
+    let days = difference / (1000 * 60 * 60 * 24);
+
+    return days > 0 ? Math.floor(days) : 0;
+}
+
+
+function calculateDetentionDays() {
+    $('#annexureContainer').find('.annexure-block').each(function () {
+        let block = $(this);
+        let index = block.attr('data-index');
+
+        let arrivalDate = block.find('input[name="annexures[' + index + '][arrival_date]"]').val();
+        let dispatchDate = block.find('input[name="annexures[' + index + '][dispatch_date]"]').val();
+
+        let reportingDate = block.find('input[name="annexures[' + index + '][reporting_date]"]').val();
+        let unloadingDate = block.find('input[name="annexures[' + index + '][unloading_date]"]').val();
+
+        // Loading detention days = dispatch_date - arrival_date
+        let loadingDetentionDays = getDayDifference(arrivalDate, dispatchDate);
+
+        // Unloading detention days = unloading_date - reporting_date
+        let unloadingDetentionDays = getDayDifference(reportingDate, unloadingDate);
+
+        block.find('input[name="annexures[' + index + '][loading_detention_days]"]').val(loadingDetentionDays);
+        block.find('input[name="annexures[' + index + '][unloading_detention_days]"]').val(unloadingDetentionDays);
+    });
+}
+
+
+function calculateAnnexureTotals() {
+    let gstApplicableTotal = 0;
+    let nonGstTotal = 0;
+
+    $('#annexureContainer').find('input').each(function () {
+        let fieldName = $(this).attr('name');
+        let fieldValue = getNumber($(this).val());
+
+        if (!fieldName) return;
+
+        // GST applicable fields
+        if (
+            fieldName.includes('[freight]') ||
+            fieldName.includes('[loading_detention_charge]') ||
+            fieldName.includes('[loading_charge]') ||
+            fieldName.includes('[two_point_loading_charge]') ||
+            fieldName.includes('[unloading_detention_charge]') ||
+            fieldName.includes('[unloading_charge]') ||
+            fieldName.includes('[two_point_delivery_charge]') ||
+            fieldName.includes('[gr_charges]') ||
+            fieldName.includes('[fix_rental]')
+        ) {
+            gstApplicableTotal += fieldValue;
+        }
+
+        // GST not applicable fields
+        if (
+            fieldName.includes('[toll_tax]') ||
+            fieldName.includes('[green_tax]')
+        ) {
+            nonGstTotal += fieldValue;
+        }
+    });
+
+    return {
+        gstApplicableTotal: gstApplicableTotal,
+        nonGstTotal: nonGstTotal
+    };
+}
+
+
+function calculateInvoiceAmount() {
+    let baseFreight = getNumber($('input[name="items[0][base_freight]"]').val());
+    let gstPercent = getNumber($('input[name="items[0][gst]"]').val());
+
+    let annexureTotals = calculateAnnexureTotals();
+
+    // GST taxable amount
+    let taxableAmount = baseFreight + annexureTotals.gstApplicableTotal;
+
+    // GST amount
+    let gstAmount = taxableAmount * gstPercent / 100;
+
+    // Final payable amount
+    let totalAmount = taxableAmount + gstAmount + annexureTotals.nonGstTotal;
+
+    $('input[name="items[0][taxable]"]').val(taxableAmount.toFixed(2));
+
+    // Optional hidden/display fields if you add them later
+   /* if ($('input[name="items[0][gst_amount]"]').length) {
+        $('input[name="items[0][gst_amount]"]').val(gstAmount.toFixed(2));
+    }*/
+
+    if ($('input[name="items[0][total]"]').length) {
+        $('input[name="items[0][total]"]').val(totalAmount.toFixed(2));
+    }
+}
+
+
+function recalculateInvoiceAmounts() {
+    calculateDetentionDays();
+    calculateInvoiceAmount();
+}
+
+$(document).on('keyup change', 'input[name="items[0][base_freight]"]', function () {
+    calculateInvoiceAmount();
 });
 
-// Also trigger after adding annexure
-$('#addAnnexure').click(function(){
-    setTimeout(function(){
-        calculateAnnexureTotal();
-    }, 200);
+// Recalculate when GST percent changes
+$(document).on('keyup change', 'input[name="items[0][gst]"]', function () {
+    calculateInvoiceAmount();
 });
 
+// Recalculate when any annexure field changes
+$(document).on('keyup change', '#annexureContainer input', function () {
+    recalculateInvoiceAmounts();
+});
+
+// Recalculate specifically when date fields change
+$(document).on(
+    'change blur',
+    '#annexureContainer input[name*="[arrival_date]"], ' +
+    '#annexureContainer input[name*="[dispatch_date]"], ' +
+    '#annexureContainer input[name*="[reporting_date]"], ' +
+    '#annexureContainer input[name*="[unloading_date]"]',
+    function () {
+        calculateDetentionDays();
+    }
+);
 </script>
 @endsection

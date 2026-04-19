@@ -7,12 +7,12 @@
 <style>
 @page {
     size: A4;
-    margin: 8mm 6mm 18mm 6mm;
+    margin: 4mm 6mm 4mm 6mm;
 }
 
 body{
     font-family: DejaVu Sans, Arial, Helvetica, sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     color:#000;
 }
 
@@ -27,8 +27,8 @@ table{
 
 th, td{
     border:1px solid #000;
-    padding:5px;
-    font-size:10px;
+    padding:2px;
+    font-size:8px;
 }
 
 .no-border td{
@@ -40,7 +40,7 @@ th, td{
 .font-bold{ font-weight:bold; }
 
 .header-title{
-    font-size:18px;
+    font-size:10px;
     font-weight:bold;
 }
 
@@ -178,11 +178,14 @@ th, td{
     <th>From</th>
     <th>To</th>
     <th>PO No</th>
+	 <th>Truck</th>
+    <th>Truck No.</th>
     <th>Taxable</th>
     <th>CGST</th>
     <th>SGST</th>
     <th>IGST</th>
     <th>Total</th>
+   
 </tr>
 </thead>
 <tbody>
@@ -212,21 +215,26 @@ th, td{
     <td>{{ $item->from_location ?? ''  }}</td>
     <td>{{ $item->to_location ?? ''  }}</td>
     <td>{{ $item->po_no ?? ''  }}</td>
+	<td class="text-right">{{ $item->truck_type }}</td>
+    <td class="text-right">{{  $item->vehicle_no }}</td>
     <td class="text-right">{{ number_format($item->taxable,2) }}</td>
     <td class="text-right">{{ number_format($item->cgst,2) }}</td>
     <td class="text-right">{{ number_format($item->sgst,2) }}</td>
     <td class="text-right">{{ number_format($item->igst,2) }}</td>
     <td class="text-right">{{ number_format($item->total,2) }}</td>
+	
 </tr>
 @endforeach
 
 <tr class="font-bold text-center">
-    <td colspan="7" class="text-right">Grand Total (Rs)</td>
+    <td colspan="9" class="text-right">Grand Total (Rs)</td>
     <td class="text-right">{{ number_format($total_taxable,2) }}</td>
     <td class="text-right">{{ number_format($total_cgst,2) }}</td>
     <td class="text-right">{{ number_format($total_sgst,2) }}</td>
     <td class="text-right">{{ number_format($total_igst,2) }}</td>
     <td class="text-right">{{ number_format($grand_total,2) }}</td>
+	
+   
 </tr>
 
 
@@ -273,21 +281,29 @@ th, td{
 <thead>
 <tr class="section-title">
     <th>Sr</th>
-    <th>LR No</th>
-    <th>Customer Ref</th>
-    <th>Arrival</th>
-    <th>Delivery</th>
+    
+    <th>Ref / PO<br>No</th>
+    <th>OBD / LR No</th>
+    <th>B Freight</th>
+    <th>Arrvl<br>Dt</th>
+    <th>Dspch<br>Dt</th>
+    <th>Det<br>Days</th>
+    <th>Det<br>Chrg</th>
+    <th>Ld<br>Chrg</th>
+    <th>Two pt<br>LdChrg</th>
+    <th>Rep<br>Dt</th>
+    <th>Unld<br>Dt</th>
+    <th>Unld<br>Days</th>	
     <th>Transit</th>
-    <th>Vehicle</th>
-    <th>Size</th>
-    <th>Weight</th>
-    <th>Pkgs</th>
-    <th>Freight</th>
-    <th>Charge Wt</th>
-    <th>Loading</th>
-    <th>Unloading</th>
-    <th>Toll</th>
-    <th>Green Tax</th>
+    <th>Unld Det<br>Chrg</th>
+    <th>Unld<br>Chrg</th>
+    <th>Two pt <br>Unld Chrg</th>
+    <th>GR<br>Chrg</th>
+    <th>Fix<br>Chrg</th>
+    <th>Toll<br>Tax</th>
+    <th>Green<br>Tax</th>
+   
+   
 </tr>
 </thead>
 <tbody>
@@ -296,21 +312,27 @@ th, td{
 @foreach($invoice->annexures as $a)
 <tr class="text-center">
     <td>{{ $sr++ }}</td>
-    <td>{{ $a->lr_no ?? ''  }}</td>
+    
     <td>{{ $a->customer_ref_no ?? ''  }}</td>
+    <td>{{ $a->obd_no ?? ''  }}</td>
+    <td>{{ $a->freight ?? ''  }}</td>
     <td>{{ $a->arrival_date ?? ''  }}</td>
-    <td>{{ $a->delivery_date ?? ''  }}</td>
-    <td>{{ $a->transit_days ?? ''  }}</td>
-    <td>{{ $a->vehicle_no ?? ''  }}</td>
-    <td>{{ $a->vehicle_size ?? ''  }}</td>
-    <td class="text-right">{{ number_format($a->actual_weight,2) }}</td>
-    <td>{{ $a->no_of_packages ?? ''  }}</td>
-    <td class="text-right">{{ number_format($a->freight,2) }}</td>
-    <td class="text-right">{{ number_format($a->charge_weight,2) }}</td>
-    <td class="text-right">{{ number_format($a->loading_charge,2) }}</td>
-    <td class="text-right">{{ number_format($a->unloading_charge,2) }}</td>
-    <td class="text-right">{{ number_format($a->toll_tax,2) }}</td>
-    <td class="text-right">{{ number_format($a->green_tax,2) }}</td>
+    <td>{{ $a->dispatch_date ?? ''  }}</td>
+    <td>{{ $a->loading_detention_days ?? ''  }}</td>
+    <td>{{ $a->loading_detention_charge ?? ''  }}</td>
+    <td>{{ $a->loading_charge ?? ''  }}</td>
+    <td>{{ $a->loading_pt_det_charge }}</td>
+    <td>{{ $a->reporting_date ?? ''  }}</td>
+    <td>{{ $a->unloading_date }}</td>
+    <td>{{ $a->unloading_detention_days }}</td>
+    <td>{{ $a->transit_days }}</td>
+    <td>{{ $a->unloading_detention_charge }}</td>
+    <td>{{ $a->unloading_charge }}</td>
+    <td>{{ $a->unloading_pt_det_charge }}</td>
+    <td>{{ $a->gr_charges }}</td>
+    <td>{{ $a->fix_rental }}</td>
+    <td>{{ $a->toll_tax }}</td>
+    <td>{{ $a->green_tax }}</td>
 </tr>
 @endforeach
 
