@@ -75,9 +75,7 @@ class InvoiceController extends Controller
             compact('vendor','registered','billing','branch','plants','invoiceNo'));
     }
 
-   
-	
-	public function store(Request $request)
+   	public function store(Request $request)
 	{
 		$action = $request->input('action', 'draft');
 
