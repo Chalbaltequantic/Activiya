@@ -12,7 +12,7 @@ class Invoice extends Model
         'gst_type','registered_address_id',
         'billing_address_id','branch_address_id',
         'total_taxable','total_tax','grand_total',
-        'digital_signature_path', 'indent_id'
+        'digital_signature_path', 'indent_id', 'status'
     ];
 
     public function items()
