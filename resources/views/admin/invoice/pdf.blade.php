@@ -75,6 +75,18 @@ th, td{
 .page-break{
     page-break-before: always;
 }
+.draft-watermark {
+	position: fixed;
+	top: 18%;
+	left: 12%;
+	width: 100%;
+	text-align: center;
+	transform: rotate(-30deg);
+	font-size: 90px;
+	color: rgba(200, 0, 0, 0.18);
+	font-weight: bold;
+	z-index: -1;
+}
 </style>
 </head>
 <body>
@@ -109,6 +121,12 @@ th, td{
 
 <!-- ADDRESS + QR -->
 <table>
+@if($invoice->status === 'draft')
+<tr>
+<td class="" colspan="3" style="text-align:center;"><div class="draft-watermark">DRAFT</div></td>
+</td>
+</tr>
+@endif
 <tr>
     <td width="45%" valign="top">
         <b>Branch Address</b><br>
@@ -342,7 +360,7 @@ th, td{
 
 <!-- FOOTER -->
 <div class="footer-bar">
-    {{$vendor->vendor_name}} | EXPERIENCE EXCELLENCE
+    {{$vendor->vendor_name}} 
 </div>
 
 </body>
