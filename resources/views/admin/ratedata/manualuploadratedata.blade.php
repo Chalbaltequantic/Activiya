@@ -82,7 +82,7 @@
 					</tr>
 				  </thead>
 				  <tbody>
-				  @for ($i = 1; $i <= 10; $i++)
+				  @for ($i = 1; $i <= 20; $i++)
 				  
 					<tr>
 					 <td class=""><input type="text" name="consignor_name[]" id="consignor_name{{$i}}" value="" {{ $i == 1 ? 'required' : '' }}></td>
