@@ -17,12 +17,12 @@
 					@if(Gate::allows('admin.users.index'))
 						<li class="nav-item d-none d-sm-inline-block" style="z-index:1100;"><a href="{{ route('admin.users.index') }}" class="nav-link">Users</a></li>
 						@endif
-					@endif
+				@endif
 				@if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 13))
 					@if(Auth::user() && (Auth::user()->role_id == 1))
-				<li class="nav-item d-none d-sm-inline-block">
-                    <a href="/admin/dashboard" class="nav-link">Home</a>
-                </li>
+						<li class="nav-item d-none d-sm-inline-block">
+							<a href="/admin/dashboard" class="nav-link">Home</a>
+						</li>
 					@endif
 					
 				<li class="nav-item dropdown">
@@ -169,41 +169,41 @@
 					 @endif 
 					</ul>
 				</li>
-				{{-- @if(Auth::user() && (Auth::user()->role_id != 12)) --}}
 				
-				@if(Gate::allows('admin.spotbylist') || Gate::allows('admin.spotby') || Gate::allows('admin.selectvendor') || Gate::allows('admin.vendor.quotes.index')|| Gate::allows('admin.buyerB1R2Quote') || Gate::allows('admin.vendor.quotes.round2') || Gate::allows('admin.buyerB1R3Quote') || Gate::allows('admin.buyerQuoteRound3Approver') )
-				 <li class="nav-item dropdown">
-					<a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Quotation</a>
-					<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-						@if(Gate::allows('admin.spotby'))					
-							 <li class=""><a href="{{ route('admin.spotby') }}" class="dropdown-item">Add/Upload RFQ</a></li>					 
-						@endif
-						@if(Gate::allows('admin.spotbylist'))	
-							<li class=""><a href="{{ route('admin.spotbylist') }}" class="dropdown-item">RFQ History</a></li>
-						@endif	
-						@if(Gate::allows('admin.selectvendor'))
-							<li class=""><a href="{{ route('admin.selectvendor') }}" class="dropdown-item">Buyer Round 1</a></li>
-						@endif
-						@if(Gate::allows('admin.vendor.quotes.index'))
-							<li class=""><a href="{{ route('admin.vendor.quotes.index') }}" class="dropdown-item">Supplier Round 1</a></li>
-						@endif
-						@if(Gate::allows('admin.buyerB1R2Quote'))
-							<li class=""><a href="{{ route('admin.buyerB1R2Quote') }}" class="dropdown-item">Buyer Round 2</a></li>
-						@endif	
-						@if(Gate::allows('admin.vendor.quotes.round2'))
-							<li class=""><a href="{{ route('admin.vendor.quotes.round2') }}" class="dropdown-item">Supplier Round 2</a></li>
-						@endif	
-						@if(Gate::allows('admin.buyerB1R3Quote'))
-							<li class=""><a href="{{ route('admin.buyerB1R3Quote') }}" class="dropdown-item">Buyer Round 3</a></li>
-						@endif	
-						@if(Gate::allows('admin.buyerQuoteRound3Approver'))
-							<li class=""><a href="{{ route('admin.buyerQuoteRound3Approver') }}" class="dropdown-item">Approver</a></li>
-						@endif	
-							
+				@endif	
+					@if(Gate::allows('admin.spotbylist') || Gate::allows('admin.spotby') || Gate::allows('admin.selectvendor') || Gate::allows('admin.vendor.quotes.index')|| Gate::allows('admin.buyerB1R2Quote') || Gate::allows('admin.vendor.quotes.round2') || Gate::allows('admin.buyerB1R3Quote') || Gate::allows('admin.buyerQuoteRound3Approver') )
+					 <li class="nav-item dropdown">
+						<a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Quotation</a>
+						<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+								@if(Gate::allows('admin.spotby'))					
+									 <li class=""><a href="{{ route('admin.spotby') }}" class="dropdown-item">Add/Upload RFQ</a></li>					 
+								@endif
+								@if(Gate::allows('admin.spotbylist'))	
+									<li class=""><a href="{{ route('admin.spotbylist') }}" class="dropdown-item">RFQ History</a></li>
+								@endif	
+								@if(Gate::allows('admin.selectvendor'))
+									<li class=""><a href="{{ route('admin.selectvendor') }}" class="dropdown-item">Buyer Round 1</a></li>
+								@endif
+								@if(Gate::allows('admin.vendor.quotes.index'))
+									<li class=""><a href="{{ route('admin.vendor.quotes.index') }}" class="dropdown-item">Supplier Round 1</a></li>
+								@endif
+								@if(Gate::allows('admin.buyerB1R2Quote'))
+									<li class=""><a href="{{ route('admin.buyerB1R2Quote') }}" class="dropdown-item">Buyer Round 2</a></li>
+								@endif	
+								@if(Gate::allows('admin.vendor.quotes.round2'))
+									<li class=""><a href="{{ route('admin.vendor.quotes.round2') }}" class="dropdown-item">Supplier Round 2</a></li>
+								@endif	
+								@if(Gate::allows('admin.buyerB1R3Quote'))
+									<li class=""><a href="{{ route('admin.buyerB1R3Quote') }}" class="dropdown-item">Buyer Round 3</a></li>
+								@endif	
+								@if(Gate::allows('admin.buyerQuoteRound3Approver'))
+									<li class=""><a href="{{ route('admin.buyerQuoteRound3Approver') }}" class="dropdown-item">Approver</a></li>
+								@endif	
+									
 							</ul>
 						</li>
-						@endif
-				@endif
+					@endif
+			
 				{{-- @if(Auth::user() && (Auth::user()->role_id != 12)) --}}
 				
 				@if(Gate::allows('admin.trackingdatalist') || Gate::allows('admin.trackingdata') || Gate::allows('admin.vendortrackingdataupdate') || Gate::allows('admin.update_by_vendor_consign'))
