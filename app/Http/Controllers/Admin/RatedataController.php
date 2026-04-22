@@ -31,10 +31,10 @@ class RatedataController extends Controller
     {
         $title = 'Rate Data Upload';
         $pagetitle = $title.' Listing';
-       
+       $user_role = Auth::user()->role_id;
 		$data = $request->all();        
 	    $ratedatalist = Ratedata::orderBy('created_at', 'desc')->get();       
-        return view('admin.ratedata.index',compact(['pagetitle','title','ratedatalist']));
+        return view('admin.ratedata.index',compact(['pagetitle','title','ratedatalist', 'user_role']));
     }
 	
 	 public function import(Request $request)
