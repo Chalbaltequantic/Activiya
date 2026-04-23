@@ -294,9 +294,10 @@
 					</ul>
 				</li>
 				@endif
-				
-				<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
-				
+				@if(Gate::allows('admin.invoice'))
+					<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
+					</li>
+				@endif
 				<li class="nav-item dropdown user-menu">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 						<span class="d-none d-md-inline">Welcome {{ auth()->user()->name }}</span>
