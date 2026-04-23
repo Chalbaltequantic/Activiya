@@ -437,7 +437,7 @@
 						</div>
 						@endif
 						
-						@if(Gate::allows('admin.lot') || Gate::allows('admin.allocation') || Gate::allows('admin.autoindentallocation') || Gate::allows('admin.approve_llocation') || Gate::allows('admin.V_Indent') || Gate::allows('admin.approve_indent') || Gate::allows('admin.V_Placement_Status') || Gate::allows('admin.Track_Placement_Status') || Gate::allows('admin.Manual_Indent'))	
+						@if(Gate::allows('admin.lot') || Gate::allows('admin.allocation') || Gate::allows('admin.autoindentallocation') || Gate::allows('admin.approve_llocation') || Gate::allows('admin.V_Indent') || Gate::allows('admin.approve_indent') || Gate::allows('admin.V_Placement_Status') || Gate::allows('admin.Track_Placement_Status') || Gate::allows('admin.Manual_Indent') || Gate::allows('admin.lr'))	
 
 						<div class="tab-pane fade" id="lot" role="tabpanel">
 							<div class="row text-center">
@@ -474,6 +474,16 @@
 									</a>
 								</div>
 								@endif
+								
+								@if(Gate::allows('admin.lr'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.lr.list') }}" class="dashboard-link">
+										<i class="fas fa-file-alt dashboard-icon text-info"></i>
+										<p>LR Copy</p>
+									</a>
+								</div>
+								@endif
+								
 								@if(Gate::allows('admin.approve_indent'))
 								<div class="col-md-3 col-6 mb-4">
 									<a href="{{ route('admin.loadsummary.allocation.send') }}" class="dashboard-link">

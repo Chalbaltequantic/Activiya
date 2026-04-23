@@ -249,8 +249,9 @@
 					@if(Gate::allows('admin.V_Placement_Status'))	
 						<li class=""><a href="{{ route('admin.update.placement.status') }}" class="dropdown-item">V_Placement Status</a></li>	
 					@endif
-					
+					@if(Gate::allows('admin.lr'))	
 					<li class=""><a href="{{ route('admin.lr.list') }}" class="dropdown-item">LR Copy</a></li>
+					@endif
 					
 					@if(Gate::allows('admin.Track_Placement_Status'))
 						<li class=""><a href="{{ route('admin.track.placement.status') }}" class="dropdown-item">Track Placement Status</a></li>
