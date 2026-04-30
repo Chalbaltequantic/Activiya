@@ -826,12 +826,12 @@ class BilldataController extends Controller
 								</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Destination Name</th>						  
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Truck Type</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Ref1</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Ref 2</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Ref 3</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Ref1(IndentId)</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight PO</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight GRN</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">LR/CN No.</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice No.</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Amount</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Amount<br>(Excluding Tax)</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Bill to<br> GST No</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice Receive<br>Date from Vendor</th>
 							</tr>
