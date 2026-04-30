@@ -690,6 +690,18 @@ class BilldataController extends Controller
 				
 				dd($entries);
 				*/
+				
+				$query = Billdata::whereNotNull('freight_invoice_no')
+    ->where('freight_invoice_no', '!=', '')
+    ->whereNotNull('freight_invoice_date')
+    ->where('freight_invoice_date', '!=', '')
+    ->whereNotNull('freight_amount')
+    ->where('freight_amount', '>', 0)
+    ->where('validated_status', '!=', 'submitted');
+
+dd($query->toSql(), $query->getBindings());
+				
+				
 				$entries = Billdata::whereNotNull('freight_invoice_no')
 				->where('freight_invoice_no', '!=', '')
 				->whereNotNull('freight_invoice_date')
