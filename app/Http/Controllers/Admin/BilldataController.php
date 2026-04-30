@@ -782,7 +782,6 @@ class BilldataController extends Controller
 			$ref3 = 	$entry->ref3;
 			$lr_no =	$entry->lr_no;
 			$amount = 	$entry->a_amount;
-			$destination_name = 	$entry->vendor_name;
 			$freight_info_updated_at = $entry->freight_info_updated_at;
 			$freight_invoice_no = 	$entry->freight_invoice_no;
 			
