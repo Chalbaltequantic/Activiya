@@ -691,27 +691,20 @@ class BilldataController extends Controller
 				dd($entries);
 				*/
 				
-				$query = Billdata::whereNotNull('freight_invoice_no')
+				
+				
+				$entries = Billdata::whereNotNull('freight_invoice_no')
     ->where('freight_invoice_no', '!=', '')
     ->whereNotNull('freight_invoice_date')
     ->where('freight_invoice_date', '!=', '')
     ->whereNotNull('freight_amount')
     ->where('freight_amount', '>', 0)
-    ->where('validated_status', '!=', 'submitted');
-
-dd($query->toSql(), $query->getBindings());
-				
-				
-				$entries = Billdata::whereNotNull('freight_invoice_no')
-				->where('freight_invoice_no', '!=', '')
-				->whereNotNull('freight_invoice_date')
-				->where('freight_invoice_date', '!=', '')
-				->whereNotNull('freight_amount')
-				->where('freight_amount', '>', 0)
-				->where('validated_status', '!=', 'submitted')
-				->get();
-				
-				dd($entries->toSql(), $entries->getBindings());
+    ->where(function ($q) {
+        $q->where('validated_status', '!=', 'submitted')
+          ->orWhereNull('validated_status');
+    })
+    ->get();
+		
 					   
 		$updatedentries[] = ''; 
       // if (Auth::user()->role_id === '4' || Auth::user()->role_id === '1')  ////Account
