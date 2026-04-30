@@ -733,8 +733,6 @@ class BilldataController extends Controller
 
 			$valid = true;
 			
-			echo $entry['freight_amount'];
-echo $entry->freight_invoice_file; echo $entry->freight_type; exit;
 			if ((float) preg_replace('/[^0-9.]/', '', $entry->a_amount) !== (float) preg_replace('/[^0-9.]/', '', $entry['freight_amount'])) {
 				$valid = false;
 			}
@@ -745,8 +743,7 @@ echo $entry->freight_invoice_file; echo $entry->freight_type; exit;
 
 			if ($entry->freight_type === 'ADHOC' && empty($entry->approval_file)) {
 				
-				echo "dsf";
-				//$valid = false;
+				$valid = false;
 			}
 
 			$results[] = [
