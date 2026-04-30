@@ -694,16 +694,15 @@ class BilldataController extends Controller
 				
 				
 				$entries = Billdata::whereNotNull('freight_invoice_no')
-    ->where('freight_invoice_no', '!=', '')
-    ->whereNotNull('freight_invoice_date')
-    ->where('freight_invoice_date', '!=', '')
-    ->whereNotNull('freight_amount')
-    ->where('freight_amount', '>', 0)
-    ->where(function ($q) {
-        $q->where('validated_status', '!=', 'submitted')
-          ->orWhereNull('validated_status');
-    })
-    ->get();
+				->where('freight_invoice_no', '!=', '')
+				->whereNotNull('freight_invoice_date')
+				->where('freight_invoice_date', '!=', '')
+				->whereNotNull('freight_amount')
+				->where(function ($q) {
+					$q->whereNull('validated_status')
+					  ->orWhere('validated_status', '!=', 'submitted');
+				})
+				->get();
 		
 					   
 		$updatedentries[] = ''; 
