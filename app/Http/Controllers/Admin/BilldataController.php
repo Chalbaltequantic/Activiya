@@ -732,13 +732,15 @@ class BilldataController extends Controller
 			if (!$entry) continue;
 
 			$valid = true;
+			
+			echo $entry['freight_amount'];
 
 			if ((float) preg_replace('/[^0-9.]/', '', $entry->a_amount) !== (float) preg_replace('/[^0-9.]/', '', $entry['freight_amount'])) {
 				$valid = false;
 			}
 
 			if (empty($entry->freight_invoice_file) || empty($entry->pod_file)) {
-				$valid = false;
+				//$valid = false;
 			}
 
 			if ($entry->freight_type === 'ADHOC' && empty($entry->approval_file)) {
