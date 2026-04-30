@@ -699,7 +699,7 @@ class BilldataController extends Controller
 				->where('validated_status', '!=', 'submitted')
 				->get();
 				
-				dd($query->toSql(), $query->getBindings());
+				dd($entries->toSql(), $entries->getBindings());
 					   
 		$updatedentries[] = ''; 
       // if (Auth::user()->role_id === '4' || Auth::user()->role_id === '1')  ////Account
