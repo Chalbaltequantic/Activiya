@@ -454,7 +454,7 @@
         })
         .then(response => response.json())
         .then(result => {
-            document.querySelectorAll('tbody tr').forEach(row => {
+            document.querySelectorAll('#validation tr').forEach(row => {
                 const rowId = row.querySelector('.row-id').value;
                 const submitCb = row.querySelector('.submit-checkbox');
                 const returnCb = row.querySelector('.return-checkbox');
