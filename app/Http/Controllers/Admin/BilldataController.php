@@ -742,7 +742,9 @@ class BilldataController extends Controller
 			}
 
 			if ($entry->freight_type === 'ADHOC' && empty($entry->approval_file)) {
-				$valid = false;
+				
+				echo "dsf";
+				//$valid = false;
 			}
 
 			$results[] = [
