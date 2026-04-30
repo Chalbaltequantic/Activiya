@@ -698,6 +698,8 @@ class BilldataController extends Controller
 				->where('freight_amount', '>', 0)
 				->where('validated_status', '!=', 'submitted')
 				->get();
+				
+				dd($query->toSql(), $query->getBindings());
 					   
 		$updatedentries[] = ''; 
       // if (Auth::user()->role_id === '4' || Auth::user()->role_id === '1')  ////Account
