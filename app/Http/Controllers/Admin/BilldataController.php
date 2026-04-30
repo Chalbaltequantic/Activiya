@@ -698,10 +698,7 @@ class BilldataController extends Controller
 				->whereNotNull('freight_invoice_date')
 				->where('freight_invoice_date', '!=', '')
 				->whereNotNull('freight_amount')
-				->where(function ($q) {
-					$q->whereNull('validated_status')
-					  ->orWhere('validated_status', '!=', 'submitted');
-				})
+				
 				->get();
 		
 					   
