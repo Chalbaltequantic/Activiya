@@ -633,7 +633,7 @@ class BilldataController extends Controller
 			echo "<br>";
 		echo 	$expectedAmount = (int)$entry->a_amount;
 		
-			exit;
+			
 			
 			$freight_inv_dt = $row['freight_invoice_date'];
 			$freightinv_date = Carbon::parse($freight_inv_dt)->format('Y-m-d');
@@ -649,7 +649,7 @@ class BilldataController extends Controller
                 ];
                 continue;
             }
-			
+			print_r($amountMismatches); 
 			
 			$createddate = date('Y-m-d');
 			 try{
@@ -670,7 +670,6 @@ class BilldataController extends Controller
 		} //for loop 
 		return back()->with([
             'mismatches' => $amountMismatches,
-            'fileErrors' => $fileErrors,
             'saveErrors' => $saveErrors,
 			]);
 	}
