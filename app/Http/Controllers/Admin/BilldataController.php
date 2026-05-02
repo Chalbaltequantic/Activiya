@@ -629,11 +629,8 @@ class BilldataController extends Controller
 
 			// Normalize entered amount (remove commas)
 			//$enteredAmount = (int)str_replace(',', '', $row['amount']);
-			echo $enteredAmount = (int)preg_replace("/,+/", "", $row['freight_amount']);
-			echo "<br>";
-		echo 	$expectedAmount = (int)$entry->a_amount;
-		
-			
+			$enteredAmount = (int)preg_replace("/,+/", "", $row['freight_amount']);
+			$expectedAmount = (int)$entry->a_amount;
 			
 			$freight_inv_dt = $row['freight_invoice_date'];
 			$freightinv_date = Carbon::parse($freight_inv_dt)->format('Y-m-d');
@@ -649,7 +646,7 @@ class BilldataController extends Controller
                 ];
                 continue;
             }
-			print_r($amountMismatches); 
+			
 			
 			$createddate = date('Y-m-d');
 			 try{
@@ -670,6 +667,7 @@ class BilldataController extends Controller
 		} //for loop 
 		return back()->with([
             'mismatches' => $amountMismatches,
+            'fileErrors' => $fileErrors,
             'saveErrors' => $saveErrors,
 			]);
 	}
