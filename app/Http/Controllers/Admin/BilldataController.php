@@ -629,8 +629,11 @@ class BilldataController extends Controller
 
 			// Normalize entered amount (remove commas)
 			//$enteredAmount = (int)str_replace(',', '', $row['amount']);
-			$enteredAmount = (int)preg_replace("/,+/", "", $row['freight_amount']);
-			$expectedAmount = (int)$entry->a_amount;
+			echo $enteredAmount = (int)preg_replace("/,+/", "", $row['freight_amount']);
+			echo "<br>";
+		echo 	$expectedAmount = (int)$entry->a_amount;
+		
+			exit;
 			
 			$freight_inv_dt = $row['freight_invoice_date'];
 			$freightinv_date = Carbon::parse($freight_inv_dt)->format('Y-m-d');
