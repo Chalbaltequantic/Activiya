@@ -618,6 +618,7 @@ class BilldataController extends Controller
 		$amountMismatches = [];
         $fileErrors = [];
         $saveErrors = [];
+		$successCount = 0;
 
 
 		foreach ($request->data as $row) 
@@ -656,6 +657,7 @@ class BilldataController extends Controller
 					$entry->freight_info_updated_by = Auth::user()->id;				
 					$entry->freight_info_updated_at = $createddate;				
 					$entry->save();
+					 $successCount++;
 				} 
 				catch (\Exception $e) 
 				{
@@ -665,7 +667,19 @@ class BilldataController extends Controller
 					$saveErrors[] = "Unexpected error while saving data for LR No: {$lr_no}";
 				}
 		} //for loop 
-		return back()->with([
+		
+		 // Prepare messages
+			$successMessage = null;
+
+			if ($successCount > 0) {
+				$successMessage = "{$successCount} record(s) updated successfully.";
+			}
+
+			if ($successCount === 0 && empty($amountMismatches) && empty($saveErrors)) {
+				$successMessage = "No changes were made.";
+			}
+		 return redirect()->back()->with([
+        'success' => $successMessage,
             'mismatches' => $amountMismatches,
             'fileErrors' => $fileErrors,
             'saveErrors' => $saveErrors,
