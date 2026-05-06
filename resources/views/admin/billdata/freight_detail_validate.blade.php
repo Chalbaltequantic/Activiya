@@ -471,7 +471,7 @@
                         submitCb.checked = true;
                         submitCb.disabled = false;
                         returnCb.checked = false;
-                        returnCb.disabled = true;
+                        returnCb.disabled = false;
                         statusCell.innerText = 'Valid';
                     } else {
                         returnCb.checked = true;
