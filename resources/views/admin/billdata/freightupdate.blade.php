@@ -126,23 +126,27 @@
           <div class="col-lg-12">
             <div class="card">
 					
-				@if(session('mismatches') || session('fileErrors') || session('saveErrors'))
+				@if(session('mismatches') || session('saveErrors'))
 					<div class="alert alert-warning alert-dismissible fade show " style="display: none; max-height: 300px; overflow-y: auto;">
 						<strong>Errors:</strong>
 							<ul>
 								@foreach((array) session('mismatches') as $item)
 								<li>Amount mismatch for Ref No: {{ $item['order_ref_no'] }}</li>
 								@endforeach
-								@foreach((array) session('fileErrors') as $fileError)
-								<li>{{ $fileError }}</li>
-								@endforeach
+								
 								@foreach((array) session('saveErrors') as $saveError)
 								<li>{{ $saveError }}</li>
 								@endforeach
 							</ul>
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
 					</div>
-				@endif			       
+				@endif	
+
+			@if(session('success'))
+				<div class="alert alert-success">
+					{{ session('success') }}
+				</div>
+			@endif				
             </div>
           </div>
 		</div>
@@ -178,7 +182,7 @@
 									  <th style="background: #fce4d6; color: #0070c0;" class="">Freight GRN</th>
 								 	<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Freight <br>Invoice No.</th>
 									<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Invoice Dt.</th>
-									<th style="background: #c6e0b4; color: #0070c0;">Amount</th>
+									<th style="background: #c6e0b4; color: #0070c0;">Amount<br>Excluding Tax</th>
 									{{--<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight Invoice</th>
 									<th style="background: #fce4d6; color: #0070c0;" class="col-width">POD</th>
 									<th style="background: #fce4d6; color: #0070c0;" class="col-width">Approvals</th>						
@@ -219,7 +223,7 @@
 											<input type="text" name="data[{{ $loop->index }}][freight_invoice_date]" value="{{ $billdata->freight_invoice_date }}">
 										</td>
 										<td>
-											<input type="text" name="data[{{ $loop->index }}][freight_amount]" value="{{ number_format($billdata->freight_amount) }}">
+											<input type="number" name="data[{{ $loop->index }}][freight_amount]" value="{{ number_format($billdata->freight_amount) }}">
 										</td>
 											<input type="hidden" name="data[{{ $loop->index }}][id]" value="{{ $billdata->id }}">
 											<input type="hidden" name="data[{{ $loop->index }}][lr_no]" value="{{ $billdata->lr_no }}">
@@ -264,13 +268,12 @@
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:120px;" class="sticky-col-1">S5 consignor short<br> name & location</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:120px" class="sticky-col-2">D5 consignor short<br> name & location</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:80px;" class="sticky-col-3">Order Ref No.<br />( <small>Indent ID</small>)
-								</th>
-														  
+								</th>														  
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:30px;" class="sticky-col-4">LR/CN No.</th>								
 								
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:40px;" class="sticky-col-5">Freight <br>Invoice No.</th>
 								<th style="background: #fce4d6; color: #0070c0;">Invoice Dt.</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="">Amount</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="">Amount<br>Excluding Tax</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight Invoice</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">POD</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
