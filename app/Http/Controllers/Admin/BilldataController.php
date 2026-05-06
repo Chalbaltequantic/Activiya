@@ -415,7 +415,7 @@ class BilldataController extends Controller
 				$lr_cndate = Carbon::parse($lrcndate)->format('Y-m-d');
 				
 				$a_amount = preg_replace("/,+/", "", $amount[$i]);
-				if(!empty($consignor_name[$i]))
+				if(!empty($consignor_name[$i]) && !empty($consignee_name[$i]) && !empty($consignee_code[$i]) && !empty($lr_no))
 				{
 					$s5_consignor_short_name_location = Siteplant::where("plant_site_code", $consignor_code[$i])->first(["s5_d5_short_name"]);
 
