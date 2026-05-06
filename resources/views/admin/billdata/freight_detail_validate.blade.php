@@ -454,8 +454,13 @@
         })
         .then(response => response.json())
         .then(result => {
-            document.querySelectorAll('#table tr').forEach(row => {
-                const rowId = row.querySelector('.row-id').value;
+           // document.querySelectorAll('#table tr').forEach(row => {
+				
+			document.querySelectorAll('#table tbody tr').forEach(row => {
+			const rowId = row.dataset.id;
+			if (!rowId) return; // skip non-data rows	
+			
+               // const rowId = row.querySelector('.row-id').value;
                 const submitCb = row.querySelector('.submit-checkbox');
                 const returnCb = row.querySelector('.return-checkbox');
                 const statusCell = row.querySelector('.status');
