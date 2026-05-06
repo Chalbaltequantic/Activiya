@@ -223,25 +223,41 @@ class BilldataController extends Controller
             }*/
 			
 			  // Check for duplicate using ref1, ref3, lr_no
-                $existsref1 = Billdata::where('ref1', $data['ref1'])->exists();
-				
+            $cleanRef1 = !empty($data['ref1']) ? (int)$data['ref1'] : null;
+			$cleanRef3 = !empty($data['ref3']) ? (int)$data['ref3'] : null;
+			
+			if ($cleanRef1 !== null) {
+				$existsref1 = Billdata::where('ref1', $cleanRef1)->exists();
 				if ($existsref1) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref1 entry'];
+					$errorRows[] = [
+						'row' => $rowNumber,
+						'reason' => 'Duplicate Ref1 entry: ' . $cleanRef1
+					];
 					continue;
 				}
-					
-				 $existsref3 = Billdata::where('ref3', $data['ref3'])->exists();
-				if ($existsref3) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref3 entry'];
-					continue;
-				}	
-					
-				$existslrno = Billdata::where('lr_no', $data['lr_no'])->exists();
-										
+			}
+
+				if ($cleanRef3 !== null) {
+					$existsref3 = Billdata::where('ref3', $cleanRef3)->exists();
+					if ($existsref3) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'reason' => 'Duplicate Ref3 entry: ' . $cleanRef3
+						];
+						continue;
+					}
+				}
 				
-				if ($existslrno) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate LR NO entry'];
-					continue;
+				$cleanLrNo = trim((string)($data['lr_no'] ?? ''));
+				if ($cleanLrNo !== '') {
+					$existslrno = Billdata::where('lr_no', $cleanLrNo)->exists();
+					if ($existslrno) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'reason' => 'Duplicate LR NO entry: ' . $cleanLrNo
+						];
+						continue;
+					}
 				}
 
             // ---- INSERT ----
@@ -474,82 +490,110 @@ class BilldataController extends Controller
 			
 
 						// Check vendor code
-					$vendorExists = Vendor::where('vendor_code', $data['vendor_code'])->exists();
-					if (!$vendorExists) {
-						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Vendor code not found'];
-						continue;
+					if(!empty($data['vendor_code']))
+					{
+						$vendorExists = Vendor::where('vendor_code', $data['vendor_code'])->exists();
+						if (!$vendorExists) {
+							$errorRows[] = ['row' => $rowNumber, 'reason' => 'Vendor code not found'];
+							continue;
+						}
 					}
 
 					// Check truck code
-					$truckExists = TruckMaster::where('code', $data['t_code'])->exists();
-					if (!$truckExists) {
-						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Truck code not found'];
-						continue;
+					if(!empty($data['t_code']))
+					{
+						$truckExists = TruckMaster::where('code', $data['t_code'])->exists();
+						if (!$truckExists) {
+							$errorRows[] = ['row' => $rowNumber, 'reason' => 'Truck code not found'];
+							continue;
+						}
 					}
 
 					// Check consignor code
-					$consignorExists = Siteplant::where('plant_site_code', $data['consignor_code'])->exists();
-					if (!$consignorExists) {
-						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Consignor code not found'];
-						continue;
+					if(!empty($data['consignor_code']))
+					{
+						$consignorExists = Siteplant::where('plant_site_code', $data['consignor_code'])->exists();
+						if (!$consignorExists) {
+							$errorRows[] = ['row' => $rowNumber, 'reason' => 'Consignor code not found'];
+							continue;
+						}
 					}
 
 					// Check consignee code
-					$consigneeExists = Siteplant::where('plant_site_code', $data['consignee_code'])->exists();
-					if (!$consigneeExists) {
-						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Consignee code not found'];
-						continue;
+					if(!empty($data['consignee_code']))
+					{	
+						$consigneeExists = Siteplant::where('plant_site_code', $data['consignee_code'])->exists();
+						if (!$consigneeExists) {
+							$errorRows[] = ['row' => $rowNumber, 'reason' => 'Consignee code not found'];
+							continue;
+						}
 					}
 
 					// Check rate master
-					$rateRecord = Ratedata::where('consignor_code', $data['consignor_code'])
-						->where('consignee_code', $data['consignee_code'])
-						->where('vendor_code', $data['vendor_code'])
-						->where('t_code', $data['t_code'])
-						->first();
+					if(!empty($data['consignor_code']))
+					{
+						$rateRecord = Ratedata::where('consignor_code', $data['consignor_code'])
+							->where('consignee_code', $data['consignee_code'])
+							->where('vendor_code', $data['vendor_code'])
+							->where('t_code', $data['t_code'])
+							->first();
 
-					if (!$rateRecord) {
-						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Rate master record not found'];
-						continue;
+						if (!$rateRecord) {
+							$errorRows[] = ['row' => $rowNumber, 'reason' => 'Rate master record not found'];
+							continue;
+						}
 					}
 
 					// Check amount match
-					if (floatval($rateRecord->a_amount) != floatval($data['a_amount'])) {
-						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Amount does not match rate master'];
-						continue;
+					if(!empty($data['a_amount']))
+					{	
+						if (floatval($rateRecord->a_amount) != floatval($data['a_amount'])) {
+							$errorRows[] = ['row' => $rowNumber, 'reason' => 'Amount does not match rate master'];
+							continue;
+						}
 					}
                 // Check for duplicate using ref1, ref3, lr_no
-                $existsref1 = Billdata::where('ref1', $data['ref1'])->exists();
 				
-				if ($existsref1) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref1 entry'];
-					continue;
-				}
-					
-				 $existsref3 = Billdata::where('ref3', $data['ref3'])->exists();
-				if ($existsref3) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref3 entry'];
-					continue;
-				}	
-					
-				$existslrno = Billdata::where('lr_no', $data['lr_no'])->exists();
-										
+				$cleanRef1 = !empty($data['ref1']) ? (int)$data['ref1'] : null;
+				$cleanRef3 = !empty($data['ref3']) ? (int)$data['ref3'] : null;
 				
-				if ($existslrno) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate LR NO entry'];
-					continue;
+				
+				
+                if ($cleanRef1 !== null) {
+					$existsref1 = Billdata::where('ref1', $cleanRef1)->exists();
+					if ($existsref1) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'reason' => 'Duplicate Ref1 entry: ' . $cleanRef1
+						];
+						continue;
+					}
 				}
-					
-					  /*  if ($exists) {
-							$duplicateRows[] = [
-								'Row' => $data['ref1'],
-								'ref1' => $ref1,
-								'ref3' => $data['ref3'],
-								'lr_no' => $data['lr_no'],
-							];
-							continue;
-						}	*/
 
+				if ($cleanRef3 !== null) {
+					$existsref3 = Billdata::where('ref3', $cleanRef3)->exists();
+					if ($existsref3) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'reason' => 'Duplicate Ref3 entry: ' . $cleanRef3
+						];
+						continue;
+					}
+				}
+				
+				$cleanLrNo = trim((string)($data['lr_no'] ?? ''));
+				if ($cleanLrNo !== '') {
+					$existslrno = Billdata::where('lr_no', $cleanLrNo)->exists();
+					if ($existslrno) {
+						$errorRows[] = [
+							'row' => $rowNumber,
+							'reason' => 'Duplicate LR NO entry: ' . $cleanLrNo
+						];
+						continue;
+					}
+				}
+					
+				
 					// ---- INSERT ----
 				$bill = Billdata::create($data);
 					$insertedCount++;
