@@ -212,7 +212,7 @@ class BilldataController extends Controller
             }
 
             // ---- DUPLICATE CHECK ----
-            $exists = Billdata::where('ref1', $data['ref1'])
+           /* $exists = Billdata::where('ref1', $data['ref1'])
                 ->where('ref3', $data['ref3'])
                 ->where('lr_no', $data['lr_no'])
                 ->exists();
@@ -220,7 +220,29 @@ class BilldataController extends Controller
             if ($exists) {
                 $errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate bill entry'];
                 continue;
-            }
+            }*/
+			
+			  // Check for duplicate using ref1, ref3, lr_no
+                $existsref1 = Billdata::where('ref1', $data['ref1'])->exists();
+				
+				if ($existsref1) {
+					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref1 entry'];
+					continue;
+				}
+					
+				 $existsref3 = Billdata::where('ref3', $data['ref3'])->exists();
+				if ($existsref3) {
+					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref3 entry'];
+					continue;
+				}	
+					
+				$existslrno = Billdata::where('lr_no', $data['lr_no'])->exists();
+										
+				
+				if ($existslrno) {
+					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate LR NO entry'];
+					continue;
+				}
 
             // ---- INSERT ----
             $bill = Billdata::create($data);
@@ -497,14 +519,24 @@ class BilldataController extends Controller
 						continue;
 					}
                 // Check for duplicate using ref1, ref3, lr_no
-                $exists = Billdata::where('ref1', $data['ref1'])
-                    ->where('ref3', $data['ref3'])
-                    ->where('lr_no', $data['lr_no'])
-                    ->exists();
-					
+                $existsref1 = Billdata::where('ref1', $data['ref1'])->exists();
 				
-				if ($exists) {
-					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate bill entry'];
+				if ($existsref1) {
+					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref1 entry'];
+					continue;
+				}
+					
+				 $existsref3 = Billdata::where('ref3', $data['ref3'])->exists();
+				if ($existsref3) {
+					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate ref3 entry'];
+					continue;
+				}	
+					
+				$existslrno = Billdata::where('lr_no', $data['lr_no'])->exists();
+										
+				
+				if ($existslrno) {
+					$errorRows[] = ['row' => $rowNumber, 'reason' => 'Duplicate LR NO entry'];
 					continue;
 				}
 					
