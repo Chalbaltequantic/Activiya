@@ -411,97 +411,155 @@
 </div>
 </div>
 <!-- /.content -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    document.getElementById('selectAllValidate').addEventListener('change', function () {
-        const checked = this.checked;
-        document.querySelectorAll('.validate-checkbox').forEach(cb => cb.checked = checked);
+document.getElementById('selectAllValidate').addEventListener('change', function () {
+    const checked = this.checked;
+    document.querySelectorAll('.validate-checkbox').forEach(cb => cb.checked = checked);
+});
+
+document.getElementById('selectAllSubmit').addEventListener('change', function () {
+    const checked = this.checked;
+    document.querySelectorAll('.submit-checkbox').forEach(cb => {
+        if (!cb.disabled) cb.checked = checked;
     });
+});
 
-    document.getElementById('selectAllSubmit').addEventListener('change', function () {
-        const checked = this.checked;
-        document.querySelectorAll('.submit-checkbox').forEach(cb => {
-            if (!cb.disabled) cb.checked = checked;
-        });
+document.getElementById('selectAllReturn').addEventListener('change', function () {
+    const checked = this.checked;
+    document.querySelectorAll('.return-checkbox').forEach(cb => {
+        if (!cb.disabled) cb.checked = checked;
     });
+});
 
-    document.getElementById('selectAllReturn').addEventListener('change', function () {
-        const checked = this.checked;
-        document.querySelectorAll('.return-checkbox').forEach(cb => {
-            if (!cb.disabled) cb.checked = checked;
-        });
-    });
+document.getElementById('validateBtn').addEventListener('click', function () {
+    const data = [];
 
-    document.getElementById('validateBtn').addEventListener('click', function () {
-        const data = [];
+    document.querySelectorAll('tbody tr').forEach(row => {
+        const checkbox = row.querySelector('.validate-checkbox');
 
-        document.querySelectorAll('tbody tr').forEach(row => {
-            const checkbox = row.querySelector('.validate-checkbox');
-            if (checkbox && checkbox.checked) {
-                const id = row.querySelector('.row-id').value;
-                const amount = row.querySelector('.freight-amount').value;
+        if (checkbox && checkbox.checked) {
+            const id = row.querySelector('.row-id')?.value;
+            const amount = row.querySelector('.freight-amount')?.value;
 
+            if (id) {
                 data.push({ id: id, freight_amount: amount });
+            }
+        }
+    });
+
+    if (data.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'No Record Selected',
+            text: 'Please select at least one record to validate.'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Validating...',
+        text: 'Please wait while selected records are being validated.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch("{{ route('admin.freight.validate') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ rows: data })
+    })
+    .then(response => response.json())
+    .then(result => {
+        let validCount = 0;
+        let invalidCount = 0;
+
+        document.querySelectorAll('#table tbody tr').forEach(row => {
+            const rowId = row.dataset.id;
+            if (!rowId) return;
+
+            const submitCb = row.querySelector('.submit-checkbox');
+            const returnCb = row.querySelector('.return-checkbox');
+            const statusCell = row.querySelector('.status');
+
+            const found = result.find(r => r.id == rowId);
+
+            if (found) {
+                if (found.valid) {
+                    validCount++;
+
+                    submitCb.checked = true;
+                    submitCb.disabled = false;
+
+                    returnCb.checked = false;
+                    returnCb.disabled = false;
+
+                    statusCell.innerText = 'Valid';
+                    statusCell.classList.remove('text-danger');
+                    statusCell.classList.add('text-success');
+
+                } else {
+                    invalidCount++;
+
+                    returnCb.checked = true;
+                    returnCb.disabled = false;
+
+                    submitCb.checked = false;
+                    submitCb.disabled = true;
+
+                    statusCell.innerText = 'Invalid';
+                    statusCell.classList.remove('text-success');
+                    statusCell.classList.add('text-danger');
+                }
             }
         });
 
-        fetch("{{ route('admin.freight.validate') }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ rows: data })
-        })
-        .then(response => response.json())
-        .then(result => {
-           // document.querySelectorAll('#table tr').forEach(row => {
-				
-			document.querySelectorAll('#table tbody tr').forEach(row => {
-			const rowId = row.dataset.id;
-			if (!rowId) return; // skip non-data rows	
-			
-               // const rowId = row.querySelector('.row-id').value;
-                const submitCb = row.querySelector('.submit-checkbox');
-                const returnCb = row.querySelector('.return-checkbox');
-                const statusCell = row.querySelector('.status');
-
-                const found = result.find(r => r.id == rowId);
-                if (found) {
-                    if (found.valid) {
-                        submitCb.checked = true;
-                        submitCb.disabled = false;
-                        returnCb.checked = false;
-                        returnCb.disabled = false;
-                        statusCell.innerText = 'Valid';
-                    } else {
-                        returnCb.checked = true;
-                        returnCb.disabled = false;
-                        submitCb.checked = false;
-                        submitCb.disabled = true;
-                        statusCell.innerText = 'Invalid';
-                    }
-                }
-            });
+        Swal.fire({
+            icon: invalidCount > 0 ? 'warning' : 'success',
+            title: 'Validation Completed',
+            html: `
+                <b>Valid Records:</b> ${validCount}<br>
+                <b>Invalid Records:</b> ${invalidCount}
+            `
         });
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Failed',
+            text: 'Something went wrong while validating records.'
+        });
+
+        console.error(error);
     });
-	
-	document.getElementById('freightValidationForm').addEventListener('submit', function (e) {
+});
+
+document.getElementById('freightValidationForm').addEventListener('submit', function (e) {
     document.querySelectorAll('tbody tr').forEach(row => {
         const id = row.getAttribute('data-id');
         const validateCb = row.querySelector('.validate-checkbox');
         const submitCb = row.querySelector('.submit-checkbox');
         const returnCb = row.querySelector('.return-checkbox');
-        const remarkVal = row.querySelector('input[name="remark[]"]').value;
+        const remarkInput = row.querySelector('input[name="remark[]"]');
 
-        // Update hidden inputs
+        if (!id || !validateCb || !submitCb || !returnCb) return;
+
         row.querySelector('.validated-id').value = validateCb.checked ? id : '';
         row.querySelector('.submitted-id').value = (submitCb.checked && !submitCb.disabled) ? id : '';
         row.querySelector('.returned-id').value = (returnCb.checked && !returnCb.disabled) ? id : '';
-        row.querySelector('.remark-input').value = remarkVal;
+
+        if (remarkInput) {
+            row.querySelector('.remark-input').value = remarkInput.value;
+        }
     });
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if(session('success'))
 <script>
 Swal.fire({
