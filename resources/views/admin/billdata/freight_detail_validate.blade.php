@@ -411,7 +411,6 @@
 </div>
 </div>
 <!-- /.content -->
-@push('scripts')
 <script>
     document.getElementById('selectAllValidate').addEventListener('change', function () {
         const checked = this.checked;
@@ -502,5 +501,4 @@
     });
 });
 </script>
-@endpush
 @endsection
