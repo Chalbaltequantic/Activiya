@@ -788,9 +788,9 @@ class BilldataController extends Controller
 				$entries = Billdata::whereNotNull('freight_invoice_no')
 				->where('freight_invoice_no', '!=', '')
 				->where(function ($q) {
-        $q->whereNull('validated_status')
-          ->orWhere('validated_status', '!=', 'submitted');
-    })
+				$q->whereNull('validated_status')
+				  ->orWhere('validated_status', '!=', 'submitted');
+			})
 				
 				->get();
 		
