@@ -24,6 +24,8 @@ use App\Models\TruckMaster;
 use App\Models\Siteplant;
 use App\Models\Admin;
 use App\Models\Tracking;
+
+use App\Jobs\SendValidatedFreightMailJob;
 use Auth;
 
 
@@ -845,7 +847,7 @@ class BilldataController extends Controller
 		return response()->json($results);
 	}
 	
-	public function storeValidatedData(Request $request)
+/*	public function storeValidatedData(Request $request)
 	{
 		//print_r($request); exit;
 		
@@ -962,7 +964,7 @@ class BilldataController extends Controller
 					}
 					});	 */
 					
-					$admins = Admin::whereIn('role_id', [4, 6])->where('status','1')->get();
+				/*	$admins = Admin::whereIn('role_id', [4, 6])->where('status','1')->get();
 
 					foreach ($admins as $admin) {
 						$to_email = $admin->email;
@@ -1005,6 +1007,90 @@ class BilldataController extends Controller
 		}
 
 		return redirect()->back()->with('success', 'Records updated successfully.');
+	}*/
+	
+	public function storeValidatedData(Request $request)
+	{
+		$validatedIds = $request->input('validated_ids', []);
+		$submittedIds = $request->input('submitted_ids', []);
+		$returnedIds = $request->input('returned_ids', []);
+		$remarks = $request->input('remark', []);
+
+		if (empty($validatedIds)) {
+
+			return redirect()->back()->with(
+				'error',
+				'No records selected.'
+			);
+		}
+
+		DB::beginTransaction();
+
+		try {
+
+			foreach ($validatedIds as $index => $id) {
+
+				$entry = Billdata::find($id);
+
+				if (!$entry) {
+					continue;
+				}
+
+				/*
+				|--------------------------------------------------------------------------
+				| SUBMITTED
+				|--------------------------------------------------------------------------
+				*/
+
+				if (in_array($id, $submittedIds)) {
+
+					$entry->validated_status = 'submitted';
+					$entry->submit = 1;
+					$entry->f_return = 0;
+
+					/*
+					|--------------------------------------------------------------------------
+					| SEND MAIL IN BACKGROUND
+					|--------------------------------------------------------------------------
+					*/
+
+					SendValidatedFreightMailJob::dispatch($entry->id);
+				}
+
+				/*
+				|--------------------------------------------------------------------------
+				| RETURNED
+				|--------------------------------------------------------------------------
+				*/
+
+				elseif (in_array($id, $returnedIds)) {
+
+					$entry->validated_status = 'returned';
+					$entry->submit = 0;
+					$entry->f_return = 1;
+				}
+
+				$entry->validation_remark = $remarks[$index] ?? '';
+
+				$entry->save();
+			}
+
+			DB::commit();
+
+			return redirect()->back()->with(
+				'success',
+				'Records updated successfully. Emails are processing in background.'
+			);
+
+		} catch (\Exception $e) {
+
+			DB::rollBack();
+
+			return redirect()->back()->with(
+				'error',
+				$e->getMessage()
+			);
+		}
 	}
 
 	public function upload(Request $request)
