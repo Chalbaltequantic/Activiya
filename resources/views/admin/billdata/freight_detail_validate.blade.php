@@ -483,7 +483,9 @@
 
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Update & Move to Validation</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+    Close
+</button>
                 </div>
 
             </div>
@@ -675,7 +677,7 @@ Swal.fire({
 });
 </script>
 @endif
-
+@push('js')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const editModalEl = document.getElementById('editReturnedModal');
@@ -767,5 +769,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-
+@endpush
 @endsection
