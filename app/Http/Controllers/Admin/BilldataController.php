@@ -1135,8 +1135,8 @@ class BilldataController extends Controller
 			
 
 			$entry->validated_status = null;
-			$entry->submit = 0;
-			$entry->f_return = 0;
+			$entry->submit = null;
+			$entry->f_return = null;
 			$entry->validation_remark = null;
 
 			$entry->save();
