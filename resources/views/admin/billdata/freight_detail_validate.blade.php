@@ -389,7 +389,7 @@
 									data-id="{{ $updatedbilldata->id }}"
 									data-invoice-no="{{ $updatedbilldata->freight_invoice_no }}"
 									data-invoice-date="{{ $updatedbilldata->freight_invoice_date }}"
-									data-amount="{{ $updatedbilldata->a_amount }}"
+									data-amount="{{ $updatedbilldata->freight_amount }}"
 									data-remark="{{ $updatedbilldata->validation_remark }}"
 									data-invoice-file="{{ $updatedbilldata->freight_invoice_file ? asset($updatedbilldata->freight_invoice_file) : '' }}"
 									data-pod-file="{{ $updatedbilldata->pod_file ? asset($updatedbilldata->pod_file) : '' }}"

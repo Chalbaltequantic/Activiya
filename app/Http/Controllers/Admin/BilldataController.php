@@ -1116,13 +1116,13 @@ class BilldataController extends Controller
 			$entry->freight_invoice_date = $request->freight_invoice_date;
 
 			// If your amount column is a_amount:
-			$entry->a_amount = $request->freight_amount;
+			$entry->freight_amount = $request->freight_amount;
 
 			if ($request->hasFile('freight_invoice_file')) {
 				$file = $request->file('freight_invoice_file');
 				$filename = time().'_invoice_'.$file->getClientOriginalName();
-				$file->move(public_path('uploads/freight_invoice'), $filename);
-				$entry->freight_invoice_file = 'uploads/freight_invoice/'.$filename;
+				$file->move(public_path('uploads/invoice'), $filename);
+				$entry->freight_invoice_file = 'uploads/invoice/'.$filename;
 			}
 
 			if ($request->hasFile('pod_file')) {
