@@ -771,28 +771,20 @@ class BilldataController extends Controller
         $title = 'Bill Data freight details Validate';
         $pagetitle = $title.' Listing';
 		$created_by = Auth::user()->role_id;
-		/*$entries = Billdata::whereNotNull('freight_invoice_no')
-				->where('freight_invoice_no', '!=', '')
-				->whereNotNull('freight_invoice_date')
-				->where('freight_invoice_date', '!=', '')
-				->whereNotNull('freight_amount')
-				->whereNotNull('freight_amount', '!=', '')
-				->where('validated_status', '!=', 'submitted')
-				->get();
-				
-				dd($entries);
-				*/
-				
-				
-				
-				$entries = Billdata::whereNotNull('freight_invoice_no')
+					
+			/*	$entries = Billdata::whereNotNull('freight_invoice_no')
 				->where('freight_invoice_no', '!=', '')
 				->where(function ($q) {
 				$q->whereNull('validated_status')
 				  ->orWhere('validated_status', '!=', 'submitted');
 			})
+				->get();*/
 				
-				->get();
+		$entries = Billdata::whereNotNull('freight_invoice_no')
+		->where('freight_invoice_no', '!=', '')
+		->whereNull('submit')
+		->whereNull('f_return')
+		->get();		
 		
 					   
 		$updatedentries[] = ''; 
@@ -808,6 +800,10 @@ class BilldataController extends Controller
 			->where('freight_invoice_no', '!=', '')
 			->whereNotNull('freight_invoice_date')
 			->whereNotNull('freight_amount')
+			->where(function ($q) {
+					$q->where('submit', 1)
+					->orWhere('f_return', 1);
+			})
 			->get();
 		//} 
 		
