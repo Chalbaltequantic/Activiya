@@ -107,7 +107,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 
 	//////Edit Returned freight
 	Route::post('freight-returned/update', [App\Http\Controllers\Admin\BilldataController::class, 'updateReturnedFreightAjax'])
-    ->name('admin.freight.returned.ajax.update');
+    ->name('freight.returned.ajax.update');
 	
 	///////SIte plant Data Route
 	
