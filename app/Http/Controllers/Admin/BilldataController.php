@@ -781,10 +781,16 @@ class BilldataController extends Controller
 				->get();*/
 				
 		$entries = Billdata::whereNotNull('freight_invoice_no')
-		->where('freight_invoice_no', '!=', '')
-		->whereNull('submit')
-		->whereNull('f_return')
-		->get();		
+							->where('freight_invoice_no', '!=', '')
+							->where(function ($q) {
+								$q->whereNull('submit')
+								  ->orWhere('submit', 0);
+							})
+							->where(function ($q) {
+								$q->whereNull('f_return')
+								  ->orWhere('f_return', 0);
+							})
+							->get();		
 		
 					   
 		$updatedentries[] = ''; 
