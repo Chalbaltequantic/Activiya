@@ -383,7 +383,7 @@
 							<td>{!! ($updatedbilldata->f_return==1) 
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
-								!!}<br />@if(updatedbilldata->f_return=='1')
+								!!}<br />@if($updatedbilldata->f_return=='1')
 								<button type="button"
 									class="btn btn-sm btn-warning edit-returned-btn"
 									data-id="{{ $updatedbilldata->id }}"
