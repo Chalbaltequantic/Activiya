@@ -383,7 +383,21 @@
 							<td>{!! ($updatedbilldata->f_return==1) 
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
-								!!}</td>
+								!!}<br />@if(updatedbilldata->f_return=='1')
+								<button type="button"
+									class="btn btn-sm btn-warning edit-returned-btn"
+									data-id="{{ $updatedbilldata->id }}"
+									data-invoice-no="{{ $updatedbilldata->freight_invoice_no }}"
+									data-invoice-date="{{ $updatedbilldata->freight_invoice_date }}"
+									data-amount="{{ $updatedbilldata->a_amount }}"
+									data-remark="{{ $updatedbilldata->validation_remark }}"
+									data-invoice-file="{{ $updatedbilldata->freight_invoice_file ? asset($updatedbilldata->freight_invoice_file) : '' }}"
+									data-pod-file="{{ $updatedbilldata->pod_file ? asset($updatedbilldata->pod_file) : '' }}"
+									data-approval-file="{{ $updatedbilldata->approval_file ? asset($updatedbilldata->approval_file) : '' }}">
+									Edit
+								</button>
+								@endif
+							</td>
 							<td>{{$updatedbilldata->validation_remark}}</td>
 								
 					 
@@ -411,6 +425,75 @@
 </div>
 </div>
 <!-- /.content -->
+<div class="modal fade" id="editReturnedModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form id="editReturnedForm" enctype="multipart/form-data">
+            @csrf
+
+            <input type="hidden" name="id" id="edit_id">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Returned Freight</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Freight Invoice No</label>
+                            <input type="text" name="freight_invoice_no" id="edit_freight_invoice_no" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Freight Invoice Date</label>
+                            <input type="date" name="freight_invoice_date" id="edit_freight_invoice_date" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Freight Amount</label>
+                            <input type="number" step="0.01" name="freight_amount" id="edit_freight_amount" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Freight Invoice File</label>
+                            <input type="file" name="freight_invoice_file" class="form-control">
+                            <div id="invoice_file_link" class="mt-2"></div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>POD File</label>
+                            <input type="file" name="pod_file" class="form-control">
+                            <div id="pod_file_link" class="mt-2"></div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <label>Return Remark</label>
+                    <textarea id="edit_return_remark" class="form-control" readonly></textarea>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update & Move to Validation</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -592,4 +675,97 @@ Swal.fire({
 });
 </script>
 @endif
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const editModalEl = document.getElementById('editReturnedModal');
+    const editModal = new bootstrap.Modal(editModalEl);
+    const form = document.getElementById('editReturnedForm');
+
+    document.querySelectorAll('.edit-returned-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            document.getElementById('edit_id').value = this.dataset.id || '';
+            document.getElementById('edit_freight_invoice_no').value = this.dataset.invoiceNo || '';
+            document.getElementById('edit_freight_invoice_date').value = this.dataset.invoiceDate || '';
+            document.getElementById('edit_freight_amount').value = this.dataset.amount || '';
+            document.getElementById('edit_return_remark').value = this.dataset.remark || '';
+
+            document.getElementById('invoice_file_link').innerHTML = this.dataset.invoiceFile
+                ? `<a href="${this.dataset.invoiceFile}" target="_blank" class="btn btn-sm btn-primary">View Existing Invoice</a>`
+                : '<span class="text-muted">No file</span>';
+
+            document.getElementById('pod_file_link').innerHTML = this.dataset.podFile
+                ? `<a href="${this.dataset.podFile}" target="_blank" class="btn btn-sm btn-primary">View Existing POD</a>`
+                : '<span class="text-muted">No file</span>';
+
+           
+            form.reset();
+            document.getElementById('edit_id').value = this.dataset.id || '';
+            document.getElementById('edit_freight_invoice_no').value = this.dataset.invoiceNo || '';
+            document.getElementById('edit_freight_invoice_date').value = this.dataset.invoiceDate || '';
+            document.getElementById('edit_freight_amount').value = this.dataset.amount || '';
+            document.getElementById('edit_return_remark').value = this.dataset.remark || '';
+
+            editModal.show();
+        });
+    });
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(form);
+
+        Swal.fire({
+            title: 'Updating...',
+            text: 'Please wait.',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        fetch("{{ route('admin.freight.returned.ajax.update') }}", {
+            method: "POST",
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            body: formData
+        })
+        .then(async response => {
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw data;
+            }
+
+            return data;
+        })
+        .then(data => {
+            editModal.hide();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Updated',
+                text: data.message
+            }).then(() => {
+                location.reload();
+            });
+        })
+        .catch(error => {
+            let message = 'Something went wrong.';
+
+            if (error.errors) {
+                message = Object.values(error.errors).flat().join('<br>');
+            } else if (error.message) {
+                message = error.message;
+            }
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                html: message
+            });
+        });
+    });
+});
+</script>
+
 @endsection

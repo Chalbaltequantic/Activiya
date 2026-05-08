@@ -105,6 +105,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 		Route::post('freight/validate', [App\Http\Controllers\Admin\BilldataController::class, 'validateAjax'])->name('freight.validate');
 		Route::post('freight/store', [App\Http\Controllers\Admin\BilldataController::class, 'storeValidatedData'])->name('freight.store');
 
+	//////Edit Returned freight
+	Route::post('freight-returned/update', [App\Http\Controllers\Admin\BilldataController::class, 'updateReturnedFreightAjax'])
+    ->name('admin.freight.returned.ajax.update');
 	
 	///////SIte plant Data Route
 	

@@ -1092,6 +1092,67 @@ class BilldataController extends Controller
 			);
 		}
 	}
+	
+	//Update ReturnedFreight//////
+	
+	public function updateReturnedFreightAjax(Request $request)
+	{
+		$request->validate([
+			'id'                   => 'required|exists:bill_data_upload,id',
+			'freight_invoice_no'   => 'required',
+			'freight_invoice_date' => 'required|date',
+			'freight_amount'       => 'required|numeric|min:1',
+
+			'freight_invoice_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+			'pod_file'             => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+		]);
+
+		try {
+			$entry = Billdata::findOrFail($request->id);
+
+			$entry->freight_invoice_no = $request->freight_invoice_no;
+
+			// If your column name is freight_invoice_date, use this:
+			$entry->freight_invoice_date = $request->freight_invoice_date;
+
+			// If your amount column is a_amount:
+			$entry->a_amount = $request->freight_amount;
+
+			if ($request->hasFile('freight_invoice_file')) {
+				$file = $request->file('freight_invoice_file');
+				$filename = time().'_invoice_'.$file->getClientOriginalName();
+				$file->move(public_path('uploads/freight_invoice'), $filename);
+				$entry->freight_invoice_file = 'uploads/freight_invoice/'.$filename;
+			}
+
+			if ($request->hasFile('pod_file')) {
+				$file = $request->file('pod_file');
+				$filename = time().'_pod_'.$file->getClientOriginalName();
+				$file->move(public_path('uploads/pod'), $filename);
+				$entry->pod_file = 'uploads/pod/'.$filename;
+			}
+
+			
+
+			$entry->validated_status = null;
+			$entry->submit = 0;
+			$entry->f_return = 0;
+			$entry->validation_remark = null;
+
+			$entry->save();
+
+			return response()->json([
+				'status' => true,
+				'message' => 'Returned item updated successfully and moved back to validation list.'
+			]);
+
+		} catch (\Exception $e) {
+			return response()->json([
+				'status' => false,
+				'message' => $e->getMessage()
+			], 500);
+		}
+	}
 
 	public function upload(Request $request)
     {
