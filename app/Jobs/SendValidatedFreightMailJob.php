@@ -190,8 +190,8 @@ class SendValidatedFreightMailJob implements ShouldQueue
         ];
 
         Mail::send('mail.freight_info_mail', $data, function ($message) use ($subject, $files) {
-
-            $message->to('roshan.scm@gmail.com')
+//roshan.scm
+            $message->to('jhachalbal@gmail.com')
                 ->subject($subject)
                 ->from(config('mail.from.address'), 'Activiya.com');
 
