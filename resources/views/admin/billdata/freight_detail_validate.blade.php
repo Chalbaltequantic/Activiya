@@ -679,94 +679,151 @@ Swal.fire({
 @endif
 @push('js')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const editModalEl = document.getElementById('editReturnedModal');
-    const editModal = new bootstrap.Modal(editModalEl);
-    const form = document.getElementById('editReturnedForm');
 
-    document.querySelectorAll('.edit-returned-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            document.getElementById('edit_id').value = this.dataset.id || '';
-            document.getElementById('edit_freight_invoice_no').value = this.dataset.invoiceNo || '';
-            document.getElementById('edit_freight_invoice_date').value = this.dataset.invoiceDate || '';
-            document.getElementById('edit_freight_amount').value = this.dataset.amount || '';
-            document.getElementById('edit_return_remark').value = this.dataset.remark || '';
+$(document).ready(function () {
 
-            document.getElementById('invoice_file_link').innerHTML = this.dataset.invoiceFile
-                ? `<a href="${this.dataset.invoiceFile}" target="_blank" class="btn btn-sm btn-primary">View Existing Invoice</a>`
-                : '<span class="text-muted">No file</span>';
+    /*
+    |--------------------------------------------------------------------------
+    | OPEN MODAL
+    |--------------------------------------------------------------------------
+    */
 
-            document.getElementById('pod_file_link').innerHTML = this.dataset.podFile
-                ? `<a href="${this.dataset.podFile}" target="_blank" class="btn btn-sm btn-primary">View Existing POD</a>`
-                : '<span class="text-muted">No file</span>';
+    $(document).on('click', '.edit-returned-btn', function () {
 
-           
-            form.reset();
-            document.getElementById('edit_id').value = this.dataset.id || '';
-            document.getElementById('edit_freight_invoice_no').value = this.dataset.invoiceNo || '';
-            document.getElementById('edit_freight_invoice_date').value = this.dataset.invoiceDate || '';
-            document.getElementById('edit_freight_amount').value = this.dataset.amount || '';
-            document.getElementById('edit_return_remark').value = this.dataset.remark || '';
+        $('#edit_id').val($(this).data('id'));
 
-            editModal.show();
-        });
+        $('#edit_freight_invoice_no').val($(this).data('invoice-no'));
+
+        $('#edit_freight_invoice_date').val($(this).data('invoice-date'));
+
+        $('#edit_freight_amount').val($(this).data('amount'));
+
+        $('#edit_return_remark').val($(this).data('remark'));
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE LINKS
+        |--------------------------------------------------------------------------
+        */
+
+        let invoiceFile = $(this).data('invoice-file');
+        let podFile = $(this).data('pod-file');
+        let approvalFile = $(this).data('approval-file');
+
+        $('#invoice_file_link').html(
+            invoiceFile
+                ? '<a href="' + invoiceFile + '" target="_blank" class="btn btn-sm btn-primary">View Existing Invoice</a>'
+                : '<span class="text-muted">No file</span>'
+        );
+
+        $('#pod_file_link').html(
+            podFile
+                ? '<a href="' + podFile + '" target="_blank" class="btn btn-sm btn-primary">View Existing POD</a>'
+                : '<span class="text-muted">No file</span>'
+        );
+
+        $('#approval_file_link').html(
+            approvalFile
+                ? '<a href="' + approvalFile + '" target="_blank" class="btn btn-sm btn-primary">View Existing Approval</a>'
+                : '<span class="text-muted">No file</span>'
+        );
+
+        $('#editReturnedModal').modal('show');
     });
 
-    form.addEventListener('submit', function (e) {
+    /*
+    |--------------------------------------------------------------------------
+    | CLOSE MODAL
+    |--------------------------------------------------------------------------
+    */
+
+    $(document).on('click', '.close-edit-modal', function () {
+
+        $('#editReturnedModal').modal('hide');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | FORM SUBMIT
+    |--------------------------------------------------------------------------
+    */
+
+    $('#editReturnedForm').on('submit', function (e) {
+
         e.preventDefault();
 
-        let formData = new FormData(form);
+        let formData = new FormData(this);
 
         Swal.fire({
             title: 'Updating...',
-            text: 'Please wait.',
+            text: 'Please wait',
             allowOutsideClick: false,
-            didOpen: () => Swal.showLoading()
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
 
-        fetch("{{ route('admin.freight.returned.ajax.update') }}", {
-            method: "POST",
+        $.ajax({
+
+            url: "{{ route('admin.freight.returned.ajax.update') }}",
+
+            type: "POST",
+
+            data: formData,
+
+            processData: false,
+
+            contentType: false,
+
             headers: {
                 'X-CSRF-TOKEN': "{{ csrf_token() }}"
             },
-            body: formData
-        })
-        .then(async response => {
-            const data = await response.json();
 
-            if (!response.ok) {
-                throw data;
+            success: function (response) {
+
+                $('#editReturnedModal').modal('hide');
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message
+                }).then(() => {
+
+                    location.reload();
+                });
+            },
+
+            error: function (xhr) {
+
+                let errorMsg = 'Something went wrong';
+
+                if (xhr.responseJSON) {
+
+                    if (xhr.responseJSON.message) {
+
+                        errorMsg = xhr.responseJSON.message;
+                    }
+
+                    if (xhr.responseJSON.errors) {
+
+                        errorMsg = '';
+
+                        $.each(xhr.responseJSON.errors, function (key, value) {
+
+                            errorMsg += value[0] + '<br>';
+                        });
+                    }
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: errorMsg
+                });
             }
-
-            return data;
-        })
-        .then(data => {
-            editModal.hide();
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Updated',
-                text: data.message
-            }).then(() => {
-                location.reload();
-            });
-        })
-        .catch(error => {
-            let message = 'Something went wrong.';
-
-            if (error.errors) {
-                message = Object.values(error.errors).flat().join('<br>');
-            } else if (error.message) {
-                message = error.message;
-            }
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Update Failed',
-                html: message
-            });
         });
     });
+
 });
 </script>
 @endpush
