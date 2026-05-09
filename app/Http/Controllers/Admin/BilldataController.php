@@ -801,7 +801,7 @@ class BilldataController extends Controller
 				'id', 's5_consignor_short_name_and_location', 'd5_consignor_short_name_and_location', 
 				'ref1', 'truck_type', 'lr_no', 'lr_cn_date',
 				'ref1', 'ref2', 'freight_invoice_no', 'freight_invoice_date', 'freight_amount',
-				'freight_invoice_file', 'pod_file', 'approval_file', 'validated_status','submit', 'f_return', 'validation_remark, vendor_name'
+				'freight_invoice_file', 'pod_file', 'approval_file', 'validated_status','submit', 'f_return', 'validation_remark', 'vendor_name'
 			])
 			->where('freight_invoice_no', '!=', '')
 			->whereNotNull('freight_invoice_date')
