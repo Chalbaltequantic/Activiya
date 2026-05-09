@@ -164,7 +164,7 @@
 					<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 						    <form method="POST" action="{{ route('admin.freight.store') }}" id="freightValidationForm">
 								@csrf
-								<table class="table table-bordered border-dark table-hover" id="table">
+								<table class="table table-bordered border-dark table-hover billDataTable1" id="table">
 								  <thead>
 									<tr>
 									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:140px;" class="sticky-col-1">S5 consignor short<br> name & location</th>
@@ -383,7 +383,8 @@
 							<td>{!! ($updatedbilldata->f_return==1) 
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
-								!!}<br />@if($updatedbilldata->f_return=='1')
+								!!}
+								@if($updatedbilldata->f_return=='1')
 								<button type="button"
 									class="btn btn-sm btn-warning edit-returned-btn"
 									data-id="{{ $updatedbilldata->id }}"
@@ -484,7 +485,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Update & Move to Validation</button>
+                    <button type="submit" class="btn btn-success">Update & Send for Validation</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 

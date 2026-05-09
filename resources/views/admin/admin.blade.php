@@ -142,6 +142,15 @@ $(document).ready(function() {
 			'csv', 'excel'
 		]
 	});
+	$('.billDataTable1').DataTable({
+		responsive: true,
+		ordering: false,
+		 paging: false,
+		dom: 'Bfrtip',
+		buttons: [
+			'csv', 'excel'
+		]
+	});
 	
 });
 const isMobileg = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
