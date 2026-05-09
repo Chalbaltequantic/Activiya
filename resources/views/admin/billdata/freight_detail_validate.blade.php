@@ -283,9 +283,9 @@
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="timeline">
                     <!-- The timeline -->
-                  	<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table">
+                  	<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 										 
-						<table class="table table-bordered border-dark table-hover">
+						<table class="table table-bordered border-dark table-hover" id="billDataTable">
 							<thead>
 							<tr>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:140px;" class="sticky-col-1">S5 consignor short<br> name & location</th>
