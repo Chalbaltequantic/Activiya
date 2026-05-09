@@ -93,7 +93,7 @@
     text-align: left;
 }
 
-#table th {
+#billDataTable1 th {
     position: sticky;
     top: 0;
     z-index: 2;
@@ -164,7 +164,7 @@
 					<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 						    <form method="POST" action="{{ route('admin.freight.store') }}" id="freightValidationForm">
 								@csrf
-								<table class="table table-bordered border-dark table-hover billDataTable1" id="table">
+								<table class="table table-bordered border-dark table-hover billDataTable1" id="billDataTable1">
 								  <thead>
 									<tr>
 									  <th style="background: #fce4d6; color: #0070c0;z-index:999;width:140px;" class="sticky-col-1">S5 consignor short<br> name & location</th>
@@ -566,7 +566,7 @@ document.getElementById('validateBtn').addEventListener('click', function () {
         let validCount = 0;
         let invalidCount = 0;
 
-        document.querySelectorAll('#table tbody tr').forEach(row => {
+        document.querySelectorAll('#billDataTable1 tbody tr').forEach(row => {
             const rowId = row.dataset.id;
             if (!rowId) return;
 
