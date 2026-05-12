@@ -157,7 +157,7 @@ class RatedataController extends Controller
 				'truck_type' => $request->truck_type,
 				'a_amount' => $request->a_amount,
 				'validity_start' => $request->validity_start,
-				'validity_end' => $request->validity_start,				
+				'validity_end' => $request->validity_end,				
 				'tat' => $request->tat,
 				'rank' => $request->rank,
 				'mode' => $request->mode,
