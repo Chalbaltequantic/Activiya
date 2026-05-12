@@ -156,14 +156,14 @@
 
 				 <div class="form-group col-md-6">
 					<label for="validity_start">Validity start date</label>
-					<input type="text" id="validity_start" name="validity_start" class="form-control" value="{{$ratedata->validity_start}}">
+					<input type="date" id="validity_start" name="validity_start" class="form-control" value="{{$ratedata->validity_start}}">
 					@error('validity_start')
 					<span class="text-danger">{{$message}}</span>
 					@enderror
 				</div>
 				<div class="form-group col-md-6">
 					<label for="validity_end">Validity end date</label>
-					<input type="text" id="validity_end" name="validity_end" class="form-control" value="{{$ratedata->validity_end}}">
+					<input type="date" id="validity_end" name="validity_end" class="form-control" value="{{$ratedata->validity_end}}">
 					@error('validity_end')
 					<span class="text-danger">{{$message}}</span>
 					@enderror
