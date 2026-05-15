@@ -384,8 +384,8 @@
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
 								!!}
-								@if($updatedbilldata->f_return=='1')
-								<button type="button"
+								{!! ($updatedbilldata->f_return==1)?
+								'<button type="button"
 									class="btn btn-sm btn-warning edit-returned-btn"
 									data-id="{{ $updatedbilldata->id }}"
 									data-invoice-no="{{ $updatedbilldata->freight_invoice_no }}"
@@ -396,8 +396,9 @@
 									data-pod-file="{{ $updatedbilldata->pod_file ? asset($updatedbilldata->pod_file) : '' }}"
 									data-approval-file="{{ $updatedbilldata->approval_file ? asset($updatedbilldata->approval_file) : '' }}">
 									Edit
-								</button>
-								@endif
+								</button>'
+								:''
+								!!}
 							</td>
 							<td>{{$updatedbilldata->validation_remark}}</td>
 								
