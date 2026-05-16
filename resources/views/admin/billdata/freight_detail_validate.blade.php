@@ -384,20 +384,21 @@
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
 								!!}
+								{{$updatedbilldata->f_return}}
 								@if($updatedbilldata->f_return == 1)
-    <button type="button"
-        class="btn btn-sm btn-warning edit-returned-btn"
-        data-id="{{ $updatedbilldata->id }}"
-        data-invoice-no="{{ $updatedbilldata->freight_invoice_no }}"
-        data-invoice-date="{{ $updatedbilldata->freight_invoice_date }}"
-        data-amount="{{ $updatedbilldata->freight_amount }}"
-        data-remark="{{ $updatedbilldata->validation_remark }}"
-        data-invoice-file="{{ $updatedbilldata->freight_invoice_file ? asset($updatedbilldata->freight_invoice_file) : '' }}"
-        data-pod-file="{{ $updatedbilldata->pod_file ? asset($updatedbilldata->pod_file) : '' }}"
-        data-approval-file="{{ $updatedbilldata->approval_file ? asset($updatedbilldata->approval_file) : '' }}">
-        Edit
-    </button>
-@endif
+								<button type="button"
+									class="btn btn-sm btn-warning edit-returned-btn"
+									data-id="{{ $updatedbilldata->id }}"
+									data-invoice-no="{{ $updatedbilldata->freight_invoice_no }}"
+									data-invoice-date="{{ $updatedbilldata->freight_invoice_date }}"
+									data-amount="{{ $updatedbilldata->freight_amount }}"
+									data-remark="{{ $updatedbilldata->validation_remark }}"
+									data-invoice-file="{{ $updatedbilldata->freight_invoice_file ? asset($updatedbilldata->freight_invoice_file) : '' }}"
+									data-pod-file="{{ $updatedbilldata->pod_file ? asset($updatedbilldata->pod_file) : '' }}"
+									data-approval-file="{{ $updatedbilldata->approval_file ? asset($updatedbilldata->approval_file) : '' }}">
+									Edit
+								</button>
+							@endif
 							</td>
 							<td>{{$updatedbilldata->validation_remark}}</td>
 								
