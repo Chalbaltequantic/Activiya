@@ -384,7 +384,7 @@
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
 								!!}
-								{{$updatedbilldata->f_return}}
+								s=={{$updatedbilldata->f_return}}
 								@if($updatedbilldata->f_return == 1)
 								<button type="button"
 									class="btn btn-sm btn-warning edit-returned-btn"
