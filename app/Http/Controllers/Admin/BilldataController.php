@@ -196,10 +196,15 @@ class BilldataController extends Controller
             }
 
             // Check rate master
+			
+			$today = date('Y-m-d');
+			
             $rateRecord = Ratedata::where('consignor_code', $data['consignor_code'])
                 ->where('consignee_code', $data['consignee_code'])
                 ->where('vendor_code', $data['vendor_code'])
                 ->where('t_code', $data['t_code'])
+				 ->whereDate('validity_start', '<=', $today)
+				->whereDate('validity_end', '>=', $today)
                 ->first();
 
             if (!$rateRecord) {
@@ -534,10 +539,13 @@ class BilldataController extends Controller
 					// Check rate master
 					if(!empty($data['consignor_code']))
 					{
+						$today = date('Y-m-d');
 						$rateRecord = Ratedata::where('consignor_code', $data['consignor_code'])
 							->where('consignee_code', $data['consignee_code'])
 							->where('vendor_code', $data['vendor_code'])
 							->where('t_code', $data['t_code'])
+							->whereDate('validity_start', '<=', $today)
+							->whereDate('validity_end', '>=', $today)
 							->first();
 
 						if (!$rateRecord) {
