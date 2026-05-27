@@ -655,9 +655,9 @@ class DigiWimController extends Controller
 			}
 
 			return response()->json([
-				'supplier_name'        => $supplier->plant_name ?? '',
+				'supplier_name'        => $supplier->plant_site_name ?? '',
 				'supplier_location'    => $supplier->city ?? '',
-				'consignee_name'       => $consignee->plant_name ?? '',
+				'consignee_name'       => $consignee->plant_site_name ?? '',
 				'consignee_location'   => $consignee->city ?? '',
 				'material_description' => $material->material_description ?? '',
 				'transporter_name'     => $transporter->vendor_name ?? '',
