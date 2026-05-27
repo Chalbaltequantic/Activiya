@@ -236,8 +236,8 @@
 
 										</tr>
 
-										@endfor
-
+										@endforeach
+									@endif
 									</tbody>
 
 								</table>
