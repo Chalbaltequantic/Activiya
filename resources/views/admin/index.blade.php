@@ -549,14 +549,14 @@
 									</a>
 								</div>
 								@endif
-								{{--	@if(Gate::allows('admin.update.preappointment.status'))--}}
+									@if(Gate::allows('admin.update.preappointment.status'))
 								<div class="col-md-3 col-6 mb-4">
 									<a href="{{ route('admin.appointmentlr.detail.data.update') }}" class="dashboard-link">
 										<i class="fas fa-network-wired dashboard-icon text-info"></i>
 										<p>Update Appointment Status</p>
 									</a>
 								</div>
-								{{-- @endif --}}
+								@endif
 					
 						@if(Gate::allows('aadmin.preappointment.delivery.stage.status'))
 								<div class="col-md-3 col-6 mb-4">

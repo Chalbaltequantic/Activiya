@@ -617,6 +617,31 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	Route::get('lr/list', [App\Http\Controllers\Admin\LrController::class, 'index'])
     ->name('lr.list');	
-
+	
+	
+	/*----------------------------------------------------------
+	 |						DIGI WIM                           |
+	------------------------------------------------------------*/
+	Route::get('digiwim', [App\Http\Controllers\Admin\DigiWimController::class, 'index'])->name('digiWim');
+	
+	Route::post('digiwimimport', [App\Http\Controllers\Admin\DigiWimController::class, 'import'])->name('digiwim.import');
+	
+	Route::get('digiwim/data-list', [App\Http\Controllers\Admin\DigiWimController::class, 'digiwimdatalist'])->name('digiwimdatalist');
+	
+	//manual upload data
+	Route::get('digiwim/manual-upload', [App\Http\Controllers\Admin\DigiWimController::class, 'manualupload'])->name('digiwimmanualupload');
+	
+	Route::post('digiwim/fetch-row', [App\Http\Controllers\Admin\DigiWimController::class, 'fetchRowData'])
+    ->name('digiwim.fetchRow');
+	
+	Route::post('digiwim/save_manual_upload', [App\Http\Controllers\Admin\DigiWimController::class, 'save_manual_digiwimdata'])->name('save_manual_digiwimdata');
+	//////////
+	Route::get('digiwim/editdigiwimdata/{id}', [App\Http\Controllers\Admin\DigiWimController::class,'getDigiwimldataDetails'])->name('getDigiwimdataDetails');
+	
+	Route::post('digiwim/updatedigiwimdata', [App\Http\Controllers\Admin\DigiWimController::class, 'save_digiwimdata']);
+	
+	Route::get('deletematerialdata/{id}', 'App\Http\Controllers\Admin\DigiWimController@DeleteDigiwimData')->name('DeleteDigiwimData');
+	
+	
 });
 

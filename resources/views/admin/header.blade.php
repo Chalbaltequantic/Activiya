@@ -299,6 +299,17 @@
 					<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
 					</li>
 				@endif
+				 <li class="nav-item dropdown">
+					<a id="dropdownSubMenu21" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Digi Wim</a>
+					<ul aria-labelledby="dropdownSubMenu21" class="dropdown-menu border-0 shadow">	
+					
+					 <li class=""><a href="{{ route('admin.digiWim') }}" class="dropdown-item">Add/Upload Digi Wim</a></li>
+					
+					 <li class=""><a href="{{ route('admin.digiwimdatalist') }}" class="dropdown-item">Digi Wim Data</a></li>
+					
+					
+					</ul>
+				</li>
 				<li class="nav-item dropdown user-menu">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 						<span class="d-none d-md-inline">Welcome {{ auth()->user()->name }}</span>
