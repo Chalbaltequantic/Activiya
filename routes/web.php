@@ -634,7 +634,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::post('digiwim/fetch-row', [App\Http\Controllers\Admin\DigiWimController::class, 'fetchRowData'])
     ->name('digiwim.fetchRow');
 	
-	Route::post('digiwim/save_manual_upload', [App\Http\Controllers\Admin\DigiWimController::class, 'save_manual_digiwimdata'])->name('save_manual_digiwimdata');
+	Route::post('digiwim/save_manual_upload', [App\Http\Controllers\Admin\DigiWimController::class, 'save_manual_data'])->name('save_manual_digiwimdata');
 	//////////
 	Route::get('digiwim/editdigiwimdata/{id}', [App\Http\Controllers\Admin\DigiWimController::class,'getDigiwimldataDetails'])->name('getDigiwimdataDetails');
 	
