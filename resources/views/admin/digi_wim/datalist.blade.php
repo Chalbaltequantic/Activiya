@@ -70,27 +70,27 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Indent ID</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Supplier Code*</th>
+											<th style="background: #fce4d6; color: #0070c0;">Supplier <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Supplier Name</th>
+											<th style="background: #fce4d6; color: #0070c0;">Supplier <br>Name</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Supplier Location</th>
+											<th style="background: #fce4d6; color: #0070c0;">Supplier <br>Location</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">PO No.</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Invoice/Challan No.</th>
+											<th style="background: #fce4d6; color: #0070c0;">Invoice/Challan<br>No.</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Inv/Challan Date</th>
+											<th style="background: #fce4d6; color: #0070c0;">Inv/Challan<br>Date</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Consignee Code*</th>
+											<th style="background: #fce4d6; color: #0070c0;">Consignee <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Consignee Name</th>
+											<th style="background: #fce4d6; color: #0070c0;">Consignee <br>Name</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Consignee Location</th>
+											<th style="background: #fce4d6; color: #0070c0;">Consignee<br> Location</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">M.Code*</th>
 
-											<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">Material Descriptions</th>
+											<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">Material<br>Descriptions</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Batch No.</th>
 
@@ -98,13 +98,13 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Expiry Date</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Qty. (Units)</th>
+											<th style="background: #fce4d6; color: #0070c0;">Qty<br> (Units)</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Total Cs</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Transporter Code*</th>
+											<th style="background: #fce4d6; color: #0070c0;">Transporter<br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Transporter Name</th>
+											<th style="background: #fce4d6; color: #0070c0;">Transporter<br>Name</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Truck No</th>
 
@@ -112,11 +112,11 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">LR Date</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Ewaybill No.</th>
+											<th style="background: #fce4d6; color: #0070c0;">Ewaybill <br>No.</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Truck Code*</th>
+											<th style="background: #fce4d6; color: #0070c0;">Truck <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Vehicle Type</th>
+											<th style="background: #fce4d6; color: #0070c0;">Vehicle <><br>Type</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Custom</th>
 
