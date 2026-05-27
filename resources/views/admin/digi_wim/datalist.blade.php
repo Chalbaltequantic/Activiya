@@ -142,7 +142,7 @@
 									   <tr>
 										<td class="sticky-col-1">{{$digiwimdata->indent_id}}</td>
 										<td class="sticky-col-2">{{$digiwimdata->supplier_code}}</td>
-										<td class="sticky-col-3">{{$billdata->supplier_name}}</td>
+										<td class="sticky-col-3">{{$digiwimdata->supplier_name}}</td>
 										<td>{{$digiwimdata->supplier_location }}</td>
 
 										<td>{{$digiwimdata->po_no}}</td>
