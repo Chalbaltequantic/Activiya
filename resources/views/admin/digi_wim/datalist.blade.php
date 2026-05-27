@@ -147,7 +147,7 @@
 
 										<td>{{$digiwimdata->po_no}}</td>
 
-										<td style="padding-left:5px !important;">{{$digiwimdata->invoice_challan_no}}</td>
+										<td>  {{$digiwimdata->invoice_challan_no}}</td>
 
 										<td>
 										{{ !empty($digiwimdata->invoice_challan_date) ? \Carbon\Carbon::parse($digiwimdata->invoice_challan_date)->format('Y-m-d') : '' }}
