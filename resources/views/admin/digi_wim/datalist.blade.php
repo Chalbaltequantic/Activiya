@@ -116,7 +116,7 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Truck <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Vehicle Type</th>
+											<th style="background: #fce4d6; color: #0070c0;"> Vehicle  Type</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Custom</th>
 
