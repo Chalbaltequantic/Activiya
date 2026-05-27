@@ -143,7 +143,7 @@
 										<td class="sticky-col-1">{{$digiwimdata->indent_id}}</td>
 										<td class="sticky-col-2">{{$digiwimdata->supplier_code}}</td>
 										<td class="sticky-col-3" class="sticky-col-2 col-width">{{$billdata->supplier_name}}</td>
-										<td>{{$digiwimdata->supplier_location }}></td>
+										<td>{{$digiwimdata->supplier_location }}</td>
 
 										<td>{{$digiwimdata->po_no}}</td>
 
@@ -159,7 +159,7 @@
 										<td>{{$digiwimdata->consignee_location}}
 										</td>
 
-										<td>{{$digiwimdata->m_code[]}}
+										<td>{{$digiwimdata->m_code}}
 										</td>
 
 										<td>{{$digiwimdata->material_descriptions}}
@@ -242,7 +242,7 @@
 
 								</table>
 							</div>
-
+							
 						</div>
 
 						
