@@ -63,7 +63,7 @@
 							
 
 							<div class="excel-wrapper">
-								<table class="table table-bordered excel-table" id="table">
+								<table class="table table-bordered excel-table" id="billData">
 
 									<thead>
 										<tr>
@@ -76,7 +76,7 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Supplier Location</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">P.O.No.</th>
+											<th style="background: #fce4d6; color: #0070c0;">PO No.</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Invoice/Challan No.</th>
 
@@ -147,9 +147,11 @@
 
 										<td>{{$digiwimdata->po_no}}</td>
 
-										<td>{{$digiwimdata->invoice_challan_no}}</td>
+										<td style="padding-left:5px !important;">{{$digiwimdata->invoice_challan_no}}</td>
 
-										<td>{{$digiwimdata->invoice_challan_date}}</td>
+										<td>
+										{{ !empty($digiwimdata->invoice_challan_date) ? \Carbon\Carbon::parse($digiwimdata->invoice_challan_date)->format('Y-m-d') : '' }}
+										</td>
 
 										<td>{{$digiwimdata->consignee_code}}</td>
 
