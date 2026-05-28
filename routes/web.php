@@ -642,6 +642,32 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	Route::get('deletematerialdata/{id}', 'App\Http\Controllers\Admin\DigiWimController@DeleteDigiwimData')->name('DeleteDigiwimData');
 	
+	/////Unloading
+	
+	Route::get('digiwim/unloading-operation/create', [App\Http\Controllers\Admin\DigiWimController::class, 'createOperation'])
+    ->name('digiwim.operation.create');
+
+	Route::post('digiwim/operation/store-header', [App\Http\Controllers\Admin\DigiWimController::class, 'storeOperationHeader'])
+		->name('digiwim.operation.storeHeader');
+
+	/*Route::post('digiwim/operation/store-item', [App\Http\Controllers\Admin\DigiWimController::class, 'storeOperationItem'])
+		->name('digiwim.operation.storeItem');
+	*/
+	Route::get('digiwim/operation/list', [App\Http\Controllers\Admin\DigiWimController::class, 'operationList'])
+		->name('digiwim.operation.list');
+
+	Route::get('digiwim/operation/pdf/{id}', [App\Http\Controllers\Admin\DigiWimController::class, 'operationPdf'])
+		->name('digiwim.operation.pdf');
+		
+	Route::post('digiwim/operation/store-item', [App\Http\Controllers\Admin\DigiWimController::class, 'storeOperationItem'])
+    ->name('digiwim.operation.storeItem');
+	
+	Route::get(
+    'digiwim/operation/materials/{id}',
+    [App\Http\Controllers\Admin\DigiWimController::class, 'viewMaterials']
+	)->name('digiwim.operation.materials');
+	
+	
 	
 });
 

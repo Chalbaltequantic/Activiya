@@ -305,7 +305,12 @@
 					
 					 <li class=""><a href="{{ route('admin.digiWim') }}" class="dropdown-item">Add/Upload Digi Wim</a></li>
 					
-					 <li class=""><a href="{{ route('admin.digiwimdatalist') }}" class="dropdown-item">Digi Wim Data</a></li>
+					 <li class=""><a href="{{ route('admin.digiwimdatalist') }}" class="dropdown-item">Data List</a></li>
+					 
+					 <li class=""><a href="{{ route('admin.digiwim.operation.list') }}" class="dropdown-item">Unloading List</a>
+					 </li>
+					 <li class=""><a href="{{ route('admin.digiwim.operation.create') }}" class="dropdown-item">Create Unloading</a>
+					 </li>
 					
 					
 					</ul>

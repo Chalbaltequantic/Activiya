@@ -63,7 +63,7 @@
 							
 
 							<div class="excel-wrapper">
-								<table class="table table-bordered excel-table" id="billData">
+								<table class="table table-bordered excel-table" id="billDataTable">
 
 									<thead>
 										<tr>

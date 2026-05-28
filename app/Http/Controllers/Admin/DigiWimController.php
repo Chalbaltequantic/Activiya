@@ -17,11 +17,15 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Models\Material;
 use App\Models\Admin;
 use App\Models\Ratedata;
 use App\Models\TruckMaster;
 use App\Models\DigiWim;
+use App\Models\DigiwimOperation;
+use App\Models\DigiwimOperationItem;
 use App\Models\Vendor;
 use App\Models\Siteplant;
 
@@ -438,134 +442,7 @@ class DigiWimController extends Controller
 		]);
 	}
 	
-/*	public function save_manual_data(Request $request)
-	{
-		$created_by   = Auth::user()->id;
-		$createddate  = now();
 
-		$indent_id      = $request->indent_id ?? [];
-		$supplier_code           = $request->supplier_code ?? [];
-		$supplier_name     = $request->supplier_name ?? [];
-		$supplier_location      = $request->supplier_location ?? [];
-		$po_no              = $request->po_no ?? [];
-		$invoice_challan_no       = $request->invoice_challan_no ?? [];
-		$invoice_challan_date              = $request->invoice_challan_date ?? [];
-		$consignee_code             = $request->consignee_code ?? [];
-		$consignee_name = $request->consignee_name ?? [];
-		$consignee_location    = $request->consignee_location ?? [];		
-		$m_code                   = $request->m_code ?? [];
-		$material_descriptions        = $request->material_descriptions ?? [];
-		$batch_no        = $request->batch_no ?? [];
-		$mfg_date        = $request->mfg_date ?? [];
-		$expiry_date        = $request->expiry_date ?? [];
-		$qty_units        = $request->qty_units ?? [];
-		$total_cs        = $request->total_cs ?? [];
-		$transporter_code        = $request->transporter_code ?? [];
-		$transporter_name        = $request->transporter_name ?? [];
-		$truck_no        = $request->truck_no ?? [];
-		$lr_no        = $request->lr_no ?? [];
-		$lr_date        = $request->lr_date ?? [];
-		$ewaybill_no        = $request->ewaybill_no ?? [];
-		$truck_code        = $request->truck_code ?? [];
-		$vehicle_type        = $request->vehicle_type ?? [];
-		$custom        = $request->custom ?? [];
-		$custom_1        = $request->custom_1 ?? [];
-		$custom_2        = $request->custom_2 ?? [];
-		$custom_3        = $request->custom_3 ?? [];
-		$custom_4        = $request->custom_4 ?? [];
-
-		$count = count($indent_id);
-		$insertedCount = 0;
-
-		DB::beginTransaction();
-			  try {
-            for ($i = 0; $i < $count; $i++) {
-
-               
-				$invoicechallandate = $invoice_challan_date[$i];
-				
-				$invoicechallan_date = Carbon::parse($invoicechallandate)->format('Y-m-d');
-				
-				$mfgdate = $mfg_date[$i];
-				
-				$mfgdatef = Carbon::parse($mfgdate)->format('Y-m-d');
-				
-				$expdate = $expiry_date[$i];
-				$expirydate = Carbon::parse($expdate)->format('Y-m-d');
-				
-				$lrdate = $lr_date[$i];
-				$lrdatef = Carbon::parse($lrdate)->format('Y-m-d');
-				
-				
-				if(!empty($indent_id[$i]) && !empty($supplier_code[$i]))
-				{
-				
-					 $supplier = Siteplant::where('plant_site_code', $supplier_code)->first();
-
-							if (!$supplier) {
-
-								return response()->json([
-									'status' => false,
-									'message' => 'Supplier not found'
-								]);
-							}
-							
-					$supplier_name =  $supplier;
-					
-					$data = [
-						'indent_id' => $indent_id[$i] ?? null,
-						'supplier_code' => $supplier_code[$i] ?? null,
-						'supplier_name' => $supplier_name[$i] ?? null,
-						'supplier_location' => $supplier_location[$i] ?? null,
-						'po_no' => $po_no[$i] ?? null,
-						'invoice_challan_no' => $invoice_challan_no[$i] ?? null,
-						'invoice_challan_date' => $invoicechallan_date ?? null,
-						'consignee_code' => $consignee_code[$i] ?? null,
-						'consignee_name' => $consignee_name[$i] ?? null,
-						'consignee_location' => $consignee_location[$i] ?? null,
-						'm_code' => $m_code[$i] ?? null,
-						'material_descriptions' => $material_descriptions[$i] ?? null,
-						'batch_no' => $batch_no[$i] ?? null,						
-						'mfg_date' => $mfgdatef ?? null,
-						'expiry_date' =>  $expirydate ?? null,
-						'qty_units' => $qty_units[$i] ?? null,
-						'total_cs' => $total_cs[$i] ?? null,
-						'transporter_code' => $transporter_code[$i] ?? null,
-						'transporter_name' => $transporter_name[$i] ?? null,
-						'truck_no' => $truck_no[$i] ?? null,
-						'lr_no' => $lr_no[$i] ?? null,
-						'lr_date' => lrdatef ?? null,
-						'ewaybill_no' => $ewaybill_no[$i] ?? null,
-						'truck_code' => $truck_code[$i] ?? null,
-						'vehicle_type' => $vehicle_type[$i] ?? null,
-						'custom' => $custom[$i] ?? null,
-						'custom1' => $custom1[$i] ?? null,
-						'custom2' => $custom2[$i] ?? null,
-						'custom3' => $custom3[$i] ?? null,
-						'custom4' => $custom4[$i] ?? null,
-						
-						'created_at' => $createddate,
-						'created_by' => Auth::user()->id,
-						'status' => '1'
-					];
-					DigiWim::create($data);
-					
-				}
-            }
-
-            DB::commit();
-            return redirect()->back()->with('success', 'Data Updated successfully!');			
-			
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
-        }
-		
-
-		
-	}
-
-	*/
    
 	////delete items
 	
@@ -672,6 +549,145 @@ class DigiWimController extends Controller
 		}
 	}
 		
+	///UNLOADING
+	
+	public function createOperation()
+	{
+		return view('admin.digi_wim.operation_create');
+	}
 
+	public function storeOperationHeader(Request $request)
+	{
+		$request->validate([
+			'operation_type' => 'required',
+			'invoice_challan_no' => 'required',
+		]);
+
+		$header = DigiwimOperation::create([
+			'operation_type' => $request->operation_type,
+			'invoice_challan_no' => $request->invoice_challan_no,
+			'invoice_date' => !empty($request->invoice_date) ? Carbon::parse($request->invoice_date)->format('Y-m-d') : null,
+			'po_order_no' => $request->po_order_no,
+			'po_order_date' => !empty($request->po_order_date) ? Carbon::parse($request->po_order_date)->format('Y-m-d') : null,
+			'supplier_code_name' => $request->supplier_code_name,
+			'transporter_name' => $request->transporter_name,
+			'truck_number' => $request->truck_number,
+			'truck_type' => $request->truck_type,
+			'lr_no' => $request->lr_no,
+			'uom' => $request->uom,
+			'created_by' => Auth::id(),
+			'status' => 1,
+		]);
+
+		
+		$digiRows = DigiWim::where('invoice_challan_no', $request->invoice_challan_no)->get();
+
+		return view('admin.digi_wim.operation_create', compact('header', 'digiRows'))
+		->with('headerSubmitted', true);
+	}
+
+	/*public function storeOperationItem(Request $request)
+	{
+		$request->validate([
+			'operation_id' => 'required',
+		]);
+
+		DigiwimOperationItem::create([
+			'operation_id' => $request->operation_id,
+			'digi_wim_id' => $request->digi_wim_id,
+			'invoice_challan_no' => $request->invoice_challan_no,
+			'material_code' => $request->material_code,
+			'material_description' => $request->material_description,
+			'batch_no' => $request->batch_no,
+			'mfg_date' => !empty($request->mfg_date) ? Carbon::parse($request->mfg_date)->format('Y-m-d') : null,
+			'expiry_date' => !empty($request->expiry_date) ? Carbon::parse($request->expiry_date)->format('Y-m-d') : null,
+			'qty' => $request->qty,
+			'bin_no' => $request->bin_no,
+			'goods_status' => $request->goods_status,
+			'remarks' => $request->remarks,
+			'created_by' => Auth::id(),
+			'status' => 1,
+		$headers = DigiwimOperation::with('items')
+		]);
+
+		return redirect()->back()->with('success', 'Row posted successfully.');
+	}*/
+	
+	public function storeOperationItem(Request $request)
+	{
+		$request->validate([
+			'operation_id' => 'required|exists:digiwim_operations,id',
+			'material_code' => 'required',
+		]);
+
+		try {
+
+			DigiwimOperationItem::create([
+				'operation_id' => $request->operation_id,
+				'digi_wim_id' => $request->digi_wim_id,
+				'invoice_challan_no' => $request->invoice_challan_no,
+				'material_code' => $request->material_code,
+				'material_description' => $request->material_description,
+				'batch_no' => $request->batch_no,
+				'mfg_date' => !empty($request->mfg_date) ? \Carbon\Carbon::parse($request->mfg_date)->format('Y-m-d') : null,
+				'expiry_date' => !empty($request->expiry_date) ? \Carbon\Carbon::parse($request->expiry_date)->format('Y-m-d') : null,
+				'qty' => $request->qty,
+				'bin_no' => $request->bin_no,
+				'goods_status' => $request->goods_status,
+				'remarks' => $request->remarks,
+				'created_by' => Auth::id(),
+				'status' => 1,
+			]);
+
+			return response()->json([
+				'status' => true,
+				'message' => 'Row posted successfully.'
+			]);
+
+		} catch (\Exception $e) {
+
+			return response()->json([
+				'status' => false,
+				'message' => $e->getMessage()
+			], 500);
+		}
+	}
+
+/*public function operationList()
+	{
+		$headers = DigiwimOperation::with('items')
+			->orderBy('id', 'desc')
+			->get();
+
+		return view('admin.digi_wim.operation_list', compact('headers'));
+	}
+	*/
+	
+	public function operationList()
+	{
+		$headers = DigiwimOperation::with('items', 'creator')
+        ->where('operation_type', 'unloading')
+        ->orderBy('id', 'desc')
+        ->get();
+
+		return view('admin.digi_wim.operation_list', compact('headers'));
+	}
+
+	public function operationPdf($id)
+	{
+		//$header = DigiwimOperation::with('items')->findOrFail($id);
+		$header = DigiwimOperation::with('items', 'creator')->findOrFail($id);
+		$pdf = Pdf::loadView('admin.digi_wim.operation_pdf', compact('header'))
+			->setPaper('a4', 'landscape');
+
+		return $pdf->download($header->operation_type . '-' . $header->invoice_challan_no . '.pdf');
+	}
+	
+	public function viewMaterials($id)
+	{
+		$header = DigiwimOperation::with('items')->findOrFail($id);
+
+		return view('admin.digi_wim.operation_materials', compact('header'));
+	}
 	
 }
