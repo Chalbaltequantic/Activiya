@@ -311,6 +311,15 @@
 					 </li>
 					 <li class=""><a href="{{ route('admin.digiwim.operation.create') }}" class="dropdown-item">Create Unloading</a>
 					 </li>
+					 
+					 <li class=""><a href="{{ route('admin.digiWimPreloading') }}" class="dropdown-item">Add/Upload Digi Wim Preloading</a></li>
+					
+					 <li class=""><a href="{{ route('admin.digiwimpreloadingdatalist') }}" class="dropdown-item">Preloading Data List</a></li>
+					 
+					 <li class=""><a href="{{ route('admin.digiwimpreloading.operation.list') }}" class="dropdown-item">Preloading List</a>
+					 </li>
+					 <li class=""><a href="{{ route('admin.digiwimpreloading.operation.create') }}" class="dropdown-item">Create Preloading</a>
+					 </li>
 					
 					
 					</ul>

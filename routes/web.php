@@ -669,5 +669,51 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	
 	
+	/*----------------------------------------------------------
+	 |						DIGI WIM PRELOADING                          |
+	------------------------------------------------------------*/
+	Route::get('digiwim/preloading', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'index'])->name('digiWimPreloading');
+	
+	Route::post('digiwim/preloading/import', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'import'])->name('digiwim_preloading.import');
+	
+	Route::get('digiwim/preloading/data-list', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'digiwimpreloadingdatalist'])->name('digiwimpreloadingdatalist');
+	
+	//manual upload data
+	Route::get('digiwim/preloading/manual-upload', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'manualupload'])->name('digiwimpreloadingmanualupload');
+	
+	Route::post('digiwim/preloading/fetch-row', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'fetchRowData'])
+    ->name('digiwim.preloading.fetchRow');
+	
+	Route::post('digiwim/preloading/save_manual_upload', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'save_manual_data'])->name('save_manual_digiwimpreloadingdata');
+	//////////
+	Route::get('digiwim/preloading/editdigiwimdata/{id}', [App\Http\Controllers\Admin\DigiwimPreloadingController::class,'getDigiwimldataDetails'])->name('getDigiwimpreloadingdataDetails');
+	
+	Route::post('digiwim/preloading/updatedigiwimdata', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'save_digiwimdata']);
+	
+	Route::get('digiwim/preloading/deletematerialdata/{id}', 'App\Http\Controllers\Admin\DigiwimPreloadingController@DeleteDigiwimData')->name('DeleteDigiwimPreloadingData');
+	
+	/////Unloading
+	
+	Route::get('digiwim/preloading/unloading-operation/create', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'createOperation'])
+    ->name('digiwimpreloading.operation.create');
+
+	Route::post('digiwim/preloading/operation/store-header', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'storeOperationHeader'])
+		->name('digiwimpreloading.operation.storeHeader');
+
+	Route::get('digiwim/preloading/operation/list', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'operationList'])
+		->name('digiwimpreloading.operation.list');
+
+	Route::get('digiwim/preloading/operation/pdf/{id}', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'operationPdf'])
+		->name('digiwimpreloading.operation.pdf');
+		
+	Route::post('digiwim/preloading/operation/store-item', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'storeOperationItem'])
+    ->name('digiwimpreloading.operation.storeItem');
+	
+	Route::get(
+    'digiwim/preloading/operation/materials/{id}',
+    [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'viewMaterials']
+	)->name('digiwimpreloading.operation.materials');
+	
+	
 });
 
