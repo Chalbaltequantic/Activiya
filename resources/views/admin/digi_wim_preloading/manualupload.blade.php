@@ -341,6 +341,7 @@
 </div>
 </div>
 <!-- /.content -->
+
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -367,13 +368,16 @@ $(document).ready(function () {
         const colIndex = Array.from(startRow.cells).indexOf(startCell);
 
         rows.forEach((rowData, i) => {
+
             const cols = rowData.split('\t');
             const tr = table.rows[rowIndex + i];
 
             if (!tr) return;
 
             cols.forEach((col, j) => {
+
                 const td = tr.cells[colIndex + j];
+
                 if (!td) return;
 
                 const input = td.querySelector('input');
@@ -387,10 +391,14 @@ $(document).ready(function () {
         setTimeout(function () {
 
             let rowsToFetch = [];
+            let rowErrors = [];
+            let completed = 0;
 
-            $('#table tbody tr').each(function () {
+            $('#table tbody tr').each(function (index) {
 
                 let row = $(this);
+
+                row.removeClass('table-danger table-success');
 
                 if (
                     row.find('.sup_code').val() &&
@@ -399,7 +407,10 @@ $(document).ready(function () {
                     row.find('.transporter_code').val() &&
                     row.find('.truck_code').val()
                 ) {
-                    rowsToFetch.push(row);
+                    rowsToFetch.push({
+                        row: row,
+                        rowNumber: index + 1
+                    });
                 }
             });
 
@@ -409,36 +420,100 @@ $(document).ready(function () {
 
             Swal.fire({
                 title: 'Processing rows...',
-                text: 'Please wait while data is fetched.',
+                text: 'Please wait while all rows are checked.',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
+                showConfirmButton: false,
                 didOpen: () => {
                     Swal.showLoading();
                 }
             });
 
-            let completed = 0;
+            rowsToFetch.forEach(function (item) {
 
-            rowsToFetch.forEach(function (row) {
+                fetchRowData(item.row, item.rowNumber)
+                    .done(function (res) {
 
-                fetchRowData(row, function () {
+                        if (res.error) {
 
-                    completed++;
+                            item.row.addClass('table-danger');
 
-                    if (completed >= rowsToFetch.length) {
-                        Swal.close();
-                    }
-                });
+                            rowErrors.push(
+                                'Row ' + item.rowNumber + ': ' + res.error
+                            );
+
+                            return;
+                        }
+
+                        item.row.find('.sup_name').val(res.supplier_name ?? '');
+                        item.row.find('.sup_location').val(res.supplier_location ?? '');
+                        item.row.find('.consign_name').val(res.consignee_name ?? '');
+                        item.row.find('.consign_location').val(res.consignee_location ?? '');
+                        item.row.find('.m_desc').val(res.material_description ?? '');
+                        item.row.find('.transporter_name').val(res.transporter_name ?? '');
+                        item.row.find('.vehicle_type').val(res.vehicle_type ?? '');
+
+                        item.row.addClass('table-success');
+                    })
+                    .fail(function (xhr) {
+
+                        item.row.addClass('table-danger');
+
+                        let errorMessage = 'Server error while checking this row.';
+
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            errorMessage = xhr.responseJSON.error;
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        } else if (xhr.responseText) {
+                            errorMessage = xhr.responseText;
+                        }
+
+                        rowErrors.push(
+                            'Row ' + item.rowNumber + ': ' + errorMessage
+                        );
+                    })
+                    .always(function () {
+
+                        completed++;
+
+                        if (completed >= rowsToFetch.length) {
+
+                            Swal.close();
+
+                            if (rowErrors.length > 0) {
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Validation Errors Found',
+                                    html: '<div style="text-align:left; max-height:300px; overflow:auto;">'
+                                            + rowErrors.join('<br>')
+                                            + '</div>',
+                                    width: '750px',
+                                    confirmButtonText: 'OK',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+
+                                return;
+                            }
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Data Fetched Successfully',
+                                text: 'All matching master data has been populated.',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
             });
 
         }, 200);
     });
 
-    function fetchRowData(row, callback) {
+    function fetchRowData(row, rowNumber) {
 
-        console.log('Calling fetchRowData');
-
-        $.ajax({
+        return $.ajax({
             url: fetchRowUrl,
             type: "POST",
             data: {
@@ -448,38 +523,6 @@ $(document).ready(function () {
                 material_code: row.find('.m_code').val(),
                 transporter_code: row.find('.transporter_code').val(),
                 truck_code: row.find('.truck_code').val()
-            },
-            success: function (res) {
-
-                console.log('Response:', res);
-
-                if (res.error) {
-                    Swal.fire('Error', res.error, 'error');
-                    callback();
-                    return;
-                }
-
-                row.find('.sup_name').val(res.supplier_name ?? '');
-                row.find('.sup_location').val(res.supplier_location ?? '');
-                row.find('.consign_name').val(res.consignee_name ?? '');
-                row.find('.consign_location').val(res.consignee_location ?? '');
-                row.find('.m_desc').val(res.material_description ?? '');
-                row.find('.transporter_name').val(res.transporter_name ?? '');
-                row.find('.vehicle_type').val(res.vehicle_type ?? '');
-
-                callback();
-            },
-            error: function (xhr) {
-
-                console.log('AJAX Error:', xhr.responseText);
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Server Error',
-                    html: xhr.responseText
-                });
-
-                callback();
             }
         });
     }
@@ -487,4 +530,6 @@ $(document).ready(function () {
 });
 </script>
 @endpush
+
+
 @endsection
