@@ -23,7 +23,7 @@ use App\Models\Material;
 use App\Models\Admin;
 use App\Models\Ratedata;
 use App\Models\TruckMaster;
-use App\Models\DigiWimPreloading;
+use App\Models\DigiwimPreloading;
 use App\Models\DigiwimPreloadingOperation;
 use App\Models\DigiwimPreloadingOperationItem;
 use App\Models\Vendor;
