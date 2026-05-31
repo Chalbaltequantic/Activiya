@@ -111,7 +111,7 @@
 				
 				
 				 <li class="nav-item dropdown">
-					<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Freight Shipment</a>
+					<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Freight</a>
 					<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">	
 					 @if(Gate::allows('admin.billdata'))
 					<li class="{{ request()->is('admin/billdata*') ? 'active' : '' }}"><a href="{{ route('admin.billdata') }}" class="dropdown-item">Add New Freight Shipments</a></li>	
