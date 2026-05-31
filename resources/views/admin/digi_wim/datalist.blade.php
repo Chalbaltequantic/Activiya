@@ -36,13 +36,13 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 73px; /* Adjust based on col-1 width */
+      left: 71px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 135px; /* Adjust based on col-1 width */
+      left: 133px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }

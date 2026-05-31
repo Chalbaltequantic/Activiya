@@ -1,6 +1,6 @@
 @extends('admin.admin')
 @section('bodycontent')
- <style>
+<style>
    .table-responsive-fixed {
       overflow-x: auto;
       position: relative;
@@ -36,19 +36,19 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 90px; /* Adjust based on col-1 width */
+      left: 71px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 150px; /* Adjust based on col-1 width */
+      left: 133px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 210px; /* Adjust based on col-1 width */
+      left: 180px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
