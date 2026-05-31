@@ -1,7 +1,102 @@
 @extends('admin.admin')
 @section('bodycontent')
- <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+ <style>
+   .table-responsive-fixed {
+      overflow-x: auto;
+      position: relative;
+    }
 
+    table {
+      min-width: max-content;
+      font-size: 12px;
+    }
+
+    .consign-data-table th, .consign-data-table td {
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .consign-data-table thead th {
+      position: sticky;
+      top: 0;
+      background: #f8f9fa;
+    }
+
+    .consign-data-table .table th, .consign-data-table .table td {
+      padding: 5px 10px;
+    }
+
+    /* Sticky columns */
+    .sticky-col-1 {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 99;
+    }
+
+    .sticky-col-2 {
+      position: sticky;
+      left: 132px; /* Adjust based on col-1 width */
+      background: #fff;
+      z-index: 99;
+    }
+ .sticky-col-3 {
+      position: sticky;
+      left: 242px; /* Adjust based on col-1 width */
+      background: #fff;
+      z-index: 99;
+    }
+ .sticky-col-4 {
+      position: sticky;
+      left: 332px; /* Adjust based on col-1 width */
+      background: #fff;
+      z-index: 99;
+    }
+
+    /* Column widths */
+    .col-width {
+     /* min-width: 160px;*/
+    }
+
+    @media (max-width: 768px) {
+      .col-width {
+        min-width: 90px;
+      }
+
+      .sticky-col-2 {
+        left: 80px;
+      }
+    }
+	
+.table-container {
+    max-height: 400px;   /* Set your desired table height */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+#input-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
+}
+
+#input-table th,
+#input-table td {
+    min-width: 120px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: #fff;
+    text-align: left;
+}
+
+#table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}	
+	
+	
+  </style>
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">

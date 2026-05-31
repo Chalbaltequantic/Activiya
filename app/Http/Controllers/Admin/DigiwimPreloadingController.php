@@ -213,7 +213,7 @@ class DigiWimPreloadingController extends Controller
         }
     }
 	
-	public function digiwimdatalist(Request $request)
+	public function digiwimpreloadingdatalist (Request $request)
     {
         $title = 'Digi Wim Preloading Data List';
         $pagetitle = $title.' Listing';

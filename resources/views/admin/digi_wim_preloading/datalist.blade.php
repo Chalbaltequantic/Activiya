@@ -1,18 +1,113 @@
 @extends('admin.admin')
 @section('bodycontent')
- <link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">     
+ <style>
+   .table-responsive-fixed {
+      overflow-x: auto;
+      position: relative;
+    }
 
+    table {
+      min-width: max-content;
+      font-size: 12px;
+    }
+
+    .consign-data-table th, .consign-data-table td {
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .consign-data-table thead th {
+      position: sticky;
+      top: 0;
+      background: #f8f9fa;
+    }
+
+    .consign-data-table .table th, .consign-data-table .table td {
+      padding: 5px 10px;
+    }
+
+    /* Sticky columns */
+    .sticky-col-1 {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 99;
+    }
+
+    .sticky-col-2 {
+      position: sticky;
+      left: 132px; /* Adjust based on col-1 width */
+      background: #fff;
+      z-index: 99;
+    }
+ .sticky-col-3 {
+      position: sticky;
+      left: 242px; /* Adjust based on col-1 width */
+      background: #fff;
+      z-index: 99;
+    }
+ .sticky-col-4 {
+      position: sticky;
+      left: 332px; /* Adjust based on col-1 width */
+      background: #fff;
+      z-index: 99;
+    }
+
+    /* Column widths */
+    .col-width {
+     /* min-width: 160px;*/
+    }
+
+    @media (max-width: 768px) {
+      .col-width {
+        min-width: 90px;
+      }
+
+      .sticky-col-2 {
+        left: 80px;
+      }
+    }
+	
+.table-container {
+    max-height: 400px;   /* Set your desired table height */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+#input-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
+}
+
+#input-table th,
+#input-table td {
+    min-width: 120px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: #fff;
+    text-align: left;
+}
+
+#table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}	
+	
+	
+  </style>
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Digi Wim Data</h1>
+            <h1 class="m-0">Digi Wim Preloading Data</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
              <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-             <li class="breadcrumb-item active">Digi Wim</li>
+             <li class="breadcrumb-item active">Digi Wim Preloading</li>
 				
             </ol>
           </div><!-- /.col -->
@@ -50,7 +145,7 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="{{route('admin.digiWim')}}" data-toggle="tab">Create</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{route('admin.digiWimPreloading')}}" data-toggle="tab">Create</a></li>
                  
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -70,14 +165,11 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Indent ID</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Supplier <br>Code</th>
+											<th style="background: #fce4d6; color: #0070c0;">Consignor <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Supplier <br>Name</th>
+											<th style="background: #fce4d6; color: #0070c0;">Consignor <br>Name</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Supplier <br>Location</th>
-
-											<th style="background: #fce4d6; color: #0070c0;">PO No.</th>
-
+											<th style="background: #fce4d6; color: #0070c0;">Consignor <br>Location</th>
 											<th style="background: #fce4d6; color: #0070c0;">Invoice/Challan<br>No.</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Inv/Challan<br>Date</th>
@@ -88,7 +180,7 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Consignee<br> Location</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">M.Code*</th>
+											<th style="background: #fce4d6; color: #0070c0;">M.Code</th>
 
 											<th style="background: #fce4d6; color: #0070c0;" class="sticky-col-3">Material<br>Descriptions</th>
 
@@ -98,9 +190,11 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">Expiry Date</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Qty<br> (Units)</th>
+											<th style="background: #fce4d6; color: #0070c0;">Qty</th>
+											<th style="background: #fce4d6; color: #0070c0;">UOM</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Total Cs</th>
+											<th style="background: #fce4d6; color: #0070c0;">BIN No.</th>
+											<th style="background: #fce4d6; color: #0070c0;">Goods Status</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Transporter<br>Code</th>
 
@@ -112,13 +206,11 @@
 
 											<th style="background: #fce4d6; color: #0070c0;">LR Date</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Ewaybill <br>No.</th>
-
 											<th style="background: #fce4d6; color: #0070c0;">Truck <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;"> Vehicle  Type</th>
+											<th style="background: #fce4d6; color: #0070c0;">Vehicle  Type</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Custom</th>
+											<th style="background: #fce4d6; color: #0070c0;">Remarks</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Custom 1</th>
 
@@ -141,12 +233,9 @@
 									  
 									   <tr>
 										<td class="sticky-col-1">{{$digiwimdata->indent_id}}</td>
-										<td class="sticky-col-2">{{$digiwimdata->supplier_code}}</td>
-										<td class="sticky-col-3">{{$digiwimdata->supplier_name}}</td>
-										<td>{{$digiwimdata->supplier_location }}</td>
-
-										<td>{{$digiwimdata->po_no}}</td>
-
+										<td class="sticky-col-2">{{$digiwimdata->consignor_code }}</td>
+										<td class="sticky-col-3">{{$digiwimdata->consignor_name}}</td>
+										<td>{{$digiwimdata->consignor_location }}</td>
 										<td>  {{$digiwimdata->invoice_challan_no}}</td>
 
 										<td>
@@ -177,11 +266,17 @@
 										</td>
 
 											<td>
-												{{$digiwimdata->qty_units}}
+												{{$digiwimdata->qty}}
+											</td>
+											<td>
+												{{$digiwimdata->uom}}
 											</td>
 
 											<td>
-												{{$digiwimdata->total_cs}}
+												{{$digiwimdata->bin_no}}
+											</td>
+											<td>
+												{{$digiwimdata->goods_status}}
 											</td>
 
 											<td>
@@ -213,11 +308,7 @@
 											</td>
 
 											<td>
-												{{$digiwimdata->vehicle_type}}
-											</td>
-
-											<td>
-												{{$digiwimdata->custom}}
+												{{$digiwimdata->truck_description}}
 											</td>
 
 											<td>
