@@ -163,11 +163,11 @@
 									<thead>
 										<tr>
 
-											<th style="background: #fce4d6; color: #0070c0;">Indent ID</th>
+											<th class="sticky-col-1" style="background: #fce4d6; color: #0070c0;z-index:999;">Indent ID</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Consignor <br>Code</th>
+											<th class="sticky-col-2" style="background: #fce4d6; color: #0070c0;z-index:999">Consignor <br>Code</th>
 
-											<th style="background: #fce4d6; color: #0070c0;">Consignor <br>Name</th>
+											<th class="sticky-col-3" style="background: #fce4d6; color: #0070c0;z-index:999;">Consignor <br>Name</th>
 
 											<th style="background: #fce4d6; color: #0070c0;">Consignor <br>Location</th>
 											<th style="background: #fce4d6; color: #0070c0;">Invoice/Challan<br>No.</th>
