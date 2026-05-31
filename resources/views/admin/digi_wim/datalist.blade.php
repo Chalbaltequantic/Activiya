@@ -36,19 +36,19 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 80px; /* Adjust based on col-1 width */
+      left: 73px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 150px; /* Adjust based on col-1 width */
+      left: 135px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 210px; /* Adjust based on col-1 width */
+      left: 180px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
