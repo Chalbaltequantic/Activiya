@@ -12,13 +12,10 @@ class DigiwimPreloading extends Model
     protected $fillable = [
         'indent_id',
         'invoice_challan_no',
-
         'consignor_code',
         'consignor_name',
-
         'consignee_code',
         'consignee_location',
-
         'material_code',
         'material_description',
 
