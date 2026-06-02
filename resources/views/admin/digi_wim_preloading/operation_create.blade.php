@@ -24,7 +24,7 @@
 
 <div class="row">
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Select Type</label>
             <div class="col-sm-8">
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Invoice / Challan /OBD</label>
             <div class="col-sm-8">
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Invoice Date</label>
             <div class="col-sm-8">
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Buyer Code & Name</label>
             <div class="col-sm-8">
@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">UOM</label>
             <div class="col-sm-8">
@@ -81,7 +81,7 @@
     </div>
 
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Transporter Name</label>
             <div class="col-sm-8">
@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Truck No.</label>
             <div class="col-sm-8">
@@ -101,7 +101,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">Truck Type</label>
             <div class="col-sm-8">
@@ -115,7 +115,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4">
         <div class="form-group row align-items-center">
             <label class="col-sm-4 col-form-label font-weight-bold">LR No.</label>
             <div class="col-sm-8">
