@@ -1248,5 +1248,16 @@ class BilldataController extends Controller
 
        // return response()->json(['status' => 'not_found'], 404);
     }
+	
+	public function bulkDelete(Request $request)
+	{
+		$request->validate([
+			'ids' => 'required|array',
+			'ids.*' => 'integer|exists:bill_data_upload,id',
+		]);
 
+		Billdata::whereIn('id', $request->ids)->delete();
+
+		return redirect()->back()->with('success', 'Selected freight shipment records deleted successfully.');
+	}
 }

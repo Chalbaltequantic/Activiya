@@ -94,7 +94,23 @@
     top: 0;
     z-index: 2;
 }	
-	
+.bulk-delete-footer-wrap {
+    overflow-x: auto;
+    background: #fff;
+    border-top: 1px solid #dee2e6;
+}
+
+.bulk-delete-footer-inner {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 12px 15px;
+    background: #fff;
+}
+
+.bulk-delete-footer-inner .btn {
+    min-width: 180px;
+}
 	
   </style>
 <!-- Content Header (Page header) -->
@@ -144,7 +160,15 @@
             <div class="card">
 			
               <div class="card-body p-0">
+			   @if($user_role==1)
+				<form method="POST" action="{{ route('admin.billdata.bulkDelete') }}" id="bulkDeleteForm">
+					
+				@csrf
+
+				
+				@endif
 			  <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
+			 
 					<table id="billDataTable" class="table table-bordered border-dark table-hover">
 					  <thead>
 
@@ -178,6 +202,13 @@
 						  <th style="background: #fce4d6; color: #0070c0;">status </th>
 						  
 						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
+						    @if($user_role==1)
+								<th style="background:#c6e0b4; color:#0070c0;">
+									<input type="checkbox" id="selectAll">
+									
+									
+								</th>
+							@endif
 						</tr>
 					  </thead>
 					  <tbody>
@@ -189,7 +220,7 @@
 					   <tr>
 						<td class="sticky-col-1">{{$billdata->s5_consignor_short_name_and_location}}</td>
 						<td class="sticky-col-2">{{$billdata->d5_consignor_short_name_and_location}}</td>
-						<td class="sticky-col-3" class="sticky-col-2 col-width">{{$billdata->vendor_name}}</td>
+						<td class="sticky-col-3">{{$billdata->vendor_name}}</td>
 						<td class="sticky-col-4">{{$billdata->truck_type}}</td>
 						  <td>{{$billdata->consignor_name}}</td>
 						  <td>{{$billdata->consignor_code}}</td>
@@ -221,13 +252,19 @@
 								  </i>
 								  Edit
 							  </a>
-							  <a class="btn btn-danger btn-sm" href="{{url('admin/deletebilldata/'.$billdata->id)}}" onclick="return confirm('Are your sure you want to delete this data');">
+							  {{--  <a class="btn btn-danger btn-sm" href="{{url('admin/deletebilldata/'.$billdata->id)}}" onclick="return confirm('Are your sure you want to delete this data');">
 								  <i class="fas fa-trash">
 								  </i>
 								  Delete
-							  </a>
+							  </a>--}}
 							@endif
 						  </td>
+							 @if($user_role==1)
+							<td>
+								<input type="checkbox" name="ids[]" value="{{ $billdata->id }}" class="row-checkbox">
+								
+							</td>
+							@endif
 						  
 						</tr>
 						  
@@ -236,13 +273,57 @@
 				  
 						</tbody>
 					</table>
+					
+					
+					
 				</div>
+				@if($user_role==1)
+							
+							<div class="bulk-delete-footer-wrap">
+								<div class="bulk-delete-footer-inner" id="bulkDeleteFooterInner">
+									  @if(count($billdatalist) > 0)
+									<button type="submit"
+											class="btn btn-danger"
+											onclick="return confirmBulkDelete();">
+										<i class="fas fa-trash"></i> Delete Selected
+									</button>
+									@endif
+								</div>
+							</div>
+
+						</form>
+				@endif
             </div>
           </div>
 		 </div>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+	</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const selectAll = document.getElementById('selectAll');
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function () {
+            document.querySelectorAll('.row-checkbox').forEach(function (checkbox) {
+                checkbox.checked = selectAll.checked;
+            });
+        });
+    }
+});
+
+function confirmBulkDelete() {
+    const selected = document.querySelectorAll('.row-checkbox:checked').length;
+
+    if (selected === 0) {
+        alert('Please select at least one record to delete.');
+        return false;
+    }
+
+    return confirm('Are you sure you want to delete selected records?');
+}
+</script>
 
   @endsection
 

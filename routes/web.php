@@ -87,6 +87,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	Route::get('deletebilldata/{id}', 'App\Http\Controllers\Admin\BilldataController@DeleteBillData')->name('DeleteBillData');
 	
+	Route::post('billdata/bulk-delete', [App\Http\Controllers\Admin\BilldataController::class, 'bulkDelete'])
+    ->name('billdata.bulkDelete');
+	
 	///Bil data freight detail update by Account1 
 	
 	Route::get('freightdata/update-freight', [App\Http\Controllers\Admin\BilldataController::class, 'bill_data_freight_index'])->name('freightdata');
@@ -714,6 +717,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
     [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'viewMaterials']
 	)->name('digiwimpreloading.operation.materials');
 	
-	
+	///LEDGER & Inventory
+	Route::get('digiwim/ledger', [App\Http\Controllers\Admin\DigiwimLedgerController::class, 'index'])
+    ->name('digiwim.ledger');
 });
 
