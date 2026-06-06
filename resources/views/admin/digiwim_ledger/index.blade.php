@@ -216,7 +216,7 @@
 
 												<th style="background: #fce4d6; color: #0070c0;">Inward BIN</th>
 
-												<th style="background: #fce4d6; color: #0070c0;">Custom</th>
+												{{--	<th style="background: #fce4d6; color: #0070c0;">Custom</th>
 
 												<th style="background: #fce4d6; color: #0070c0;">Custom1</th>
 
@@ -224,7 +224,7 @@
 
 												<th style="background: #fce4d6; color: #0070c0;">Custom3</th>
 
-												<th style="background: #fce4d6; color: #0070c0;">Custom4</th>
+												<th style="background: #fce4d6; color: #0070c0;">Custom4</th>--}}
 
 												</tr>
 										</thead>
@@ -285,12 +285,12 @@
 
 												@endif
 
-												<td>{{ $row->custom }}</td>
+												{{--	<td>{{ $row->custom }}</td>
 												<td>{{ $row->custom1 }}</td>
 												<td>{{ $row->custom2 }}</td>
 												<td>{{ $row->custom3 }}</td>
 												<td>{{ $row->custom4 }}</td>
-
+												--}}
 												</tr>
 									
 										@endforeach
