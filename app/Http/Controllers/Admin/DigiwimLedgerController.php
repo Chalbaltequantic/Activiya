@@ -131,9 +131,9 @@ class DigiwimLedgerController extends Controller
             'pl.invoice_challan_no',
             DB::raw('NULL as invoice_date'),
 
-            'sp.plant_site_code as storage_plant_code',
-            'sp.plant_site_name as storage_plant_name',
-            'sp.city as storage_plant_location',
+            'sp.plant_site_code as plant_site_code',
+            'sp.plant_site_name as plant_name',
+            'sp.city as city',
 
             'pl.batch_no',
 
