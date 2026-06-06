@@ -222,7 +222,7 @@
 										<td>{{ $billdata->freight_invoice_no }}</td>
 										<td>{{ $billdata->freight_invoice_date }}</td>
 										<td>{{ number_format($billdata->freight_amount) }}</td>
-										<td>{{ $billdata->rate_custom5 ?? 'NA' }}</td>
+										<td>{{ $billdata->rate_custom5 ?? '--' }}</td>
 										<td>
 											@if($billdata->freight_invoice_file)
 											<a href="/{{$billdata->freight_invoice_file}}" target="_blank">View Invoice File</a>

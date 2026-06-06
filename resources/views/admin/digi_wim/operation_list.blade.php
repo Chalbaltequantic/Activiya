@@ -180,7 +180,6 @@
 
 									<tbody>
 
-										@foreach($headers as $header)
 
 										
 										  @php($i=1)
