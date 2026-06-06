@@ -45,143 +45,143 @@ class DigiwimLedgerController extends Controller
 	
 
 
-	public function index(Request $request)
-{
-    $location = $request->location;
-    $date     = $request->date;
+		public function index(Request $request)
+	{
+		$location = $request->location;
+		$date     = $request->date;
 
-    /*
-    |--------------------------------------------------------------------------
-    | OUTWARD = Unloading
-    |--------------------------------------------------------------------------
-    */
-    $outward = DB::table('digiwim_operation_items as oi')
-        ->join('digiwim_operations as op', 'op.id', '=', 'oi.operation_id')
+		/*
+		|--------------------------------------------------------------------------
+		| OUTWARD = Unloading
+		|--------------------------------------------------------------------------
+		*/
+		$outward = DB::table('digiwim_operation_items as oi')
+			->join('digiwim_operations as op', 'op.id', '=', 'oi.operation_id')
 
-        ->leftJoin('materials as m', function ($join) {
-            $join->on('m.material_code', '=', 'oi.material_code');
-        })
+			->leftJoin('materials as m', function ($join) {
+				$join->on('m.material_code', '=', 'oi.material_code');
+			})
 
-        ->select([
-            DB::raw("'OUTWARD' as movement_type"),
-            'oi.created_at',
-            'oi.material_code',
-            'oi.material_description',
+			->select([
+				DB::raw("'OUTWARD' as movement_type"),
+				'oi.created_at',
+				'oi.material_code',
+				'oi.material_description',
 
-            'm.division',
-            'm.brand',
-            'm.sub_brand',
-            'm.uom',
-            'm.piece_per_box',
-            DB::raw('NULL as mrp'),
-            'm.gross_weight_kg as weight',
-            'm.volume_cft as volume',
+				'm.division',
+				'm.brand',
+				'm.sub_brand',
+				'm.uom',
+				'm.piece_per_box',
+				DB::raw('NULL as mrp'),
+				'm.gross_weight_kg as weight',
+				'm.volume_cft as volume',
 
-            'op.invoice_challan_no',
-            'op.invoice_date',
+				'op.invoice_challan_no',
+				'op.invoice_date',
 
-            'op.supplier_code_name as storage_plant_code',
-            'op.supplier_code_name as storage_plant_name',
-            'op.supplier_code_name as storage_plant_location',
+				'op.supplier_code_name as plant_site_code',
+				'op.supplier_code_name as plant_name',
+				'op.supplier_code_name as city',
 
-            'oi.batch_no',
+				'oi.batch_no',
 
-            DB::raw('oi.qty as outward_qty'),
-            DB::raw('NULL as outward_case'),
-            DB::raw('oi.bin_no as outward_bin'),
+				DB::raw('oi.qty as outward_qty'),
+				DB::raw('NULL as outward_case'),
+				DB::raw('oi.bin_no as outward_bin'),
 
-            DB::raw('NULL as inward_qty'),
-            DB::raw('NULL as inward_case'),
-            DB::raw('NULL as inward_bin'),
+				DB::raw('NULL as inward_qty'),
+				DB::raw('NULL as inward_case'),
+				DB::raw('NULL as inward_bin'),
 
-            'oi.remarks',
-        ])
-        ->where('op.operation_type', 'unloading');
+				'oi.remarks',
+			])
+			->where('op.operation_type', 'unloading');
 
-    /*
-    |--------------------------------------------------------------------------
-    | INWARD = Preloading
-    |--------------------------------------------------------------------------
-    */
-    $inward = DB::table('digiwim_preloading as pl')
+		/*
+		|--------------------------------------------------------------------------
+		| INWARD = Preloading
+		|--------------------------------------------------------------------------
+		*/
+		$inward = DB::table('digiwim_preloading as pl')
 
-        ->leftJoin('materials as m', function ($join) {
-            $join->on('m.material_code', '=', 'pl.material_code');
-        })
+			->leftJoin('materials as m', function ($join) {
+				$join->on('m.material_code', '=', 'pl.material_code');
+			})
 
-        ->leftJoin('site_plants as sp', function ($join) {
-            $join->on('sp.plant_site_code', '=', 'pl.consignee_code');
-        })
+			->leftJoin('site_plants as sp', function ($join) {
+				$join->on('sp.plant_site_code', '=', 'pl.consignee_code');
+			})
 
-        ->select([
-            DB::raw("'INWARD' as movement_type"),
-            'pl.created_at',
-            'pl.material_code',
-            'pl.material_description',
+			->select([
+				DB::raw("'INWARD' as movement_type"),
+				'pl.created_at',
+				'pl.material_code',
+				'pl.material_description',
 
-            'm.division',
-            'm.brand',
-            'm.sub_brand',
-            'm.uom',
-            'm.piece_per_box',
-            DB::raw('NULL as mrp'),
-            'm.gross_weight_kg as weight',
-            'm.volume_cft as volume',
+				'm.division',
+				'm.brand',
+				'm.sub_brand',
+				'm.uom',
+				'm.piece_per_box',
+				DB::raw('NULL as mrp'),
+				'm.gross_weight_kg as weight',
+				'm.volume_cft as volume',
 
-            'pl.invoice_challan_no',
-            DB::raw('NULL as invoice_date'),
+				'pl.invoice_challan_no',
+				DB::raw('NULL as invoice_date'),
 
-            'sp.plant_site_code as plant_site_code',
-            'sp.plant_site_name as plant_name',
-            'sp.city as city',
+				'sp.plant_site_code as plant_site_code',
+				'sp.plant_site_name as plant_name',
+				'sp.city as city',
 
-            'pl.batch_no',
+				'pl.batch_no',
 
-            DB::raw('NULL as outward_qty'),
-            DB::raw('NULL as outward_case'),
-            DB::raw('NULL as outward_bin'),
+				DB::raw('NULL as outward_qty'),
+				DB::raw('NULL as outward_case'),
+				DB::raw('NULL as outward_bin'),
 
-            DB::raw('pl.qty as inward_qty'),
-            DB::raw('NULL as inward_case'),
-            DB::raw('pl.bin_no as inward_bin'),
+				DB::raw('pl.qty as inward_qty'),
+				DB::raw('NULL as inward_case'),
+				DB::raw('pl.bin_no as inward_bin'),
 
-            'pl.remarks',
-        ]);
+				'pl.remarks',
+			]);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Filters
-    |--------------------------------------------------------------------------
-    */
-    if (!empty($location)) {
+		/*
+		|--------------------------------------------------------------------------
+		| Filters
+		|--------------------------------------------------------------------------
+		*/
+		if (!empty($location)) {
 
-        $outward->where(function ($q) use ($location) {
-            $q->where('op.supplier_code_name', 'LIKE', "%{$location}%");
-        });
+			$outward->where(function ($q) use ($location) {
+				$q->where('op.supplier_code_name', 'LIKE', "%{$location}%");
+			});
 
-        $inward->where(function ($q) use ($location) {
-            $q->where('sp.plant_site_code', 'LIKE', "%{$location}%")
-              ->orWhere('sp.plant_site_name', 'LIKE', "%{$location}%")
-              ->orWhere('sp.city', 'LIKE', "%{$location}%");
-        });
-    }
+			$inward->where(function ($q) use ($location) {
+				$q->where('sp.plant_site_code', 'LIKE', "%{$location}%")
+				  ->orWhere('sp.plant_site_name', 'LIKE', "%{$location}%")
+				  ->orWhere('sp.city', 'LIKE', "%{$location}%");
+			});
+		}
 
-    if (!empty($date)) {
-        $outward->whereDate('oi.created_at', $date);
-        $inward->whereDate('pl.created_at', $date);
-    }
+		if (!empty($date)) {
+			$outward->whereDate('oi.created_at', $date);
+			$inward->whereDate('pl.created_at', $date);
+		}
 
-    /*
-    |--------------------------------------------------------------------------
-    | Merge Inward + Outward
-    |--------------------------------------------------------------------------
-    */
-    $records = $outward
-        ->unionAll($inward)
-        ->orderBy('created_at', 'desc')
-        ->get();
+		/*
+		|--------------------------------------------------------------------------
+		| Merge Inward + Outward
+		|--------------------------------------------------------------------------
+		*/
+		$records = $outward
+			->unionAll($inward)
+			->orderBy('created_at', 'desc')
+			->get();
 
-    return view('admin.digiwim_ledger.index', compact('records', 'location', 'date'));
-}
-	
+		return view('admin.digiwim_ledger.index', compact('records', 'location', 'date'));
+	}
+		
 }
