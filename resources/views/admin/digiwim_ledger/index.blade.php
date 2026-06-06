@@ -228,14 +228,11 @@
 
 												</tr>
 										</thead>
-
-									<tbody>
-										
+									<tbody>										
 										  @php($i=1)
 										  @if(count($records) > 0)
 										  @foreach($records as $row)
 											<tr>
-
 												<td class="sticky-col-1">{{ $row->created_at }}</td>
 
 												<td class="sticky-col-2">{{ $row->material_code }}</td>
@@ -304,10 +301,6 @@
 							</div>
 							
 						</div>
-
-						
-
-					
                   </div>
                 </div>
                 <!-- /.tab-content -->

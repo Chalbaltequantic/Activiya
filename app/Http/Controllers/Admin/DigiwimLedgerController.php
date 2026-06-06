@@ -181,7 +181,7 @@ class DigiwimLedgerController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
-    return view('admin.digiwim.ledger.index', compact('records', 'location', 'date'));
+    return view('admin.digiwim_ledger.index', compact('records', 'location', 'date'));
 }
 	
 }
