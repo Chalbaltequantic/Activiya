@@ -63,7 +63,7 @@ class DigiwimLedgerController extends Controller
 			})
 
 			->select([
-				DB::raw("'OUTWARD' as movement_type"),
+				DB::raw("'OUTWARD' as movement"),
 				'oi.created_at',
 				'oi.material_code',
 				'oi.material_description',
@@ -114,7 +114,7 @@ class DigiwimLedgerController extends Controller
 			})
 
 			->select([
-				DB::raw("'INWARD' as movement_type"),
+				DB::raw("'INWARD' as movement"),
 				'pl.created_at',
 				'pl.material_code',
 				'pl.material_description',
