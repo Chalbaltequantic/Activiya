@@ -86,9 +86,9 @@ class DigiwimLedgerController extends Controller
 
 				'oi.batch_no',
 
-				DB::raw('oi.qty as outward_qty'),
-				DB::raw('NULL as outward_case'),
-				DB::raw('oi.bin_no as outward_bin'),
+				DB::raw('oi.qty as qty'),
+				DB::raw('NULL as qty_case'),
+				DB::raw('oi.bin_no as bin_no'),
 
 				DB::raw('NULL as inward_qty'),
 				DB::raw('NULL as inward_case'),
@@ -137,9 +137,9 @@ class DigiwimLedgerController extends Controller
 
 				'pl.batch_no',
 
-				DB::raw('NULL as outward_qty'),
-				DB::raw('NULL as outward_case'),
-				DB::raw('NULL as outward_bin'),
+				DB::raw('NULL as qty'),
+				DB::raw('NULL as qty_case'),
+				DB::raw('NULL as bin_no'),
 
 				DB::raw('pl.qty as inward_qty'),
 				DB::raw('NULL as inward_case'),

@@ -279,9 +279,9 @@
 												<td></td>
 												<td></td>
 
-												<td>{{ $row->qty }}</td>
-												<td>{{ $row->qty_case }}</td>
-												<td>{{ $row->bin_no }}</td>
+												<td>{{ $row->inward_qty }}</td>
+												<td>{{ $row->inward_case }}</td>
+												<td>{{ $row->inward_bin }}</td>
 
 												@endif
 
