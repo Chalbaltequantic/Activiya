@@ -57,7 +57,13 @@ class DigiwimLedgerController extends Controller
 		*/
 		$outward = DB::table('digiwim_operation_items as oi')
 			->join('digiwim_operations as op', 'op.id', '=', 'oi.operation_id')
-			->leftJoin('materials as m', 'm.material_code', '=', 'oi.material_code')
+			->leftJoin('materials as m', function ($join) {
+					$join->on(
+						DB::raw('m.material_code COLLATE utf8mb4_unicode_ci'),
+						'=',
+						DB::raw('oi.material_code COLLATE utf8mb4_unicode_ci')
+					);
+				})
 			->select([
 				DB::raw("'OUTWARD' as movement_type"),
 				'oi.created_at',
@@ -93,8 +99,20 @@ class DigiwimLedgerController extends Controller
 		|--------------------------------------------------------------------------
 		*/
 		$inward = DB::table('digiwim_preloading as pl')
-			->leftJoin('materials as m', 'm.material_code', '=', 'pl.material_code')
-			->leftJoin('site_plants as sp', 'sp.plant_site_code', '=', 'pl.consignee_code')
+			->leftJoin('materials as m', function ($join) {
+					$join->on(
+						DB::raw('m.material_code COLLATE utf8mb4_unicode_ci'),
+						'=',
+						DB::raw('pl.material_code COLLATE utf8mb4_unicode_ci')
+					);
+				})
+			->leftJoin('materials as m', function ($join) {
+					$join->on(
+						DB::raw('m.material_code COLLATE utf8mb4_unicode_ci'),
+						'=',
+						DB::raw('pl.material_code COLLATE utf8mb4_unicode_ci')
+					);
+				})
 			->select([
 				DB::raw("'INWARD' as movement_type"),
 				'pl.created_at',
