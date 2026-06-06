@@ -43,8 +43,7 @@ class DigiwimLedgerController extends Controller
     }
 
 	
-	use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 	public function index(Request $request)
 	{
