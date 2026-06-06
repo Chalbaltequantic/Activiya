@@ -74,8 +74,8 @@ class DigiwimLedgerController extends Controller
             'm.uom',
             'm.piece_per_box',
             DB::raw('NULL as mrp'),
-            'm.gross_weight_kg',
-            'm.volume_cft',
+            'm.gross_weight_kg as weight',
+            'm.volume_cft as volume',
 
             'op.invoice_challan_no',
             'op.invoice_date',
@@ -125,8 +125,8 @@ class DigiwimLedgerController extends Controller
             'm.uom',
             'm.piece_per_box',
             DB::raw('NULL as mrp'),
-            'm.gross_weight_kg',
-            'm.volume_cft',
+            'm.gross_weight_kg as weight',
+            'm.volume_cft as volume',
 
             'pl.invoice_challan_no',
             DB::raw('NULL as invoice_date'),
