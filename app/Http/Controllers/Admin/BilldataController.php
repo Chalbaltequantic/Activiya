@@ -774,19 +774,12 @@ class BilldataController extends Controller
 	
 	///////////////////Freight data information validate 
 	
-	public function freight_info_validate_index()
+	/*public function freight_info_validate_index()
     {
         $title = 'Bill Data freight details Validate';
         $pagetitle = $title.' Listing';
 		$created_by = Auth::user()->role_id;
 					
-			/*	$entries = Billdata::whereNotNull('freight_invoice_no')
-				->where('freight_invoice_no', '!=', '')
-				->where(function ($q) {
-				$q->whereNull('validated_status')
-				  ->orWhere('validated_status', '!=', 'submitted');
-			})
-				->get();*/
 				
 		$entries = Billdata::whereNotNull('freight_invoice_no')
 							->where('freight_invoice_no', '!=', '')
@@ -823,7 +816,87 @@ class BilldataController extends Controller
 		
 		//print_r($updatedentries);
         return view('admin.billdata.freight_detail_validate',compact(['pagetitle','title','entries','updatedentries']));
-    }
+    }*/
+	
+	
+	
+	public function freight_info_validate_index()
+	{
+		$title = 'Bill Data freight details Validate';
+		$pagetitle = $title.' Listing';
+		$created_by = Auth::user()->role_id;
+
+		$entries = Billdata::from('bill_data_upload as b')
+			->leftJoin('rate_master as rm', function ($join) {
+				$join->on('rm.consignor_code', '=', 'b.consignor_code')
+					 ->on('rm.consignee_code', '=', 'b.consignee_code')
+					 ->on('rm.vendor_code', '=', 'b.vendor_code')
+					 ->on('rm.t_code', '=', 'b.t_code');
+			})
+			->select([
+				'b.*',
+				'rm.custom5 as rate_custom5',
+			])
+			->whereNotNull('b.freight_invoice_no')
+			->where('b.freight_invoice_no', '!=', '')
+			->where(function ($q) {
+				$q->whereNull('b.submit')
+				  ->orWhere('b.submit', 0);
+			})
+			->where(function ($q) {
+				$q->whereNull('b.f_return')
+				  ->orWhere('b.f_return', 0);
+			})
+			->orderBy('b.vendor_name', 'asc')
+			->orderBy('b.created_at', 'desc')
+			->get();
+
+
+		$updatedentries = Billdata::from('bill_data_upload as b')
+			->leftJoin('rate_master as rm', function ($join) {
+				$join->on('rm.consignor_code', '=', 'b.consignor_code')
+					 ->on('rm.consignee_code', '=', 'b.consignee_code')
+					 ->on('rm.vendor_code', '=', 'b.vendor_code')
+					 ->on('rm.t_code', '=', 'b.t_code');
+			})
+			->select([
+				'b.id',
+				'b.s5_consignor_short_name_and_location',
+				'b.d5_consignor_short_name_and_location',
+				'b.ref1',
+				'b.truck_type',
+				'b.lr_no',
+				'b.lr_cn_date',
+				'b.ref2',
+				'b.freight_invoice_no',
+				'b.freight_invoice_date',
+				'b.freight_amount',
+				'b.freight_invoice_file',
+				'b.pod_file',
+				'b.approval_file',
+				'b.validated_status',
+				'b.submit',
+				'b.f_return',
+				'b.validation_remark',
+				'b.vendor_name',
+				'rm.custom5 as rate_custom5',
+			])
+			->where('b.freight_invoice_no', '!=', '')
+			->whereNotNull('b.freight_invoice_date')
+			->whereNotNull('b.freight_amount')
+			->where(function ($q) {
+				$q->where('b.submit', 1)
+				  ->orWhere('b.f_return', 1);
+			})
+			->orderBy('b.vendor_name', 'asc')
+			->orderBy('b.created_at', 'desc')
+			->get();
+
+		return view(
+			'admin.billdata.freight_detail_validate',
+			compact('pagetitle', 'title', 'entries', 'updatedentries')
+		);
+	}
 	
 	public function validateAjax(Request $request)
 	{

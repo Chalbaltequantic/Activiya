@@ -60,8 +60,6 @@ class DigiWim extends Model
         'mfg_date' => 'date',
         'expiry_date' => 'date',
         'lr_date' => 'date',
-
-        'qty_units' => 'decimal:2',
         'total_cs' => 'decimal:2',
     ];
 }

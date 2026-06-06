@@ -174,15 +174,17 @@
 										<th style="background: #fce4d6; color: #0070c0;z-index:999;width:60px" class="sticky-col-4">Vendor name</th>	
 																  
 										<th style="background: #fce4d6; color: #0070c0;z-index:999;width:60px;" class="sticky-col-5">LR/CN No.</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">LR/CN Date</th>
+										<th style="background: #fce4d6; color: #0070c0;">LR/CN Date</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="">Charged<br /><small>Truck Type</small></th>
 										<th style="background: #fce4d6; color: #0070c0;" class="">Ref 1</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight PO</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight <br>Invoice No.</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice Dt.</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Amount</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight Invoice</th>
-										<th style="background: #fce4d6; color: #0070c0;" class="col-width">POD</th>
+										<th style="background: #fce4d6; color: #0070c0;">Freight PO</th>
+										<th style="background: #fce4d6; color: #0070c0;">Freight <br>Invoice No.</th>
+										<th style="background: #fce4d6; color: #0070c0;">Invoice Dt.</th>
+										<th style="background: #fce4d6; color: #0070c0;">Amount</th>
+										<th style="background: #fce4d6; color: #0070c0;">Custom 5</th>
+
+										<th style="background: #fce4d6; color: #0070c0;">Freight Invoice</th>
+										<th style="background: #fce4d6; color: #0070c0;">POD</th>
 										<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
 																			
 										<th style="background: #c6e0b4; color: #0070c0;" class="">Validate<br>
@@ -195,7 +197,7 @@
 										<input type="checkbox" id="selectAllReturn"></th>
 
 										<th style="background: #c6e0b4; color: #0070c0;" class="">Status</th>
-										<th style="background: #c6e0b4; color: #0070c0;" class="col-width">Remark</th>
+										<th style="background: #c6e0b4; color: #0070c0;">Remark</th>
 									  
 									</tr>
 								  </thead>
@@ -220,6 +222,7 @@
 										<td>{{ $billdata->freight_invoice_no }}</td>
 										<td>{{ $billdata->freight_invoice_date }}</td>
 										<td>{{ number_format($billdata->freight_amount) }}</td>
+										<td>{{ $billdata->rate_custom5 ?? 'NA' }}</td>
 										<td>
 											@if($billdata->freight_invoice_file)
 											<a href="/{{$billdata->freight_invoice_file}}" target="_blank">View Invoice File</a>
@@ -302,13 +305,15 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight <br>Invoice No.</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Invoice Dt.</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Amount</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="">Costom 5</th>
+								
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight Invoice</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">POD</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
 								<th style="background: #fce4d6; color: #0070c0;" class="">Validate</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Submit</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Return</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Remark</th>
+								<th style="background: #fce4d6; color: #0070c0;">Remark</th>
 								
 
 							</tr>
@@ -332,6 +337,7 @@
 							<td>{{ $updatedbilldata->freight_invoice_no }}</td>
 							<td>{{ $updatedbilldata->freight_invoice_date }}</td>
 							<td>{{ number_format($updatedbilldata->freight_amount) }}</td>
+							<td>{{ $billdata->rate_custom5 ?? 'NA' }}</td>
 							<td>
 								
 								<span class="uploaded-file" id="invoice-{{ $updatedbilldata->id }}">

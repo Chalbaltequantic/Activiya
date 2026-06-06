@@ -585,33 +585,6 @@ class DigiWimController extends Controller
 		return view('admin.digi_wim.operation_create', compact('header', 'digiRows'))
 		->with('headerSubmitted', true);
 	}
-
-	/*public function storeOperationItem(Request $request)
-	{
-		$request->validate([
-			'operation_id' => 'required',
-		]);
-
-		DigiwimOperationItem::create([
-			'operation_id' => $request->operation_id,
-			'digi_wim_id' => $request->digi_wim_id,
-			'invoice_challan_no' => $request->invoice_challan_no,
-			'material_code' => $request->material_code,
-			'material_description' => $request->material_description,
-			'batch_no' => $request->batch_no,
-			'mfg_date' => !empty($request->mfg_date) ? Carbon::parse($request->mfg_date)->format('Y-m-d') : null,
-			'expiry_date' => !empty($request->expiry_date) ? Carbon::parse($request->expiry_date)->format('Y-m-d') : null,
-			'qty' => $request->qty,
-			'bin_no' => $request->bin_no,
-			'goods_status' => $request->goods_status,
-			'remarks' => $request->remarks,
-			'created_by' => Auth::id(),
-			'status' => 1,
-		$headers = DigiwimOperation::with('items')
-		]);
-
-		return redirect()->back()->with('success', 'Row posted successfully.');
-	}*/
 	
 	public function storeOperationItem(Request $request)
 	{
@@ -652,16 +625,6 @@ class DigiWimController extends Controller
 			], 500);
 		}
 	}
-
-/*public function operationList()
-	{
-		$headers = DigiwimOperation::with('items')
-			->orderBy('id', 'desc')
-			->get();
-
-		return view('admin.digi_wim.operation_list', compact('headers'));
-	}
-	*/
 	
 	public function operationList()
 	{
@@ -689,5 +652,11 @@ class DigiWimController extends Controller
 
 		return view('admin.digi_wim.operation_materials', compact('header'));
 	}
+	
+	
+	
+	///digiwim Loading
+
+		
 	
 }

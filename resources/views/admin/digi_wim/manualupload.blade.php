@@ -150,13 +150,13 @@
 
 										<tr>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="indent_id[]" id="indent_id{{ $i }}"
 													value="{{ old('indent_id')[$i] ?? '' }}"
 													{{ $i == 1 ? 'required' : '' }}>
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="supplier_code[]" id="supplier_code{{ $i }}"
 													value="{{ old('supplier_code')[$i] ?? '' }}"
 													{{ $i == 1 ? 'required' : '' }} class="sup_code">
@@ -172,7 +172,7 @@
 													value="{{ old('supplier_location')[$i] ?? '' }}" class="sup_location">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="po_no[]" id="po_no{{ $i }}"
 													value="{{ old('po_no')[$i] ?? '' }}">
 											</td>
@@ -182,12 +182,12 @@
 													value="{{ old('invoice_challan_no')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="invoice_challan_date[]" id="invoice_challan_date{{ $i }}"
 													value="{{ old('invoice_challan_date')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="consignee_code[]" id="consignee_code{{ $i }}"
 													value="{{ old('consignee_code')[$i] ?? '' }}"
 													{{ $i == 1 ? 'required' : '' }} class="cosign_code">
@@ -203,7 +203,7 @@
 													value="{{ old('consignee_location')[$i] ?? '' }}" class="consign_location">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="m_code[]" id="m_code{{ $i }}"
 													value="{{ old('m_code')[$i] ?? '' }}"
 													{{ $i == 1 ? 'required' : '' }} class="m_code">
@@ -214,32 +214,32 @@
 													value="{{ old('material_descriptions')[$i] ?? '' }}" class="m_desc">
 											</td>
 
-											<td>
+											<td class="char-6">
 												<input type="text" name="batch_no[]" id="batch_no{{ $i }}"
 													value="{{ old('batch_no')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="mfg_date[]" id="mfg_date{{ $i }}"
 													value="{{ old('mfg_date')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="expiry_date[]" id="expiry_date{{ $i }}"
 													value="{{ old('expiry_date')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-6">
 												<input type="text" name="qty_units[]" id="qty_units{{ $i }}"
 													value="{{ old('qty_units')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-6">
 												<input type="text" name="total_cs[]" id="total_cs{{ $i }}"
 													value="{{ old('total_cs')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="transporter_code[]" id="transporter_code{{ $i }}"
 													value="{{ old('transporter_code')[$i] ?? '' }}"
 													{{ $i == 1 ? 'required' : '' }} class="transporter_code">
@@ -255,7 +255,7 @@
 													value="{{ old('truck_no')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-10">
 												<input type="text" name="lr_no[]" id="lr_no{{ $i }}"
 													value="{{ old('lr_no')[$i] ?? '' }}">
 											</td>
@@ -270,7 +270,7 @@
 													value="{{ old('ewaybill_no')[$i] ?? '' }}">
 											</td>
 
-											<td>
+											<td class="char-6">
 												<input type="text" name="truck_code[]" id="truck_code{{ $i }}"
 													value="{{ old('truck_code')[$i] ?? '' }}"
 													{{ $i == 1 ? 'required' : '' }} class="truck_code">
