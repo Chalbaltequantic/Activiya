@@ -37,29 +37,29 @@
 
 <tr>
 
-    <th>Invoice No / Challan No</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Invoice No / Challan No</th>
 
-    <th>Invoice Date</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Invoice Date</th>
 
-    <th>Created By</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Created By</th>
 
-    <th>Material Code</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Material Code</th>
 
-    <th>Description</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Description</th>
 
-    <th>Batch</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Batch</th>
 
-    <th>MFG</th>
+    <th style="background: #c6e0b4; color: #0070c0;">MFG</th>
 
-    <th>Expiry</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Expiry</th>
 
-    <th>Qty</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Qty</th>
 
-    <th>BIN</th>
+    <th style="background: #c6e0b4; color: #0070c0;">BIN</th>
 
-    <th>Status</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Status</th>
 
-    <th>Remarks</th>
+    <th style="background: #c6e0b4; color: #0070c0;">Remarks</th>
 
 </tr>
 

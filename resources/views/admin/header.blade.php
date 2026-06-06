@@ -318,6 +318,9 @@
 					 </li>
 					 <li class=""><a href="{{ route('admin.digiwimpreloading.operation.create') }}" class="dropdown-item">Create Preloading</a>
 					 </li>
+					 
+					 <li class=""><a href="{{ route('admin.digiwim.ledger') }}" class="dropdown-item">Ledger</a>
+					 </li>
 					
 					
 					</ul>

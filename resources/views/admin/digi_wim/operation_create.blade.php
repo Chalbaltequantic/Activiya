@@ -23,6 +23,10 @@
 @csrf
 
 <div class="row">
+<div class="form-group col-md-4">
+			<label>Indent / Ref</label>
+			<input type="text" name="indent_no" class="form-control">
+			</div>	
 
     <div class="col-md-4">
         <div class="form-group row align-items-center">
@@ -175,16 +179,16 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Product/Material Code</th>
-                    <th>Product Material Description</th>
-                    <th>Batch No.</th>
-                    <th>MFG Date</th>
-                    <th>Expiry Date</th>
-                    <th>Qty.</th>
-                    <th>BIN No.</th>
-                    <th>Goods Status</th>
-                    <th>Remarks</th>
-                    <th>Post Button</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Product/Material Code</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Product Material Description</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Batch No.</th>
+                    <th style="background: #fce4d6; color: #0070c0;">MFG Date</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Expiry Date</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Qty.</th>
+                    <th style="background: #fce4d6; color: #0070c0;">BIN No.</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Goods Status</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Remarks</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Post Button</th>
                 </tr>
             </thead>
 
@@ -198,7 +202,7 @@
                         <input type="hidden" class="invoice_challan_no" value="{{ $header->invoice_challan_no }}">
                         <input type="hidden" class="digi_wim_id" value="{{ $row->id }}">
 
-                        <input type="text" class="material_code" value="{{ $row->m_code }}">
+                        <input type="text" class="material_code char-10" value="{{ $row->m_code }}">
                     </td>
 
                     <td>
@@ -206,25 +210,25 @@
                     </td>
 
                     <td>
-                        <input type="text" class="batch_no" value="{{ $row->batch_no }}">
+                        <input type="text" class="batch_no char-10" value="{{ $row->batch_no }}">
                     </td>
 
                     <td>
-                        <input type="date" class="mfg_date"
+                        <input type="date" class="mfg_date char-10"
                                value="{{ !empty($row->mfg_date) ? \Carbon\Carbon::parse($row->mfg_date)->format('Y-m-d') : '' }}">
                     </td>
 
                     <td>
-                        <input type="date" class="expiry_date"
+                        <input type="date" class="expiry_date char-10"
                                value="{{ !empty($row->expiry_date) ? \Carbon\Carbon::parse($row->expiry_date)->format('Y-m-d') : '' }}">
                     </td>
 
                     <td>
-                        <input type="text" class="qty" value="{{ $row->qty_units }}">
+                        <input type="text" class="qty char-6" value="{{ $row->qty_units }}">
                     </td>
 
                     <td>
-                        <input type="text" class="bin_no">
+                        <input type="text" class="bin_no char-10">
                     </td>
 
                     <td>
@@ -260,7 +264,7 @@
                         <input type="hidden" class="invoice_challan_no" value="{{ $header->invoice_challan_no }}">
                         <input type="hidden" class="digi_wim_id" value="">
 
-                        <input type="text" class="material_code">
+                        <input type="text" class="material_code char-10">
                     </td>
 
                     <td>
@@ -268,23 +272,23 @@
                     </td>
 
                     <td>
-                        <input type="text" class="batch_no">
+                        <input type="text" class="batch_no  char-10">
                     </td>
 
                     <td>
-                        <input type="date" class="mfg_date">
+                        <input type="date" class="mfg_date char-10">
                     </td>
 
                     <td>
-                        <input type="date" class="expiry_date">
+                        <input type="date" class="expiry_date char-10">
                     </td>
 
                     <td>
-                        <input type="text" class="qty">
+                        <input type="text" class="qty char-6">
                     </td>
 
                     <td>
-                        <input type="text" class="bin_no">
+                        <input type="text" class="bin_no char-6">
                     </td>
 
                     <td>
