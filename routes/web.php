@@ -720,5 +720,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	///LEDGER & Inventory
 	Route::get('digiwim/ledger', [App\Http\Controllers\Admin\DigiwimLedgerController::class, 'index'])
     ->name('digiwim.ledger');
+	
+	Route::get('digiwim/inventory',[App\Http\Controllers\Admin\DigiwimInventoryController::class, 'index'])->name('digiwim.inventory');
+	
 });
 

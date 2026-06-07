@@ -321,6 +321,9 @@
 					 
 					 <li class=""><a href="{{ route('admin.digiwim.ledger') }}" class="dropdown-item">Ledger</a>
 					 </li>
+					 
+					  <li class=""><a href="{{ route('admin.digiwim.inventory') }}" class="dropdown-item">Inventory</a>
+					 </li>
 					
 					
 					</ul>

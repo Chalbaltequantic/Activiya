@@ -1,173 +1,226 @@
 @extends('admin.admin')
 
 @section('bodycontent')
+<link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">  
+<style>
 
+.form-row-4 .form-group{
+    display:flex;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.form-row-4 label{
+    width:140px;
+    font-weight:600;
+    margin-bottom:0;
+}
+
+.form-row-4 .form-control,
+.form-row-4 textarea,
+.form-row-4 .select2-container{
+    flex:1;
+}
+
+</style>
 <div class="content">
 <div class="container-fluid">
 
-@if(session('success'))
-<div class="alert alert-success">{{ session('success') }}</div>
-@endif
+		@if(session('success'))
+		<div class="alert alert-success">{{ session('success') }}</div>
+		@endif
 
-@if(session('error'))
-<div class="alert alert-danger">{{ session('error') }}</div>
-@endif
+		@if(session('error'))
+		<div class="alert alert-danger">{{ session('error') }}</div>
+		@endif
 
-<div class="card">
-    <div class="card-header bg-info">
-        <b>Enter following in case of Operation</b>
-    </div>
-<div class="card-body">
+		@if(empty($header->id))
+		<div class="card">
+			<div class="card-header bg-info">
+				<b>Enter following in case of Operation</b>
+			</div>
+		<div class="card-body">
 
-<form method="POST" action="{{ route('admin.digiwimpreloading.operation.storeHeader') }}">
-@csrf
+		<form method="POST" action="{{ route('admin.digiwimpreloading.operation.storeHeader') }}">
+		@csrf
 
-<div class="row">
+		<div class="row form-row-4">
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Select Type</label>
-            <div class="col-sm-8">
-                <select name="operation_type" class="form-control" required>
-                    <option value="loading" {{ (($header->operation_type ?? '') == 'loading') ? 'selected' : '' }}>Loading</option>
-                 
-                </select>
-            </div>
-        </div>
-    </div>
+			
+			<div class="form-group col-md-4">        
+				<label>Select Type</label>
+					<select name="operation_type" class="form-control" required>
+						<option value="loading" {{ (($header->operation_type ?? '') == 'loading') ? 'selected' : '' }}>Loading</option>
+					</select>
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Invoice / Challan /OBD</label>
-            <div class="col-sm-8">
-                <input type="text" name="invoice_challan_no" class="form-control"
-                       value="{{ $header->invoice_challan_no ?? '' }}" required>
-            </div>
-        </div>
-    </div>
+			<div class="form-group col-md-4"> 
+				<label>Invoice / Challan /OBD</label>
+					<input type="text" name="invoice_challan_no" class="form-control"
+							   value="{{ $header->invoice_challan_no ?? '' }}" required>
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Invoice Date</label>
-            <div class="col-sm-8">
-                <input type="date" name="invoice_date" class="form-control"
-                       value="{{ $header->invoice_date ?? '' }}">
-            </div>
-        </div>
-    </div>
+			<div class="form-group col-md-4"> 
+				<label>Invoice Date</label>
+						<input type="date" name="invoice_date" class="form-control"
+							   value="{{ $header->invoice_date ?? '' }}">
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Buyer Code & Name</label>
-            <div class="col-sm-8">
-                <input type="text" name="supplier_code_name" class="form-control"
-                       value="{{ $header->supplier_code_name ?? '' }}">
-            </div>
-        </div>
-    </div>
+			 <div class="form-group col-md-4"> 
+					<label>Buyer Code & Name</label>          
+						<input type="text" name="supplier_code_name" class="form-control"
+							   value="{{ $header->supplier_code_name ?? '' }}">
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">UOM</label>
-            <div class="col-sm-8">
-                <select name="uom" class="form-control">
-                    <option value="">Select</option>
-                    <option value="case" {{ (($header->uom ?? '') == 'case') ? 'selected' : '' }}>Case</option>
-                    <option value="pcs" {{ (($header->uom ?? '') == 'pcs') ? 'selected' : '' }}>PCS</option>
-                    <option value="kg" {{ (($header->uom ?? '') == 'kg') ? 'selected' : '' }}>KG</option>
-                </select>
-            </div>
-        </div>
-    </div>
+			 <div class="form-group col-md-4"> 
+				<label>UOM</label>
+					<select name="uom" class="form-control">
+						<option value="">Select</option>
+						<option value="case" {{ (($header->uom ?? '') == 'case') ? 'selected' : '' }}>Case</option>
+						<option value="pcs" {{ (($header->uom ?? '') == 'pcs') ? 'selected' : '' }}>PCS</option>
+						<option value="kg" {{ (($header->uom ?? '') == 'kg') ? 'selected' : '' }}>KG</option>
+					</select>
+			</div>
 
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Transporter Name</label>
-            <div class="col-sm-8">
-                <input type="text" name="transporter_name" class="form-control"
-                       value="{{ $header->transporter_name ?? '' }}">
-            </div>
-        </div>
-    </div>
+			 <div class="form-group col-md-4"> 
+				
+				<label>Transporter Name</label>
+				<input type="text" name="transporter_name" class="form-control"
+							   value="{{ $header->transporter_name ?? '' }}">
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Truck No.</label>
-            <div class="col-sm-8">
-                <input type="text" name="truck_number" class="form-control"
-                       value="{{ $header->truck_number ?? '' }}">
-            </div>
-        </div>
-    </div>
+			 <div class="form-group col-md-4"> 
+					<label>Truck No.</label>
+						<input type="text" name="truck_number" class="form-control"
+							   value="{{ $header->truck_number ?? '' }}">
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Truck Type</label>
-            <div class="col-sm-8">
-                <select name="truck_type" class="form-control">
-                    <option value="">Select</option>
-                    <option value="Open" {{ (($header->truck_type ?? '') == 'Open') ? 'selected' : '' }}>Open</option>
-                    <option value="Container" {{ (($header->truck_type ?? '') == 'Container') ? 'selected' : '' }}>Container</option>
-                    <option value="Trailer" {{ (($header->truck_type ?? '') == 'Trailer') ? 'selected' : '' }}>Trailer</option>
-                </select>
-            </div>
-        </div>
-    </div>
+			<div class="form-group col-md-4"> 
+				<label>Truck Type</label>
+						<select name="truck_type" class="form-control">
+							<option value="">Select</option>
+							<option value="Open" {{ (($header->truck_type ?? '') == 'Open') ? 'selected' : '' }}>Open</option>
+							<option value="Container" {{ (($header->truck_type ?? '') == 'Container') ? 'selected' : '' }}>Container</option>
+							<option value="Trailer" {{ (($header->truck_type ?? '') == 'Trailer') ? 'selected' : '' }}>Trailer</option>
+						</select>
+			</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">LR No.</label>
-            <div class="col-sm-8">
-                <input type="text" name="lr_no" class="form-control"
-                       value="{{ $header->lr_no ?? '' }}">
-            </div>
-        </div>
-    </div>
+			<div class="form-group col-md-4"> 
+					<label>LR No.</label>
+					<input type="text" name="lr_no" class="form-control" value="{{ $header->lr_no ?? '' }}">         
+			</div>
 
-    
+			
 
-</div>
+		</div>
 
-@if(empty($header->id))
+			@if(empty($header->id))
 
-<button type="submit" class="btn btn-primary">
-    Submit Header
-</button>
+			<button type="submit" class="btn btn-primary">
+				Submit Header
+			</button>
 
-@else
+			@else
 
-<button type="button" class="btn btn-success" disabled>
-    Header Submitted
-</button>
+			<button type="button" class="btn btn-success" disabled>
+				Header Submitted
+			</button>
 
-@endif
-</form>
+			@endif
+			</form>
+		@endif
 
-</div>
+		@if(!empty($header->id))
 
-</div>
+		<div class="card mb-3">
+			<div class="card-header bg-success">
+				<b>Header Information</b>
+			</div>
+
+			<div class="card-body">
+
+				<div class="row">
+
+					<div class="col-md-3">
+						<b>Operation ID:</b>
+						{{ $header->id }}
+					</div>
+
+					<div class="col-md-3">
+						<b>Invoice No:</b>
+						{{ $header->invoice_challan_no }}
+					</div>
+
+					<div class="col-md-3">
+						<b>Invoice Date:</b>
+						{{ $header->invoice_date }}
+					</div>
+
+					<div class="col-md-3">
+						<b>Buyer:</b>
+						{{ $header->supplier_code_name }}
+					</div>
+
+				</div>
+
+				<div class="row mt-2">
+
+					<div class="col-md-3">
+						<b>Transporter:</b>
+						{{ $header->transporter_name }}
+					</div>
+
+					<div class="col-md-3">
+						<b>Truck No:</b>
+						{{ $header->truck_number }}
+					</div>
+
+					<div class="col-md-3">
+						<b>LR No:</b>
+						{{ $header->lr_no }}
+					</div>
+
+					{{-- <div class="col-md-3">
+						<a href="{{ route('admin.digiwimpreloading.operation.headerEdit',$header->id) }}"
+						   class="btn btn-warning btn-sm">
+							Edit Header
+						</a>
+					</div>
+					--}}
+
+				</div>
+
+			</div>
+		</div>
+
+		@endif
+		</div>
+
+		</div>
 
 @if(isset($header))
-<div class="card mt-3" id="materialDetailsSection">
-    <div class="card-header bg-primary text-white">
+<div class="card" id="materialDetailsSection">
+	<div class="card-header bg-primary text-white">
         <b>Manual Input</b>
     </div>
 
-    <div class="card-body table-responsive">
-        <table class="table table-bordered">
+    <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
+			 
+	<table id="table" class="table table-bordered border-dark table-hover">
+			
             <thead>
                 <tr>
-                    <th>Product/Material Code</th>
-                    <th>Product Material Description</th>
-                    <th>Batch No.</th>
-                    <th>MFG Date</th>
-                    <th>Expiry Date</th>
-                    <th>Qty.</th>
-                    <th>BIN No.</th>
-                    <th>Goods Status</th>
-                    <th>Remarks</th>
-                    <th>Post Button</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Product/Material Code</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Product Material Description</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Batch No.</th>
+                    <th style="background: #fce4d6; color: #0070c0;">MFG Date</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Expiry Date</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Qty</th>
+                    <th style="background: #fce4d6; color: #0070c0;">BIN No.</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Goods Status</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Remarks</th>
+                    <th style="background: #fce4d6; color: #0070c0;">Post Button</th>
                 </tr>
             </thead>
 
@@ -176,7 +229,7 @@
 
                 @foreach($digiRows as $row)
                 <tr>
-                    <td>
+                    <td class="char-10">
                         <input type="hidden" class="operation_id" value="{{ $header->id }}">
                         <input type="hidden" class="invoice_challan_no" value="{{ $header->invoice_challan_no }}">
                         <input type="hidden" class="digi_wim_preloading_id" value="{{ $row->id }}">
@@ -188,25 +241,25 @@
                         <input type="text" class="material_description" value="{{ $row->material_descriptions }}">
                     </td>
 
-                    <td>
+                    <td class="char-10">
                         <input type="text" class="batch_no" value="{{ $row->batch_no }}">
                     </td>
 
-                    <td>
+                    <td class="char-10">
                         <input type="date" class="mfg_date"
                                value="{{ !empty($row->mfg_date) ? \Carbon\Carbon::parse($row->mfg_date)->format('Y-m-d') : '' }}">
                     </td>
 
-                    <td>
+                    <td class="char-10">
                         <input type="date" class="expiry_date"
                                value="{{ !empty($row->expiry_date) ? \Carbon\Carbon::parse($row->expiry_date)->format('Y-m-d') : '' }}">
                     </td>
 
-                    <td>
+                    <td class="char-6">
                         <input type="text" class="qty" value="{{ $row->qty_units }}">
                     </td>
 
-                    <td>
+                    <td class="char-10">
                         <input type="text" class="bin_no">
                     </td>
 
@@ -297,6 +350,7 @@
             @endif
             </tbody>
         </table>
+		
     </div>
 </div>
 @endif
@@ -392,8 +446,8 @@ $(document).on('click', '.post-row-btn', function () {
 });
 </script>
 
-@if(!empty($headerSubmitted))
-<script>
+@if(session('headerSubmitted'))
+	<script>
 $(document).ready(function () {
     Swal.fire({
         icon: 'success',

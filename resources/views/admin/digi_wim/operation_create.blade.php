@@ -1,7 +1,28 @@
 @extends('admin.admin')
 
 @section('bodycontent')
+<link rel="stylesheet" href="{{ asset('backend/assets/manual_upload_setting.css') }}">  
+<style>
 
+.form-row-4 .form-group{
+    display:flex;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.form-row-4 label{
+    width:140px;
+    font-weight:600;
+    margin-bottom:0;
+}
+
+.form-row-4 .form-control,
+.form-row-4 textarea,
+.form-row-4 .select2-container{
+    flex:1;
+}
+
+</style>
 <div class="content">
 <div class="container-fluid">
 
@@ -22,131 +43,91 @@
 <form method="POST" action="{{ route('admin.digiwim.operation.storeHeader') }}">
 @csrf
 
-<div class="row">
-<div class="form-group col-md-4">
-			<label>Indent / Ref</label>
-			<input type="text" name="indent_no" class="form-control">
-			</div>	
+<div class="row form-row-4">
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Select Type</label>
-            <div class="col-sm-8">
+
+    	<div class="form-group col-md-4">  
+            <label>Select Type</label>
                 <select name="operation_type" class="form-control" required>
                     <option value="unloading" {{ (($header->operation_type ?? '') == 'unloading') ? 'selected' : '' }}>Unloading</option>
-                 
                 </select>
-            </div>
-        </div>
-    </div>
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Invoice / Challan /OBD</label>
-            <div class="col-sm-8">
-                <input type="text" name="invoice_challan_no" class="form-control"
-                       value="{{ $header->invoice_challan_no ?? '' }}" required>
-            </div>
-        </div>
-    </div>
+		 <div class="form-group col-md-4"> 		
+			<label>Indent / Ref</label>
+			<input type="text" name="indent_no" class="form-control">
+		</div>	
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Invoice Date</label>
-            <div class="col-sm-8">
-                <input type="date" name="invoice_date" class="form-control"
-                       value="{{ $header->invoice_date ?? '' }}">
-            </div>
-        </div>
-    </div>
+	   <div class="form-group col-md-4"> 
+			<label>Invoice / Challan /OBD</label>
+			<input type="text" name="invoice_challan_no" class="form-control"
+						   value="{{ $header->invoice_challan_no ?? '' }}" required>
+			  
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">PO/Order No.</label>
-            <div class="col-sm-8">
-                <input type="text" name="po_order_no" class="form-control"
-                       value="{{ $header->po_order_no ?? '' }}">
-            </div>
-        </div>
-    </div>
+	   <div class="form-group col-md-4"> 
+			<label>Invoice Date</label>
+			<input type="date" name="invoice_date" class="form-control"
+						   value="{{ $header->invoice_date ?? '' }}">
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">PO/Order Date</label>
-            <div class="col-sm-8">
-                <input type="date" name="po_order_date" class="form-control"
-                       value="{{ $header->po_order_date ?? '' }}">
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+			<label>PO/Order No.</label>
+			<input type="text" name="po_order_no" class="form-control"
+						   value="{{ $header->po_order_no ?? '' }}">
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Supplier Code & Name</label>
-            <div class="col-sm-8">
-                <input type="text" name="supplier_code_name" class="form-control"
-                       value="{{ $header->supplier_code_name ?? '' }}">
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+			<label>PO/Order Date</label>
+			<input type="date" name="po_order_date" class="form-control"
+						   value="{{ $header->po_order_date ?? '' }}">          
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Transporter Name</label>
-            <div class="col-sm-8">
-                <input type="text" name="transporter_name" class="form-control"
-                       value="{{ $header->transporter_name ?? '' }}">
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+			<label>Supplier Code & Name</label>
+			<input type="text" name="supplier_code_name" class="form-control"
+			value="{{ $header->supplier_code_name ?? '' }}">           
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Truck No.</label>
-            <div class="col-sm-8">
-                <input type="text" name="truck_number" class="form-control"
-                       value="{{ $header->truck_number ?? '' }}">
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+			<label>Transporter Name</label>
+			<input type="text" name="transporter_name" class="form-control"
+			value="{{ $header->transporter_name ?? '' }}">
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">Truck Type</label>
-            <div class="col-sm-8">
-                <select name="truck_type" class="form-control">
-                    <option value="">Select</option>
-                    <option value="Open" {{ (($header->truck_type ?? '') == 'Open') ? 'selected' : '' }}>Open</option>
-                    <option value="Container" {{ (($header->truck_type ?? '') == 'Container') ? 'selected' : '' }}>Container</option>
-                    <option value="Trailer" {{ (($header->truck_type ?? '') == 'Trailer') ? 'selected' : '' }}>Trailer</option>
-                </select>
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+			<label>Truck No.</label>           
+			<input type="text" name="truck_number" class="form-control"
+			value="{{ $header->truck_number ?? '' }}">       
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">LR No.</label>
-            <div class="col-sm-8">
-                <input type="text" name="lr_no" class="form-control"
-                       value="{{ $header->lr_no ?? '' }}">
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+			<label>Truck Type</label>
+		   
+				<select name="truck_type" class="form-control">
+					<option value="">Select</option>
+					<option value="Open" {{ (($header->truck_type ?? '') == 'Open') ? 'selected' : '' }}>Open</option>
+					<option value="Container" {{ (($header->truck_type ?? '') == 'Container') ? 'selected' : '' }}>Container</option>
+					<option value="Trailer" {{ (($header->truck_type ?? '') == 'Trailer') ? 'selected' : '' }}>Trailer</option>
+				</select>
+				
+		</div>
+		<div class="form-group col-md-4"> 
+			<label >LR No.</label>
+			<input type="text" name="lr_no" class="form-control" value="{{ $header->lr_no ?? '' }}">
+					
+		</div>
 
-    <div class="col-md-4">
-        <div class="form-group row align-items-center">
-            <label class="col-sm-4 col-form-label font-weight-bold">UOM</label>
-            <div class="col-sm-8">
-                <select name="uom" class="form-control">
-                    <option value="">Select</option>
-                    <option value="case" {{ (($header->uom ?? '') == 'case') ? 'selected' : '' }}>Case</option>
-                    <option value="pcs" {{ (($header->uom ?? '') == 'pcs') ? 'selected' : '' }}>PCS</option>
-                    <option value="kg" {{ (($header->uom ?? '') == 'kg') ? 'selected' : '' }}>KG</option>
-                </select>
-            </div>
-        </div>
-    </div>
+		<div class="form-group col-md-4"> 
+				<label class="col-sm-4 col-form-label font-weight-bold">UOM</label>
+			  
+					<select name="uom" class="form-control">
+						<option value="">Select</option>
+						<option value="case" {{ (($header->uom ?? '') == 'case') ? 'selected' : '' }}>Case</option>
+						<option value="pcs" {{ (($header->uom ?? '') == 'pcs') ? 'selected' : '' }}>PCS</option>
+						<option value="kg" {{ (($header->uom ?? '') == 'kg') ? 'selected' : '' }}>KG</option>
+				</select>
+		</div>
 
 </div>
 
@@ -174,9 +155,9 @@
     <div class="card-header bg-primary text-white">
         <b>Manual Input</b>
     </div>
-
-    <div class="card-body table-responsive">
-        <table class="table table-bordered">
+	 <div class="card-body table-responsive">
+        <table class="table table-bordered" id="table">
+   
             <thead>
                 <tr>
                     <th style="background: #fce4d6; color: #0070c0;">Product/Material Code</th>
@@ -197,34 +178,34 @@
 
                 @foreach($digiRows as $row)
                 <tr>
-                    <td>
+                    <td class="char-10">
                         <input type="hidden" class="operation_id" value="{{ $header->id }}">
                         <input type="hidden" class="invoice_challan_no" value="{{ $header->invoice_challan_no }}">
                         <input type="hidden" class="digi_wim_id" value="{{ $row->id }}">
 
-                        <input type="text" class="material_code char-10" value="{{ $row->m_code }}">
+                        <input type="text" class="material_code" value="{{ $row->m_code }}">
                     </td>
 
                     <td>
                         <input type="text" class="material_description" value="{{ $row->material_descriptions }}">
                     </td>
 
-                    <td>
-                        <input type="text" class="batch_no char-10" value="{{ $row->batch_no }}">
+                    <td class="char-10">
+                        <input type="text" class="batch_no" value="{{ $row->batch_no }}">
                     </td>
 
-                    <td>
-                        <input type="date" class="mfg_date char-10"
+                    <td class="char-10">
+                        <input type="date" class="mfg_date"
                                value="{{ !empty($row->mfg_date) ? \Carbon\Carbon::parse($row->mfg_date)->format('Y-m-d') : '' }}">
                     </td>
 
-                    <td>
-                        <input type="date" class="expiry_date char-10"
+                    <td class="char-10">
+                        <input type="date" class="expiry_date"
                                value="{{ !empty($row->expiry_date) ? \Carbon\Carbon::parse($row->expiry_date)->format('Y-m-d') : '' }}">
                     </td>
 
-                    <td>
-                        <input type="text" class="qty char-6" value="{{ $row->qty_units }}">
+                    <td class="char-6">
+                        <input type="text" class="qty" value="{{ $row->qty_units }}">
                     </td>
 
                     <td>
@@ -259,36 +240,36 @@
 
                 @for($i = 1; $i <= 10; $i++)
                 <tr>
-                    <td>
+                    <td class="char-10">
                         <input type="hidden" class="operation_id" value="{{ $header->id }}">
                         <input type="hidden" class="invoice_challan_no" value="{{ $header->invoice_challan_no }}">
                         <input type="hidden" class="digi_wim_id" value="">
 
-                        <input type="text" class="material_code char-10">
+                        <input type="text" class="material_code">
                     </td>
 
                     <td>
                         <input type="text" class="material_description">
                     </td>
 
-                    <td>
-                        <input type="text" class="batch_no  char-10">
+                    <td class="char-10">
+                        <input type="text" class="batch_no">
                     </td>
 
-                    <td>
-                        <input type="date" class="mfg_date char-10">
+                    <td class="char-10">
+                        <input type="date" class="mfg_date">
                     </td>
 
-                    <td>
-                        <input type="date" class="expiry_date char-10">
+                    <td class="char-10">
+                        <input type="date" class="expiry_date">
                     </td>
 
-                    <td>
-                        <input type="text" class="qty char-6">
+                    <td class="char-6">
+                        <input type="text" class="qty">
                     </td>
 
-                    <td>
-                        <input type="text" class="bin_no char-6">
+                    <td class="char-6">
+                        <input type="text" class="bin_no">
                     </td>
 
                     <td>
