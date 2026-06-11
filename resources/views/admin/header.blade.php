@@ -299,7 +299,7 @@
 					<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
 					</li>
 				@endif
-				{{ @if(Auth::user() &&  Auth::user()->role_id==1)) }}
+				{{ @if(Auth::user() &&  Auth::user()->role_id==1) }}
 				 <li class="nav-item dropdown">
 					<a id="dropdownSubMenu21" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Digi Wim</a>
 					<ul aria-labelledby="dropdownSubMenu21" class="dropdown-menu border-0 shadow">	
