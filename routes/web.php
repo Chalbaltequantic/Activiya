@@ -723,5 +723,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	Route::get('digiwim/inventory',[App\Http\Controllers\Admin\DigiwimInventoryController::class, 'index'])->name('digiwim.inventory');
 	
+	//EGR
+   
+	
+	Route::resource('digiwim-egr', App\Http\Controllers\Admin\DigiwimEgrController::class);
+	Route::resource('digiwim-egp', App\Http\Controllers\Admin\DigiwimEgpController::class);
+
 });
 

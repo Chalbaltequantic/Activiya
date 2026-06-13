@@ -325,6 +325,12 @@
 					 
 					  <li class=""><a href="{{ route('admin.digiwim.inventory') }}" class="dropdown-item">Inventory</a>
 					 </li>
+					 
+					  <li class=""><a href="{{ route('admin.digiwim-egr.index') }}" class="dropdown-item">EGR </a>
+					 </li>
+					 
+					 <li class=""><a href="{{ route('admin.digiwim-egp.index') }}" class="dropdown-item">EGP </a>
+					 </li>
 					@endif
 					
 					</ul>
