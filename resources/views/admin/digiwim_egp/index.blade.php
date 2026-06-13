@@ -175,9 +175,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr>
-                    <td colspan="11" class="text-center">No record found.</td>
-                </tr>
+               
                 @endforelse
             </tbody>
         </table>
