@@ -213,7 +213,7 @@ class RatedataController extends Controller
 		$mode = $request->input('mode', []);
 		$logic = $request->input('logic', []);
 		$validate_start = $request->input('validity_start', []);
-		$validate_end = $request->input('validity_start', []);
+		$validate_end = $request->input('validity_end', []);
 		$tat = $request->input('tat', []);
 		$rank = $request->input('rank', []);
 		$distance = $request->input('distance', []);
