@@ -774,51 +774,8 @@ class BilldataController extends Controller
 	
 	///////////////////Freight data information validate 
 	
-	/*public function freight_info_validate_index()
-    {
-        $title = 'Bill Data freight details Validate';
-        $pagetitle = $title.' Listing';
-		$created_by = Auth::user()->role_id;
-					
-				
-		$entries = Billdata::whereNotNull('freight_invoice_no')
-							->where('freight_invoice_no', '!=', '')
-							->where(function ($q) {
-								$q->whereNull('submit')
-								  ->orWhere('submit', 0);
-							})
-							->where(function ($q) {
-								$q->whereNull('f_return')
-								  ->orWhere('f_return', 0);
-							})
-							->get();		
-		
-					   
-		$updatedentries[] = ''; 
-      // if (Auth::user()->role_id === '4' || Auth::user()->role_id === '1')  ////Account
-	 //  { 
-        
-		$updatedentries = Billdata::select([
-				'id', 's5_consignor_short_name_and_location', 'd5_consignor_short_name_and_location', 
-				'ref1', 'truck_type', 'lr_no', 'lr_cn_date',
-				'ref1', 'ref2', 'freight_invoice_no', 'freight_invoice_date', 'freight_amount',
-				'freight_invoice_file', 'pod_file', 'approval_file', 'validated_status','submit', 'f_return', 'validation_remark', 'vendor_name'
-			])
-			->where('freight_invoice_no', '!=', '')
-			->whereNotNull('freight_invoice_date')
-			->whereNotNull('freight_amount')
-			->where(function ($q) {
-					$q->where('submit', 1)
-					->orWhere('f_return', 1);
-			})
-			->get();
-		//} 
-		
-		//print_r($updatedentries);
-        return view('admin.billdata.freight_detail_validate',compact(['pagetitle','title','entries','updatedentries']));
-    }*/
-	
-	
+
+	/*
 	
 	public function freight_info_validate_index()
 	{
@@ -881,6 +838,115 @@ class BilldataController extends Controller
 				'b.vendor_name',
 				'rm.custom5 as rate_custom5',
 			])
+			->where('b.freight_invoice_no', '!=', '')
+			->whereNotNull('b.freight_invoice_date')
+			->whereNotNull('b.freight_amount')
+			->where(function ($q) {
+				$q->where('b.submit', 1)
+				  ->orWhere('b.f_return', 1);
+			})
+			->orderBy('b.vendor_name', 'asc')
+			->orderBy('b.created_at', 'desc')
+			->get();
+
+		return view(
+			'admin.billdata.freight_detail_validate',
+			compact('pagetitle', 'title', 'entries', 'updatedentries')
+		);
+	}*/
+	
+	public function freight_info_validate_index()
+	{
+		$title = 'Bill Data freight details Validate';
+		$pagetitle = $title.' Listing';
+		$created_by = Auth::user()->role_id;
+
+		/*
+		|--------------------------------------------------------------------------
+		| Pending validation entries
+		|--------------------------------------------------------------------------
+		*/
+		$entries = Billdata::from('bill_data_upload as b')
+			->leftJoin('rate_master as rm', function ($join) {
+				$join->on('rm.id', '=', DB::raw("
+					(
+						SELECT rm2.id
+						FROM rate_master rm2
+						WHERE rm2.consignor_code = b.consignor_code
+						  AND rm2.consignee_code = b.consignee_code
+						  AND rm2.vendor_code = b.vendor_code
+						  AND rm2.t_code = b.t_code
+						  AND DATE(rm2.validity_start) <= DATE(b.lr_cn_date)
+						  AND DATE(rm2.validity_end) >= DATE(b.lr_cn_date)
+						ORDER BY rm2.validity_start DESC, rm2.id DESC
+						LIMIT 1
+					)
+				"));
+			})
+			->select([
+				'b.*',
+				'rm.custom5 as rate_custom5',
+			])
+			->whereNotNull('b.freight_invoice_no')
+			->where('b.freight_invoice_no', '!=', '')
+			->where(function ($q) {
+				$q->whereNull('b.submit')
+				  ->orWhere('b.submit', 0);
+			})
+			->where(function ($q) {
+				$q->whereNull('b.f_return')
+				  ->orWhere('b.f_return', 0);
+			})
+			->orderBy('b.vendor_name', 'asc')
+			->orderBy('b.created_at', 'desc')
+			->get();
+
+
+		/*
+		|--------------------------------------------------------------------------
+		| Already submitted / returned entries
+		|--------------------------------------------------------------------------
+		*/
+		$updatedentries = Billdata::from('bill_data_upload as b')
+			->leftJoin('rate_master as rm', function ($join) {
+				$join->on('rm.id', '=', DB::raw("
+					(
+						SELECT rm2.id
+						FROM rate_master rm2
+						WHERE rm2.consignor_code = b.consignor_code
+						  AND rm2.consignee_code = b.consignee_code
+						  AND rm2.vendor_code = b.vendor_code
+						  AND rm2.t_code = b.t_code
+						  AND DATE(rm2.validity_start) <= DATE(b.lr_cn_date)
+						  AND DATE(rm2.validity_end) >= DATE(b.lr_cn_date)
+						ORDER BY rm2.validity_start DESC, rm2.id DESC
+						LIMIT 1
+					)
+				"));
+			})
+			->select([
+				'b.id',
+				'b.s5_consignor_short_name_and_location',
+				'b.d5_consignor_short_name_and_location',
+				'b.ref1',
+				'b.truck_type',
+				'b.lr_no',
+				'b.lr_cn_date',
+				'b.ref2',
+				'b.freight_invoice_no',
+				'b.freight_invoice_date',
+				'b.freight_amount',
+				'b.freight_invoice_file',
+				'b.pod_file',
+				'b.approval_file',
+				'b.validated_status',
+				'b.submit',
+				'b.f_return',
+				'b.validation_remark',
+				'b.vendor_name',
+				'rm.custom5 as rate_custom5',
+			])
+			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
 			->whereNotNull('b.freight_amount')
