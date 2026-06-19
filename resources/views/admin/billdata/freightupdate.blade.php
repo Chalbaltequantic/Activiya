@@ -429,15 +429,24 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            <label>Freight Invoice File</label>
-                            <input type="file" name="freight_invoice_file" class="form-control">
-                            <div id="invoice_file_link" class="mt-2"></div>
+                            <label>Freight Invoice File(max 2 mb)</label>
+							  <input type="file"
+								   name="freight_invoice_file"
+								   id="freight_invoice_file"
+								   class="form-control"
+								   accept=".pdf,.jpg,.jpeg,.png">
+							<div id="invoice_file_link" class="mt-2"></div>
+						
                         </div>
 
                         <div class="col-md-4">
                             <label>POD File</label>
-                            <input type="file" name="pod_file" class="form-control">
-                            <div id="pod_file_link" class="mt-2"></div>
+                            <input type="file"
+								   name="pod_file"
+								   id="pod_file"
+								   class="form-control"
+								   accept=".pdf,.jpg,.jpeg,.png">
+							<div id="pod_file_link" class="mt-2"></div>
                         </div>
 
                     </div>
@@ -651,6 +660,35 @@ $(document).ready(function () {
     $('#editReturnedForm').on('submit', function (e) {
 
         e.preventDefault();
+		
+		const maxSize = 2 * 1024 * 1024; // 2 MB
+
+		let invoiceFile = $('#freight_invoice_file')[0];
+		let podFile = $('#pod_file')[0];
+
+		if (
+			invoiceFile.files.length > 0 &&
+			invoiceFile.files[0].size > maxSize
+		) {
+			Swal.fire({
+				icon: 'error',
+				title: 'File Too Large',
+				text: 'Invoice file size cannot exceed 2 MB.'
+			});
+			return false;
+		}
+
+		if (
+			podFile.files.length > 0 &&
+			podFile.files[0].size > maxSize
+		) {
+			Swal.fire({
+				icon: 'error',
+				title: 'File Too Large',
+				text: 'POD file size cannot exceed 2 MB.'
+			});
+			return false;
+		}
 
         let formData = new FormData(this);
 
@@ -662,6 +700,9 @@ $(document).ready(function () {
                 Swal.showLoading();
             }
         });
+		
+		
+		
 
         $.ajax({
 
@@ -724,6 +765,38 @@ $(document).ready(function () {
         });
     });
 
+});
+
+$('#freight_invoice_file').on('change', function () {
+
+    const maxSize = 2 * 1024 * 1024;
+
+    if (this.files.length && this.files[0].size > maxSize) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'File Too Large',
+            text: 'Freight Invoice File size cannot exceed 2 MB.'
+        });
+
+        $(this).val('');
+    }
+});
+
+$('#pod_file').on('change', function () {
+
+    const maxSize = 2 * 1024 * 1024;
+
+    if (this.files.length && this.files[0].size > maxSize) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'File Too Large',
+            text: 'POD File size cannot exceed 2 MB.'
+        });
+
+        $(this).val('');
+    }
 });
 </script>
 @endpush

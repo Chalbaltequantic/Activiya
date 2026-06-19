@@ -1252,8 +1252,15 @@ class BilldataController extends Controller
 			'freight_invoice_date' => 'required|date',
 			'freight_amount'       => 'required|numeric|min:1',
 
-			'freight_invoice_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
-			'pod_file'             => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+			'freight_invoice_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+			'pod_file'             => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+
+		],[
+			'freight_invoice_file.max' => 'Invoice file size cannot exceed 2 MB.',
+			'freight_invoice_file.mimes' => 'Invoice file must be PDF, JPG, JPEG or PNG.',
+
+			'pod_file.max' => 'POD file size cannot exceed 2 MB.',
+			'pod_file.mimes' => 'POD file must be PDF, JPG, JPEG or PNG.',
 		]);
 
 		try {
@@ -1306,7 +1313,7 @@ class BilldataController extends Controller
 	public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:20480',
+            'file' => 'required|file|max:2048',
             'lr_no' => 'required|string',
             'type' => 'required|in:invoice,pod,approval'
         ]);

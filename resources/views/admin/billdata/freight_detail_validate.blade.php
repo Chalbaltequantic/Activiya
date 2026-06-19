@@ -300,7 +300,7 @@
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:50px;" class="sticky-col-5">LR/CN No.</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">LR/CN Date</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Charged<br /><small>Truck Type</small></th>	
-								<th style="background: #fce4d6; color: #0070c0;" class="">Ref 1</th>
+								{{--<th style="background: #fce4d6; color: #0070c0;" class="">Ref 1</th>--}}
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight PO</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Freight <br>Invoice No.</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Invoice Dt.</th>
@@ -332,7 +332,7 @@
 							<td class="sticky-col-5 ">{{$updatedbilldata->lr_no}}</td>
 							<td>{{$updatedbilldata->lr_cn_date}}</td>
 							<td>{{$updatedbilldata->truck_type}}</td>
-							<td>{{$updatedbilldata->ref1}}</td>
+							{{--<td>{{$updatedbilldata->ref1}}</td>--}}
 							<td>{{$updatedbilldata->ref2}}</td>
 							<td>{{ $updatedbilldata->freight_invoice_no }}</td>
 							<td>{{ $updatedbilldata->freight_invoice_date }}</td>
