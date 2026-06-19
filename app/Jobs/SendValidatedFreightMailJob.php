@@ -184,7 +184,7 @@ class SendValidatedFreightMailJob implements ShouldQueue
         |--------------------------------------------------------------------------
         */
 
-        $data = [
+        /*$data = [
             'name' => 'Roshan Jha',
             'body' => $body,
         ];
@@ -201,6 +201,6 @@ class SendValidatedFreightMailJob implements ShouldQueue
                     $message->attach($file);
                 }
             }
-        });
+        });*/
     }
 }
