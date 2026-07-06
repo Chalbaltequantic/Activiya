@@ -176,7 +176,11 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Sent<br>Date</th>
 								<th style="background: #fce4d6; color: #0070c0;">Last<br>Status</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Placement<br>Status</th>
+								<th style="background: #c6e0b4; color: #0070c0;">Camera</th>
+								<th style="background: #c6e0b4; color: #0070c0;">Box Count</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Remarks</th>
+								
+								
 								
 								<th style="background: #c6e0b4; color: #0070c0;">Action</th>
 								
@@ -220,6 +224,45 @@
 									<option value="Others">Others</option>
 								</select>
 								</td>
+								@php
+									$boxKey = $row->id . '_' . $row->source_type;
+									$boxData = $boxCounts[$boxKey] ?? null;
+								@endphp
+
+								<td>
+									<button type="button"
+											class="btn btn-info btn-sm camera-btn d-none"
+											data-load-id="{{ $row->id }}"
+											data-reference-no="{{ $row->reference_no }}"
+											data-source-type="{{ $row->source_type }}">
+										<i class="fa fa-camera"></i>
+									</button>
+
+									<input type="file"
+										   class="camera-input d-none"
+										   accept="image/*"
+										   capture="environment">
+								</td>
+
+								<td>
+									<span class="box-count-result">
+										@if($boxData)
+											Images: {{ $boxData->total_images }} |
+											Boxes: {{ $boxData->total_boxes }}
+										@else
+											--
+										@endif
+									</span>
+
+									<br>
+
+									<button type="button"
+											class="btn btn-xs btn-secondary view-box-images"
+											data-load-id="{{ $row->id }}"
+											data-source-type="{{ $row->source_type }}">
+										View
+									</button>
+								</td>
 								<td>
 									<input type="text" class="lr-no d-none" placeholder="Enter LR No">
 									<input type="text" class="remarks" placeholder="Enter remark">
@@ -250,6 +293,23 @@
 </div>
 </div>
 <!-- /.content -->
+
+<div class="modal fade" id="boxImageModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Box Count Images</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div id="boxImageList" class="row"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -351,6 +411,163 @@ $(document).on('click', '.submit-placement', function () {
         });
     });
 });
+
+
+$(document).on('change', '.placement-status', function () {
+    let row = $(this).closest('tr');
+    let status = $(this).val();
+
+    if (status === 'Loading_End') {
+        row.find('.camera-btn').removeClass('d-none');
+    } else {
+        row.find('.camera-btn').addClass('d-none');
+    }
+});
+
+$(document).on('click', '.camera-btn', function () {
+    let row = $(this).closest('tr');
+    let input = row.find('.camera-input');
+
+    input.data('load-id', $(this).data('load-id'));
+    input.data('reference-no', $(this).data('reference-no'));
+    input.data('source-type', $(this).data('source-type'));
+    input.data('placement-status', row.find('.placement-status').val());
+
+    input.click();
+});
+
+$(document).on('change', '.camera-input', function () {
+    let file = this.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    let input = $(this);
+    let row = input.closest('tr');
+
+    let loadId = input.data('load-id');
+    let referenceNo = input.data('reference-no');
+    let sourceType = input.data('source-type');
+    let placementStatus = input.data('placement-status');
+
+    let formData = new FormData();
+    formData.append('_token', '{{ csrf_token() }}');
+    formData.append('load_summary_id', loadId);
+    formData.append('reference_no', referenceNo);
+    formData.append('source_type', sourceType);
+    formData.append('placement_status', placementStatus);
+    formData.append('image', file);
+
+    row.find('.box-count-result').html('Counting...');
+
+    $.ajax({
+        url: "{{ route('admin.load.boxcount.store') }}",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+
+        success: function (res) {
+            if (res.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Box Count: ' + res.count
+                });
+
+                row.find('.box-count-result').html('Latest Boxes: ' + res.count);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.message
+                });
+
+                row.find('.box-count-result').html('--');
+            }
+        },
+
+        error: function (xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON?.message || 'Image upload/count failed.'
+            });
+
+            row.find('.box-count-result').html('--');
+        }
+    });
+});
+
+$(document).on('click', '.view-box-images', function () {
+    let loadId = $(this).data('load-id');
+    let sourceType = $(this).data('source-type');
+
+    $('#boxImageList').html('Loading...');
+
+    $.get("{{ url('/admin/load-box-count/list') }}/" + loadId + "/" + sourceType, function (res) {
+        if (res.success) {
+            let html = '';
+
+            if (res.records.length === 0) {
+                html = '<div class="col-md-12">No images found.</div>';
+            }
+
+            res.records.forEach(function (item) {
+                html += `
+                    <div class="col-md-4 mb-3" id="box-record-${item.id}">
+                        <div class="card">
+                            <img src="/${item.image_path}" class="card-img-top" style="height:160px; object-fit:cover;">
+                            <div class="card-body p-2">
+                                <p class="mb-1"><b>Count:</b> ${item.box_count}</p>
+                                <p class="mb-1"><b>Status:</b> ${item.placement_status}</p>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-xs delete-box-image"
+                                        data-id="${item.id}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            $('#boxImageList').html(html);
+            $('#boxImageModal').modal('show');
+        }
+    });
+});
+
+$(document).on('click', '.delete-box-image', function () {
+    let id = $(this).data('id');
+
+    if (!confirm('Delete this image?')) {
+        return;
+    }
+
+    $.ajax({
+        url: "{{ url('/admin/load-box-count/delete') }}/" + id,
+        type: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            _method: "DELETE"
+        },
+        success: function (res) {
+            if (res.success) {
+                $('#box-record-' + id).remove();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted',
+                    text: res.message
+                });
+            }
+        }
+    });
+});
+
 </script>
 
 @endsection

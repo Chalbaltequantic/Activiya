@@ -1435,10 +1435,23 @@ class LoadoptimizerController extends Controller
 			->unionAll($manualLoads)
 			->orderByDesc('sent_at')
 			->get();
+			
+		$boxCounts = \App\Models\LoadBoxCount::select(
+        'load_summary_id',
+        'source_type',
+        DB::raw('COUNT(*) as total_images'),
+        DB::raw('SUM(box_count) as total_boxes')
+		)
+		->groupBy('load_summary_id', 'source_type')
+		->get()
+		->keyBy(function ($item) {
+			return $item->load_summary_id . '_' . $item->source_type;
+		});
+	
 
 		return view(
 			'admin.loadoptimizer.change_placement_status',
-			compact('loads')
+			compact('loads', 'boxCounts')
 		);
 	}
 	

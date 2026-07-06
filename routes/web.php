@@ -728,6 +728,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	Route::resource('digiwim-egr', App\Http\Controllers\Admin\DigiwimEgrController::class);
 	Route::resource('digiwim-egp', App\Http\Controllers\Admin\DigiwimEgpController::class);
+	
+	///Load Box count from V placement screen
+	
+	Route::post('load-box-count/store', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'store'])
+    ->name('load.boxcount.store');
+
+	Route::get('load-box-count/list/{load_id}/{source_type}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'list'])
+		->name('load.boxcount.list');
+
+	Route::delete('load-box-count/delete/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'destroy'])
+		->name('load.boxcount.delete');
+		
+		
 
 });
 
