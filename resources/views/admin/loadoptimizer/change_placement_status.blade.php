@@ -166,7 +166,7 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Origin<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Destination<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Mode</th>
-								<th style="background: #fce4d6; color: #0070c0;">Truck Type</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Truck Type</th>
 								{{-- <th style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>--}}
@@ -192,10 +192,10 @@
 							 @foreach($loads as $row)							  
 							<tr>
 								<td class="">{{ $row->reference_no }}</td>
-								<td class="">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>								
+								<td class="mobile-hide">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>								
 								<td class="">{{ $row->destination_name_code }} {{ $row->destination_city }}</td>
 								<td>{{ $row->t_mode }}</td>
-								<td>{{ $row->truck->description ?? $row->truck_name ?? $row->truck_code ?? 'NA' }}</td>
+								<td class="mobile-hide">{{ $row->truck->description ?? $row->truck_name ?? $row->truck_code ?? 'NA' }}</td>
 									{{-- <td>{{ $row->zw_util }}%</td>
 								<td>{{ $row->zv_util }}%</td>
 									<td>{{ $row->gross_util }}%</td>--}}
