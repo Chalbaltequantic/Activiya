@@ -163,7 +163,7 @@
 							<thead>
 							<tr>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Reference<br>no</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="">Origin<br>name code</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="mobile-hide">Origin<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Destination<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Mode</th>
 								<th style="background: #fce4d6; color: #0070c0;">Truck Type</th>
