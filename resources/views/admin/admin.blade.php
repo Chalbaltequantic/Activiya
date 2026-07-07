@@ -63,6 +63,21 @@ textarea {
     overflow-y: auto;
     border: 1px solid #ccc;
 }
+
+@media (max-width: 768px) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .sticky-col-2,
+    .sticky-col-3,
+    .sticky-col-4,
+    .sticky-col-5 {
+        position: static !important;
+        left: auto !important;
+        z-index: auto !important;
+    }
+}
 </style>
 </head>
 
