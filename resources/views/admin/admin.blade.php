@@ -21,20 +21,6 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 <style>
-/*input, textarea {
-  field-sizing: content; /* Makes the field resize to fit its content */
-  min-width: 50px;      /* Prevents it from becoming too small */
-  max-width: 200px;      /* Prevents it from becoming too wide */
-  /* Add other styling like font, padding, border etc., to ensure proper sizing */
-  font: inherit;
-  padding: 1px 2px;
-  font-size: 14px;
-}
-
-textarea {
-  min-height: 1.5lh;     /* Sets a minimum height in line units */
-  resize: none;          /* Optional: removes the manual resize handle */
-}*/
 .dataTables_filter {
     float: left !important;
 }
@@ -69,6 +55,36 @@ textarea {
         display: none !important;
     }
 
+    .sticky-col-2,
+    .sticky-col-3,
+    .sticky-col-4,
+    .sticky-col-5 {
+        position: static !important;
+        left: auto !important;
+        z-index: auto !important;
+    }
+}
+
+@media only screen and (max-width: 991px),
+       only screen and (hover: none) and (pointer: coarse) {
+    .mobile-hide {
+        display: none !important;
+    }
+}
+@media only screen and (max-width: 991px),
+       only screen and (hover: none) and (pointer: coarse) {
+    th.mobile-hide,
+    td.mobile-hide {
+        display: none !important;
+    }
+}
+@media only screen and (max-width: 991px),
+       only screen and (hover: none) and (pointer: coarse) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .sticky-col-1,
     .sticky-col-2,
     .sticky-col-3,
     .sticky-col-4,
@@ -159,42 +175,68 @@ $(document).ready(function() {
 	});
 	
 	
-});
-const isMobileg = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+});	
 
-    // Hide camera buttons if not mobile
-    if (isMobileg) { 
-        const lgout_li_header = document.getElementById('lgout_li_header');
-        
-        lgout_li_header.style.display = 'none';
-		document.getElementById('fspan').style.display='none';
-		document.getElementById('fspan_mob_logout').style.display='block';
-		
-		//remove stickie from th, td on mobile
-		/*document.querySelectorAll("th, td").forEach(el => {
-                el.classList.remove("sticky-col-2");
-                el.classList.remove("sticky-col-3");
-                el.classList.remove("sticky-col-4");
-                el.style.zIndex = null;
-            });*/
-			
-			document.querySelectorAll("th.sticky-col-2, td.sticky-col-2,                  th.sticky-col-3,td.sticky-col-3,th.sticky-col-4, td.sticky-col-4, th.sticky-col-5, td.sticky-col-5")
-        .forEach(el => {
-            el.style.zIndex = null;
-            el.classList.remove("sticky-col-2", "sticky-col-3", "sticky-col-4", "sticky-col-5");
-        });
-			
-		 // Hide TH + TD with mobile-hide
-        document.querySelectorAll("th.mobile-hide, td.mobile-hide, li.mobile-hide")
-            .forEach(el => el.style.setProperty("display", "none", "important"));
+function isMobileDevice() {
+    return (
+        /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+        (window.matchMedia && window.matchMedia("(hover: none) and (pointer: coarse)").matches)
+    );
+}
 
-        // Remove OPTION completely (hiding does not work)
-        document.querySelectorAll("option.mobile-hide")
-            .forEach(opt => opt.remove());
-		
+function applyMobileLayout() {
+    if (!isMobileDevice()) {
+        return;
     }
-	
+
+    const lgoutLiHeader = document.getElementById('lgout_li_header');
+    if (lgoutLiHeader) {
+        lgoutLiHeader.style.display = 'none';
+    }
+
+    const fspan = document.getElementById('fspan');
+    if (fspan) {
+        fspan.style.display = 'none';
+    }
+
+    const fspanMobLogout = document.getElementById('fspan_mob_logout');
+    if (fspanMobLogout) {
+        fspanMobLogout.style.display = 'block';
+    }
+
+    document.querySelectorAll(
+        "th.sticky-col-2, td.sticky-col-2, th.sticky-col-3, td.sticky-col-3, th.sticky-col-4, td.sticky-col-4, th.sticky-col-5, td.sticky-col-5"
+    ).forEach(function (el) {
+        el.style.zIndex = '';
+        el.style.left = '';
+        el.style.position = '';
+        el.classList.remove("sticky-col-2", "sticky-col-3", "sticky-col-4", "sticky-col-5");
+    });
+
+    document.querySelectorAll("th.mobile-hide, td.mobile-hide, li.mobile-hide, .mobile-hide")
+        .forEach(function (el) {
+            el.style.setProperty("display", "none", "important");
+        });
+
+    document.querySelectorAll("option.mobile-hide")
+        .forEach(function (opt) {
+            opt.remove();
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    applyMobileLayout();
+});
+
+window.addEventListener("resize", function () {
+    applyMobileLayout();
+});
+
+window.addEventListener("orientationchange", function () {
+    setTimeout(applyMobileLayout, 300);
+});
 </script>
+
 </body>
 
 </html>

@@ -1436,59 +1436,24 @@ class LoadoptimizerController extends Controller
 			->orderByDesc('sent_at')
 			->get();
 			
+				
 		$boxCounts = \App\Models\LoadBoxCount::select(
         'load_summary_id',
         'source_type',
         DB::raw('COUNT(*) as total_images'),
-        DB::raw('SUM(box_count) as total_boxes')
+        DB::raw('SUM(COALESCE(manual_box_count, box_count)) as total_boxes')
 		)
 		->groupBy('load_summary_id', 'source_type')
 		->get()
 		->keyBy(function ($item) {
 			return $item->load_summary_id . '_' . $item->source_type;
-		});
-	
+		});	
 
-		return view(
-			'admin.loadoptimizer.change_placement_status',
-			compact('loads', 'boxCounts')
-		);
+		return view('admin.loadoptimizer.change_placement_status',compact('loads', 'boxCounts'));
+	
 	}
 	
-	///track placement status
-	/*public function trackplacementStatus()
-	{
-		$vendorCode = Auth::user()->vendor_code;
-
-		if(!empty($vendor_code))
-		{
-			$loads = LoadSummary::where('sent_status', 'accepted')
-			->whereHas('sendHistory', function ($q) use ($vendorCode) {
-				$q->where('vendor_code', $vendorCode);
-			})
-			->with([
-				'latestPlacement',
-				'placementLogs','latestSendHistory', 
-				'sendHistory' => function ($q) use ($vendorCode) {
-					$q->where('vendor_code', $vendorCode)
-					  ->latest('id')
-					  ->limit(1);
-				}
-			])
-			->orderByDesc('sent_at')
-			->get();
-		}
-		else{
-			$loads = LoadSummary::where('sent_status', 'accepted')
-			->with('sendHistory')
-					->orderBy('sent_at', 'desc')
-					->get();
-		}
-		return view(
-			'admin.loadoptimizer.track_placement_status',
-			compact('loads')
-		);
-	}*/
+	
 	public function trackplacementStatus()
 	{
 		$user = Auth::user();

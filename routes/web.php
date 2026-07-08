@@ -739,7 +739,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 
 	Route::delete('load-box-count/delete/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'destroy'])
 		->name('load.boxcount.delete');
-		
+	
+	Route::post('load-box-count/update-count/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'updateCount'])
+    ->name('load.boxcount.updateCount');
+
+	Route::post('load-box-count/update-remark/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'updateRemark'])
+    ->name('load.boxcount.updateRemark');	
 		
 
 });
