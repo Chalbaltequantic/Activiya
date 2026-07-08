@@ -322,7 +322,7 @@ $(document).on('change', '.camera-input', function () {
     row.find('.box-count-result').html('Uploading & Counting...');
 
     $.ajax({
-        url: "{{ route('load.boxcount.store') }}",
+        url: "{{ route('admin.load.boxcount.store') }}",
         type: "POST",
         data: formData,
         contentType: false,
