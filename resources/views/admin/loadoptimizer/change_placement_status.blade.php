@@ -270,6 +270,8 @@ table {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+const IS_ADMIN = {{ auth()->check() && auth()->user()->role_id == 1 ? 'true' : 'false' }};
+
 $(document).on('change', '.placement-status', function () {
     let row = $(this).closest('tr');
     let status = $(this).val();
@@ -390,9 +392,12 @@ $(document).on('click', '.view-box-images', function () {
                                 <img src="/${item.image_path}" class="box-modal-img">
                             </a>
 
-                            <div class="card-body p-2">
-                                <p class="mb-1 box-card-count"><b>AI Count:</b> ${item.box_count}</p>
-                                <p class="mb-1 box-card-count"><b>Manual Count:</b>
+                            <div class="card-body p-2">`;
+							html += `
+								${IS_ADMIN ? `<p class="mb-1 box-card-count"><b>AI Count:</b> ${item.box_count ?? 0}</p>` : ''}
+							`;
+								
+                                html += `<p class="mb-1 box-card-count"><b>Manual Count:</b>
                                     <input type="number"
                                            min="0"
                                            class="manual-count-input"
