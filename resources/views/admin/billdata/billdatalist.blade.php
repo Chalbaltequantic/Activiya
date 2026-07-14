@@ -199,6 +199,8 @@
 						  <th style="background: #fce4d6; color: #0070c0;">Freight type</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Ap status</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Created_date</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Return at</th>
+						  <th style="background: #fce4d6; color: #0070c0;">Submitted at</th>
 						  <th style="background: #fce4d6; color: #0070c0;">status </th>
 						  
 						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
@@ -243,6 +245,12 @@
 						  <td>{{$billdata->freight_type}}</td>
 						  <td>{{$billdata->ap_status}}</td>
 						  <td>{{$billdata->created_at}}</td>
+						  <td>
+						  {{ $billdata->returned_at ? \Carbon\Carbon::parse($billdata->returned_at)->format('Y-m-d') : '-' }}
+						  </td>
+						  <td>
+						  {{ $billdata->freight_info_updated_at ? \Carbon\Carbon::parse($billdata->freight_info_updated_at)->format('Y-m-d') : '-' }}
+						  </td>
 						  <td>{!! ($billdata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
 						  
 						  <td>

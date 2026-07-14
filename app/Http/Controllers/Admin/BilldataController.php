@@ -996,175 +996,15 @@ class BilldataController extends Controller
 		return response()->json($results);
 	}
 	
-/*	public function storeValidatedData(Request $request)
-	{
-		//print_r($request); exit;
-		
-		$validatedIds = $request->input('validated_ids', []);
-		//print_r($validatedIds); exit;
-		
-		$submittedIds = $request->input('submitted_ids', []);
-		$returnedIds = $request->input('returned_ids', []);
-		$remarks = $request->input('remark', []);
-
-
-
-		foreach ($validatedIds as $index => $id) {
-			$entry = Billdata::find($id);
-			if (!$entry) continue;
-			
-			$vendor_code = 	$entry->vendor_code;
-			$vendor_name = 	$entry->vendor_name;
-			$source_name = 	$entry->s5_consignor_short_name_and_location;
-			$destination_name = 	$entry->d5_consignor_short_name_and_location;
-			$truck_type = 	$entry->truck_type;
-			$ref1 = 	$entry->ref1;
-			$ref2 = 	$entry->ref2;
-			$ref3 = 	$entry->ref3;
-			$lr_no =	$entry->lr_no;
-			$amount = 	$entry->a_amount;
-			$freight_info_updated_at = $entry->freight_info_updated_at;
-			$freight_invoice_no = 	$entry->freight_invoice_no;
-			
-			$freight_invoice_file = !empty($entry->freight_invoice_file)?$entry->freight_invoice_file:'';
-			$pod_file = !empty($entry->pod_file)?$entry->pod_file:'';
-			$approval_file = !empty($entry->approval_file)?$entry->approval_file:'';
-			
-			 $files = [];
-			 if(!empty($freight_invoice_file))
-			 {
-				 $files[] = public_path($freight_invoice_file);
-			 }
-			 if(!empty($pod_file))
-			 {
-				 $files[] = public_path($pod_file);
-			 }
-			 if(!empty($approval_file))
-			 {
-				 $files[] = public_path($approval_file);
-			 }
-			 
-
-			if (in_array($id, $submittedIds)) {
-				$entry->validated_status = 'submitted';
-				$entry->submit = 1;
-				$entry->f_return = 0;
-				
-				//send email to user on alpply success//////////////////////
-					$to_name = 'Roshan Jha';
-					$to_email = 'roshan.scm@gmail.com';
-					
-					$subject = "Vendor name : $vendor_name & freight invoice no : $freight_invoice_no";
-					///////////////////email content
-					$body = '<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table">
-						 
-						<table class="table table-bordered border-dark table-hover">
-							<thead>
-							<tr>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Code</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Vendor Name</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Source Name
-								</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Destination Name</th>						  
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Truck Type</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Ref1(IndentId)</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight PO</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Freight GRN</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">LR/CN No.</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice No.</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Amount<br>(Excluding Tax)</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Bill to<br> GST No</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="col-width">Invoice Receive<br>Date from Vendor</th>
-							</tr>
-						  </thead>
-						<tbody>
-										  
-						<tr>
-							<td>'.$vendor_code.'</td>
-							<td>'.$vendor_name.'</td>
-							<td>'.$source_name.'</td>
-							<td>'.$destination_name.'</td>
-							<td>'.$truck_type.'</td>
-							<td>'.$ref1.'</td>
-							<td>'.$ref2.'</td>
-							<td>'.$ref3.'</td>
-							<td>'.$lr_no.'</td>
-							<td>'.$freight_invoice_no.'</td>
-							<td>'.$amount.'</td>
-							<td></td>
-							<td>'.$freight_info_updated_at.'</td>	
-						</tr>
-						
-					   </tbody>
-					</table>
-					</div>
-					';
-				////// end email content	
-					/*$data = array('name'=>$to_name, "body" => $body );
-					
-					//print_r($data);
-					
-					Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
-								$message->to($to_email)->subject($subject);
-								$message->from(env("MAIL_USERNAME"),'Activiya.com');
-					
-					foreach ($files as $file){
-								$message->attach($file);
-					}
-					});	 */
-					
-				/*	$admins = Admin::whereIn('role_id', [4, 6])->where('status','1')->get();
-
-					foreach ($admins as $admin) {
-						$to_email = $admin->email;
-						$to_name = $admin->name; // 
-						$data = [
-							'name' => $to_name,
-							'body' => $body, // 
-						];
-
-						
-						Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
-							$message->to($to_email)->subject($subject);
-							//$message->from(env("MAIL_USERNAME"), 'Activiya.com');
-							$message->from(config('mail.from.address'), 'Activiya.com');
-							foreach ($files as $file) {
-								$message->attach($file);
-							}
-						});
-					}
-					$to_name = 'Roshan Jha';
-					$to_email = 'roshan.scm@gmail.com';
-					Mail::send('mail.freight_info_mail', $data, function($message) use ($to_email, $subject, $files) {
-							$message->to($to_email)->subject($subject);
-							$message->from(config('mail.from.address'), 'Activiya.com');
-
-							foreach ($files as $file) {
-								$message->attach($file);
-							}
-						});
-				
-			} 
-			elseif (in_array($id, $returnedIds)) {
-				$entry->validated_status = 'returned';
-				$entry->submit = 0;
-				$entry->f_return = 1;
-			}
-			
-			$entry->validation_remark = $remarks[$index] ?? '';
-			$entry->save();
-		}
-
-		return redirect()->back()->with('success', 'Records updated successfully.');
-	}*/
-	
 	public function storeValidatedData(Request $request)
 	{
 		$validatedIds = $request->input('validated_ids', []);
 		$submittedIds = $request->input('submitted_ids', []);
 		$returnedIds = $request->input('returned_ids', []);
 		$remarks = $request->input('remark', []);
-
+		
+		$returned_at = date('Y-m-d H:i:s');
+		
 		if (empty($validatedIds)) {
 
 			return redirect()->back()->with(
@@ -1217,6 +1057,7 @@ class BilldataController extends Controller
 					$entry->validated_status = 'returned';
 					$entry->submit = 0;
 					$entry->f_return = 1;
+					$entry->returned_at  = $returned_at;
 				}
 
 				$entry->validation_remark = $remarks[$index] ?? '';
@@ -1268,10 +1109,8 @@ class BilldataController extends Controller
 
 			$entry->freight_invoice_no = $request->freight_invoice_no;
 
-			// If your column name is freight_invoice_date, use this:
 			$entry->freight_invoice_date = $request->freight_invoice_date;
 
-			// If your amount column is a_amount:
 			$entry->freight_amount = $request->freight_amount;
 
 			if ($request->hasFile('freight_invoice_file')) {
