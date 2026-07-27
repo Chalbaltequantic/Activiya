@@ -172,7 +172,7 @@
     </div></div>@if($datalist->hasPages())<div class="card-footer">{{ $datalist->links() }}</div>@endif</div>
 </div>
 @endsection
-@push('scripts')
+@push('js')
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
