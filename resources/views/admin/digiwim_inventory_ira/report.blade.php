@@ -58,8 +58,8 @@
 					<tbody>@forelse($ira?->activities??collect() as $index=>$activity)
 						<tr>
 							<td class="sticky-col-1">{{ $index+1 }}</td>
-							<td class="sticky-col-2">{{ number_format((float)$activity->qty_unit,3) }}</td>
-							<td class="sticky-col-3">{{ number_format((float)$activity->qty_case,3) }}</td>
+							<td class="sticky-col-2">{{ number_format((float)$activity->qty_unit,2) }}</td>
+							<td class="sticky-col-3">{{ number_format((float)$activity->qty_case,2) }}</td>
 							<td>{{ $activity->bin_no??'-' }}</td>
 							<td>{{ $activity->remarks??'-' }}</td>
 							<td>{{ $activity->activityByAdmin->name??$activity->activity_by??'-' }}</td>

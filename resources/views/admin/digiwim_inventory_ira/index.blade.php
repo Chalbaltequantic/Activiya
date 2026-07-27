@@ -159,10 +159,10 @@
 					<td>{{ $item->storage_plant_location ?: '-' }}</td>
 					<td>{{ $item->batch_no ?: '-' }}</td>
 					<td class="text-right font-weight-bold">{{ number_format((float)$item->available_qty,3) }}</td>
-                    <td><input type="number" step="0.01" min="0.01" class="form-control form-control-sm qty-unit"></td>
-                    <td><input type="number" step="0.01" min="0.01" class="form-control form-control-sm qty-case"></td>
-                    <td><input type="text" maxlength="10" class="form-control form-control-sm bin-no"></td>
-                    <td><input type="text" maxlength="100" class="form-control form-control-sm remarks"></td>
+                    <td><input type="number" step="0.01" min="0.01" class="qty-unit"></td>
+                    <td><input type="number" step="0.01" min="0.01" class="qty-case"></td>
+                    <td><input type="text" maxlength="10" class="bin-no"></td>
+                    <td><input type="text" maxlength="100" class="remarks"></td>
                     <td>Activities: <strong class="activity-count">{{ (int)$item->activity_count }}</strong><br>Unit: <strong class="total-unit">{{ number_format((float)$item->total_qty_unit,3) }}</strong><br>Case: <strong class="total-case">{{ number_format((float)$item->total_qty_case,3) }}</strong></td>
                     <td class="text-nowrap"><button type="button" class="btn btn-success btn-sm add-btn">Add</button> <button type="button" class="btn btn-danger btn-sm end-btn">End</button> <a target="_blank" href="{{ route('admin.digiwim-inventory-ira.report',$item->inventory_key) }}" class="btn btn-info btn-sm">Report</a></td>
                 </tr>
