@@ -729,6 +729,116 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::resource('digiwim-egr', App\Http\Controllers\Admin\DigiwimEgrController::class);
 	Route::resource('digiwim-egp', App\Http\Controllers\Admin\DigiwimEgpController::class);
 	
+	/* DigiWim Goods PO Upload */
+	
+		Route::get(
+            'digiwim-goods-po/manual-upload',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'manualUpload']
+        )->name('digiwim-goods-po.manual-upload');
+
+        Route::post(
+            'digiwim-goods-po/save-manual-upload',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'saveManualUpload']
+        )->name('digiwim-goods-po.save');
+		
+		/********AJAX Data Fetch **************/
+		Route::post(
+            'digiwim-goods-po/fetch-row',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'fetchRow']
+        )->name('digiwim-goods-po.fetch-row');
+		
+		Route::get(
+            'digiwim-goods-po',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'index']
+        )->name('digiwim-goods-po.index');
+		
+		Route::get(
+            'digiwim-goods-po/{id}/edit',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'edit']
+        )->name('digiwim-goods-po.edit');
+		
+		Route::post(
+            'digiwim-goods-po/{id}/update',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'update']
+        )->name('digiwim-goods-po.update');
+		
+		Route::delete(
+            'digiwim-goods-po/{id}',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'destroy']
+        )->name('digiwim-goods-po.destroy');
+		
+		 Route::get(
+            'digiwim-goods-po/excel-upload',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'excelUpload']
+        )->name('digiwim-goods-po.excel-upload');
+
+        Route::post(
+            'digiwim-goods-po/import-excel',
+            [App\Http\Controllers\Admin\DigiwimGoodsPoUploadController::class,'importExcel']
+        )->name('digiwim-goods-po.import');
+	
+
+	/* DigiWim Inventory IRA */
+
+	/* Pending IRA */
+
+	Route::get(
+		'digiwim-inventory-ira',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'index']
+	)->name('digiwim-inventory-ira.index');
+
+
+	/* Add IRA Activity (AJAX) */
+
+	Route::post(
+		'digiwim-inventory-ira/add-activity',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'addActivity']
+	)->name('digiwim-inventory-ira.add-activity');
+
+
+	/* End IRA (AJAX) */
+
+	Route::post(
+		'digiwim-inventory-ira/end-activity',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'endActivity']
+	)->name('digiwim-inventory-ira.end-activity');
+
+
+	/* IRA History */
+
+	Route::get(
+		'digiwim-inventory-ira/history',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'history']
+	)->name('digiwim-inventory-ira.history');
+
+
+	/* View IRA Activities (AJAX) */
+
+	Route::get(
+		'digiwim-inventory-ira/view-activities/{id}',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'viewActivities']
+	)
+	->whereNumber('id')
+	->name('digiwim-inventory-ira.view-activities');
+
+
+	/* Inventory Book Vs IRA */
+
+	Route::get(
+		'digiwim-inventory-ira/inventory-book',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'inventoryBook']
+	)->name('digiwim-inventory-ira.inventory-book');
+
+
+	/* Inventory Detail Report */
+
+	Route::get(
+		'digiwim-inventory-ira/report/{inventoryKey}',
+		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'report']
+	)
+	->where('inventoryKey', '[A-Fa-f0-9]{64}')
+	->name('digiwim-inventory-ira.report');
+	
 	///Load Box count from V placement screen
 	
 	Route::post('load-box-count/store', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'store'])

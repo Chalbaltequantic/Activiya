@@ -331,6 +331,13 @@
 					 
 					 <li class=""><a href="{{ route('admin.digiwim-egp.index') }}" class="dropdown-item">EGP </a>
 					 </li>
+					 
+					  <li class=""><a href="{{route('admin.digiwim-goods-po.index')}}" class="dropdown-item">M Goods Po Upload </a>
+					 </li>
+					 
+					  <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
+					 </li>
+					 
 					@endif
 					
 					</ul>

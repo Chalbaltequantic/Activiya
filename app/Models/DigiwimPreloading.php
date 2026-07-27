@@ -46,4 +46,47 @@ class DigiwimPreloading extends Model
         'updated_by',
         'status'
     ];
+	
+	
+	
+	/* IRA Header*/
+
+	public function ira()
+	{
+		return $this->hasOne(
+			\App\Models\DigiwimInventoryIra::class,
+			'digiwim_preloading_id',
+			'id'
+		);
+	}
+
+
+	/* Pending IRA*/
+
+	public function pendingIra()
+	{
+		return $this->hasOne(
+			\App\Models\DigiwimInventoryIra::class,
+			'digiwim_preloading_id',
+			'id'
+		)->where(
+			'status',
+			'pending'
+		);
+	}
+
+
+	/* Completed IRA*/
+
+	public function completedIra()
+	{
+		return $this->hasOne(
+			\App\Models\DigiwimInventoryIra::class,
+			'digiwim_preloading_id',
+			'id'
+		)->where(
+			'status',
+			'completed'
+		);
+	}
 }
