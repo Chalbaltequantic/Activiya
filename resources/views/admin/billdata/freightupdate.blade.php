@@ -274,9 +274,11 @@
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;width:40px;" class="sticky-col-5">Freight <br>Invoice No.</th>
 								<th style="background: #fce4d6; color: #0070c0;">Invoice Dt.</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Amount<br>Excluding Tax</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="">Freight Invoice</th>
-								<th style="background: #fce4d6; color: #0070c0;" class="">POD</th>
+								<th style="background: #fce4d6; color: #0070c0;" class="">Freight Invoice / POD / Approvals </th>
+								{{-- <th style="background: #fce4d6; color: #0070c0;" class="">POD</th>
 								<th style="background: #fce4d6; color: #0070c0;" class="">Approvals</th>						
+								--}}
+								
 								<th style="background: #fce4d6; color: #0070c0;" class="">Validate</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Submit</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Return</th>
@@ -312,7 +314,7 @@
 									@endif
 								</span>
 							</td>
-							<td>								
+							{{-- <td>								
 								<span class="uploaded-file" id="pod-{{ $updatedbilldata->id }}">
 									@if ($updatedbilldata->pod_file)
 										<a href="{{ asset( $updatedbilldata->pod_file) }}" target="_blank" class="btn btn-sm btn-primary">
@@ -341,6 +343,7 @@
 									@else NA
 								@endif
 							</td>
+							--}}
 							<td>{!! ($updatedbilldata->validated_status=='submitted') 
 									? '<span style="color: green;">&#9989;</span>' 
 									: '<span style="color: red;">&#10060;</span>' 
@@ -439,7 +442,7 @@
 						
                         </div>
 
-                        <div class="col-md-4">
+						{{--     <div class="col-md-4">
                             <label>POD File</label>
                             <input type="file"
 								   name="pod_file"
@@ -447,7 +450,7 @@
 								   class="form-control"
 								   accept=".pdf,.jpg,.jpeg,.png">
 							<div id="pod_file_link" class="mt-2"></div>
-                        </div>
+                        </div>--}}
 
                     </div>
 
