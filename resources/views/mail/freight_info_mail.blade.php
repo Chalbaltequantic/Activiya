@@ -1,5 +1,5 @@
-<p>Hi {{$name}},
-	<p>
+<p>Hi, </p>
+<p>Please process attached invoice, considering invoice value</p>	
 <p>
 {!!$body!!}
 
