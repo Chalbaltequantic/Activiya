@@ -3,12 +3,7 @@
 @section('bodycontent')
 
 @php
-
-    /*
-    |--------------------------------------------------------------------------
-    | Calculate Summary Values
-    |--------------------------------------------------------------------------
-    */
+/*Calculate Summary Values  */
 
     $receivedCount = array_sum(
         $report['count_matrix']['received'] ?? []
@@ -60,43 +55,10 @@
         'paid'      => 'Invoices Paid',
     ];
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Find AdminLTE Chart.js Asset
-    |--------------------------------------------------------------------------
-    |
-    | Common AdminLTE installations use one of these folders:
-    |
-    | public/admin/plugins/chart.js/Chart.min.js
-    | public/plugins/chart.js/Chart.min.js
-    |
-    */
-
-    if (
-        file_exists(
-            public_path('admin/plugins/chart.js/Chart.min.js')
-        )
-    ) {
-        $chartJsAsset = asset(
-            'admin/plugins/chart.js/Chart.min.js'
-        );
-    } else {
-        $chartJsAsset = asset(
-            'plugins/chart.js/Chart.min.js'
-        );
-    }
-
 @endphp
 
 
 <style>
-
-    /*
-    |--------------------------------------------------------------------------
-    | General Page Design
-    |--------------------------------------------------------------------------
-    */
 
     .freight-dashboard-page {
         padding-bottom: 25px;
@@ -108,12 +70,6 @@
         margin-top: 3px;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Filter Card
-    |--------------------------------------------------------------------------
-    */
 
     .filter-card {
         border-top: 3px solid #007bff;
@@ -131,12 +87,6 @@
         color: #34495e;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Top Summary Cards
-    |--------------------------------------------------------------------------
-    */
 
     .summary-card {
         position: relative;
@@ -219,12 +169,6 @@
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Chart Cards
-    |--------------------------------------------------------------------------
-    */
-
     .chart-card {
         border-radius: 8px;
         overflow: hidden;
@@ -262,13 +206,7 @@
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Compact Analysis Section
-    |--------------------------------------------------------------------------
-    */
-
-    .analysis-card {
+      .analysis-card {
         border: 0;
         border-radius: 8px;
         min-height: 116px;
@@ -323,13 +261,6 @@
         margin-top: 5px;
         word-break: break-word;
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Report Table
-    |--------------------------------------------------------------------------
-    */
 
     .report-card {
         border-radius: 8px;
@@ -413,13 +344,6 @@
         border-radius: 3px;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Responsive Design
-    |--------------------------------------------------------------------------
-    */
-
     @media (max-width: 767px) {
 
         .summary-card {
@@ -453,9 +377,6 @@
 
 <div class="content-wrapper freight-dashboard-page">
 
-    {{-- =========================================================
-         PAGE HEADER
-    ========================================================== --}}
     <section class="content-header">
 
         <div class="container-fluid">
@@ -502,17 +423,10 @@
     </section>
 
 
-    {{-- =========================================================
-         MAIN CONTENT
-    ========================================================== --}}
     <section class="content">
 
         <div class="container-fluid">
 
-
-            {{-- =================================================
-                 SESSION MESSAGES
-            ================================================== --}}
             @if(session('success'))
 
                 <div class="alert alert-success alert-dismissible fade show">
@@ -578,13 +492,7 @@
             @endif
 
 
-            {{-- =================================================
-                 VENDOR INFORMATION
-            ================================================== --}}
-            @if(
-                isset($canViewAllVendors) &&
-                !$canViewAllVendors
-            )
+            @if( isset($canViewAllVendors) && !$canViewAllVendors)
 
                 <div class="callout callout-info">
 
@@ -626,10 +534,6 @@
 
             @endif
 
-
-            {{-- =================================================
-                 FILTERS
-            ================================================== --}}
             <div class="card filter-card">
 
                 <div class="card-header">
@@ -1682,7 +1586,7 @@
      ADMINLTE LOCAL CHART.JS
 ============================================================== --}}
 
-<script src="{{ asset('backend/assets/plugins/chart.js/chart.min.js') }}"></script>
+<script src="{{ asset('backend/assets/plugins/chart.js/Chart.min.js') }}"></script>
 
 <script>
 
