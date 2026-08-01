@@ -2,7 +2,456 @@
 
 @section('bodycontent')
 
-<div class="content-wrapper">
+@php
+
+    /*
+    |--------------------------------------------------------------------------
+    | Calculate Summary Values
+    |--------------------------------------------------------------------------
+    */
+
+    $receivedCount = array_sum(
+        $report['count_matrix']['received'] ?? []
+    );
+
+    $validatedCount = array_sum(
+        $report['count_matrix']['validated'] ?? []
+    );
+
+    $returnedCount = array_sum(
+        $report['count_matrix']['returned'] ?? []
+    );
+
+    $pendingCount = array_sum(
+        $report['count_matrix']['pending'] ?? []
+    );
+
+    $paidCount = array_sum(
+        $report['count_matrix']['paid'] ?? []
+    );
+
+
+    $receivedValue = array_sum(
+        $report['value_matrix']['received'] ?? []
+    );
+
+    $validatedValue = array_sum(
+        $report['value_matrix']['validated'] ?? []
+    );
+
+    $returnedValue = array_sum(
+        $report['value_matrix']['returned'] ?? []
+    );
+
+    $pendingValue = array_sum(
+        $report['value_matrix']['pending'] ?? []
+    );
+
+    $paidValue = array_sum(
+        $report['value_matrix']['paid'] ?? []
+    );
+
+
+    $statusRows = [
+        'received'  => 'Invoice Received',
+        'validated' => 'Invoice Validated',
+        'returned'  => 'Invoice Returned',
+        'pending'   => 'Invoices Pending',
+        'paid'      => 'Invoices Paid',
+    ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Find AdminLTE Chart.js Asset
+    |--------------------------------------------------------------------------
+    |
+    | Common AdminLTE installations use one of these folders:
+    |
+    | public/admin/plugins/chart.js/Chart.min.js
+    | public/plugins/chart.js/Chart.min.js
+    |
+    */
+
+    if (
+        file_exists(
+            public_path('admin/plugins/chart.js/Chart.min.js')
+        )
+    ) {
+        $chartJsAsset = asset(
+            'admin/plugins/chart.js/Chart.min.js'
+        );
+    } else {
+        $chartJsAsset = asset(
+            'plugins/chart.js/Chart.min.js'
+        );
+    }
+
+@endphp
+
+
+<style>
+
+    /*
+    |--------------------------------------------------------------------------
+    | General Page Design
+    |--------------------------------------------------------------------------
+    */
+
+    .freight-dashboard-page {
+        padding-bottom: 25px;
+    }
+
+    .dashboard-subtitle {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: 3px;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Filter Card
+    |--------------------------------------------------------------------------
+    */
+
+    .filter-card {
+        border-top: 3px solid #007bff;
+        border-radius: 7px;
+    }
+
+    .filter-card .card-header {
+        background: #ffffff;
+        border-bottom: 1px solid #e8edf2;
+    }
+
+    .filter-card label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #34495e;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Top Summary Cards
+    |--------------------------------------------------------------------------
+    */
+
+    .summary-card {
+        position: relative;
+        overflow: hidden;
+        border: 0;
+        border-radius: 9px;
+        min-height: 130px;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+        transition: transform 0.2s ease;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .summary-card .card-body {
+        position: relative;
+        z-index: 2;
+        padding: 20px;
+    }
+
+    .summary-card .summary-number {
+        font-size: 32px;
+        line-height: 1.15;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .summary-card .summary-label {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .summary-card .summary-icon {
+        position: absolute;
+        right: 18px;
+        bottom: 10px;
+        font-size: 68px;
+        opacity: 0.18;
+        z-index: 1;
+    }
+
+    .summary-card-blue {
+        background: linear-gradient(
+            135deg,
+            #17a2b8,
+            #138496
+        );
+    }
+
+    .summary-card-green {
+        background: linear-gradient(
+            135deg,
+            #28a745,
+            #1e7e34
+        );
+    }
+
+    .summary-card-yellow {
+        color: #212529;
+        background: linear-gradient(
+            135deg,
+            #ffc107,
+            #e0a800
+        );
+    }
+
+    .summary-card-red {
+        background: linear-gradient(
+            135deg,
+            #dc3545,
+            #bd2130
+        );
+    }
+
+    .summary-money {
+        font-size: 28px !important;
+        word-break: break-word;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Chart Cards
+    |--------------------------------------------------------------------------
+    */
+
+    .chart-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+    }
+
+    .chart-card .card-header {
+        background: #ffffff;
+        padding: 14px 18px;
+    }
+
+    .chart-card .card-title {
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    .chart-card .card-body {
+        padding: 16px;
+        background: #ffffff;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        height: 315px;
+        width: 100%;
+    }
+
+    .chart-loading-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        color: #6c757d;
+        transform: translate(-50%, -50%);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Compact Analysis Section
+    |--------------------------------------------------------------------------
+    */
+
+    .analysis-card {
+        border: 0;
+        border-radius: 8px;
+        min-height: 116px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.09);
+        background: #ffffff;
+    }
+
+    .analysis-card .card-body {
+        padding: 15px;
+    }
+
+    .analysis-card-inner {
+        display: flex;
+        align-items: center;
+    }
+
+    .analysis-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 55px;
+        width: 55px;
+        height: 55px;
+        color: #ffffff;
+        border-radius: 8px;
+        font-size: 24px;
+        margin-right: 13px;
+    }
+
+    .analysis-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .analysis-title {
+        color: #59636e;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .analysis-count {
+        font-size: 23px;
+        line-height: 1.1;
+        font-weight: 700;
+        color: #222222;
+    }
+
+    .analysis-value {
+        color: #6c757d;
+        font-size: 12px;
+        margin-top: 5px;
+        word-break: break-word;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Report Table
+    |--------------------------------------------------------------------------
+    */
+
+    .report-card {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .freight-report-table-wrapper {
+        overflow: auto;
+        max-height: 650px;
+    }
+
+    .freight-report-table {
+        min-width: 1250px;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .freight-report-table th,
+    .freight-report-table td {
+        padding: 9px 11px;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .freight-report-table .status-column {
+        position: sticky;
+        left: 0;
+        z-index: 3;
+        min-width: 230px;
+        font-weight: 700;
+        background: #f4f7fa;
+    }
+
+    .count-heading th,
+    .value-heading th {
+        color: #0070c0;
+        background: #fce4d6;
+        font-weight: 700;
+    }
+
+    .count-heading .status-column,
+    .value-heading .status-column {
+        z-index: 4;
+        background: #fce4d6;
+    }
+
+    .ageing-column {
+        min-width: 115px;
+        text-align: center;
+    }
+
+    .ageing-0_15,
+    .ageing-16_30,
+    .ageing-31_45 {
+        color: #008c3a !important;
+    }
+
+    .ageing-46_60,
+    .ageing-61_90 {
+        color: #b36b00 !important;
+    }
+
+    .ageing-91_120,
+    .ageing-121_150,
+    .ageing-151_180 {
+        color: #d50000 !important;
+    }
+
+    .report-divider td {
+        height: 18px;
+        padding: 0;
+        background: #edf1f5;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    code {
+        padding: 2px 5px;
+        color: #c7254e;
+        background: #f9f2f4;
+        border-radius: 3px;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Responsive Design
+    |--------------------------------------------------------------------------
+    */
+
+    @media (max-width: 767px) {
+
+        .summary-card {
+            min-height: 115px;
+        }
+
+        .summary-card .summary-number {
+            font-size: 25px;
+        }
+
+        .summary-money {
+            font-size: 20px !important;
+        }
+
+        .summary-card .summary-icon {
+            font-size: 55px;
+        }
+
+        .chart-wrapper {
+            height: 280px;
+        }
+
+        .analysis-card {
+            min-height: auto;
+        }
+
+    }
+
+</style>
+
+
+<div class="content-wrapper freight-dashboard-page">
 
     {{-- =========================================================
          PAGE HEADER
@@ -19,11 +468,14 @@
                         {{ $pagetitle ?? 'Freight Bill Processing Dashboard' }}
                     </h1>
 
-                    <small class="text-muted">
+                    <div class="dashboard-subtitle">
+
                         Freight invoice count, value and ageing analysis
-                    </small>
+
+                    </div>
 
                 </div>
+
 
                 <div class="col-sm-5 text-sm-right mt-2 mt-sm-0">
 
@@ -34,8 +486,11 @@
                         ) }}"
                         class="btn btn-success"
                     >
+
                         <i class="fas fa-file-excel mr-1"></i>
+
                         Download XLS
+
                     </a>
 
                 </div>
@@ -56,7 +511,7 @@
 
 
             {{-- =================================================
-                 SESSION AND VALIDATION MESSAGES
+                 SESSION MESSAGES
             ================================================== --}}
             @if(session('success'))
 
@@ -105,16 +560,14 @@
                 <div class="alert alert-danger">
 
                     <strong>
-                        Please correct the following:
+                        Please correct the following errors:
                     </strong>
 
                     <ul class="mb-0 mt-2">
 
                         @foreach($errors->all() as $error)
 
-                            <li>
-                                {{ $error }}
-                            </li>
+                            <li>{{ $error }}</li>
 
                         @endforeach
 
@@ -126,71 +579,7 @@
 
 
             {{-- =================================================
-                 REPORT TOTALS USED IN CARDS AND CHARTS
-            ================================================== --}}
-            @php
-
-                $receivedCount = array_sum(
-                    $report['count_matrix']['received'] ?? []
-                );
-
-                $validatedCount = array_sum(
-                    $report['count_matrix']['validated'] ?? []
-                );
-
-                $returnedCount = array_sum(
-                    $report['count_matrix']['returned'] ?? []
-                );
-
-                $pendingCount = array_sum(
-                    $report['count_matrix']['pending'] ?? []
-                );
-
-                $paidCount = array_sum(
-                    $report['count_matrix']['paid'] ?? []
-                );
-
-
-                $receivedValue = array_sum(
-                    $report['value_matrix']['received'] ?? []
-                );
-
-                $validatedValue = array_sum(
-                    $report['value_matrix']['validated'] ?? []
-                );
-
-                $returnedValue = array_sum(
-                    $report['value_matrix']['returned'] ?? []
-                );
-
-                $pendingValue = array_sum(
-                    $report['value_matrix']['pending'] ?? []
-                );
-
-                $paidValue = array_sum(
-                    $report['value_matrix']['paid'] ?? []
-                );
-
-
-                $statusRows = [
-
-                    'received' => 'Invoice Received',
-
-                    'validated' => 'Invoice Validated',
-
-                    'returned' => 'Invoice Returned',
-
-                    'pending' => 'Invoices Pending',
-
-                    'paid' => 'Invoices Paid',
-
-                ];
-
-            @endphp
-
-
-            {{-- =================================================
-                 LOGGED-IN VENDOR INFORMATION
+                 VENDOR INFORMATION
             ================================================== --}}
             @if(
                 isset($canViewAllVendors) &&
@@ -199,24 +588,22 @@
 
                 <div class="callout callout-info">
 
-                    <h5>
+                    <h5 class="mb-1">
 
                         <i class="fas fa-user-tag mr-1"></i>
 
-                        Vendor Report
+                        Vendor-specific report
 
                     </h5>
 
                     <p class="mb-0">
 
-                        This dashboard contains data only for:
+                        Showing data only for:
 
                         <strong>
-
                             {{ $loggedInVendorName
                                 ?? $loggedInVendorCode
                                 ?? 'Logged-in Vendor' }}
-
                         </strong>
 
                         @if(!empty($loggedInVendorCode))
@@ -241,9 +628,9 @@
 
 
             {{-- =================================================
-                 FILTER SECTION
+                 FILTERS
             ================================================== --}}
-            <div class="card card-outline card-primary">
+            <div class="card filter-card">
 
                 <div class="card-header">
 
@@ -269,6 +656,7 @@
 
                 </div>
 
+
                 <div class="card-body">
 
                     <form
@@ -278,14 +666,14 @@
                         ) }}"
                     >
 
-                        <div class="row">
+                        <div class="row align-items-end">
 
 
                             {{-- Mode --}}
-                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
 
                                 <label>
-                                    Select Mode
+                                    Mode
                                 </label>
 
                                 <select
@@ -319,10 +707,10 @@
 
 
                             {{-- Vendor --}}
-                            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-3">
 
                                 <label>
-                                    Select Vendor
+                                    Vendor
                                 </label>
 
                                 @if(
@@ -355,9 +743,7 @@
                                                 {{ $vendor->vendor_name }}
 
                                                 @if(
-                                                    !empty(
-                                                        $vendor->vendor_name
-                                                    ) &&
+                                                    !empty($vendor->vendor_name) &&
                                                     $vendor->vendor_name !=
                                                     $vendor->vendor_code
                                                 )
@@ -389,10 +775,10 @@
 
 
                             {{-- Plant --}}
-                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
 
                                 <label>
-                                    Select Plant
+                                    Plant
                                 </label>
 
                                 <select
@@ -426,7 +812,7 @@
 
 
                             {{-- From Date --}}
-                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
 
                                 <label>
                                     From Date
@@ -443,7 +829,7 @@
 
 
                             {{-- To Date --}}
-                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
 
                                 <label>
                                     To Date
@@ -459,12 +845,8 @@
                             </div>
 
 
-                            {{-- Filter Buttons --}}
-                            <div class="col-lg-1 col-md-4 col-sm-6 mb-3">
-
-                                <label class="d-block">
-                                    &nbsp;
-                                </label>
+                            {{-- Buttons --}}
+                            <div class="col-xl-1 col-lg-3 col-md-4 col-sm-6 mb-3">
 
                                 <button
                                     type="submit"
@@ -487,10 +869,13 @@
                                     href="{{ route(
                                         'admin.freight-bill-processing.index'
                                     ) }}"
-                                    class="btn btn-secondary"
+                                    class="btn btn-secondary btn-sm"
                                 >
+
                                     <i class="fas fa-undo mr-1"></i>
-                                    Reset Filter
+
+                                    Reset Filters
+
                                 </a>
 
                             </div>
@@ -505,35 +890,35 @@
 
 
             {{-- =================================================
-                 SUMMARY SMALL BOXES
+                 TOP SUMMARY CARDS
             ================================================== --}}
             <div class="row">
 
 
                 {{-- Total Shipments --}}
-                <div class="col-lg-3 col-6">
+                <div class="col-xl-3 col-md-6">
 
-                    <div class="small-box bg-info">
+                    <div class="card summary-card summary-card-blue">
 
-                        <div class="inner">
+                        <div class="card-body">
 
-                            <h3>
+                            <div class="summary-number">
+
                                 {{ number_format(
                                     $report['total_count'] ?? 0
                                 ) }}
-                            </h3>
 
-                            <p>
+                            </div>
+
+                            <div class="summary-label">
+
                                 Total Shipments
-                            </p>
+
+                            </div>
 
                         </div>
 
-                        <div class="icon">
-
-                            <i class="fas fa-truck"></i>
-
-                        </div>
+                        <i class="fas fa-truck summary-icon"></i>
 
                     </div>
 
@@ -541,32 +926,30 @@
 
 
                 {{-- Total Freight Value --}}
-                <div class="col-lg-3 col-6">
+                <div class="col-xl-3 col-md-6">
 
-                    <div class="small-box bg-success">
+                    <div class="card summary-card summary-card-green">
 
-                        <div class="inner">
+                        <div class="card-body">
 
-                            <h3 class="summary-money">
+                            <div class="summary-number summary-money">
 
                                 ₹{{ number_format(
                                     $report['total_value'] ?? 0,
                                     2
                                 ) }}
 
-                            </h3>
+                            </div>
 
-                            <p>
+                            <div class="summary-label">
+
                                 Total Freight Value
-                            </p>
+
+                            </div>
 
                         </div>
 
-                        <div class="icon">
-
-                            <i class="fas fa-rupee-sign"></i>
-
-                        </div>
+                        <i class="fas fa-rupee-sign summary-icon"></i>
 
                     </div>
 
@@ -574,57 +957,57 @@
 
 
                 {{-- Mode Count --}}
-                <div class="col-lg-3 col-6">
+                <div class="col-xl-3 col-md-6">
 
-                    <div class="small-box bg-warning">
+                    <div class="card summary-card summary-card-yellow">
 
-                        <div class="inner">
+                        <div class="card-body">
 
-                            <h3>
+                            <div class="summary-number">
+
                                 {{ number_format(
                                     $report['mode_count'] ?? 0
                                 ) }}
-                            </h3>
 
-                            <p>
+                            </div>
+
+                            <div class="summary-label">
+
                                 Shipments with Mode
-                            </p>
+
+                            </div>
 
                         </div>
 
-                        <div class="icon">
-
-                            <i class="fas fa-route"></i>
-
-                        </div>
+                        <i class="fas fa-route summary-icon"></i>
 
                     </div>
 
                 </div>
 
 
-                {{-- Pending Count --}}
-                <div class="col-lg-3 col-6">
+                {{-- Pending --}}
+                <div class="col-xl-3 col-md-6">
 
-                    <div class="small-box bg-danger">
+                    <div class="card summary-card summary-card-red">
 
-                        <div class="inner">
+                        <div class="card-body">
 
-                            <h3>
+                            <div class="summary-number">
+
                                 {{ number_format($pendingCount) }}
-                            </h3>
 
-                            <p>
+                            </div>
+
+                            <div class="summary-label">
+
                                 Pending Invoices
-                            </p>
+
+                            </div>
 
                         </div>
 
-                        <div class="icon">
-
-                            <i class="fas fa-clock"></i>
-
-                        </div>
+                        <i class="fas fa-clock summary-icon"></i>
 
                     </div>
 
@@ -634,15 +1017,15 @@
 
 
             {{-- =================================================
-                 CHART ROW 1
+                 CHARTS
             ================================================== --}}
             <div class="row">
 
 
-                {{-- Workflow Count Bar Chart --}}
-                <div class="col-lg-6 col-md-12">
+                {{-- Count Bar Chart --}}
+                <div class="col-xl-4 col-lg-6 col-md-12">
 
-                    <div class="card card-outline card-primary">
+                    <div class="card card-outline card-primary chart-card">
 
                         <div class="card-header">
 
@@ -650,32 +1033,24 @@
 
                                 <i class="fas fa-chart-bar mr-1"></i>
 
-                                Workflow Count Comparison
+                                Workflow Count
 
                             </h3>
-
-                            <div class="card-tools">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-tool"
-                                    data-card-widget="collapse"
-                                >
-                                    <i class="fas fa-minus"></i>
-                                </button>
-
-                            </div>
 
                         </div>
 
                         <div class="card-body">
 
-                            <div class="chart">
+                            <div class="chart-wrapper">
 
-                                <canvas
-                                    id="workflowCountChart"
-                                    class="dashboard-chart"
-                                ></canvas>
+                                <div
+                                    class="chart-loading-message"
+                                    id="workflowCountLoading"
+                                >
+                                    Loading chart...
+                                </div>
+
+                                <canvas id="workflowCountChart"></canvas>
 
                             </div>
 
@@ -686,10 +1061,10 @@
                 </div>
 
 
-                {{-- Workflow Value Bar Chart --}}
-                <div class="col-lg-6 col-md-12">
+                {{-- Value Bar Chart --}}
+                <div class="col-xl-4 col-lg-6 col-md-12">
 
-                    <div class="card card-outline card-success">
+                    <div class="card card-outline card-success chart-card">
 
                         <div class="card-header">
 
@@ -697,32 +1072,24 @@
 
                                 <i class="fas fa-chart-bar mr-1"></i>
 
-                                Workflow Value Comparison
+                                Workflow Value
 
                             </h3>
-
-                            <div class="card-tools">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-tool"
-                                    data-card-widget="collapse"
-                                >
-                                    <i class="fas fa-minus"></i>
-                                </button>
-
-                            </div>
 
                         </div>
 
                         <div class="card-body">
 
-                            <div class="chart">
+                            <div class="chart-wrapper">
 
-                                <canvas
-                                    id="workflowValueChart"
-                                    class="dashboard-chart"
-                                ></canvas>
+                                <div
+                                    class="chart-loading-message"
+                                    id="workflowValueLoading"
+                                >
+                                    Loading chart...
+                                </div>
+
+                                <canvas id="workflowValueChart"></canvas>
 
                             </div>
 
@@ -732,19 +1099,11 @@
 
                 </div>
 
-            </div>
 
+                {{-- Pending Pie Chart --}}
+                <div class="col-xl-4 col-lg-12 col-md-12">
 
-            {{-- =================================================
-                 CHART ROW 2
-            ================================================== --}}
-            <div class="row">
-
-
-                {{-- Pending Ageing Pie Chart --}}
-                <div class="col-lg-6 col-md-12">
-
-                    <div class="card card-outline card-warning">
+                    <div class="card card-outline card-warning chart-card">
 
                         <div class="card-header">
 
@@ -752,32 +1111,24 @@
 
                                 <i class="fas fa-chart-pie mr-1"></i>
 
-                                Pending Invoice Ageing Distribution
+                                Pending Ageing
 
                             </h3>
-
-                            <div class="card-tools">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-tool"
-                                    data-card-widget="collapse"
-                                >
-                                    <i class="fas fa-minus"></i>
-                                </button>
-
-                            </div>
 
                         </div>
 
                         <div class="card-body">
 
-                            <div class="chart">
+                            <div class="chart-wrapper">
 
-                                <canvas
-                                    id="pendingAgeingChart"
-                                    class="dashboard-chart"
-                                ></canvas>
+                                <div
+                                    class="chart-loading-message"
+                                    id="pendingAgeingLoading"
+                                >
+                                    Loading chart...
+                                </div>
+
+                                <canvas id="pendingAgeingChart"></canvas>
 
                             </div>
 
@@ -787,208 +1138,279 @@
 
                 </div>
 
+            </div>
 
-                {{-- Workflow Analysis --}}
-                <div class="col-lg-6 col-md-12">
 
-                    <div class="card card-outline card-info">
+            {{-- =================================================
+                 COMPACT REPORT ANALYSIS
+            ================================================== --}}
+            <div class="card card-outline card-info">
 
-                        <div class="card-header">
+                <div class="card-header">
 
-                            <h3 class="card-title">
+                    <h3 class="card-title">
 
-                                <i class="fas fa-analytics mr-1"></i>
+                        <i class="fas fa-chart-line mr-1"></i>
 
-                                Report Analysis
+                        Report Analysis
 
-                            </h3>
+                    </h3>
 
-                            <div class="card-tools">
+                </div>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-tool"
-                                    data-card-widget="collapse"
-                                >
-                                    <i class="fas fa-minus"></i>
-                                </button>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+
+                        {{-- Received --}}
+                        <div class="col-xl col-lg-4 col-md-6 mb-3">
+
+                            <div class="card analysis-card mb-0">
+
+                                <div class="card-body">
+
+                                    <div class="analysis-card-inner">
+
+                                        <div class="analysis-icon bg-primary">
+
+                                            <i class="fas fa-file-invoice"></i>
+
+                                        </div>
+
+                                        <div class="analysis-content">
+
+                                            <div class="analysis-title">
+
+                                                Invoice Received
+
+                                            </div>
+
+                                            <div class="analysis-count">
+
+                                                {{ number_format(
+                                                    $receivedCount
+                                                ) }}
+
+                                            </div>
+
+                                            <div class="analysis-value">
+
+                                                ₹{{ number_format(
+                                                    $receivedValue,
+                                                    2
+                                                ) }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                        <div class="card-body">
 
+                        {{-- Validated --}}
+                        <div class="col-xl col-lg-4 col-md-6 mb-3">
 
-                            {{-- Received --}}
-                            <div class="info-box mb-2">
+                            <div class="card analysis-card mb-0">
 
-                                <span class="info-box-icon bg-primary">
+                                <div class="card-body">
 
-                                    <i class="fas fa-file-invoice"></i>
+                                    <div class="analysis-card-inner">
 
-                                </span>
+                                        <div class="analysis-icon bg-success">
 
-                                <div class="info-box-content">
+                                            <i class="fas fa-check-circle"></i>
 
-                                    <span class="info-box-text">
-                                        Invoice Received
-                                    </span>
+                                        </div>
 
-                                    <span class="info-box-number">
+                                        <div class="analysis-content">
 
-                                        {{ number_format($receivedCount) }}
+                                            <div class="analysis-title">
 
-                                        <small class="float-right">
+                                                Invoice Validated
 
-                                            ₹{{ number_format(
-                                                $receivedValue,
-                                                2
-                                            ) }}
+                                            </div>
 
-                                        </small>
+                                            <div class="analysis-count">
 
-                                    </span>
+                                                {{ number_format(
+                                                    $validatedCount
+                                                ) }}
 
-                                </div>
+                                            </div>
 
-                            </div>
+                                            <div class="analysis-value">
 
+                                                ₹{{ number_format(
+                                                    $validatedValue,
+                                                    2
+                                                ) }}
 
-                            {{-- Validated --}}
-                            <div class="info-box mb-2">
+                                            </div>
 
-                                <span class="info-box-icon bg-success">
+                                        </div>
 
-                                    <i class="fas fa-check-circle"></i>
-
-                                </span>
-
-                                <div class="info-box-content">
-
-                                    <span class="info-box-text">
-                                        Invoice Validated
-                                    </span>
-
-                                    <span class="info-box-number">
-
-                                        {{ number_format($validatedCount) }}
-
-                                        <small class="float-right">
-
-                                            ₹{{ number_format(
-                                                $validatedValue,
-                                                2
-                                            ) }}
-
-                                        </small>
-
-                                    </span>
+                                    </div>
 
                                 </div>
 
                             </div>
 
-
-                            {{-- Returned --}}
-                            <div class="info-box mb-2">
-
-                                <span class="info-box-icon bg-danger">
-
-                                    <i class="fas fa-undo-alt"></i>
-
-                                </span>
-
-                                <div class="info-box-content">
-
-                                    <span class="info-box-text">
-                                        Invoice Returned
-                                    </span>
-
-                                    <span class="info-box-number">
-
-                                        {{ number_format($returnedCount) }}
-
-                                        <small class="float-right">
-
-                                            ₹{{ number_format(
-                                                $returnedValue,
-                                                2
-                                            ) }}
-
-                                        </small>
-
-                                    </span>
-
-                                </div>
-
-                            </div>
+                        </div>
 
 
-                            {{-- Pending --}}
-                            <div class="info-box mb-2">
+                        {{-- Returned --}}
+                        <div class="col-xl col-lg-4 col-md-6 mb-3">
 
-                                <span class="info-box-icon bg-warning">
+                            <div class="card analysis-card mb-0">
 
-                                    <i class="fas fa-clock"></i>
+                                <div class="card-body">
 
-                                </span>
+                                    <div class="analysis-card-inner">
 
-                                <div class="info-box-content">
+                                        <div class="analysis-icon bg-danger">
 
-                                    <span class="info-box-text">
-                                        Invoices Pending
-                                    </span>
+                                            <i class="fas fa-undo-alt"></i>
 
-                                    <span class="info-box-number">
+                                        </div>
 
-                                        {{ number_format($pendingCount) }}
+                                        <div class="analysis-content">
 
-                                        <small class="float-right">
+                                            <div class="analysis-title">
 
-                                            ₹{{ number_format(
-                                                $pendingValue,
-                                                2
-                                            ) }}
+                                                Invoice Returned
 
-                                        </small>
+                                            </div>
 
-                                    </span>
+                                            <div class="analysis-count">
+
+                                                {{ number_format(
+                                                    $returnedCount
+                                                ) }}
+
+                                            </div>
+
+                                            <div class="analysis-value">
+
+                                                ₹{{ number_format(
+                                                    $returnedValue,
+                                                    2
+                                                ) }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
+                        </div>
 
-                            {{-- Paid --}}
-                            <div class="info-box mb-0">
 
-                                <span class="info-box-icon bg-secondary">
+                        {{-- Pending --}}
+                        <div class="col-xl col-lg-4 col-md-6 mb-3">
 
-                                    <i class="fas fa-money-check-alt"></i>
+                            <div class="card analysis-card mb-0">
 
-                                </span>
+                                <div class="card-body">
 
-                                <div class="info-box-content">
+                                    <div class="analysis-card-inner">
 
-                                    <span class="info-box-text">
-                                        Invoices Paid
-                                    </span>
+                                        <div class="analysis-icon bg-warning">
 
-                                    <span class="info-box-number">
+                                            <i class="fas fa-clock"></i>
 
-                                        {{ number_format($paidCount) }}
+                                        </div>
 
-                                        <small class="float-right">
+                                        <div class="analysis-content">
 
-                                            ₹{{ number_format(
-                                                $paidValue,
-                                                2
-                                            ) }}
+                                            <div class="analysis-title">
 
-                                        </small>
+                                                Invoice Pending
 
-                                    </span>
+                                            </div>
+
+                                            <div class="analysis-count">
+
+                                                {{ number_format(
+                                                    $pendingCount
+                                                ) }}
+
+                                            </div>
+
+                                            <div class="analysis-value">
+
+                                                ₹{{ number_format(
+                                                    $pendingValue,
+                                                    2
+                                                ) }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Paid --}}
+                        <div class="col-xl col-lg-4 col-md-6 mb-3">
+
+                            <div class="card analysis-card mb-0">
+
+                                <div class="card-body">
+
+                                    <div class="analysis-card-inner">
+
+                                        <div class="analysis-icon bg-secondary">
+
+                                            <i class="fas fa-money-check-alt"></i>
+
+                                        </div>
+
+                                        <div class="analysis-content">
+
+                                            <div class="analysis-title">
+
+                                                Invoice Paid
+
+                                            </div>
+
+                                            <div class="analysis-count">
+
+                                                {{ number_format(
+                                                    $paidCount
+                                                ) }}
+
+                                            </div>
+
+                                            <div class="analysis-value">
+
+                                                ₹{{ number_format(
+                                                    $paidValue,
+                                                    2
+                                                ) }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
@@ -1004,9 +1426,9 @@
 
 
             {{-- =================================================
-                 COUNT AND VALUE AGEING TABLE
+                 AGEING TABLE
             ================================================== --}}
-            <div class="card card-outline card-secondary">
+            <div class="card card-outline card-secondary report-card">
 
                 <div class="card-header">
 
@@ -1018,24 +1440,12 @@
 
                     </h3>
 
-                    <div class="card-tools">
-
-                        <button
-                            type="button"
-                            class="btn btn-tool"
-                            data-card-widget="collapse"
-                        >
-                            <i class="fas fa-minus"></i>
-                        </button>
-
-                    </div>
-
                 </div>
 
 
                 <div class="card-body p-0">
 
-                    <div class="table-responsive freight-report-table-wrapper">
+                    <div class="freight-report-table-wrapper">
 
                         <table
                             class="
@@ -1044,16 +1454,12 @@
                                 table-hover
                                 table-sm
                                 freight-report-table
-                                mb-0
                             "
                         >
 
-                            {{-- =========================================
-                                 COUNT HEADER
-                            ========================================== --}}
                             <thead>
 
-                                <tr class="count-table-header">
+                                <tr class="count-heading">
 
                                     <th class="status-column">
 
@@ -1068,12 +1474,13 @@
 
                                         <th
                                             class="
-                                                text-center
-                                                ageing-heading
+                                                ageing-column
                                                 ageing-{{ $bucketKey }}
                                             "
                                         >
+
                                             {{ $bucketLabel }}
+
                                         </th>
 
                                     @endforeach
@@ -1129,7 +1536,6 @@
                                 @endforeach
 
 
-                                {{-- Divider --}}
                                 <tr class="report-divider">
 
                                     <td colspan="9"></td>
@@ -1137,10 +1543,8 @@
                                 </tr>
 
 
-                                {{-- =====================================
-                                     VALUE HEADER
-                                ====================================== --}}
-                                <tr class="value-table-header">
+                                {{-- Value Header --}}
+                                <tr class="value-heading">
 
                                     <th class="status-column">
 
@@ -1155,12 +1559,13 @@
 
                                         <th
                                             class="
-                                                text-center
-                                                ageing-heading
+                                                ageing-column
                                                 ageing-{{ $bucketKey }}
                                             "
                                         >
+
                                             {{ $bucketLabel }}
+
                                         </th>
 
                                     @endforeach
@@ -1217,53 +1622,44 @@
                 </div>
 
 
-                {{-- Ageing Logic Footer --}}
                 <div class="card-footer">
 
                     <div class="row">
 
-                        <div class="col-md-9">
+                        <div class="col-lg-9">
 
                             <strong>
                                 Ageing logic:
                             </strong>
 
                             <span class="ml-2">
-
                                 Pending:
                                 <code>created_at</code>
-
                             </span>
 
                             <span class="ml-3">
-
                                 Received:
                                 <code>freight_info_updated_at</code>
-
                             </span>
 
                             <span class="ml-3">
-
                                 Validated:
                                 <code>validated_at</code>
-
                             </span>
 
                             <span class="ml-3">
-
                                 Returned:
                                 <code>returned_at</code>
-
                             </span>
 
                         </div>
 
-                        <div class="col-md-3 text-md-right">
+                        <div class="col-lg-3 text-lg-right">
 
                             <small class="text-muted">
 
-                                Data beyond 180 days is excluded from
-                                the ageing grid.
+                                Records beyond 180 days are excluded
+                                from the ageing grid.
 
                             </small>
 
@@ -1281,220 +1677,39 @@
 
 </div>
 
-@endsection
-
-
 
 {{-- =============================================================
-     PAGE STYLES
+     ADMINLTE LOCAL CHART.JS
 ============================================================== --}}
-@section('styles')
 
-<style>
-
-    /*
-    |--------------------------------------------------------------------------
-    | Summary Boxes
-    |--------------------------------------------------------------------------
-    */
-
-    .summary-money {
-        font-size: 25px !important;
-        word-break: break-word;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Chart Size
-    |--------------------------------------------------------------------------
-    */
-
-    .dashboard-chart {
-        min-height: 330px;
-        height: 330px;
-        max-height: 330px;
-        max-width: 100%;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Analysis Boxes
-    |--------------------------------------------------------------------------
-    */
-
-    .info-box {
-        min-height: 82px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
-    }
-
-    .info-box .info-box-icon {
-        width: 75px;
-    }
-
-    .info-box .info-box-number small {
-        font-size: 13px;
-        font-weight: 600;
-        padding-top: 4px;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Report Table
-    |--------------------------------------------------------------------------
-    */
-
-    .freight-report-table-wrapper {
-        max-height: 620px;
-        overflow: auto;
-    }
-
-    .freight-report-table {
-        min-width: 1250px;
-        font-size: 13px;
-    }
-
-    .freight-report-table th,
-    .freight-report-table td {
-        padding: 9px 10px;
-        vertical-align: middle;
-        white-space: nowrap;
-    }
-
-    .freight-report-table thead th {
-        position: sticky;
-        top: 0;
-        z-index: 4;
-    }
-
-    .freight-report-table .status-column {
-        position: sticky;
-        left: 0;
-        z-index: 3;
-        min-width: 230px;
-        font-weight: 700;
-        background: #edf4fa;
-    }
-
-    .freight-report-table thead .status-column {
-        z-index: 5;
-    }
-
-    .count-table-header th,
-    .value-table-header th {
-        background: #fce4d6;
-        color: #0070c0;
-        font-weight: 700;
-    }
-
-    .ageing-heading {
-        min-width: 115px;
-    }
-
-    .ageing-0_15,
-    .ageing-16_30,
-    .ageing-31_45 {
-        color: #008c3a !important;
-    }
-
-    .ageing-46_60,
-    .ageing-61_90 {
-        color: #b36b00 !important;
-    }
-
-    .ageing-91_120,
-    .ageing-121_150,
-    .ageing-151_180 {
-        color: #d40000 !important;
-    }
-
-    .report-divider td {
-        height: 20px;
-        padding: 0;
-        border-left: 0;
-        border-right: 0;
-        background: #f4f6f9;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Code Labels
-    |--------------------------------------------------------------------------
-    */
-
-    code {
-        padding: 2px 5px;
-        border-radius: 3px;
-        background: #f9f2f4;
-        color: #c7254e;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Mobile
-    |--------------------------------------------------------------------------
-    */
-
-    @media (max-width: 767px) {
-
-        .content-header h1 {
-            font-size: 22px;
-        }
-
-        .dashboard-chart {
-            min-height: 280px;
-            height: 280px;
-            max-height: 280px;
-        }
-
-        .small-box h3 {
-            font-size: 22px;
-        }
-
-        .summary-money {
-            font-size: 18px !important;
-        }
-
-        .info-box .info-box-number small {
-            display: block;
-            float: none !important;
-        }
-
-    }
-
-</style>
-
-@endsection
-
-
-
-{{-- =============================================================
-     PAGE JAVASCRIPT
-============================================================== --}}
-@section('scripts')
-
-{{-- AdminLTE 3 Local Chart.js Asset --}}
-<script src="{{ asset('admin/plugins/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('backend/assets/plugins/chart.js/chart.min.js') }}"></script>
 
 <script>
 
-$(function () {
+document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Confirm That AdminLTE Chart.js Is Loaded
+    | Check Chart.js
     |--------------------------------------------------------------------------
     */
 
     if (typeof Chart === 'undefined') {
 
         console.error(
-            'Chart.js is not loaded. Check the AdminLTE Chart.js asset path.'
+            'Chart.js could not be loaded from: {{ $chartJsAsset }}'
         );
+
+        document.querySelectorAll(
+            '.chart-loading-message'
+        ).forEach(function (messageBox) {
+
+            messageBox.innerHTML =
+                '<span class="text-danger">' +
+                'Chart.js asset was not loaded.' +
+                '</span>';
+
+        });
 
         return;
     }
@@ -1502,316 +1717,163 @@ $(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Workflow Labels
+    | Remove Loading Messages
+    |--------------------------------------------------------------------------
+    */
+
+    document.querySelectorAll(
+        '.chart-loading-message'
+    ).forEach(function (messageBox) {
+
+        messageBox.style.display = 'none';
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Chart Data
     |--------------------------------------------------------------------------
     */
 
     var workflowLabels = [
-
-        'Invoice Received',
-
-        'Invoice Validated',
-
-        'Invoice Returned',
-
-        'Invoices Pending',
-
-        'Invoices Paid'
-
+        'Received',
+        'Validated',
+        'Returned',
+        'Pending',
+        'Paid'
     ];
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Count Data
-    |--------------------------------------------------------------------------
-    */
 
     var workflowCountData = [
-
         {{ (int) $receivedCount }},
-
         {{ (int) $validatedCount }},
-
         {{ (int) $returnedCount }},
-
         {{ (int) $pendingCount }},
-
         {{ (int) $paidCount }}
-
     ];
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Value Data
-    |--------------------------------------------------------------------------
-    */
 
     var workflowValueData = [
-
         {{ (float) $receivedValue }},
-
         {{ (float) $validatedValue }},
-
         {{ (float) $returnedValue }},
-
         {{ (float) $pendingValue }},
-
         {{ (float) $paidValue }}
+    ];
 
+
+    var barBackgroundColors = [
+        'rgba(0, 123, 255, 0.78)',
+        'rgba(40, 167, 69, 0.78)',
+        'rgba(220, 53, 69, 0.78)',
+        'rgba(255, 193, 7, 0.82)',
+        'rgba(108, 117, 125, 0.78)'
+    ];
+
+
+    var barBorderColors = [
+        'rgba(0, 123, 255, 1)',
+        'rgba(40, 167, 69, 1)',
+        'rgba(220, 53, 69, 1)',
+        'rgba(255, 193, 7, 1)',
+        'rgba(108, 117, 125, 1)'
     ];
 
 
     /*
     |--------------------------------------------------------------------------
-    | AdminLTE Theme Colours
+    | Workflow Count Bar Chart
     |--------------------------------------------------------------------------
     */
 
-    var chartBackgroundColours = [
-
-        'rgba(60, 141, 188, 0.80)',
-
-        'rgba(0, 166, 90, 0.80)',
-
-        'rgba(221, 75, 57, 0.80)',
-
-        'rgba(243, 156, 18, 0.80)',
-
-        'rgba(96, 92, 168, 0.80)'
-
-    ];
-
-
-    var chartBorderColours = [
-
-        'rgba(60, 141, 188, 1)',
-
-        'rgba(0, 166, 90, 1)',
-
-        'rgba(221, 75, 57, 1)',
-
-        'rgba(243, 156, 18, 1)',
-
-        'rgba(96, 92, 168, 1)'
-
-    ];
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Common Bar Chart Options
-    |--------------------------------------------------------------------------
-    */
-
-    var commonBarChartOptions = {
-
-        maintainAspectRatio: false,
-
-        responsive: true,
-
-        legend: {
-
-            display: false
-
-        },
-
-        scales: {
-
-            xAxes: [
-
-                {
-
-                    gridLines: {
-
-                        display: false
-
-                    },
-
-                    ticks: {
-
-                        autoSkip: false,
-
-                        maxRotation: 25,
-
-                        minRotation: 0
-
-                    }
-
-                }
-
-            ],
-
-            yAxes: [
-
-                {
-
-                    ticks: {
-
-                        beginAtZero: true
-
-                    }
-
-                }
-
-            ]
-
-        }
-
-    };
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Count Chart
-    |--------------------------------------------------------------------------
-    */
-
-    var workflowCountCanvas = document.getElementById(
+    var countCanvas = document.getElementById(
         'workflowCountChart'
     );
 
-    if (workflowCountCanvas) {
+    if (countCanvas) {
 
         new Chart(
-            workflowCountCanvas.getContext('2d'),
+            countCanvas.getContext('2d'),
             {
-
                 type: 'bar',
 
                 data: {
-
                     labels: workflowLabels,
 
                     datasets: [
-
                         {
-
                             label: 'Invoice Count',
 
                             data: workflowCountData,
 
                             backgroundColor:
-                                chartBackgroundColours,
+                                barBackgroundColors,
 
                             borderColor:
-                                chartBorderColours,
+                                barBorderColors,
 
                             borderWidth: 1
-
                         }
-
                     ]
-
                 },
 
                 options: {
+                    responsive: true,
 
-                    maintainAspectRatio:
-                        commonBarChartOptions
-                            .maintainAspectRatio,
-
-                    responsive:
-                        commonBarChartOptions
-                            .responsive,
+                    maintainAspectRatio: false,
 
                     legend: {
-
                         display: false
-
                     },
 
                     tooltips: {
-
                         callbacks: {
-
-                            label: function (
-                                tooltipItem
-                            ) {
+                            label: function (tooltipItem) {
 
                                 return 'Count: ' +
                                     Number(
                                         tooltipItem.yLabel
-                                    ).toLocaleString(
-                                        'en-IN'
-                                    );
+                                    ).toLocaleString('en-IN');
 
                             }
-
                         }
-
                     },
 
                     scales: {
-
                         xAxes: [
-
                             {
-
                                 gridLines: {
-
                                     display: false
-
                                 },
 
                                 ticks: {
-
                                     autoSkip: false,
-
                                     maxRotation: 25,
-
                                     minRotation: 0
-
                                 }
-
                             }
-
                         ],
 
                         yAxes: [
-
                             {
-
                                 ticks: {
-
                                     beginAtZero: true,
-
                                     precision: 0,
 
-                                    callback: function (
-                                        value
-                                    ) {
+                                    callback: function (value) {
 
                                         return Number(
                                             value
-                                        ).toLocaleString(
-                                            'en-IN'
-                                        );
+                                        ).toLocaleString('en-IN');
 
                                     }
-
-                                },
-
-                                scaleLabel: {
-
-                                    display: true,
-
-                                    labelString:
-                                        'Invoice Count'
-
                                 }
-
                             }
-
                         ]
-
                     }
-
                 }
-
             }
-
         );
 
     }
@@ -1819,216 +1881,132 @@ $(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Workflow Value Chart
+    | Workflow Value Bar Chart
     |--------------------------------------------------------------------------
     */
 
-    var workflowValueCanvas = document.getElementById(
+    var valueCanvas = document.getElementById(
         'workflowValueChart'
     );
 
-    if (workflowValueCanvas) {
+    if (valueCanvas) {
 
         new Chart(
-            workflowValueCanvas.getContext('2d'),
+            valueCanvas.getContext('2d'),
             {
-
                 type: 'bar',
 
                 data: {
-
                     labels: workflowLabels,
 
                     datasets: [
-
                         {
-
                             label: 'Freight Value',
 
                             data: workflowValueData,
 
                             backgroundColor:
-                                chartBackgroundColours,
+                                barBackgroundColors,
 
                             borderColor:
-                                chartBorderColours,
+                                barBorderColors,
 
                             borderWidth: 1
-
                         }
-
                     ]
-
                 },
 
                 options: {
+                    responsive: true,
 
                     maintainAspectRatio: false,
 
-                    responsive: true,
-
                     legend: {
-
                         display: false
-
                     },
 
                     tooltips: {
-
                         callbacks: {
+                            label: function (tooltipItem) {
 
-                            label: function (
-                                tooltipItem
-                            ) {
-
-                                var value = Number(
+                                var amount = Number(
                                     tooltipItem.yLabel
                                 );
 
                                 return 'Value: ₹' +
-                                    value.toLocaleString(
+                                    amount.toLocaleString(
                                         'en-IN',
                                         {
-
                                             minimumFractionDigits: 2,
-
                                             maximumFractionDigits: 2
-
                                         }
                                     );
 
                             }
-
                         }
-
                     },
 
                     scales: {
-
                         xAxes: [
-
                             {
-
                                 gridLines: {
-
                                     display: false
-
                                 },
 
                                 ticks: {
-
                                     autoSkip: false,
-
                                     maxRotation: 25,
-
                                     minRotation: 0
-
                                 }
-
                             }
-
                         ],
 
                         yAxes: [
-
                             {
-
                                 ticks: {
-
                                     beginAtZero: true,
 
-                                    callback: function (
-                                        value
-                                    ) {
+                                    callback: function (value) {
 
-                                        if (
-                                            value >= 10000000
-                                        ) {
-
+                                        if (value >= 10000000) {
                                             return '₹' +
                                                 (
                                                     value /
                                                     10000000
                                                 ).toFixed(1) +
                                                 ' Cr';
-
                                         }
 
-                                        if (
-                                            value >= 100000
-                                        ) {
-
+                                        if (value >= 100000) {
                                             return '₹' +
                                                 (
                                                     value /
                                                     100000
                                                 ).toFixed(1) +
                                                 ' L';
-
                                         }
 
-                                        if (
-                                            value >= 1000
-                                        ) {
-
+                                        if (value >= 1000) {
                                             return '₹' +
                                                 (
                                                     value /
                                                     1000
                                                 ).toFixed(1) +
                                                 ' K';
-
                                         }
 
-                                        return '₹' +
-                                            value;
+                                        return '₹' + value;
 
                                     }
-
-                                },
-
-                                scaleLabel: {
-
-                                    display: true,
-
-                                    labelString:
-                                        'Freight Value'
-
                                 }
-
                             }
-
                         ]
-
                     }
-
                 }
-
             }
-
         );
 
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Pending Ageing Chart Data
-    |--------------------------------------------------------------------------
-    */
-
-    var pendingAgeingLabels = @json(
-        array_values(
-            $report['buckets'] ?? []
-        )
-    );
-
-
-    var pendingAgeingData = @json(
-        array_values(
-            $report['count_matrix']['pending'] ?? []
-        )
-    );
 
 
     /*
@@ -2037,87 +2015,79 @@ $(function () {
     |--------------------------------------------------------------------------
     */
 
-    var pendingAgeingCanvas = document.getElementById(
+    var pendingLabels = @json(
+        array_values(
+            $report['buckets'] ?? []
+        )
+    );
+
+
+    var pendingData = @json(
+        array_values(
+            $report['count_matrix']['pending'] ?? []
+        )
+    );
+
+
+    var pendingCanvas = document.getElementById(
         'pendingAgeingChart'
     );
 
-    if (pendingAgeingCanvas) {
+    if (pendingCanvas) {
 
         new Chart(
-            pendingAgeingCanvas.getContext('2d'),
+            pendingCanvas.getContext('2d'),
             {
-
-                type: 'pie',
+                type: 'doughnut',
 
                 data: {
-
-                    labels: pendingAgeingLabels,
+                    labels: pendingLabels,
 
                     datasets: [
-
                         {
-
-                            data: pendingAgeingData,
+                            data: pendingData,
 
                             backgroundColor: [
-
-                                '#00a65a',
-
-                                '#39cccc',
-
-                                '#3c8dbc',
-
-                                '#f39c12',
-
-                                '#ff851b',
-
-                                '#dd4b39',
-
-                                '#d33724',
-
-                                '#85144b'
-
+                                '#28a745',
+                                '#20c997',
+                                '#17a2b8',
+                                '#ffc107',
+                                '#fd7e14',
+                                '#dc3545',
+                                '#bd2130',
+                                '#721c24'
                             ],
 
                             borderColor: '#ffffff',
 
                             borderWidth: 2
-
                         }
-
                     ]
-
                 },
 
                 options: {
+                    responsive: true,
 
                     maintainAspectRatio: false,
 
-                    responsive: true,
+                    cutoutPercentage: 56,
 
                     legend: {
-
-                        position: 'right',
+                        position: 'bottom',
 
                         labels: {
-
-                            boxWidth: 14,
-
-                            padding: 12
-
+                            boxWidth: 12,
+                            padding: 12,
+                            fontSize: 11
                         }
-
                     },
 
                     tooltips: {
-
                         callbacks: {
-
                             label: function (
                                 tooltipItem,
                                 chartData
                             ) {
-
                                 var itemIndex =
                                     tooltipItem.index;
 
@@ -2127,37 +2097,27 @@ $(function () {
                                     ];
 
                                 var value = Number(
-
-                                    chartData
-                                        .datasets[0]
-                                        .data[
-                                            itemIndex
-                                        ] || 0
-
+                                    chartData.datasets[0]
+                                        .data[itemIndex] || 0
                                 );
 
-                                var total = chartData
-                                    .datasets[0]
-                                    .data
-                                    .reduce(
-
-                                        function (
-                                            totalValue,
-                                            currentValue
-                                        ) {
-
-                                            return Number(
-                                                totalValue
-                                            ) +
-                                            Number(
+                                var total =
+                                    chartData.datasets[0]
+                                        .data
+                                        .reduce(
+                                            function (
+                                                totalValue,
                                                 currentValue
-                                            );
-
-                                        },
-
-                                        0
-
-                                    );
+                                            ) {
+                                                return Number(
+                                                    totalValue
+                                                ) +
+                                                Number(
+                                                    currentValue
+                                                );
+                                            },
+                                            0
+                                        );
 
                                 var percentage = total > 0
                                     ? (
@@ -2175,17 +2135,11 @@ $(function () {
                                     ' (' +
                                     percentage +
                                     '%)';
-
                             }
-
                         }
-
                     }
-
                 }
-
             }
-
         );
 
     }
