@@ -131,6 +131,10 @@
 					 @endif
 
 					  
+					  
+					    @if(Auth::user() && (Auth::user()->role_id == 1 ))
+					   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.freight-bill-processing.index') }}" class="dropdown-item">View Report</a></li>
+					 @endif
 					</ul>
 				</li>
 				 @endif
@@ -337,9 +341,7 @@
 					 
 					  <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
 					 </li>
-					 
-					@endif
-					
+					@endif					
 					</ul>
 				</li>
 				<li class="nav-item dropdown user-menu">
@@ -373,21 +375,7 @@
             </ul>
 
             <!-- Right navbar links -->
-            {{-- <ul class="navbar-nav ml-auto">
-                <li id="lgout_li_header">          
-					<a class="btn btn-warning mr-3" href="{{ route('logout') }}" onclick = "event.preventDefault(); document.getElementById('logout-form').submit();" style="color:#fff;">
-                     {{ __('Logout') }}</a>
-					<form id="logout-form" action="{{ route('logout') }}" method="POST"
-						class="d-none">
-						@csrf
-					</form>
-                </li>
-               
-                <li class="nav-item">
-                    Welcome {{ auth()->user()->name }}
-                   
-                </li>
-            </ul> --}}
+           
         
 			</div>
 		</nav>
