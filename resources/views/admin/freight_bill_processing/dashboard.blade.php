@@ -3,11 +3,7 @@
 @section('bodycontent')
 
 @php
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Count Totals
-    |--------------------------------------------------------------------------
-    */
+  
 
     $receivedCount = array_sum(
         $report['count_matrix']['received'] ?? []
@@ -30,12 +26,6 @@
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Value Totals
-    |--------------------------------------------------------------------------
-    */
-
     $receivedValue = array_sum(
         $report['value_matrix']['received'] ?? []
     );
@@ -56,13 +46,6 @@
         $report['value_matrix']['paid'] ?? []
     );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Report Row Labels
-    |--------------------------------------------------------------------------
-    */
-
     $statusRows = [
         'received'  => 'Invoice Received',
         'validated' => 'Invoice Validated',
@@ -74,12 +57,7 @@
 
 
 <style>
-    /*
-    |--------------------------------------------------------------------------
-    | Page
-    |--------------------------------------------------------------------------
-    */
-
+ 
     .freight-dashboard-page {
         padding-bottom: 30px;
     }
@@ -96,14 +74,6 @@
         color: #7a8492;
         font-size: 14px;
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Filter Card
-    |--------------------------------------------------------------------------
-    */
-
     .freight-filter-card {
         overflow: hidden;
         border: 1px solid #e4e9ef;
@@ -132,13 +102,6 @@
         font-size: 13px;
         font-weight: 700;
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Modern KPI Cards
-    |--------------------------------------------------------------------------
-    */
 
     .modern-stat-card {
         position: relative;
@@ -252,11 +215,6 @@
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Chart Cards
-    |--------------------------------------------------------------------------
-    */
 
     .modern-chart-card {
         height: 100%;
@@ -338,13 +296,6 @@
     .ageing-chart-card {
         border-top: 3px solid #f39c12;
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Compact Report Analysis
-    |--------------------------------------------------------------------------
-    */
 
     .report-analysis-card {
         overflow: hidden;
@@ -432,12 +383,6 @@
         white-space: nowrap;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Ageing Table
-    |--------------------------------------------------------------------------
-    */
 
     .freight-report-card {
         overflow: hidden;
@@ -538,11 +483,6 @@
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Responsive
-    |--------------------------------------------------------------------------
-    */
 
     @media (max-width: 767px) {
         .dashboard-page-title {
@@ -581,9 +521,6 @@
 
 <div class="content-wrapper freight-dashboard-page">
 
-    {{-- =========================================================
-         PAGE HEADER
-    ========================================================== --}}
     <section class="content-header">
 
         <div class="container-fluid">
@@ -628,9 +565,6 @@
 
         <div class="container-fluid">
 
-            {{-- =================================================
-                 MESSAGES
-            ================================================== --}}
             @if(session('success'))
 
                 <div class="alert alert-success alert-dismissible fade show">
@@ -695,10 +629,6 @@
 
             @endif
 
-
-            {{-- =================================================
-                 VENDOR INFORMATION
-            ================================================== --}}
             @if(
                 isset($canViewAllVendors) &&
                 !$canViewAllVendors
@@ -742,10 +672,6 @@
 
             @endif
 
-
-            {{-- =================================================
-                 FILTERS
-            ================================================== --}}
             <div class="card freight-filter-card">
 
                 <div class="card-header">
@@ -967,10 +893,6 @@
 
             </div>
 
-
-            {{-- =================================================
-                 MODERN SUMMARY CARDS
-            ================================================== --}}
             <div class="row">
 
                 {{-- Total Shipments --}}
@@ -1121,10 +1043,6 @@
 
             </div>
 
-
-            {{-- =================================================
-                 CHARTS
-            ================================================== --}}
             <div class="row">
 
                 {{-- Count Chart --}}
@@ -1236,10 +1154,6 @@
 
             </div>
 
-
-            {{-- =================================================
-                 REPORT ANALYSIS
-            ================================================== --}}
             <div class="card report-analysis-card">
 
                 <div class="card-header">
@@ -1468,10 +1382,6 @@
 
             </div>
 
-
-            {{-- =================================================
-                 AGEING TABLE
-            ================================================== --}}
             <div class="card freight-report-card">
 
                 <div class="card-header">
@@ -1651,36 +1561,6 @@
 
                 <div class="card-footer">
 
-                    <strong>
-                        Ageing logic:
-                    </strong>
-
-                    <span class="ml-2">
-                        Pending:
-                        <code>created_at</code>
-                    </span>
-
-                    <span class="ml-3">
-                        Received:
-                        <code>freight_info_updated_at</code>
-                    </span>
-
-                    <span class="ml-3">
-                        Validated:
-                        <code>validated_at</code>
-                    </span>
-
-                    <span class="ml-3">
-                        Returned:
-                        <code>returned_at</code>
-                    </span>
-
-                    <div class="mt-2 text-muted">
-
-                        Records older than 180 days are not displayed
-                        inside the ageing matrix.
-
-                    </div>
 
                 </div>
 
@@ -1691,39 +1571,15 @@
     </section>
 
 </div>
-
-
-{{-- =============================================================
-     ADMINLTE LOCAL CHART.JS
-============================================================== --}}
 <script src="{{ asset('backend/assets/plugins/chart.js/chart.js') }}"></script>
 
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Confirm Chart.js Loaded
-    |--------------------------------------------------------------------------
-    */
+   
 
-    if (typeof Chart === 'undefined') {
-
-        console.error(
-            'Chart.js was not loaded from: ' +
-            "{{ asset('backend/assets/plugins/chart.js/chart.js') }}"
-        );
-
-        return;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Shared Chart Data
-    |--------------------------------------------------------------------------
-    */
+    /*Shared Chart Data*/
 
     var workflowLabels = [
         'Received',
@@ -1766,11 +1622,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Count Chart
-    |--------------------------------------------------------------------------
-    */
+    /*Workflow Count Chart */
 
     var countCanvas = document.getElementById(
         'workflowCountChart'
@@ -1857,11 +1709,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Value Chart
-    |--------------------------------------------------------------------------
-    */
+    /* Workflow Value Chart */
 
     var valueCanvas = document.getElementById(
         'workflowValueChart'
@@ -1981,11 +1829,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Pending Ageing Doughnut Chart
-    |--------------------------------------------------------------------------
-    */
+    /* Pending Ageing Doughnut Chart */
 
     var pendingLabels = @json(
         array_values(
