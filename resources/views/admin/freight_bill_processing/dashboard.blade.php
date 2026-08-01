@@ -1582,28 +1582,13 @@
 </div>
 
 
-{{-- =============================================================
-     ADMINLTE LOCAL CHART.JS
-============================================================== --}}
-
 <script src="{{ asset('backend/assets/plugins/chart.js/Chart.min.js') }}"></script>
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Check Chart.js
-    |--------------------------------------------------------------------------
-    */
-
-    if (typeof Chart === 'undefined') {
-
-        console.error(
-            'Chart.js could not be loaded from: {{ $chartJsAsset }}'
-        );
-
+   
         document.querySelectorAll(
             '.chart-loading-message'
         ).forEach(function (messageBox) {
@@ -1619,11 +1604,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Remove Loading Messages
-    |--------------------------------------------------------------------------
-    */
 
     document.querySelectorAll(
         '.chart-loading-message'
@@ -1633,12 +1613,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Chart Data
-    |--------------------------------------------------------------------------
-    */
 
     var workflowLabels = [
         'Received',
@@ -1685,11 +1659,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Count Bar Chart
-    |--------------------------------------------------------------------------
-    */
 
     var countCanvas = document.getElementById(
         'workflowCountChart'
