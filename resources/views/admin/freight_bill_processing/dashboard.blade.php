@@ -1588,32 +1588,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-   
-        document.querySelectorAll(
-            '.chart-loading-message'
-        ).forEach(function (messageBox) {
-
-            messageBox.innerHTML =
-                '<span class="text-danger">' +
-                'Chart.js asset was not loaded.' +
-                '</span>';
-
-        });
-
-        return;
-    }
-
-
-
-    document.querySelectorAll(
-        '.chart-loading-message'
-    ).forEach(function (messageBox) {
-
-        messageBox.style.display = 'none';
-
-    });
-
-
     var workflowLabels = [
         'Received',
         'Validated',
@@ -1621,7 +1595,6 @@ document.addEventListener('DOMContentLoaded', function () {
         'Pending',
         'Paid'
     ];
-
 
     var workflowCountData = [
         {{ (int) $receivedCount }},
@@ -1631,7 +1604,6 @@ document.addEventListener('DOMContentLoaded', function () {
         {{ (int) $paidCount }}
     ];
 
-
     var workflowValueData = [
         {{ (float) $receivedValue }},
         {{ (float) $validatedValue }},
@@ -1640,7 +1612,6 @@ document.addEventListener('DOMContentLoaded', function () {
         {{ (float) $paidValue }}
     ];
 
-
     var barBackgroundColors = [
         'rgba(0, 123, 255, 0.78)',
         'rgba(40, 167, 69, 0.78)',
@@ -1648,7 +1619,6 @@ document.addEventListener('DOMContentLoaded', function () {
         'rgba(255, 193, 7, 0.82)',
         'rgba(108, 117, 125, 0.78)'
     ];
-
 
     var barBorderColors = [
         'rgba(0, 123, 255, 1)',
@@ -1659,241 +1629,206 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
 
+    /* Count Bar Chart */
 
-    var countCanvas = document.getElementById(
-        'workflowCountChart'
-    );
+    var countCanvas = document.getElementById('workflowCountChart');
 
     if (countCanvas) {
 
-        new Chart(
-            countCanvas.getContext('2d'),
-            {
-                type: 'bar',
+        new Chart(countCanvas.getContext('2d'), {
 
-                data: {
-                    labels: workflowLabels,
+            type: 'bar',
 
-                    datasets: [
-                        {
-                            label: 'Invoice Count',
+            data: {
 
-                            data: workflowCountData,
+                labels: workflowLabels,
 
-                            backgroundColor:
-                                barBackgroundColors,
+                datasets: [
+                    {
+                        label: 'Invoice Count',
+                        data: workflowCountData,
+                        backgroundColor: barBackgroundColors,
+                        borderColor: barBorderColors,
+                        borderWidth: 1
+                    }
+                ]
+            },
 
-                            borderColor:
-                                barBorderColors,
+            options: {
 
-                            borderWidth: 1
-                        }
-                    ]
+                responsive: true,
+                maintainAspectRatio: false,
+
+                legend: {
+                    display: false
                 },
 
-                options: {
-                    responsive: true,
+                tooltips: {
 
-                    maintainAspectRatio: false,
+                    callbacks: {
 
-                    legend: {
-                        display: false
-                    },
+                        label: function (tooltipItem) {
 
-                    tooltips: {
-                        callbacks: {
-                            label: function (tooltipItem) {
+                            return 'Count: ' +
+                                Number(
+                                    tooltipItem.yLabel
+                                ).toLocaleString('en-IN');
+                        }
+                    }
+                },
 
-                                return 'Count: ' +
-                                    Number(
-                                        tooltipItem.yLabel
-                                    ).toLocaleString('en-IN');
+                scales: {
 
+                    xAxes: [
+                        {
+                            gridLines: {
+                                display: false
+                            },
+
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 25,
+                                minRotation: 0
                             }
                         }
-                    },
+                    ],
 
-                    scales: {
-                        xAxes: [
-                            {
-                                gridLines: {
-                                    display: false
-                                },
+                    yAxes: [
+                        {
+                            ticks: {
 
-                                ticks: {
-                                    autoSkip: false,
-                                    maxRotation: 25,
-                                    minRotation: 0
+                                beginAtZero: true,
+                                precision: 0,
+
+                                callback: function (value) {
+
+                                    return Number(value)
+                                        .toLocaleString('en-IN');
                                 }
                             }
-                        ],
-
-                        yAxes: [
-                            {
-                                ticks: {
-                                    beginAtZero: true,
-                                    precision: 0,
-
-                                    callback: function (value) {
-
-                                        return Number(
-                                            value
-                                        ).toLocaleString('en-IN');
-
-                                    }
-                                }
-                            }
-                        ]
-                    }
+                        }
+                    ]
                 }
             }
-        );
-
+        });
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Workflow Value Bar Chart
-    |--------------------------------------------------------------------------
-    */
+    /* Workflow Value Bar Chart*/
 
-    var valueCanvas = document.getElementById(
-        'workflowValueChart'
-    );
+    var valueCanvas = document.getElementById('workflowValueChart');
 
     if (valueCanvas) {
 
-        new Chart(
-            valueCanvas.getContext('2d'),
-            {
-                type: 'bar',
+        new Chart(valueCanvas.getContext('2d'), {
 
-                data: {
-                    labels: workflowLabels,
+            type: 'bar',
 
-                    datasets: [
-                        {
-                            label: 'Freight Value',
+            data: {
 
-                            data: workflowValueData,
+                labels: workflowLabels,
 
-                            backgroundColor:
-                                barBackgroundColors,
+                datasets: [
+                    {
+                        label: 'Freight Value',
+                        data: workflowValueData,
+                        backgroundColor: barBackgroundColors,
+                        borderColor: barBorderColors,
+                        borderWidth: 1
+                    }
+                ]
+            },
 
-                            borderColor:
-                                barBorderColors,
+            options: {
 
-                            borderWidth: 1
-                        }
-                    ]
+                responsive: true,
+                maintainAspectRatio: false,
+
+                legend: {
+                    display: false
                 },
 
-                options: {
-                    responsive: true,
+                tooltips: {
 
-                    maintainAspectRatio: false,
+                    callbacks: {
 
-                    legend: {
-                        display: false
-                    },
+                        label: function (tooltipItem) {
 
-                    tooltips: {
-                        callbacks: {
-                            label: function (tooltipItem) {
+                            var amount = Number(
+                                tooltipItem.yLabel
+                            );
 
-                                var amount = Number(
-                                    tooltipItem.yLabel
+                            return 'Value: ₹' +
+                                amount.toLocaleString(
+                                    'en-IN',
+                                    {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }
                                 );
+                        }
+                    }
+                },
 
-                                return 'Value: ₹' +
-                                    amount.toLocaleString(
-                                        'en-IN',
-                                        {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }
-                                    );
+                scales: {
 
+                    xAxes: [
+                        {
+                            gridLines: {
+                                display: false
+                            },
+
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 25,
+                                minRotation: 0
                             }
                         }
-                    },
+                    ],
 
-                    scales: {
-                        xAxes: [
-                            {
-                                gridLines: {
-                                    display: false
-                                },
+                    yAxes: [
+                        {
+                            ticks: {
 
-                                ticks: {
-                                    autoSkip: false,
-                                    maxRotation: 25,
-                                    minRotation: 0
-                                }
-                            }
-                        ],
+                                beginAtZero: true,
 
-                        yAxes: [
-                            {
-                                ticks: {
-                                    beginAtZero: true,
+                                callback: function (value) {
 
-                                    callback: function (value) {
+                                    if (value >= 10000000) {
 
-                                        if (value >= 10000000) {
-                                            return '₹' +
-                                                (
-                                                    value /
-                                                    10000000
-                                                ).toFixed(1) +
-                                                ' Cr';
-                                        }
-
-                                        if (value >= 100000) {
-                                            return '₹' +
-                                                (
-                                                    value /
-                                                    100000
-                                                ).toFixed(1) +
-                                                ' L';
-                                        }
-
-                                        if (value >= 1000) {
-                                            return '₹' +
-                                                (
-                                                    value /
-                                                    1000
-                                                ).toFixed(1) +
-                                                ' K';
-                                        }
-
-                                        return '₹' + value;
-
+                                        return '₹' +
+                                            (value / 10000000).toFixed(1) +
+                                            ' Cr';
                                     }
+
+                                    if (value >= 100000) {
+
+                                        return '₹' +
+                                            (value / 100000).toFixed(1) +
+                                            ' L';
+                                    }
+
+                                    if (value >= 1000) {
+
+                                        return '₹' +
+                                            (value / 1000).toFixed(1) +
+                                            ' K';
+                                    }
+
+                                    return '₹' + value;
                                 }
                             }
-                        ]
-                    }
+                        }
+                    ]
                 }
             }
-        );
-
+        });
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Pending Ageing Pie Chart
-    |--------------------------------------------------------------------------
-    */
-
     var pendingLabels = @json(
-        array_values(
-            $report['buckets'] ?? []
-        )
+        array_values($report['buckets'] ?? [])
     );
-
 
     var pendingData = @json(
         array_values(
@@ -1901,124 +1836,108 @@ document.addEventListener('DOMContentLoaded', function () {
         )
     );
 
-
     var pendingCanvas = document.getElementById(
         'pendingAgeingChart'
     );
 
     if (pendingCanvas) {
 
-        new Chart(
-            pendingCanvas.getContext('2d'),
-            {
-                type: 'doughnut',
+        new Chart(pendingCanvas.getContext('2d'), {
 
-                data: {
-                    labels: pendingLabels,
+            type: 'doughnut',
 
-                    datasets: [
-                        {
-                            data: pendingData,
+            data: {
 
-                            backgroundColor: [
-                                '#28a745',
-                                '#20c997',
-                                '#17a2b8',
-                                '#ffc107',
-                                '#fd7e14',
-                                '#dc3545',
-                                '#bd2130',
-                                '#721c24'
-                            ],
+                labels: pendingLabels,
 
-                            borderColor: '#ffffff',
+                datasets: [
+                    {
+                        data: pendingData,
 
-                            borderWidth: 2
-                        }
-                    ]
+                        backgroundColor: [
+                            '#28a745',
+                            '#20c997',
+                            '#17a2b8',
+                            '#ffc107',
+                            '#fd7e14',
+                            '#dc3545',
+                            '#bd2130',
+                            '#721c24'
+                        ],
+
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }
+                ]
+            },
+
+            options: {
+
+                responsive: true,
+                maintainAspectRatio: false,
+                cutoutPercentage: 56,
+
+                legend: {
+
+                    position: 'bottom',
+
+                    labels: {
+                        boxWidth: 12,
+                        padding: 12,
+                        fontSize: 11
+                    }
                 },
 
-                options: {
-                    responsive: true,
+                tooltips: {
 
-                    maintainAspectRatio: false,
+                    callbacks: {
 
-                    cutoutPercentage: 56,
+                        label: function (tooltipItem, chartData) {
 
-                    legend: {
-                        position: 'bottom',
+                            var itemIndex = tooltipItem.index;
 
-                        labels: {
-                            boxWidth: 12,
-                            padding: 12,
-                            fontSize: 11
-                        }
-                    },
+                            var label =
+                                chartData.labels[itemIndex];
 
-                    tooltips: {
-                        callbacks: {
-                            label: function (
-                                tooltipItem,
-                                chartData
-                            ) {
-                                var itemIndex =
-                                    tooltipItem.index;
+                            var value = Number(
+                                chartData.datasets[0]
+                                    .data[itemIndex] || 0
+                            );
 
-                                var label =
-                                    chartData.labels[
-                                        itemIndex
-                                    ];
+                            var total =
+                                chartData.datasets[0]
+                                    .data
+                                    .reduce(
+                                        function (
+                                            totalValue,
+                                            currentValue
+                                        ) {
+                                            return Number(totalValue) +
+                                                Number(currentValue);
+                                        },
+                                        0
+                                    );
 
-                                var value = Number(
-                                    chartData.datasets[0]
-                                        .data[itemIndex] || 0
-                                );
+                            var percentage = total > 0
+                                ? (
+                                    value / total * 100
+                                ).toFixed(1)
+                                : 0;
 
-                                var total =
-                                    chartData.datasets[0]
-                                        .data
-                                        .reduce(
-                                            function (
-                                                totalValue,
-                                                currentValue
-                                            ) {
-                                                return Number(
-                                                    totalValue
-                                                ) +
-                                                Number(
-                                                    currentValue
-                                                );
-                                            },
-                                            0
-                                        );
-
-                                var percentage = total > 0
-                                    ? (
-                                        value /
-                                        total *
-                                        100
-                                    ).toFixed(1)
-                                    : 0;
-
-                                return label +
-                                    ': ' +
-                                    value.toLocaleString(
-                                        'en-IN'
-                                    ) +
-                                    ' (' +
-                                    percentage +
-                                    '%)';
-                            }
+                            return label +
+                                ': ' +
+                                value.toLocaleString('en-IN') +
+                                ' (' +
+                                percentage +
+                                '%)';
                         }
                     }
                 }
             }
-        );
-
+        });
     }
 
 });
-
 </script>
 
 @endsection
