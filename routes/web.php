@@ -856,6 +856,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::post('load-box-count/update-remark/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'updateRemark'])
     ->name('load.boxcount.updateRemark');	
 		
+		/*Report for Freight Bill Processing Dashboard	*/
+	Route::get('freight-bill-processing-dashboard',[App\Http\Controllers\Admin\FreightBillProcessingReportController::class,'index'])
+	->name('freight-bill-processing.index');
+
+	Route::get('freight-bill-processing-dashboard/export-xls',[FreightBillProcessingReportController::class,'exportXls'])->name('freight-bill-processing.export-xls');	
 
 });
 
