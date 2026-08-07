@@ -762,7 +762,7 @@ class LoadoptimizerController extends Controller
 	/**
      * AJAX batch allocation
      */
-    public function processAutoAllocation(Request $request)
+  /*  public function processAutoAllocation(Request $request)
 	{
 		
 		// Ensure tracking row exists
@@ -839,7 +839,7 @@ class LoadoptimizerController extends Controller
 					DB::transaction(function () use ($load, $created_by,$createddate,&$processed) 
 				{
 
-					/* STEP 1: Fetch vendors */
+					// STEP 1: Fetch vendors 
 					$vendors = Ratedata::where('consignor_code', trim($load->origin_name_code))
 						->where('consignee_code', trim($load->destination_name_code))
 						->where('t_code', trim($load->truck_code))
@@ -850,14 +850,14 @@ class LoadoptimizerController extends Controller
 						throw new \Exception('No vendor rate found');
 					}
 
-					/* STEP 2: Cycle total custom 3 */
+					// STEP 2: Cycle total custom 3 
 					$cycleTotal = (int) $vendors->sum('custom3');
 					if ($cycleTotal <= 0) {
 						throw new \Exception('Invalid cycle total');
 					}
 					
 
-					/* STEP 3: Slot calculation from custom 2 stored as in % */
+					// STEP 3: Slot calculation from custom 2 stored as in % 
 					$slots = [];
 					$usedSlots = 0;
 
@@ -872,7 +872,7 @@ class LoadoptimizerController extends Controller
 						$slots[1] += $remaining;
 					}
 
-					/* STEP 4: Cycle position */
+					// STEP 4: Cycle position 
 					$cycleUsed = AllocationHistory::where([
 						'origin_code'      => $load->origin_name_code,
 						'destination_code' => $load->destination_name_code,
@@ -881,7 +881,7 @@ class LoadoptimizerController extends Controller
 
 					$cyclePosition = $cycleUsed % $cycleTotal;
 
-					/* STEP 5: Vendor selection */
+					// STEP 5: Vendor selection 
 					$running = 0;
 					$selectedVendor = null;
 
@@ -897,7 +897,7 @@ class LoadoptimizerController extends Controller
 						throw new \Exception('Vendor selection failed');
 					}
 
-					/* STEP 6: Update load summary table */
+					// STEP 6: Update load summary table 
 					$load->vendor_name = $selectedVendor->vendor_name;
 					$load->vendor_code = $selectedVendor->vendor_code;
 					$load->vendor_rank = $selectedVendor->rank;
@@ -905,7 +905,7 @@ class LoadoptimizerController extends Controller
 					$load->vendor_code_updated_at = $createddate;
 					$load->save();
 
-					/* STEP 7: History */
+					// STEP 7: History 
 					AllocationHistory::create([
 						'load_summary_id' => $load->id,
 						'vendor_code'     => $selectedVendor->vendor_code,
@@ -948,27 +948,333 @@ class LoadoptimizerController extends Controller
 			'errors'    => $errors,
 		]);
 	}
-
-	
-	//Edit Loadsummary allocated vendor
-	/*public function editVendor($id)
+*/
+	public function processAutoAllocation(Request $request)
 	{
-		$load = LoadSummary::findOrFail($id);
-
 		
-		$vendors = Ratedata::where([
-			'consignor_code' => $load->origin_name_code,
-			'consignee_code' => $load->destination_name_code,
-			't_code'         => $load->truck_code,
-		])
-		->orderBy('rank')
-		->get();
+		$created_by  = Auth::user()->id;
+		$createddate = now();
+
+
+		// Ensure Allocation Run Tracking Row Exists
+		$run = DB::table('allocation_runs')
+			->where('run_type', 'AUTO_ALLOCATION')
+			->first();
+
+		if (!$run) {
+			DB::table('allocation_runs')->insert([
+				'run_type'    => 'AUTO_ALLOCATION',
+				'last_run_at' => '2026-01-01 00:00:00',
+				'created_at'  => now(),
+				'updated_at'  => now(),
+			]);
+
+			$run = DB::table('allocation_runs')
+				->where('run_type', 'AUTO_ALLOCATION')
+				->first();
+		}
+
+
+		/*
+		 Fetch Qualified Loads Waiting for Vendor Allocation
+		 We directly check pending loads instead of depending only on last_run_at.		
+		 This allows a previously failed load to be retried later after:		
+		 - Rate master is corrected
+		 - Vendor mapping is corrected
+		 - Truck mapping is corrected		
+		*/
+
+		$loads = LoadSummary::where('is_qualified', 1)
+			->where(function ($query) {
+
+				$query->whereNull('vendor_code')
+					  ->orWhere('vendor_code', '')
+					  ->orWhere('vendor_code', 'NA');
+
+			})
+			->orderBy('reference_no', 'asc')
+			->get();
+
+
+		/* No Pending Load Found*/
+
+		if ($loads->isEmpty()) {
+
+			DB::table('allocation_runs')
+				->where('run_type', 'AUTO_ALLOCATION')
+				->update([
+					'last_run_at' => now(),
+					'updated_at'  => now(),
+				]);
+
+
+			return response()->json([
+				'completed' => false,
+				'processed' => 0,
+				'failed'    => 0,
+				'errors'    => [],
+				'message'   => 'No qualified unallocated indent found.',
+			]);
+		}
+
+
+		/* Processing Variables */
+
+		$errors = [];
+		$processed = 0;
+		/* Process Each Qualified Load */
+
+		foreach ($loads as $load) {
+
+			try {
+
+				DB::transaction(function () use (
+					$load,
+					$created_by,
+					$createddate,
+					&$processed
+				) {
+
+					/* STEP 1 Fetch Vendor Rate Records*/
+
+					$vendors = Ratedata::where(
+							'consignor_code',
+							trim((string) $load->origin_name_code)
+						)
+						->where(
+							'consignee_code',
+							trim((string) $load->destination_name_code)
+						)
+						->where(
+							't_code',
+							trim((string) $load->truck_code)
+						)
+						->orderBy('rank', 'asc')
+						->get();
+
+
+					if ($vendors->isEmpty()) {
+
+						throw new \Exception(
+							'No vendor rate found'
+						);
+					}
+
+
+					/* STEP 2 Calculate Total Allocation Cycle custom3 contains the total quantity / cycle value.
+					*/
+					$cycleTotal = (int) $vendors->sum('custom3');
+					if ($cycleTotal <= 0) {
+						throw new \Exception(
+							'Invalid allocation cycle total'
+						);
+					}
+
+
+					/* STEP 3
+					 Calculate Vendor Allocation Slots
+					 custom2 contains vendor allocation percentage.
+					 Example:
+					 Cycle Total = 10
+					 Vendor 1 = 50%
+					 Vendor 2 = 30%
+					 Vendor 3 = 20%
+					 Slots:
+					 Vendor 1 = 5
+					 Vendor 2 = 3
+					 Vendor 3 = 2					
+					*/
+
+					$slots = [];
+
+					$usedSlots = 0;
+					foreach ($vendors as $vendor) {
+						$percentage = (float) ($vendor->custom2 ?? 0);
+						$slot = (int) round(
+							($percentage / 100) * $cycleTotal
+						);
+						$rank = (int) $vendor->rank;
+						$slots[$rank] = $slot;
+						$usedSlots += $slot;
+					}
+
+
+					/* STEP 4
+					 Adjust Difference Caused by Percentage Rounding
+					*/
+
+					$remainingSlots = $cycleTotal - $usedSlots;
+					if ($remainingSlots > 0) {
+						$firstVendor = $vendors->first();
+						if ($firstVendor) {
+							$firstRank = (int) $firstVendor->rank;
+							if (!isset($slots[$firstRank])) {
+								$slots[$firstRank] = 0;
+							}
+							$slots[$firstRank] += $remainingSlots;
+						}
+					}
+
+
+					/* STEP 5
+					 Find Current Allocation Cycle Position
+					 We count previous allocations for the same:
+					 Origin
+					 Destination
+					 Truck Type					
+					*/
+
+					$cycleUsed = AllocationHistory::where(
+							'origin_code',
+							$load->origin_name_code
+						)
+						->where(
+							'destination_code',
+							$load->destination_name_code
+						)
+						->where(
+							'truck_type',
+							$load->truck_code
+						)
+						->count();
+
+					$cyclePosition = $cycleUsed % $cycleTotal;
+
+
+					/* STEP 6
+					 Select Vendor Based on Allocation Position
+					*/
+
+					$runningSlot = 0;
+					$selectedVendor = null;
+
+					foreach ($vendors as $vendor) {
+						$rank = (int) $vendor->rank;
+						$vendorSlots = $slots[$rank] ?? 0;
+						$runningSlot += $vendorSlots;
+						if ($cyclePosition < $runningSlot) {
+							$selectedVendor = $vendor;
+							break;
+						}
+					}
+
+
+					if (!$selectedVendor) {
+						throw new \Exception(
+							'Vendor selection failed'
+						);
+					}
+
+
+					/* STEP 7
+						Update Load Summary
+					*/
+
+					$load->vendor_name =
+						$selectedVendor->vendor_name;
+
+					$load->vendor_code =
+						$selectedVendor->vendor_code;
+
+					$load->vendor_rank =
+						$selectedVendor->rank;
+
+					$load->vendor_code_source =
+						'Auto Allocation';
+
+					$load->vendor_code_updated_at =
+						$createddate;
+
+					$load->save();
+
+
+					/* STEP 8
+					 Save Allocation History
+					*/
+
+					AllocationHistory::create([
+						'load_summary_id' => $load->id,
+						'vendor_code' =>$selectedVendor->vendor_code,
+						'vendor_name' =>$selectedVendor->vendor_name,
+						'vendor_rank' =>$selectedVendor->rank,
+						'origin_code' =>$load->origin_name_code,
+						'destination_code' =>	$load->destination_name_code,
+						'truck_type' =>	$load->truck_code,
+						'cycle_total' =>$cycleTotal,
+						'allocated_by' =>$created_by,
+						'allocated_at' =>$createddate,
+					]);
+
+
+					/*Mark Successfully Processed*/
+					$processed++;
+				});
+			} catch (\Throwable $exception) {
+
+				/* Store Error but Continue Processing Next Load */
+
+				$errors[] = [
+					'load_id' =>$load->id,
+					'reference_no' =>$load->reference_no,
+					'origin' =>	$load->origin_name_code,
+					'destination' =>$load->destination_name_code,
+					'truck' =>	$load->truck_code,
+					'reason' =>	$exception->getMessage(),
+
+				];
+			}
+		}
+
+
+		/* Update Auto Allocation Last Run Time*/
+
+		DB::table('allocation_runs')
+			->where('run_type', 'AUTO_ALLOCATION')
+			->update([
+				'last_run_at' => now(),
+				'updated_at'  => now(),
+			]);
+
+
+		/* Prepare Final Result*/
+
+		$failed = count($errors);
+
+		if ($failed > 0) {
+			$message =
+				$processed .
+				' load(s) allocated successfully and ' .
+				$failed .
+				' load(s) failed.';
+
+		} else {
+
+			$message =
+				$processed .
+				' load(s) allocated successfully.';
+		}
+
+
+		/* IMPORTANT
+		 Always return the same JSON keys.
+		 This prevents:
+		 res.failed = undefined
+		 JavaScript NaN
+		 SweetAlert loading popup remaining open
+		
+		*/
 
 		return response()->json([
-			'load'    => $load,
-			'vendors' => $vendors
+
+			'completed' => true,
+			'processed' => $processed,
+			'failed' => $failed,
+			'errors' => $errors,
+			'message' => $message,
+
 		]);
-	}*/
+	}	
+	
 	
 	public function editVendor(Request $request)
 	{

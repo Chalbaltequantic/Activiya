@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 100px; /* Adjust based on col-1 width */
+      left: 90px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -299,98 +299,165 @@
 
 <script>
 let autoAllocationRunning = false;
-function runAutoAllocation() {
+/* Run Auto Vendor Allocation*/
 
-    if (autoAllocationRunning) return;
+function runAutoAllocation()
+{
+    // Prevent multiple execution
+    if (autoAllocationRunning) {
+        return;
+    }
     autoAllocationRunning = true;
+    $.ajax({
+        url: "{{ route('admin.loadsummary.auto.process') }}",
+        type: "POST",
+        dataType: "json",
+        data: {
+            _token: "{{ csrf_token() }}"
+        },
+        success: function (response)
+        {
+            console.log("Auto Allocation Response", response)
+            /* Response Variables */
 
-    $.post("{{ route('admin.loadsummary.auto.process') }}", {
-        _token: '{{ csrf_token() }}'
-    })
-    .done(function (res) {
+            let completed = response.completed;
+            let processed = Number(response.processed);
+            let failed    = Number(response.failed);
+            let errors    = response.errors || [];
+            let message   = response.message || "";
 
-        // CASE 1: No indent / nothing new
-        if (res.completed === false) {
-            Swal.fire({
-                icon: 'info',
-                title: 'No Action Required',
-                text: res.message || 'No new indent found'
-            });
-            return;
-        }
 
-        // CASE 2: Completed with errors
-        if (res.completed === true && res.failed > 0) {
+            /* CASE 1 Nothing to Allocate*/
 
-            let rows = res.errors.map(e => `
-                <tr>
-                    <td>${e.reference_no}</td>
-                    <td>${e.origin} → ${e.destination}</td>
-                    <td>${e.truck}</td>
-                    <td style="color:red">${e.reason}</td>
-                </tr>
-            `).join('');
+            if (completed === false)
+            {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'No Action Required',
+                    text: message
+                });
+                return;
+            }
 
-            Swal.fire({
-                icon: 'warning',
-                title: 'Allocation Completed with Errors',
-                width: '70%',
-                html: `
-                    <p><b>Processed:</b> ${res.processed}</p>
-                    <p><b>Failed:</b> ${res.failed}</p>
-                    <table border="1" width="100%" cellpadding="6">
-                        <thead>
-                            <tr>
-                                <th>Reference</th>
-                                <th>Route</th>
-                                <th>Truck</th>
-                                <th>Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                `
-            });
 
-            return;
-        }
+            /* CASE 2 Allocation Completed With Errors */
 
-        // CASE 3: All success
-        if (res.completed === true && res.failed === 0) {
+            if (failed > 0)
+            {
+                let tableRows = "";
+                errors.forEach(function(item){
+                    tableRows += `
+                        <tr>
+                            <td>${item.reference_no}</td>
+                            <td>
+                                ${item.origin}
+                                →
+                                ${item.destination}
+                            </td>
+                            <td>${item.truck}</td>
+                            <td style="color:red;">${item.reason}</td>
+                        </tr>
+                    `;
+                });
+
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Auto Allocation Completed',
+                    width: '75%',
+                    html: `
+                        <div style="text-align:left;">
+                            <p>
+                                <b>Successfully Allocated :</b>
+                                ${processed}
+                            </p>
+                            <p>
+                                <b>Failed :</b>
+                                ${failed}
+                            </p>
+                            <div style="max-height:350px;overflow:auto;">
+                                <table class="table table-bordered table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>Route</th>
+                                            <th>Truck</th>
+                                            <th>Reason</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${tableRows}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `
+                }).then(function(){
+                    location.reload();
+                });
+                return;
+            }
+
+
+            /*  CASE 3  Allocation Completed Successfully  */
 
             Swal.fire({
                 icon: 'success',
-                title: 'Completed',
-                text: 'All loads allocated successfully.'
-            }).then(() => location.reload());
+                title: 'Allocation Completed',
+                html:
+                    "<b>" + processed +
+                    "</b> Load(s) allocated successfully."
+            }).then(function(){
+                location.reload();
+            });
+        },
 
-            return;
+
+        /*  AJAX Error  */
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Server Error',
+                text: 'Unable to process Auto Allocation.'
+            });
+
+        },
+
+
+        /*  Enable Button Again */
+
+        complete: function ()
+        {
+            autoAllocationRunning = false;
         }
-    })
-    .fail(() => {
-        Swal.fire('Error', 'Unexpected server error', 'error');
-    })
-    .always(() => {
-        autoAllocationRunning = false;
+
     });
+
 }
 
+/* Run Auto Allocation When Page Opens*/
 
 $(document).ready(function () {
+
     Swal.fire({
         title: 'Auto Vendor Allocation',
+        text: 'Please wait...',
         allowOutsideClick: false,
-        didOpen: () => {
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function ()
+        {
             Swal.showLoading();
-           setTimeout(runAutoAllocation, 300); // delay prevents race
+            setTimeout(function () {
+                runAutoAllocation();
+            },300);
         }
     });
-	
 });
 
-</script>
-
-<script>
 $(document).on('click', '.editVendorBtn', function () {
 
     let id     = $(this).data('id');
@@ -441,10 +508,8 @@ $('#saveVendor').click(function () {
         Swal.fire('Error', res.responseJSON.message, 'error');
     });
 });
-</script>
-<script>
 
-function sendToVendor(loadId, vendor_code, vendor_rank, vendor_code_source, refno, origin, destination,    source_type ) 
+function sendToVendor(loadId, vendor_code, vendor_rank, vendor_code_source, refno, origin, destination, source_type ) 
 {
     Swal.fire({
         title: 'Send Load',

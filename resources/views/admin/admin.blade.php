@@ -20,6 +20,9 @@
     @stack('css')
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+
 <style>
 .dataTables_filter {
     float: left !important;
@@ -143,7 +146,6 @@
 <script src="{{ asset('backend/assets/dist/js/adminlte.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('backend/assets/plugins/chart.js/Chart.min.js') }}"></script>
-<script src="{{ asset('backend/assets/dist/js/pages/dashboard.js') }}"></script>
 <script src="{{ asset('backend/assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('backend/assets/plugins/bootstrap/js/bootstrap-select.min.js') }}"></script>
 @stack('js')
@@ -153,19 +155,36 @@
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
 <script>
 $(document).ready(function() {
-	$('#billDataTable').DataTable({
-		responsive: true,
-		ordering: false,
-		 paging: false,
-		dom: 'Bfrtip',
-		buttons: [
-			'csv', 'excel'
-		]
-	});
+	
+    var $table = $('#billDataTable');
+
+    if ($table.hasClass('enable-responsive')) {
+        $table.DataTable({
+            ordering: false,
+            paging: false,
+            dom: 'Bfrtip',
+            buttons: ['csv', 'excel'],
+            autoWidth: false,
+            responsive: {
+                details: {
+                    type: 'column',
+                    target: 0 // Target first column for '+' toggle
+                }
+            }
+        });
+    }
+	
 	$('#billDataTable1').DataTable({
-		responsive: true,
+		responsive: {
+			details:{
+				type:'column',
+				target:'tr'
+			}
+		},
 		ordering: false,
 		 paging: false,
 		dom: 'Bfrtip',
