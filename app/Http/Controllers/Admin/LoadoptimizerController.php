@@ -1255,15 +1255,6 @@ class LoadoptimizerController extends Controller
 		}
 
 
-		/* IMPORTANT
-		 Always return the same JSON keys.
-		 This prevents:
-		 res.failed = undefined
-		 JavaScript NaN
-		 SweetAlert loading popup remaining open
-		
-		*/
-
 		return response()->json([
 
 			'completed' => true,
@@ -1764,11 +1755,7 @@ class LoadoptimizerController extends Controller
 	{
 		$user = Auth::user();
 
-		/**
-		 * ===============================
-		 * AUTO LOADS (load_summary)
-		 * ===============================
-		 */
+		/* AUTO LOADS (load_summary) */
 		$autoLoads = LoadSummary::where('sent_status', 'accepted')
 
 			->when(!empty($user->vendor_code), function ($q) use ($user) {
@@ -1806,11 +1793,7 @@ class LoadoptimizerController extends Controller
 			])
 			->get();
 
-		/**
-		 * ===============================
-		 * MANUAL LOADS (manual_load_summary)
-		 * ===============================
-		 */
+		/* MANUAL LOADS (manual_load_summary) */
 		$manualLoads = DB::table('manual_load_summary as mls')
 			->leftJoin('load_send_history as lsh', function ($join) use ($user) {
 				$join->on('lsh.load_summary_id', '=', 'mls.id')
@@ -1856,11 +1839,7 @@ class LoadoptimizerController extends Controller
 			)
 			->get();
 
-		/**
-		 * ===============================
-		 * MERGE + SORT
-		 * ===============================
-		 */
+		/* MERGE + SORT */
 		$loads = $autoLoads
 			->merge($manualLoads)
 			->sortByDesc('sent_at')

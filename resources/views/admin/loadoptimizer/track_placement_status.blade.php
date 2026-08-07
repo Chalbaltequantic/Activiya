@@ -192,7 +192,7 @@
 							<tr data-load-id="{{ $row->id }}" data-current="{{ $row->placement_status }}">
 								<td class="sticky-col-1">{{ $row->reference_no }}</td>
 								<td class="sticky-col-2">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>								
-								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_city }}</td>
+								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_name }}</td>
 								<td>{{ $row->t_mode }}</td>
 								<td>{{ $row->truck->description ?? $row->truck_name ?? $row->truck_code ?? 'NA' }}</td>
 									{{-- <td>{{ $row->zw_util }}%</td>
