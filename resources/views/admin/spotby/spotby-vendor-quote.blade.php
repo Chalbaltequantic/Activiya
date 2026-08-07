@@ -188,7 +188,7 @@
 						<th class="desktop" style="background: #fce4d6; color: #0070c0;">Special<br>instruction</th> 
 						
 						  <th class="all" style="background: #c6e0b4; color: #0070c0;">Freight Rate</th>
-						   <th class="all" style="background: #c6e0b4; color: #0070c0;">Transit Time</th>
+						   <th class="all" style="background: #c6e0b4; color: #0070c0;">TAT</th>
 						</tr>
 					  </thead>
 					  <tbody>
@@ -218,7 +218,7 @@
 						   <input type="number" class="price" step="0.01" placeholder="Enter Price">
 						</td>
 						 <td>
-						  <input type="text" class="transit_time" placeholder="Transit Time">
+						  <input type="text" class="transit_time char-3" placeholder="Transit Time">
 						  </td>
 						</tr>
 						  
