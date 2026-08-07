@@ -170,7 +170,7 @@
 
 						<tr>
 						<th class="dtr-control"></th>
-						<th class="all" style="background: #fce4d6; color: #0070c0;">Ref No</th>
+						<th class="desktop" style="background: #fce4d6; color: #0070c0;">Ref No</th>
 						<th class="all" style="background: #fce4d6; color: #0070c0;">From</th>
 						<th class="all" style="background: #fce4d6; color: #0070c0;">To</th>
 						<th class="all" style="background: #fce4d6; color: #0070c0;">Vehicle type</th>				
