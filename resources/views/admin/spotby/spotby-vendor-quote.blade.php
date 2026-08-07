@@ -218,7 +218,7 @@
 						   <input type="number" class="price" step="0.01" placeholder="Enter Price">
 						</td>
 						 <td>
-						  <input type="text" class="transit_time char-3" placeholder="Transit Time">
+						  <input type="text" class="transit_time char-3" placeholder="Transit Time" style="width: 30px !important;max-width: 100%;">
 						  </td>
 						</tr>
 						  
