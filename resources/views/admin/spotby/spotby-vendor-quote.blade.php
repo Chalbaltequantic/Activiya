@@ -238,8 +238,8 @@
                     <!-- The timeline -->
                   	<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 						 
-						<table id="billDataTable1" class="table table-bordered border-dark table-hover">
-							<thead>
+						<table id="appointdataTable" class="table table-bordered border-dark table-hover">
+							
 							<thead>
 
 						<tr>
