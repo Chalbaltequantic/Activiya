@@ -177,6 +177,18 @@ $(document).ready(function() {
             }
         });
     }
+	else
+	{
+		$table.DataTable({
+		responsive: true,
+		ordering: false,
+		 paging: false,
+		dom: 'Bfrtip',
+		buttons: [
+			'csv', 'excel'
+		]
+		});
+	}
 	
 	$('#billDataTable1').DataTable({
 		responsive: {
