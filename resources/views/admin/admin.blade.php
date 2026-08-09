@@ -160,38 +160,45 @@
 <script>
 $(document).ready(function() {
 	
-    var $table = $('#billDataTable');
+   var $table = $('#billDataTable');
 
-    if ($table.hasClass('enable-responsive')) {
-        $table.DataTable({
-            ordering: false,
-            paging: false,
-            dom: 'Bfrtip',
-            buttons: ['csv', 'excel'],
-            autoWidth: false,
-            responsive: {
-                details: {
-                    type: 'column',
-                    target: 0 // Target first column for '+' toggle
-                }
-            }
-        });
-    }
-	else
-	{
+	if ($table.hasClass('enable-responsive')) {
+
+		// Responsive table
 		$table.DataTable({
-		responsive: {
-			details:{
-				type:'column',
-				target:'tr'
+			ordering: false,
+			paging: false,
+			dom: 'Bfrtip',
+
+			buttons: [
+				'csv',
+				'excel'
+			],
+
+			autoWidth: false,
+
+			responsive: {
+				details: {
+					type: 'column',
+					target: 0
+				}
 			}
-		},
-		ordering: false,
-		 paging: false,
-		dom: 'Bfrtip',
-		buttons: [
-			'csv', 'excel'
-		]
+		});
+
+	} else {
+
+		$table.DataTable({
+			ordering: false,
+			paging: false,
+			dom: 'Bfrtip',
+
+			buttons: [
+				'csv',
+				'excel'
+			],
+
+			autoWidth: false
+
 		});
 	}
 	
