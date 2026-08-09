@@ -180,7 +180,12 @@ $(document).ready(function() {
 	else
 	{
 		$table.DataTable({
-		responsive: true,
+		responsive: {
+			details:{
+				type:'column',
+				target:'tr'
+			}
+		},
 		ordering: false,
 		 paging: false,
 		dom: 'Bfrtip',
