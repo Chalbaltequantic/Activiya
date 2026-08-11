@@ -279,6 +279,7 @@ window.addEventListener("orientationchange", function () {
     setTimeout(applyMobileLayout, 300);
 });
 </script>
+@if(Auth::check() && !empty(Auth::user()->vendor_code))
 <script>
 
 $(document).ready(function () {
@@ -509,7 +510,7 @@ $(document).ready(function () {
 });
 
 </script>
-
+@endif
 </body>
 
 </html>

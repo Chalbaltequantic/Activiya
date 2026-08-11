@@ -345,7 +345,7 @@
 					</ul>
 				</li>
 				
-				
+				@if(Auth::check() && !empty(Auth::user()->vendor_code))
 				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">
 
 					<a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false"
@@ -375,6 +375,7 @@
 					</div>
 
 				</li>
+				@endif
 				
 				<li class="nav-item dropdown user-menu">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
