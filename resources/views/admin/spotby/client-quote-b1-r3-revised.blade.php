@@ -179,7 +179,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">L1 Freight<br>Rate</th>
 						<th style="background: #fce4d6; color: #0070c0;">Minimum<br>Transit Time</th>
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Price</th>
-						<th style="background: #fce4d6; color: #0070c0;">Transit Time</th>
+						<th style="background: #fce4d6; color: #0070c0;">TAT</th>
 						<th style="background: #fce4d6; color: #0070c0;">Freeze Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;"><br>Final Rate</th>
 						</tr>
@@ -272,7 +272,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">L1 Freight<br>Rate</th>
 						<th style="background: #fce4d6; color: #0070c0;">Minimum<br>Transit Time</th>
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Price</th>
-						<th style="background: #fce4d6; color: #0070c0;"><br> Transit Time</th>
+						<th style="background: #fce4d6; color: #0070c0;"><br> TAT</th>
 						<th style="background: #fce4d6; color: #0070c0;"><br> Freeze Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;"><br> Final Rate</th>
 						
