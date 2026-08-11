@@ -178,7 +178,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Rate</th>
 						<th style="background: #fce4d6; color: #0070c0;">Transit Time</th>
 						<th style="background: #c6e0b4; color: #0070c0;">Target<br>Revised <br>Freight Rate</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Revised<br>Transit Time</th>   
+						<th style="background: #c6e0b4; color: #0070c0;">Revised<br>Transit Time</th>  
 						   
 						</tr>
 					  </thead>
@@ -261,6 +261,7 @@
 						
 						  <th style="background: #fce4d6; color: #0070c0;z-index:999;">Freight Rate</th>
 						   <th style="background: #fce4d6; color: #0070c0;z-index:999;">Transit Time</th>
+						   <th style="background: #fce4d6; color: #0070c0;">Qualified</th>
 						</tr>
 					  </thead>
 					  <tbody>
@@ -286,7 +287,23 @@
 						  <td>{{$historyspotbydata->special_instruction}}</td>
 						 					  
 						  <td>{{ $historyspotbydata->quotes->first()->price ?? '-' }}</td>
-                            <td>{{ $historyspotbydata->quotes->first()->transit_time ?? '-' }}</td>
+                          <td>{{ $historyspotbydata->quotes->first()->transit_time ?? '-' }}</td>
+						  <td class="text-center">
+
+								@if(!empty($historyspotbydata->is_qualified))
+
+									<span class="badge badge-success"
+										  style="font-size:13px; padding:7px 12px;">
+
+										<i class="fas fa-check-circle mr-1"></i>
+										Q
+									</span>
+
+								@endif
+
+						 </td>	
+							
+							
 						</tr>
 						  
 						  @endforeach

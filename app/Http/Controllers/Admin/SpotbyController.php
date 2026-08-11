@@ -605,6 +605,21 @@ class SpotbyController extends Controller
 					  ->where('round', 2);
 				}])
 				->get();
+				
+		/* Check Qualified status ONLY for History Tab */
+				
+				foreach ($historyQuotes as $historyQuote) {
+
+					$historyQuote->is_qualified = false;
+
+					if (!empty($historyQuote->freeze_vendor_name) && !empty($vendorShortName) &&
+						trim($historyQuote->freeze_vendor_name) === $vendorShortName) 
+					{
+						$historyQuote->is_qualified = true;
+					}
+				}
+				
+				
 		}
 		
 		

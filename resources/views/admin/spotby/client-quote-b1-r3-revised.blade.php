@@ -218,7 +218,7 @@
 						<td>{{ $ranks[0]->round1_client_revised_price ?? '' }}</td>
 						<td>{{ $ranks[0]->round1_client_transit_time ?? '' }}</td>		
 						<td>
-							<select name="freeze_vendor_name[]" class="form-control">
+							<select name="freeze_vendor_name[]">
 								<option value="">-- Select Vendor --</option>
 								@foreach($spotbydata->vendors as $vendor)
 									<option value="{{ $vendor->vendor_short_name }}">{{ $vendor->vendor_short_name }}</option>
@@ -227,8 +227,7 @@
 							   
 						</td>
 						<td>
-							<input type="number" name="final_price[]"
-                               placeholder="Enter Final Rate">			
+							<input type="number" name="final_price[]" placeholder="Enter Final Rate">			
 						</td>
 						</tr>
 						  
