@@ -344,6 +344,38 @@
 					@endif					
 					</ul>
 				</li>
+				
+				
+				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">
+
+					<a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false"
+					   title="Spot Buy Notifications">
+						<i class="far fa-bell"></i>
+						<span class="badge badge-warning navbar-badge" id="spotbuyNotificationCount" style="display:none;">0</span>
+
+					</a>
+
+
+					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+						<span class="dropdown-item dropdown-header">
+							<span id="spotbuyNotificationHeaderCount">0</span>
+							Spot Buy Notifications
+						</span>
+						<div class="dropdown-divider"></div>
+
+						<div id="spotbuyNotificationList">
+							<div class="dropdown-item text-center text-muted">
+								<i class="fas fa-spinner fa-spin mr-2"></i>
+								Loading notifications...
+							</div>
+						</div>
+						<div class="dropdown-divider"></div>
+						<a href="{{ route('admin.spotbuy.notifications.index') }}" class="dropdown-item dropdown-footer">View All Notifications</a>
+
+					</div>
+
+				</li>
+				
 				<li class="nav-item dropdown user-menu">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 						<span class="d-none d-md-inline">Welcome {{ auth()->user()->name }}</span>
