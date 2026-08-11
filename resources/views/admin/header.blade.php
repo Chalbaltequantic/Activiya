@@ -24,7 +24,7 @@
 							<a href="/admin/dashboard" class="nav-link">Home</a>
 						</li>
 					@endif
-					@if(Auth::check() && !empty(Auth::user()->vendor_code))
+					
 				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">
 
 					<a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" href="#" aria-expanded="false"
@@ -54,7 +54,7 @@
 					</div>
 
 				</li>
-				@endif
+
 				<li class="nav-item dropdown">
 					<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Masters</a>
 					<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="z-index:1100;">
