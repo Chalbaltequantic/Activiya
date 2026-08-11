@@ -24,7 +24,37 @@
 							<a href="/admin/dashboard" class="nav-link">Home</a>
 						</li>
 					@endif
-					
+					@if(Auth::check() && !empty(Auth::user()->vendor_code))
+				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">
+
+					<a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" href="#" aria-expanded="false"
+					   title="Spot Buy Notifications">
+						<i class="far fa-bell"></i>
+						<span class="badge badge-warning navbar-badge" id="spotbuyNotificationCount" style="display:none;">0</span>
+
+					</a>
+
+
+					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+						<span class="dropdown-item dropdown-header">
+							<span id="spotbuyNotificationHeaderCount">0</span>
+							Spot Buy Notifications
+						</span>
+						<div class="dropdown-divider"></div>
+
+						<div id="spotbuyNotificationList">
+							<div class="dropdown-item text-center text-muted">
+								<i class="fas fa-spinner fa-spin mr-2"></i>
+								Loading notifications...
+							</div>
+						</div>
+						<div class="dropdown-divider"></div>
+						<a href="{{ route('admin.spotbuy.notifications.index') }}" class="dropdown-item dropdown-footer">View All Notifications</a>
+
+					</div>
+
+				</li>
+				@endif
 				<li class="nav-item dropdown">
 					<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Masters</a>
 					<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="z-index:1100;">
@@ -113,32 +143,30 @@
 				 <li class="nav-item dropdown">
 					<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Freight</a>
 					<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">	
-					 @if(Gate::allows('admin.billdata'))
-					<li class="{{ request()->is('admin/billdata*') ? 'active' : '' }}"><a href="{{ route('admin.billdata') }}" class="dropdown-item">Add New Freight Shipments</a></li>	
-					@endif
-					@if(Gate::allows('admin.billdatalist'))
-					 <li class="{{ request()->is('admin/billdata/freight-shipment-history') ? 'active' : '' }}"><a href="{{ route('admin.billdatalist') }}" class="dropdown-item">Freight Shipment History</a></li>
-					@endif	
-					{{-- @if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 5)) --}}
-					
-					@if(Gate::allows('admin.freightdata'))
-					  <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.freightdata') }}" class="dropdown-item">Freight Worksheet</a></li>
-					@endif
-					{{--  @if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 4)) --}}
-					
-					@if(Gate::allows('admin.validatefreightdata'))
-					   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.validatefreightdata') }}" class="dropdown-item">Validate Freight Bills</a></li>
-					 @endif
+						@if(Gate::allows('admin.billdata'))
+						<li class="{{ request()->is('admin/billdata*') ? 'active' : '' }}"><a href="{{ route('admin.billdata') }}" class="dropdown-item">Add New Freight Shipments</a></li>	
+						@endif
+						@if(Gate::allows('admin.billdatalist'))
+						 <li class="{{ request()->is('admin/billdata/freight-shipment-history') ? 'active' : '' }}"><a href="{{ route('admin.billdatalist') }}" class="dropdown-item">Freight Shipment History</a></li>
+						@endif	
+						
+						@if(Gate::allows('admin.freightdata'))
+						  <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.freightdata') }}" class="dropdown-item">Freight Worksheet</a></li>
+						@endif
+						
+						
+						@if(Gate::allows('admin.validatefreightdata'))
+						   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.validatefreightdata') }}" class="dropdown-item">Validate Freight Bills</a></li>
+						@endif
 
-					  
-					  
-					    @if(Auth::user() && (Auth::user()->role_id == 1 ))
-					   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.freight-bill-processing.index') }}" class="dropdown-item">View Report</a></li>
-					 @endif
+						  
+						  
+						@if(Auth::user() && (Auth::user()->role_id == 1 ))
+						   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.freight-bill-processing.index') }}" class="dropdown-item">View Report</a></li>
+						 @endif
 					</ul>
 				</li>
 				 @endif
-				 {{-- @if(Auth::user() && (Auth::user()->role_id != 5 || Auth::user()->role_id != 4 )) --}}
 				 
 				 @if(Gate::allows('admin.appointmentdatalist') || Gate::allows('admin.appointment') || Gate::allows('admin.appointmentdatalist') || Gate::allows('admin.appointment_send_ho_consignee') || Gate::allows('admin.appointments.assign') || Gate::allows('admin.appointments.accept') || Gate::allows('admin.appointmentdata') || Gate::allows('admin.appointments.deliverystatus') || Gate::allows('admin.appointments.podfile'))
 				 <li class="nav-item dropdown">
@@ -208,7 +236,6 @@
 						</li>
 					@endif
 			
-				{{-- @if(Auth::user() && (Auth::user()->role_id != 12)) --}}
 				
 				@if(Gate::allows('admin.trackingdatalist') || Gate::allows('admin.trackingdata') || Gate::allows('admin.vendortrackingdataupdate') || Gate::allows('admin.update_by_vendor_consign'))
 				 <li class="nav-item dropdown">
@@ -229,7 +256,8 @@
 					</ul>
 				</li>
 				@endif
-				{{-- @if(Auth::user() && (Auth::user()->role_id == 1)) --}}
+
+
 				@if(Gate::allows('admin.lot') || Gate::allows('admin.allocation') || Gate::allows('admin.autoindentallocation') || Gate::allows('admin.approve_llocation') || Gate::allows('admin.V_Indent') || Gate::allows('admin.approve_indent') || Gate::allows('admin.V_Placement_Status') || Gate::allows('admin.Track_Placement_Status') || Gate::allows('admin.Manual_Indent'))	
 
 				 <li class="nav-item dropdown">
@@ -345,37 +373,7 @@
 					</ul>
 				</li>
 				
-				@if(Auth::check() && !empty(Auth::user()->vendor_code))
-				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">
-
-					<a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" href="#" aria-expanded="false"
-					   title="Spot Buy Notifications">
-						<i class="far fa-bell"></i>
-						<span class="badge badge-warning navbar-badge" id="spotbuyNotificationCount" style="display:none;">0</span>
-
-					</a>
-
-
-					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-						<span class="dropdown-item dropdown-header">
-							<span id="spotbuyNotificationHeaderCount">0</span>
-							Spot Buy Notifications
-						</span>
-						<div class="dropdown-divider"></div>
-
-						<div id="spotbuyNotificationList">
-							<div class="dropdown-item text-center text-muted">
-								<i class="fas fa-spinner fa-spin mr-2"></i>
-								Loading notifications...
-							</div>
-						</div>
-						<div class="dropdown-divider"></div>
-						<a href="{{ route('admin.spotbuy.notifications.index') }}" class="dropdown-item dropdown-footer">View All Notifications</a>
-
-					</div>
-
-				</li>
-				@endif
+				
 				
 				<li class="nav-item dropdown user-menu">
 					<a href="#" class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
