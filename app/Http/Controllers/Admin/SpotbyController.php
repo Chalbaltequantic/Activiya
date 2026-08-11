@@ -24,6 +24,7 @@ use App\Models\TruckMaster;
 use App\Models\Siteplant;
 use App\Models\Admin;
 use App\Models\SpotbyVendorQuote;
+use App\Services\SpotbuyNotificationService;
 
 use Auth;
 
@@ -687,7 +688,7 @@ class SpotbyController extends Controller
     }
 	
 	///storeClientOffers
-	
+/*	
 	public function storeClientOffers(Request $request)
 	{
 		$spotbyIds   = $request->input('spotby_id');
@@ -710,10 +711,8 @@ class SpotbyController extends Controller
 			}
 			catch(\Exception $e)
 			{
-					/* \Log::error('Error saving client offers: '.$e->getMessage(), [
-					'trace' => $e->getTraceAsString()
-					]);
-					*/
+					// \Log::error('Error saving client offers: '.$e->getMessage(), [				'trace' => $e->getTraceAsString()]);
+					
 
 					return response()->json([
 					'success' => false,
@@ -721,6 +720,81 @@ class SpotbyController extends Controller
 			}
 
 	}
+	*/
+	
+	public function storeClientOffers(Request $request)
+	{
+		$spotbyIds = $request->input('spotby_id');
+		$prices    = $request->input('client_price');
+		$times     = $request->input('client_time');
+		$round     = $request->input('round');
+
+		try {
+
+			foreach ($spotbyIds as $i => $spotby_id) {
+
+				SpotbyVendorQuote::where('spotby_id', $spotby_id)
+					->where('round', $round)
+					->update([
+						'client_revised_price'        => $prices[$i],
+						'client_revised_transit_time' => $times[$i],
+					]);
+
+				try {
+
+					$spotby = Spotby::find($spotby_id);
+					if ($spotby) {
+
+						/* Get all suppliers/vendors already selected
+						 * for this Spot Buy.
+						 */
+
+						$supplierIds = $spotby->vendors()
+										->pluck('vendors.id')
+										->toArray();
+
+						if (!empty($supplierIds)) {
+
+							SpotbuyNotificationService::createForSuppliers(
+								$supplierIds,(int) $spotby_id,	2,	'Buyer Round 2 Updated',
+								'Buyer has updated the quotation in Round 2. Please review and submit your revised quotation.',
+								route('admin.vendor.quotes.round2')
+							);
+						}
+					}
+
+				} catch (\Throwable $notificationException) {
+
+					\Log::error(
+						'Buyer Round 2 supplier notification failed',
+						[
+							'spotby_id' => $spotby_id,
+							'error'     => $notificationException->getMessage(),
+						]
+					);
+				}
+
+			}
+			return response()->json([
+				'success' => true,
+				'message' => 'Client offers saved for all vendors!'
+			]);
+
+		}
+		catch (\Exception $e)
+		{
+			/*
+			\Log::error('Error saving client offers: '.$e->getMessage(), [
+				'trace' => $e->getTraceAsString()
+			]);
+			*/
+			return response()->json([
+				'success' => false,
+				'message' => 'Client offers can not be saved for all vendors!'
+			]);
+		}
+	}
+	
 	
 	//User B1 _Round 3 (Buyer) Add revised price and time by Buyer client after round 2 price submitted by vendor
 	
@@ -777,6 +851,7 @@ class SpotbyController extends Controller
 
 		return view('admin.spotby.client-quote-b1-r3-revised', compact('spotbylist', 'historyQuotes'));
 	}
+	/*
 	public function storeClientOffersB1R3(Request $request)
 	{
 		$spotbyIds   = $request->input('spotby_id');
@@ -846,7 +921,7 @@ class SpotbyController extends Controller
 							foreach ($files as $file) {
 								$message->attach($file);
 							}
-						});*/
+						});
 					}
 				
 					}					
@@ -863,7 +938,177 @@ class SpotbyController extends Controller
 					'success' => false,
 					'message' => 'Client offers cant be saved for vendors!']);		
 				}
+	}*/
+	
+	public function storeClientOffersB1R3(Request $request)
+	{
+		$spotbyIds   = $request->input('spotby_id');
+		//$prices      = $request->input('client_price');
+		$times       = $request->input('client_time');
+		$round		= $request->input('round');
+		$freezeVendors		= $request->input('freeze_vendor_name');
+		$finalRates		= $request->input('final_price');
+		$created_by = Auth::user()->id;		
+		$createddate = date('Y-m-d H:i:s');
+		$body = '';
+		
+		//print_r($freezeVendors); exit;
+		try {
+				foreach ($spotbyIds as $i => $spotby_id) {
+					
+					// Update all vendor quotes for this spotby
+					SpotbyVendorQuote::where('spotby_id', $spotby_id)
+						->where('round',$round) 
+						->update([
+							'client_revised_price'        => $finalRates[$i],
+							'client_revised_transit_time' => $times[$i],
+						]);	
+
+					//  Update spotby master table				
+					
+					$spotbuy_upd = Spotby::where('id', $spotby_id)
+						->update([
+							'freeze_vendor_name' => $freezeVendors[$i],
+							'final_rate'         => $finalRates[$i],
+							'approve_status'     => 'Pending', 
+							'freeze_date'        => $createddate, 
+							'freeze_by'          => $created_by, 
+						]);	
+					
+					if($spotbuy_upd)
+					{
+						//$spotbuy_data = Spotby::where('id', $spotby_id);
+						$spotbuy_data = Spotby::where('id', $spotby_id)->first();
+
+						$from = $spotbuy_data->from;
+						$to = $spotbuy_data->to;
+						$valid_from = $spotbuy_data->valid_from;
+						$valid_upto = $spotbuy_data->valid_upto;
+						$freeze_date = $spotbuy_data->freeze_date;
+						$freeze_vendor_name = $spotbuy_data->freeze_vendor_name;
+
+						$subject = "Award of Tender – RFQ No. {$spotby_id} . {$from} to {$to}";
+
+						$admins = Admin::whereIn('role_id', [20, 22, 4])
+							->where('status','1')
+							->get();
+
+						$files = [];
+
+						foreach ($admins as $admin) {
+
+							$to_email = $admin->email;
+							$to_name = $admin->name; // assuming 'name' column exists
+
+							$data = [
+								'name' => $to_name,
+								'spotby_id' => $spotby_id,
+								'from' => $from,
+								'to' => $to,
+								'valid_from' => $valid_from,
+								'valid_upto' => $valid_upto,
+								'vendor_name' => $freeze_vendor_name, 
+								'freeze_date' => $freeze_date, 
+								'body' => $body, // assuming $body is already defined
+							];
+
+							
+							/*Mail::send('mail.soptbuy_approval_mail', $data, function($message) use ($to_email, $subject, $files) {
+								$message->to($to_email)->subject($subject);
+								$message->from(env("MAIL_USERNAME"), 'Activiya.com');
+
+								foreach ($files as $file) {
+									$message->attach($file);
+								}
+							});*/
+						}
+					}
+
+
+					/*
+				 * ---------------------------------------------------------
+				 * NEW FUNCTIONALITY
+				 * Buyer Round 3 Supplier Notification
+				 * ---------------------------------------------------------
+				 *
+				 * This notification block is independent from your existing
+				 * quotation / freeze / approval logic.
+				 *
+				 * If notification fails, your current Round 3 process
+				 * will still continue normally.
+				 */
+
+					try {
+
+						$spotby = Spotby::find($spotby_id);
+
+						if ($spotby) {
+
+							/*
+							 * Get all suppliers/vendors already linked
+							 * with this Spot Buy.
+							 */
+
+							$supplierIds = $spotby->vendors()
+								->pluck('vendors.id')
+								->toArray();
+
+
+							/*
+							 * Create Round 3 notification
+							 */
+
+							if (!empty($supplierIds)) {
+
+								SpotbuyNotificationService::createForSuppliers(
+
+									$supplierIds,(int) $spotby_id,3, 'Buyer Round 3 Updated', 'Buyer has updated the final quotation in Round 3. Please review the latest quotation status.',
+									route('admin.spotbuy.notifications.index')
+								);
+							}
+						}
+
+					} catch (\Throwable $notificationException) {
+
+						\Log::error(
+							'Buyer Round 3 supplier notification failed',
+							[
+								'spotby_id' => $spotby_id,
+								'error'     => $notificationException->getMessage(),
+							]
+						);
+					}
+
+				}				
+
+				return response()->json([
+					'success' => true,
+					'message' => 'Client offers saved for all vendors!'
+				]);
+
+			}
+			catch(\Exception $e){
+
+				\Log::error(
+					'Error saving client offers: '.$e->getMessage(),
+					[
+						'trace' => $e->getTraceAsString()
+					]
+				);
+					
+				// echo 'Error saving client offers: '.$e->getMessage(); exit;
+
+				return response()->json([
+					'success' => false,
+					'message' => 'Client offers cant be saved for vendors!'
+				]);		
+			}
 	}
+	
+	
+	
+	
+	
 	//USER 3 ROUND 3 Approval
 	
 		//User B1 _Round 3 (Buyer) Add revised price and time by Buyer client after round 2 price submitted by vendor

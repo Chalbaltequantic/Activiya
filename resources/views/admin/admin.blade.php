@@ -279,6 +279,236 @@ window.addEventListener("orientationchange", function () {
     setTimeout(applyMobileLayout, 300);
 });
 </script>
+<script>
+
+$(document).ready(function () {
+
+    function loadSpotbuyNotifications()
+    {
+        $.ajax({
+
+            url: "{{ route('admin.spotbuy.notifications.header') }}",
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                console.log(
+                    'Spot Buy Notification Response:',
+                    response
+                );
+
+                let unreadCount = 0;
+                let notifications = [];
+
+
+                /* Read values only when response exists */
+                if (response) {
+
+                    unreadCount = parseInt(
+                        response.unread_count || 0
+                    );
+
+                    notifications =
+                        response.notifications || [];
+                }
+
+                $('#spotbuyNotificationHeaderCount').text(unreadCount);
+
+                if (unreadCount > 0) {
+
+                    $('#spotbuyNotificationCount')
+                        .text(unreadCount)
+                        .show();
+
+                } else {
+
+                    $('#spotbuyNotificationCount')
+                        .text('0')
+                        .hide();
+                }
+
+                if (
+                    !Array.isArray(notifications) ||
+                    notifications.length === 0
+                ) {
+
+                    $('#spotbuyNotificationList').html(`
+                        <div class="dropdown-item text-center text-muted" style="                padding:20px 10px;white-space:normal;">
+                            <i class="far fa-bell-slash" style="display:block;font-size:24px;margin-bottom:8px; color:#adb5bd; "></i>
+                            No Spot Buy notifications
+                        </div>
+                    `);
+                    return;                
+				}
+
+                let notificationHtml = '';
+                $.each(
+                    notifications,
+                    function (index, notification)
+                    {
+
+                        /* Background for unread notification*/
+                        let unreadStyle = '';
+
+                        if (
+                            parseInt(notification.is_read || 0) === 0
+                        ) {
+                            unreadStyle =
+                                'background:#f4f8fc;';
+                        }
+
+                        /* Round badge*/
+                        let roundText = '';
+
+                        if (notification.round_no) {
+
+                            roundText =
+                                'Round ' +
+                                escapeHtml(
+                                    notification.round_no
+                                );
+                        }
+
+
+                        notificationHtml += `
+
+                            <a href="${notification.open_url}" class="dropdown-item" style="white-space:normal;padding:12px 15px;${unreadStyle}">
+
+                                <div class="media">
+                                    <div class="mr-3" style="width:38px;height:38px;border-radius:50%;background:#007bff; color:white; display:flex; align-items:center; justify-content:center;"><i class="fas fa-file-invoice-dollar"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title" style=" font-size:14px; font-weight:600; margin-bottom:4px;">
+
+                                            ${escapeHtml(
+                                                notification.title
+                                            )}
+                                            ${
+                                                parseInt(notification.is_read || 0) === 0 ?
+                                                `
+                                                <span class="float-right" style="color:#dc3545; font-size:7px;">
+                                                    <i class="fas fa-circle"></i>
+                                                </span>
+                                                `
+                                                :
+                                                ''
+                                            }
+
+                                        </h3>
+                                        ${
+                                            roundText
+                                            ?
+                                            `
+                                            <div style="margin-bottom:4px;">
+                                                <span class="badge badge-info">${roundText}</span>
+                                            </div>
+                                            ` : ''
+                                        }
+
+
+                                        <p class="text-sm mb-1" style="color:#6c757d;">
+
+                                            ${escapeHtml(
+                                                notification.message
+                                            )}
+
+                                        </p>
+
+
+                                        <p class="text-sm text-muted mb-0">
+
+                                            <i class="far fa-clock mr-1"></i>
+
+                                            ${escapeHtml(
+                                                notification.created_at
+                                            )}
+
+                                        </p>
+
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                        `;
+                    }
+                );
+
+                $('#spotbuyNotificationList')
+                    .html(notificationHtml);
+            },
+
+
+            error: function (xhr)
+            {
+                console.log(
+                    'Spot Buy Notification AJAX Error:',
+                    xhr.responseText
+                );
+
+                $('#spotbuyNotificationHeaderCount')
+                    .text('0');
+
+
+                $('#spotbuyNotificationCount')
+                    .hide();
+
+                $('#spotbuyNotificationList').html(`
+
+                    <div class="dropdown-item text-center text-muted" style="padding:20px 10px; white-space:normal;">
+
+                        <i class="fas fa-exclamation-circle" style="
+                                display:block;
+                                margin-bottom:7px;
+                                color:#dc3545;
+                            "
+                        ></i>
+
+                        Unable to load notifications
+
+                    </div>
+
+                `);
+            }
+
+        });
+    }
+
+
+    function escapeHtml(value)
+    {
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return '';
+        }
+
+
+        return $('<div>')
+            .text(value)
+            .html();
+    }
+
+
+
+    loadSpotbuyNotifications();
+
+    setInterval(
+        function ()
+        {
+            loadSpotbuyNotifications();
+        },
+        60000
+    );
+
+});
+
+</script>
 
 </body>
 

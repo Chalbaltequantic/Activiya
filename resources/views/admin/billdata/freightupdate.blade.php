@@ -594,12 +594,7 @@ $(document).on('click', '.delete-btn', function () {
 
 $(document).ready(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | OPEN MODAL
-    |--------------------------------------------------------------------------
-    */
-
+   
     $(document).on('click', '.edit-returned-btn', function () {
 
         $('#edit_id').val($(this).data('id'));
@@ -612,11 +607,7 @@ $(document).ready(function () {
 
         $('#edit_return_remark').val($(this).data('remark'));
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILE LINKS
-        |--------------------------------------------------------------------------
-        */
+      
 
         let invoiceFile = $(this).data('invoice-file');
         let podFile = $(this).data('pod-file');
@@ -643,22 +634,13 @@ $(document).ready(function () {
         $('#editReturnedModal').modal('show');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | CLOSE MODAL
-    |--------------------------------------------------------------------------
-    */
+    
 
     $(document).on('click', '.close-edit-modal', function () {
 
         $('#editReturnedModal').modal('hide');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | FORM SUBMIT
-    |--------------------------------------------------------------------------
-    */
 
     $('#editReturnedForm').on('submit', function (e) {
 
@@ -681,7 +663,7 @@ $(document).ready(function () {
 			return false;
 		}
 
-		if (
+		/*if (
 			podFile.files.length > 0 &&
 			podFile.files[0].size > maxSize
 		) {
@@ -691,7 +673,7 @@ $(document).ready(function () {
 				text: 'POD file size cannot exceed 2 MB.'
 			});
 			return false;
-		}
+		}*/
 
         let formData = new FormData(this);
 

@@ -345,19 +345,50 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 
 	Route::get('spotbuy/client/approval-r3', [App\Http\Controllers\Admin\SpotbyController::class, 'buyerQuoteRound3Approver'])->name('buyerQuoteRound3Approver');
 	
-	Route::post('/spotby/bulk-approval', [App\Http\Controllers\Admin\SpotbyController::class, 'bulkApproval'])->name('spotby.bulkApproval');
+	Route::post('spotby/bulk-approval', [App\Http\Controllers\Admin\SpotbyController::class, 'bulkApproval'])->name('spotby.bulkApproval');
+	
+	//spotby notification from buyer to supplier for round 1, 2, 3
+	 Route::get('spotbuy/notifications',[         App\Http\Controllers\Admin\SpotbuyNotificationController::class, 'index'])->name('spotbuy.notifications.index');
+	 
+	 Route::get('spotbuy/notifications',[App\Http\Controllers\Admin\SpotbuyNotificationController::class,'index' ])->name('spotbuy.notifications.index');
+	 
+	// Open notification and redirect to action page
+
+	Route::get('spotbuy/notifications/open/{id}',[App\Http\Controllers\Admin\SpotbuyNotificationController::class,'openNotification'])
+	->name('spotbuy.notifications.open');
+
+
+	// Mark one notification as read through AJAX
+
+	Route::post('spotbuy/notifications/read/{id}',[		App\Http\Controllers\Admin\SpotbuyNotificationController::class,'markAsRead']
+	)->name('spotbuy.notifications.read');
+
+
+	// Get unread notification count for header bell
+
+	Route::get(	'spotbuy/notifications/unread-count',[	App\Http\Controllers\Admin\SpotbuyNotificationController::class,'unreadCount']
+	)->name('spotbuy.notifications.unread-count');
+	
+	 Route::get( 'spotbuy/notifications/header',[        App\Http\Controllers\Admin\SpotbuyNotificationController::class,'headerNotifications'])
+	 ->name('spotbuy.notifications.header');
+
+
+	// Mark all notifications as read
+
+	Route::post('spotbuy/notifications/read-all',[	App\Http\Controllers\Admin\SpotbuyNotificationController::class,'markAllAsRead'	]
+	)->name('spotbuy.notifications.read-all');
 	
 	
 	////Tracking data upload Route
-	Route::post('/trackingimport', [App\Http\Controllers\Admin\TrackingController::class, 'import'])->name('excel.import.tracking');
+	Route::post('trackingimport', [App\Http\Controllers\Admin\TrackingController::class, 'import'])->name('excel.import.tracking');
 	
 	//Tracking Data Upload Route
-	Route::get('/trackingdata', [App\Http\Controllers\Admin\TrackingController::class, 'index'])->name('trackingdata');
+	Route::get('trackingdata', [App\Http\Controllers\Admin\TrackingController::class, 'index'])->name('trackingdata');
 	
-	Route::get('/trackingdata/tracking-history', [App\Http\Controllers\Admin\TrackingController::class, 'trackingdatalist'])->name('trackingdatalist');
+	Route::get('trackingdata/tracking-history', [App\Http\Controllers\Admin\TrackingController::class, 'trackingdatalist'])->name('trackingdatalist');
 	
 	//Tracking manual upload data
-	Route::get('/trackingdata/manual-upload', [App\Http\Controllers\Admin\TrackingController::class, 'manualupload'])->name('manualupload.tracking');
+	Route::get('trackingdata/manual-upload', [App\Http\Controllers\Admin\TrackingController::class, 'manualupload'])->name('manualupload.tracking');
 	
 	Route::post('trackingdata/save_manual_upload', [App\Http\Controllers\Admin\TrackingController::class, 'save_manual_trackingdata']);
 	//////////

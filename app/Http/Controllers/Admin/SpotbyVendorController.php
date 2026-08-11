@@ -21,7 +21,7 @@ use App\Models\Admin;
 use App\Models\SpotbyVendor;
 use App\Models\Vendor;
 use App\Models\Spotby;
-
+use App\Services\SpotbuyNotificationService;
 use Auth;
 
 
@@ -31,7 +31,7 @@ class SpotbyVendorController extends Controller
     {
         $this->middleware('auth:admin');     
     }
-	public function bulkStore(Request $request)
+	/*public function bulkStore(Request $request)
 	{
 		$vendorsData = $request->input('vendors', []);
 
@@ -47,6 +47,74 @@ class SpotbyVendorController extends Controller
 				$spotby->vendors()->sync($pivotData);
 			}
 		}
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Vendors updated successfully!'
+		]);
+	}*/
+	
+	public function bulkStore(Request $request)
+	{
+		$vendorsData = $request->input('vendors', []);
+
+		$userId = Auth::user()->id;
+
+
+		foreach ($vendorsData as $spotbyId => $vendorIds) {
+			$spotby = Spotby::find($spotbyId);
+
+
+			if ($spotby) {
+
+				/* Existing Vendor Selection Logic*/
+
+				$pivotData = [];
+
+				foreach ($vendorIds as $vendorId) {
+					$pivotData[$vendorId] = [
+						'created_by' => $userId
+					];
+				}
+
+
+				/* Existing Sync*/
+
+				$spotby->vendors()->sync($pivotData);
+
+
+				/*  Create Supplier Notifications
+				 Every supplier selected in Buyer Round 1 will receive
+				 a notification. supplier_id = vendors.id
+				 buyer_id    = logged-in admins.id
+				*/
+
+				try {
+
+					SpotbuyNotificationService::createForSuppliers(
+
+						$vendorIds,
+						(int) $spotbyId,
+						1,
+						'New Spot Buy Quotation',
+						'You have been selected for Buyer Round 1. Please review and submit your quotation.',
+						route('admin.vendor.quotes.index')
+					);
+				} catch (\Throwable $notificationException) {
+
+
+					\Log::error(
+						'Spot Buy Round 1 notification failed',
+						[
+							'spotby_id' => $spotbyId,
+							'vendor_ids' => $vendorIds,
+							'error' => $notificationException->getMessage(),
+						]
+					);
+				}
+			}
+		}
+
 
 		return response()->json([
 			'success' => true,
