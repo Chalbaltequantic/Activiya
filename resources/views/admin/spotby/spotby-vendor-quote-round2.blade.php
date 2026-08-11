@@ -178,7 +178,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Rate</th>
 						<th style="background: #fce4d6; color: #0070c0;">Transit Time</th>
 						<th style="background: #c6e0b4; color: #0070c0;">Target<br>Revised <br>Freight Rate</th>
-						<th style="background: #c6e0b4; color: #0070c0;">Revised<br>Transit Time</th>  
+						<th style="background: #c6e0b4; color: #0070c0;">Revised<br>TAT</th>  
 						   
 						</tr>
 					  </thead>
@@ -260,7 +260,7 @@
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="">Special instruction</th> 
 						
 						  <th style="background: #fce4d6; color: #0070c0;z-index:999;">Freight Rate</th>
-						   <th style="background: #fce4d6; color: #0070c0;z-index:999;">Transit Time</th>
+						   <th style="background: #fce4d6; color: #0070c0;z-index:999;">TAT</th>
 						   <th style="background: #fce4d6; color: #0070c0;">Qualified</th>
 						</tr>
 					  </thead>
