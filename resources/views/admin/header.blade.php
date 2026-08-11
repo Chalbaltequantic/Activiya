@@ -348,7 +348,7 @@
 				@if(Auth::check() && !empty(Auth::user()->vendor_code))
 				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">
 
-					<a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false"
+					<a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" href="#" aria-expanded="false"
 					   title="Spot Buy Notifications">
 						<i class="far fa-bell"></i>
 						<span class="badge badge-warning navbar-badge" id="spotbuyNotificationCount" style="display:none;">0</span>
@@ -378,7 +378,7 @@
 				@endif
 				
 				<li class="nav-item dropdown user-menu">
-					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<a href="#" class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
 						<span class="d-none d-md-inline">Welcome {{ auth()->user()->name }}</span>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
