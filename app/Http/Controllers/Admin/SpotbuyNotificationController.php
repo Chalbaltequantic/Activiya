@@ -23,7 +23,7 @@ class SpotbuyNotificationController extends Controller
         $pagetitle = 'Spot Buy Notification Listing';
 
         $admin = Auth::user();
-
+print_r($admin);
 
         $vendor = DB::table('vendors')
             ->where('vendor_code', $admin->vendor_code)
