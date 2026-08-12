@@ -53,7 +53,7 @@ class SpotbuyNotificationController extends Controller
 
     $admin = Auth::guard('admin')->user();
 
-
+print_r($admin);
     /*
      * No logged-in admin
      */
