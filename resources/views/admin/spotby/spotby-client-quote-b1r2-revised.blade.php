@@ -36,29 +36,24 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 100px; /* Adjust based on col-1 width */
+      left: 90px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 220px; /* Adjust based on col-1 width */
+      left: 180px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 310px; /* Adjust based on col-1 width */
+      left: 270px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
 
-    /* Column widths */
-    .col-width {
-     /* min-width: 160px;*/
-    }
-
-    @media (max-width: 768px) {
+     @media (max-width: 768px) {
       .col-width {
         min-width: 90px;
       }
@@ -161,7 +156,7 @@
 					  <thead>
 
 						<tr>
-						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-1':''}}sticky-col-1">Reference No</th>
+						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-1':''}}">Reference No</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-2' : '' }}">From</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-3' : '' }}">To</th>
 						<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="{{count($spotbylist)>0 ? 'sticky-col-4' : ''}}">Vehicle type</th>				

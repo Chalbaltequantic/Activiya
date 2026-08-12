@@ -675,7 +675,7 @@ class SpotbyController extends Controller
 		//Get vendor master Id using vendor code	
 		 
 		 $spotbylist = Spotby::with(['quotes' => function ($q) {
-            $q->whereNotNull('price')
+            $q->whereNull('price')
 			  ->whereNull('client_revised_price')
               ->where('round', 1)
               ->orderBy('price', 'asc')

@@ -42,21 +42,17 @@
     }
  .sticky-col-3 {
       position: sticky;
-      left: 180px; /* Adjust based on col-1 width */
+      left: 140px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-4 {
       position: sticky;
-      left: 265px; /* Adjust based on col-1 width */
+      left: 220px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
 
-    /* Column widths */
-    .col-width {
-     /* min-width: 160px;*/
-    }
 
     @media (max-width: 768px) {
       .col-width {
@@ -177,7 +173,7 @@
 						<th style="background: #fce4d6; color: #0070c0;">R4 Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;">R5 Vendor</th>
 						<th style="background: #fce4d6; color: #0070c0;">L1 Freight<br>Rate</th>
-						<th style="background: #fce4d6; color: #0070c0;">Minimum<br>Transit Time</th>
+						<th style="background: #fce4d6; color: #0070c0;">Minimum<br>TAT</th>
 						<th style="background: #fce4d6; color: #0070c0;">Target<br>Freight Price</th>
 						<th style="background: #fce4d6; color: #0070c0;">TAT</th>
 						<th style="background: #fce4d6; color: #0070c0;">Freeze Vendor</th>

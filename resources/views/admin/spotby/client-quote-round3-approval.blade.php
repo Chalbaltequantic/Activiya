@@ -102,7 +102,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">User B1 _Round 2 (Buyer)</h1>
+            <h1 class="m-0">B1 _Round 2 (Buyer)</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
