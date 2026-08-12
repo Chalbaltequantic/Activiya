@@ -677,7 +677,7 @@ class SpotbyController extends Controller
 		 $spotbylist = Spotby::with(['quotes' => function ($q) {
             $q->whereNull('price')
 			  ->whereNull('client_revised_price')
-              ->where('round', 1)
+            //  ->where('round', 1)
               ->orderBy('price', 'asc')
               ->orderBy('transit_time', 'asc')
               ->with('vendor'); // vendor relation
