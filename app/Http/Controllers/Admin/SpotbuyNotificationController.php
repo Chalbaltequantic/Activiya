@@ -53,28 +53,10 @@ class SpotbuyNotificationController extends Controller
         abort(403, 'User session not found.');
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Find Vendor From Logged-in Admin Vendor Code
-    |--------------------------------------------------------------------------
-    |
-    | admins.vendor_code
-    |       ↓
-    | vendors.vendor_code
-    |       ↓
-    | vendors.id
-    |
-    */
-
     $vendor = DB::table('vendors')
         ->where('vendor_code', trim($admin->vendor_code))
         ->first();
 
-    /*
-     * No vendor found
-     */
-echo $vendor->id;
     if (!$vendor) {
 
         $notifications = collect();
@@ -90,20 +72,6 @@ echo $vendor->id;
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Vendor Specific Notification List
-    |--------------------------------------------------------------------------
-    |
-    | IMPORTANT:
-    |
-    | Only notification rows having:
-    |
-    | supplier_id = logged-in vendor's vendors.id
-    |
-    | will be returned.
-    |
-    */
 
     $notifications = DB::table('spotbuy_notifications')
         ->where('supplier_id', $vendor->id)
