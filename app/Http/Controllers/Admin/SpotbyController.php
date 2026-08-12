@@ -710,17 +710,15 @@ class SpotbyController extends Controller
 
 public function buyerB1R2Quote()
 {
-    /*
-    |--------------------------------------------------------------------------
-    | TAB 1
-    | Supplier Round 1 quoted, but Round 2 does NOT exist yet
-    |--------------------------------------------------------------------------
+    /* TAB 1
+    Supplier Round 1 quoted, but Round 2 does NOT exist yet
+   
     */
 
     $spotbylist = Spotby::whereHas('quotes', function ($q) {
 
             /*
-             * Supplier must have submitted Round 1 quotation
+              Supplier must have submitted Round 1 quotation
              */
 
             $q->where('round', 1)
@@ -729,10 +727,8 @@ public function buyerB1R2Quote()
         })
 
         /*
-         * IMPORTANT:
-         *
-         * If Round 2 quotation already exists,
-         * do not show this Spot Buy in Tab 1.
+          If Round 2 quotation already exists,
+          do not show this Spot Buy in Tab 1.
          */
 
         ->whereDoesntHave('quotes', function ($q) {
@@ -741,9 +737,7 @@ public function buyerB1R2Quote()
 
         })
 
-        /*
-         * Load Round 1 supplier quotations
-         */
+        /* Load Round 1 supplier quotations */
 
         ->with([
             'quotes' => function ($q) {
@@ -760,17 +754,6 @@ public function buyerB1R2Quote()
         ->get();
 
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | TAB 2
-    | Buyer Round 2 History
-    |--------------------------------------------------------------------------
-    |
-    | Round 2 records already exist.
-    |
-    */
-
     $historyQuotes = Spotby::whereHas('quotes', function ($q) {
 
             $q->where('round', 2)
@@ -781,9 +764,7 @@ public function buyerB1R2Quote()
         ->with([
             'quotes' => function ($q) {
 
-                /*
-                 * Load Round 2 records
-                 */
+                /* Load Round 2 records*/
 
                 $q->where('round', 2)
                   ->whereNotNull('price')
@@ -1144,18 +1125,7 @@ public function buyerB1R2Quote()
 					}
 
 
-					/*
-				 * ---------------------------------------------------------
-				 * NEW FUNCTIONALITY
-				 * Buyer Round 3 Supplier Notification
-				 * ---------------------------------------------------------
-				 *
-				 * This notification block is independent from your existing
-				 * quotation / freeze / approval logic.
-				 *
-				 * If notification fails, your current Round 3 process
-				 * will still continue normally.
-				 */
+					/* Buyer Round 3 Supplier Notification */
 
 					try {
 
@@ -1163,9 +1133,7 @@ public function buyerB1R2Quote()
 
 						if ($spotby) {
 
-							/*
-							 * Get all suppliers/vendors already linked
-							 * with this Spot Buy.
+							/* Get all suppliers/vendors already linked with this Spot Buy.
 							 */
 
 							$supplierIds = $spotby->vendors()
