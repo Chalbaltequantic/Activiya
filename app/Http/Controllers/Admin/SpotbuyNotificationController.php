@@ -39,76 +39,56 @@ class SpotbuyNotificationController extends Controller
     
     */
 
-    public function index(Request $request)
-    {
-        $title     = 'Spot Buy Notifications';
-        $pagetitle = 'Spot Buy Notification Listing';
+   public function index(Request $request)
+{
+    $title     = 'Spot Buy Notifications';
+    $pagetitle = 'Spot Buy Notification Listing';
 
 
-        /* Get logged-in supplier */
+    /*
+    |--------------------------------------------------------------------------
+    | Logged-in Supplier
+    |--------------------------------------------------------------------------
+    */
 
-        $vendor = $this->getLoggedInVendor();
-
-
-        /* No vendor mapping found*/
-
-        if (!$vendor) {
-
-            $notifications = collect();
-
-            return view(
-                'admin.spotbuy_notifications.index',
-                compact(
-                    'title',
-                    'pagetitle',
-                    'notifications'
-                )
-            );
-        }
+    $admin = Auth::guard('admin')->user();
 
 
-        /* Vendor-specific notifications
-         First condition:
-         notification must belong to this supplier
-         Second condition:
-         Spot Buy must actually be assigned to this vendor
-         in spotby_vendors table.
-        
-        */
+    /*
+     * No logged-in admin
+     */
 
-        $notifications = DB::table('spotbuy_notifications as n')
+    if (!$admin) {
 
-            ->where(
-                'n.supplier_id',
-                $vendor->id
-            )
+        abort(403, 'User session not found.');
+    }
 
-            ->whereExists(function ($query) use ($vendor) {
 
-                $query->select(DB::raw(1))
+    /*
+    |--------------------------------------------------------------------------
+    | Find Vendor From Logged-in Admin Vendor Code
+    |--------------------------------------------------------------------------
+    |
+    | admins.vendor_code
+    |       ↓
+    | vendors.vendor_code
+    |       ↓
+    | vendors.id
+    |
+    */
 
-                    ->from('spotby_vendors as sv')
+    $vendor = DB::table('vendors')
+        ->where('vendor_code', trim($admin->vendor_code))
+        ->first();
 
-                    ->whereColumn(
-                        'sv.spotby_id',
-                        'n.spotby_id'
-                    )
 
-                    ->where(
-                        'sv.vendor_id',
-                        $vendor->id
-                    );
-            })
+    /*
+     * No vendor found
+     */
 
-            ->select('n.*')
+    if (!$vendor) {
 
-            ->orderBy(
-                'n.created_at',
-                'desc'
-            )
-
-            ->get();
-
+        $notifications = collect();
 
         return view(
             'admin.spotbuy_notifications.index',
@@ -120,6 +100,37 @@ class SpotbuyNotificationController extends Controller
         );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vendor Specific Notification List
+    |--------------------------------------------------------------------------
+    |
+    | IMPORTANT:
+    |
+    | Only notification rows having:
+    |
+    | supplier_id = logged-in vendor's vendors.id
+    |
+    | will be returned.
+    |
+    */
+
+    $notifications = DB::table('spotbuy_notifications')
+        ->where('supplier_id', $vendor->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+
+    return view(
+        'admin.spotbuy_notifications.index',
+        compact(
+            'title',
+            'pagetitle',
+            'notifications'
+        )
+    );
+}
 
     public function markAsRead(Request $request, $id)
     {
@@ -499,163 +510,175 @@ class SpotbuyNotificationController extends Controller
 
 
     public function headerNotifications()
-    {
-        try {
+{
+    try {
 
-            /*
-             * Get logged-in supplier.
-             */
+        /*
+        |--------------------------------------------------------------------------
+        | Logged-in Supplier
+        |--------------------------------------------------------------------------
+        */
 
-            $vendor = $this->getLoggedInVendor();
-
-
-            if (!$vendor) {
-
-                return response()->json([
-                    'success'       => true,
-                    'unread_count'  => 0,
-                    'notifications' => [],
-                ]);
-            }
-
-     
-
-            $unreadCount = DB::table('spotbuy_notifications as n')
-
-                ->where(
-                    'n.supplier_id',
-                    $vendor->id
-                )
-
-                ->where(
-                    'n.is_read',
-                    0
-                )
-
-                ->whereExists(function ($query) use ($vendor) {
-
-                    $query->select(DB::raw(1))
-
-                        ->from('spotby_vendors as sv')
-
-                        ->whereColumn(
-                            'sv.spotby_id',
-                            'n.spotby_id'
-                        )
-
-                        ->where(
-                            'sv.vendor_id',
-                            $vendor->id
-                        );
-                })
-
-                ->count();
+        $admin = Auth::guard('admin')->user();
 
 
-            $notifications = DB::table('spotbuy_notifications as n')
-
-                ->where(
-                    'n.supplier_id',
-                    $vendor->id
-                )
-
-                ->whereExists(function ($query) use ($vendor) {
-
-                    $query->select(DB::raw(1))
-
-                        ->from('spotby_vendors as sv')
-
-                        ->whereColumn(
-                            'sv.spotby_id',
-                            'n.spotby_id'
-                        )
-
-                        ->where(
-                            'sv.vendor_id',
-                            $vendor->id
-                        );
-                })
-
-                ->select('n.*')
-
-                ->orderBy(
-                    'n.created_at',
-                    'desc'
-                )
-
-                ->limit(5)
-
-                ->get();
-
-            $notificationData = [];
-
-
-            foreach ($notifications as $notification) {
-
-                $created_at = '';
-
-                if (!empty($notification->created_at)) {
-
-                    $created_at = date(
-                        'd M Y h:i A',
-                        strtotime($notification->created_at)
-                    );
-                }
-
-
-                $notificationData[] = [
-
-                    'id' =>
-                        $notification->id,
-
-                    'title' =>
-                        $notification->title ?? '',
-
-                    'message' =>
-                        $notification->message ?? '',
-
-                    'round_no' =>
-                        $notification->round_no ?? '',
-
-                    'is_read' =>
-                        (int) ($notification->is_read ?? 0),
-
-                    'created_at' =>
-                        $created_at,
-
-                    'open_url' =>
-                        route(
-                            'admin.spotbuy.notifications.open',
-                            $notification->id
-                        ),
-                ];
-            }
-
-         return response()->json([
-                'success'       => true,
-                'unread_count'  => $unreadCount,
-                'notifications' => $notificationData,
-            ]);
-
-
-        } catch (\Exception $e) {
-
-            \Log::error(
-                'Spot Buy header notification error',
-                [
-                    'error' => $e->getMessage(),
-                    'line'  => $e->getLine(),
-                    'file'  => $e->getFile(),
-                ]
-            );
-
+        if (!$admin) {
 
             return response()->json([
-                'success'       => false,
+                'success'       => true,
                 'unread_count'  => 0,
                 'notifications' => [],
-                'message'       => 'Unable to load notifications.',
             ]);
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find Vendor
+        |--------------------------------------------------------------------------
+        */
+
+        $vendor = DB::table('vendors')
+            ->where(
+                'vendor_code',
+                trim($admin->vendor_code)
+            )
+            ->first();
+
+
+        /*
+         * No vendor account
+         */
+
+        if (!$vendor) {
+
+            return response()->json([
+                'success'       => true,
+                'unread_count'  => 0,
+                'notifications' => [],
+            ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Vendor Specific Unread Count
+        |--------------------------------------------------------------------------
+        */
+
+        $unreadCount = DB::table('spotbuy_notifications')
+            ->where(
+                'supplier_id',
+                $vendor->id
+            )
+            ->where(
+                'is_read',
+                0
+            )
+            ->count();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Vendor Specific Latest Notifications
+        |--------------------------------------------------------------------------
+        */
+
+        $notifications = DB::table('spotbuy_notifications')
+            ->where(
+                'supplier_id',
+                $vendor->id
+            )
+            ->orderBy(
+                'created_at',
+                'desc'
+            )
+            ->limit(5)
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prepare Header Data
+        |--------------------------------------------------------------------------
+        */
+
+        $notificationData = [];
+
+
+        foreach ($notifications as $notification) {
+
+            $created_at = '';
+
+            if (!empty($notification->created_at)) {
+
+                $created_at = date(
+                    'd M Y h:i A',
+                    strtotime($notification->created_at)
+                );
+            }
+
+
+            $notificationData[] = [
+
+                'id' =>
+                    $notification->id,
+
+                'title' =>
+                    $notification->title ?? '',
+
+                'message' =>
+                    $notification->message ?? '',
+
+                'round_no' =>
+                    $notification->round_no ?? '',
+
+                'is_read' =>
+                    (int) ($notification->is_read ?? 0),
+
+                'created_at' =>
+                    $created_at,
+
+                'open_url' =>
+                    route(
+                        'admin.spotbuy.notifications.open',
+                        $notification->id
+                    ),
+            ];
+        }
+
+
+        return response()->json([
+
+            'success' =>
+                true,
+
+            'unread_count' =>
+                $unreadCount,
+
+            'notifications' =>
+                $notificationData,
+
+        ]);
+
+
+    } catch (\Exception $e) {
+
+        \Log::error(
+            'Spot Buy header notification error',
+            [
+                'error' => $e->getMessage(),
+                'line'  => $e->getLine(),
+                'file'  => $e->getFile(),
+            ]
+        );
+
+
+        return response()->json([
+            'success'       => false,
+            'unread_count'  => 0,
+            'notifications' => [],
+        ]);
     }
+}
 }
