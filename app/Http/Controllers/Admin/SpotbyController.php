@@ -849,8 +849,9 @@ public function buyerB1R2Quote()
 						 * for this Spot Buy.
 						 */
 
-						$supplierIds = $spotby->vendors()
-										->pluck('vendors.id')
+						$supplierIds = DB::table('spotby_vendors')
+										->where('spotby_id', $spotby_id)
+										->pluck('vendor_id')
 										->toArray();
 
 						if (!empty($supplierIds)) {
@@ -1135,10 +1136,10 @@ public function buyerB1R2Quote()
 
 							/* Get all suppliers/vendors already linked with this Spot Buy.
 							 */
-
-							$supplierIds = $spotby->vendors()
-								->pluck('vendors.id')
-								->toArray();
+							$supplierIds = DB::table('spotby_vendors')
+							->where('spotby_id', $spotby_id)
+							->pluck('vendor_id')
+							->toArray();
 
 
 							/*

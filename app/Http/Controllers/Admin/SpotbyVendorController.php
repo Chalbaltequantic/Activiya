@@ -88,12 +88,18 @@ class SpotbyVendorController extends Controller
 				 a notification. supplier_id = vendors.id
 				 buyer_id    = logged-in admins.id
 				*/
+				
+				$supplierIds = DB::table('spotby_vendors')
+								->where('spotby_id', $spotbyId)
+								->pluck('vendor_id')
+								->toArray();
+
 
 				try {
 
 					SpotbuyNotificationService::createForSuppliers(
 
-						$vendorIds,
+						$supplierIds,
 						(int) $spotbyId,
 						1,
 						'New Spot Buy Quotation',
