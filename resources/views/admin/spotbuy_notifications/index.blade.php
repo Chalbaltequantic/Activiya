@@ -245,19 +245,19 @@
 
                                             <td>
 
-                                                @if($notification->round == 1)
+                                                @if($notification->round_no == 1)
 
                                                     <span class="badge badge-primary">
                                                         Round 1
                                                     </span>
 
-                                                @elseif($notification->round == 2)
+                                                @elseif($notification->round_no == 2)
 
                                                     <span class="badge badge-info">
                                                         Round 2
                                                     </span>
 
-                                                @elseif($notification->round == 3)
+                                                @elseif($notification->round_no == 3)
 
                                                     <span class="badge badge-success">
                                                         Round 3
@@ -268,7 +268,7 @@
                                                     <span class="badge badge-secondary">
 
                                                         Round
-                                                        {{ $notification->round }}
+                                                        {{ $notification->round_no }}
 
                                                     </span>
 
