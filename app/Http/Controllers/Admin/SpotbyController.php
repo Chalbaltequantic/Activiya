@@ -667,7 +667,7 @@ class SpotbyController extends Controller
 
 
 ///User B1 _Round 2 (Buyer) Add revised price and time by Buyer client
-	public function buyerB1R2Quote()
+	/*public function buyerB1R2Quote()
     {
         $vendor_code = Auth::user()->vendor_code; // assuming vendor is logged in
 		
@@ -677,7 +677,7 @@ class SpotbyController extends Controller
 		 $spotbylist = Spotby::with(['quotes' => function ($q) {
             $q->whereNull('price')
 			  ->whereNull('client_revised_price')
-            //  ->where('round', 1)
+              ->where('round', 1)
               ->orderBy('price', 'asc')
               ->orderBy('transit_time', 'asc')
               ->with('vendor'); // vendor relation
@@ -700,7 +700,94 @@ class SpotbyController extends Controller
 			}])
 			->get();
         return view('admin.spotby.spotby-client-quote-b1r2-revised', compact('spotbylist', 'historyQuotes'));
-    }
+    }*/
+	
+	// User B1 Round 2 (Buyer)
+// Buyer adds revised price and transit time
+
+public function buyerB1R2Quote()
+{
+    /*
+    |--------------------------------------------------------------------------
+    | TAB 1
+    | Supplier Round 1 quotations waiting for Buyer Round 2 action
+    |--------------------------------------------------------------------------
+    |
+    | Conditions:
+    |
+    | 1. Supplier has already submitted Round 1 price
+    | 2. Buyer has NOT yet entered client revised price
+    |
+    | Once Buyer enters revised price, that Spot Buy will automatically
+    | disappear from this tab and appear in History.
+    |
+    */
+
+    $spotbylist = Spotby::whereHas('quotes', function ($q) {
+
+            $q->where('round', 1)
+              ->whereNotNull('price')
+              ->whereNull('client_revised_price');
+
+        })
+        ->with([
+            'quotes' => function ($q) {
+
+                $q->where('round', 1)
+                  ->whereNotNull('price')
+                  ->whereNull('client_revised_price')
+                  ->orderBy('price', 'asc')
+                  ->orderBy('transit_time', 'asc')
+                  ->with('vendor');
+
+            }
+        ])
+        ->get();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TAB 2
+    | Buyer Round 2 History
+    |--------------------------------------------------------------------------
+    |
+    | Conditions:
+    |
+    | 1. Supplier submitted Round 1 price
+    | 2. Buyer has already entered client revised price
+    |
+    */
+
+    $historyQuotes = Spotby::whereHas('quotes', function ($q) {
+
+            $q->where('round', 1)
+              ->whereNotNull('price')
+              ->whereNotNull('client_revised_price');
+
+        })
+        ->with([
+            'quotes' => function ($q) {
+
+                $q->where('round', 1)
+                  ->whereNotNull('price')
+                  ->whereNotNull('client_revised_price')
+                  ->orderBy('price', 'asc')
+                  ->orderBy('transit_time', 'asc')
+                  ->with('vendor');
+
+            }
+        ])
+        ->get();
+
+
+    return view(
+        'admin.spotby.spotby-client-quote-b1r2-revised',
+        compact(
+            'spotbylist',
+            'historyQuotes'
+        )
+    );
+}
 	
 	///storeClientOffers
 /*	
