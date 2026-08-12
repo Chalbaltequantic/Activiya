@@ -46,7 +46,7 @@ class SpotbuyNotificationController extends Controller
 
     $admin = Auth::guard('admin')->user();
 
-print_r($admin);
+//print_r($admin);
  
     if (!$admin) {
 
@@ -74,7 +74,7 @@ print_r($admin);
     /*
      * No vendor found
      */
-
+echo $vendor->id;
     if (!$vendor) {
 
         $notifications = collect();
