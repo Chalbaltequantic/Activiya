@@ -47,7 +47,7 @@
     }
  .sticky-col-3 {
       position: sticky;
-      left: 200px; /* Adjust based on col-1 width */
+      left: 190px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
