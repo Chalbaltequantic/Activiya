@@ -41,13 +41,13 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 100px; /* Adjust based on col-1 width */
+      left: 90px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
  .sticky-col-3 {
       position: sticky;
-      left: 200px; /* Adjust based on col-1 width */
+      left: 190px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
@@ -219,7 +219,7 @@
                                   multiple
                                   data-live-search="true"
                                   data-actions-box="false"
-                                  data-max-options="7" data-width="150px" data-selected-text-format="count > 2">
+                                  data-width="150px" data-selected-text-format="count > 2">
                               @foreach($vendors as $vendor)
                                   <option value="{{ $vendor->id }}"
                                     {{ in_array($vendor->id, $spotbydata->vendors->pluck('id')->toArray()) ? 'selected' : '' }}>
@@ -299,7 +299,7 @@
 							{{ $vendors->filter(function($vendor) use ($historyspotbydata) {
 								return in_array($vendor->id, $historyspotbydata->vendors->pluck('id')->toArray());
 							})->pluck('vendor_name')->implode(', ') ?? 'NA' }}
-                          </select>
+                         
 						</td>
 						</tr>
 						  
