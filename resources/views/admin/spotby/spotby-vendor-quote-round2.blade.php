@@ -210,13 +210,13 @@
 						 <td>
                         <input type="number" class="revised-price"
                                name="quotes[{{ $loop->index }}][price]"
-                               value="">
+                               value="" style="width:100px;">
                         <input type="hidden" name="quotes[{{ $loop->index }}][spotby_id]" value="{{ $spotbydata->id }}">
                     </td>
                     <td>
                         <input type="number" class="revised-time"
                                name="quotes[{{ $loop->index }}][transit_time]"
-                               value="" style="width:30px;">
+                               value="" style="width:50px;">
                     </td>
 						</tr>
 						  
