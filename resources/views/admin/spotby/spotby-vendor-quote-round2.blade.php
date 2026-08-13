@@ -216,7 +216,7 @@
                     <td>
                         <input type="number" class="revised-time"
                                name="quotes[{{ $loop->index }}][transit_time]"
-                               value="" style="width:50px;">
+                               value="" style="width:40px;">
                     </td>
 						</tr>
 						  
