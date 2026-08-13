@@ -36,7 +36,7 @@
 
     .sticky-col-2 {
       position: sticky;
-      left: 90px; /* Adjust based on col-1 width */
+      left: 100px; /* Adjust based on col-1 width */
       background: #fff;
       z-index: 99;
     }
