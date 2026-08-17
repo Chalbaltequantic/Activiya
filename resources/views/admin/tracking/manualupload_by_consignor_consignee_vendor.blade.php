@@ -178,11 +178,11 @@
 							  <td>{{ $trackingdata->distance_to_cover }}</td>
 							  <td>{{ $trackingdata->tracking_link }}</td>
 							  
-								<td><input type="text" name="data[{{ $loop->index }}][reporting_date]" value="{{ $trackingdata->reporting_date }}"></td>
+								<td><input type="date" name="data[{{ $loop->index }}][reporting_date]" value="{{ $trackingdata->reporting_date }}"></td>
 
 								<td><input type="text" name="data[{{ $loop->index }}][reporting_time]" value="{{ $trackingdata->reporting_time }}"></td>
 
-								<td><input type="text" name="data[{{ $loop->index }}][release_date]" value="{{ $trackingdata->release_date }}"></td>
+								<td><input type="date" name="data[{{ $loop->index }}][release_date]" value="{{ $trackingdata->release_date }}"></td>
 
 								<td><input type="text" name="data[{{ $loop->index }}][release_time]" value="{{ $trackingdata->release_time }}"></td>
 

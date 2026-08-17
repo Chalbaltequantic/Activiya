@@ -481,6 +481,8 @@ class TrackingController extends Controller
 		$trackingdatalist = Tracking::whereNotNull('shipment_status')
 		->where('shipment_status', 'Reported')
 		->where('distance_to_cover', 0)
+		->whereNull('reporting_date')
+		->whereNull('release_date')	
 		->when(!empty($vendorCode), function ($query) use ($vendorCode) {
             $query->where('vendor_code', $vendorCode);
         })
@@ -503,6 +505,7 @@ class TrackingController extends Controller
         $saveErrors = [];		
 		foreach ($request->data as $row) 
 		{
+			
 			$entry = Tracking::find($row['id']);
 					
 			$indent_no = $row['indent_no'];
@@ -525,7 +528,7 @@ class TrackingController extends Controller
 					if(!empty($row['reporting_date']) && !empty($row['reporting_time']))
 					{
 						$entry->reporting_date = $reporting_date;
-						$entry->reporting_time = $reporting_time;
+						$entry->reporting_time = $row['reporting_time'];
 						$entry->release_date = $release_date;
 						$entry->release_time = $row['release_time'];
 						$entry->detention_days = $detention_days;
@@ -537,7 +540,6 @@ class TrackingController extends Controller
 				catch (\Exception $e) 
 				{
 					Log::error("Save failed for Indent No: {$indent_no} — Error: " . $e->getMessage());
-					
 					$saveErrors[] = "Unexpected error while saving data for Indent No: {$indent_no}";
 				}
 		} //for loop 
