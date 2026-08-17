@@ -29,11 +29,6 @@
   z-index: 99;
 }
 
-/* Column widths */
-.col-width {
- /* min-width: 160px;*/
-}
-
 @media (max-width: 768px) {
   .col-width {
 	min-width: 90px;
@@ -42,6 +37,17 @@
   .sticky-col-2 {
 	left: 80px;
   }
+}
+
+#billDataTable .sticky-submit-cell {
+position: sticky;
+right: 0;
+bottom: 0;
+z-index: 1100;
+text-align: right;
+}
+#billDataTable .sticky-submit-cell .btn {
+min-width: 80px;
 }
 </style>
 @endpush
@@ -196,11 +202,19 @@
 							  @endif
 					  
 							</tbody>
-							@if(count($trackingdatalist) > 0)
-							<tr>
-								<td colspan="26" class="text-right"> <button type="submit" class="btn btn-primary">Submit</button></td>
+							@if(count($trackingdatalist) > 0)	
+							<tfoot>
+
+								<tr class="submit-footer-row">
+									<td colspan="20"></td>
+									<td class="sticky-submit-cell">
+										<button type="submit" class="btn btn-primary">
+											<i class="fas fa-save mr-1"></i>Submit
+										</button>
+									</td>
 								</tr>
-							@endif	
+							</tfoot>
+							@endif
 						</table>
 						
 						
