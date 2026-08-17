@@ -8,96 +8,18 @@
 	<link rel="icon" href="{{asset('favicon.png')}}" type="image/png" />
 	<meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('backend/assets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('backend/assets/dist/css/adminlte.min.css') }}">
     <!-- jQuery -->
     <script src="{{ asset('backend/assets/plugins/jquery/jquery.min.js') }}"></script>
-	
-    @stack('css')
+	 <link rel="stylesheet" href="{{ asset('backend/assets/custom.css') }}">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-
-
-<style>
-.dataTables_filter {
-    float: left !important;
-}
-.navbar-white {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: #ffffff;
-}
-.navbar-light .navbar-nav .nav-link {
-    color: #ffffff;
-}
-.navbar-light .navbar-brand {
-    color: rgba(255, 255, 255, 1);
-}
-
- th {
-        vertical-align: top !important;
-    }
-
-.table-container {
-    max-height: 400px; 
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-#billDataTable{
-    max-height: 400px;   
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-@media (max-width: 768px) {
-    .mobile-hide {
-        display: none !important;
-    }
-
-    .sticky-col-2,
-    .sticky-col-3,
-    .sticky-col-4,
-    .sticky-col-5 {
-        position: static !important;
-        left: auto !important;
-        z-index: auto !important;
-    }
-}
-
-@media only screen and (max-width: 991px),
-       only screen and (hover: none) and (pointer: coarse) {
-    .mobile-hide {
-        display: none !important;
-    }
-}
-@media only screen and (max-width: 991px),
-       only screen and (hover: none) and (pointer: coarse) {
-    th.mobile-hide,
-    td.mobile-hide {
-        display: none !important;
-    }
-}
-@media only screen and (max-width: 991px),
-       only screen and (hover: none) and (pointer: coarse) {
-    .mobile-hide {
-        display: none !important;
-    }
-
-    .sticky-col-1,
-    .sticky-col-2,
-    .sticky-col-3,
-    .sticky-col-4,
-    .sticky-col-5 {
-        position: static !important;
-        left: auto !important;
-        z-index: auto !important;
-    }
-}
-</style>
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+ @stack('style')
 </head>
 
 <body class="hold-transition layout-top-nav">

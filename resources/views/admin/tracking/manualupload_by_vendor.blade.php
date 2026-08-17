@@ -1,30 +1,8 @@
 @extends('admin.admin')
 @section('bodycontent')
+@push('style')
+
  <style>
-   .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
 
     /* Sticky columns */
     .sticky-col-1 {
@@ -53,11 +31,6 @@
       z-index: 99;
     }
 
-    /* Column widths */
-    .col-width {
-     /* min-width: 160px;*/
-    }
-
     @media (max-width: 768px) {
       .col-width {
         min-width: 90px;
@@ -68,46 +41,19 @@
       }
     }
 	
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    min-width: 120px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-	
-	
-  </style>
+ </style>
+@endpush
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Tracking data History</h1>
+            <h1 class="m-0">Intransit Shipment Status</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
              <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-             <li class="breadcrumb-item active">Tracking data History</li>
+             <li class="breadcrumb-item active">Intransit Shipment Status</li>
 				
             </ol>
           </div><!-- /.col -->
@@ -221,17 +167,25 @@
 							  <td>{{$trackingdata->distance}}</td>
 							  <td>{{$trackingdata->delivery_due_date}}</td>
 							   <td>
-							   <input type="text" name="data[{{ $loop->index }}][driver_number]" value="{{$trackingdata->driver_number ?? ''}}">
+							   <input type="text" name="data[{{ $loop->index }}][driver_number]"  class="char-10" value="{{$trackingdata->driver_number ?? ''}}">
 							   </td>
-							  <td><input type="text" name="data[{{ $loop->index }}][shipment_status]" value="{{ $trackingdata->shipment_status }}"></td>
+							  <td>
+																
+								<select name="data[{{ $loop->index }}][shipment_status]">
+									<option value="On Track" {{ $trackingdata->shipment_status == 'On Track' ? 'selected' : '' }}>On Track</option>
+									<option value="Off Track" {{ $trackingdata->shipment_status == 'Off Track' ? 'selected' : '' }}>Off Track</option>
+									<option value="Reported" {{ $trackingdata->shipment_status == 'Reported' ? 'selected' : '' }}>Reported</option>
+								</select>
+							  
+							  </td>
 							
 							<!--   <td><input type="text" name="data[{{ $loop->index }}][transit_status]" value="{{ $trackingdata->transit_status }}"></td>-->
 							  
-							   <td><input type="text" name="data[{{ $loop->index }}][distance_covered]" value="{{ $trackingdata->distance_covered }}"></td>
+							   <td><input type="text" name="data[{{ $loop->index }}][distance_covered]"  class="char-10" value="{{ $trackingdata->distance_covered }}"></td>
 							  
 							   <td><input type="text" name="data[{{ $loop->index }}][current_location]" value="{{ $trackingdata->current_location }}"></td>
 							  
-							  <td><input type="text" name="data[{{ $loop->index }}][distance_to_cover]" value="{{ $trackingdata->distance_to_cover }}"></td>
+							  <td><input type="text" name="data[{{ $loop->index }}][distance_to_cover]"  value="{{ $trackingdata->distance_to_cover }}"></td>
 							  
 							 
 							  <td><input type="text" name="data[{{ $loop->index }}][tracking_link]" value="{{ $trackingdata->tracking_link }}"></td>
@@ -245,8 +199,8 @@
 							  @endif
 					  
 							</tbody>
-							<tr><td colspan="16"></td>
-								<td colspan="4"> <button type="submit" class="btn btn-primary">Submit</button></td>
+							<tr>
+								<td colspan="21" class="text-right"> <button type="submit" class="btn btn-primary">Submit</button></td>
 								</tr>
 						</table>
 						</form>

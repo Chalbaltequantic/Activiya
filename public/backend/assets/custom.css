@@ -1,0 +1,130 @@
+.dataTables_filter {
+    float: left !important;
+}
+.navbar-white {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #ffffff;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff;
+}
+.navbar-light .navbar-brand {
+    color: rgba(255, 255, 255, 1);
+}
+
+ th {
+        vertical-align: top !important;
+    }
+
+.table-container {
+    max-height: 400px; 
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+#billDataTable{
+    max-height: 400px;   
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .sticky-col-2,
+    .sticky-col-3,
+    .sticky-col-4,
+    .sticky-col-5 {
+        position: static !important;
+        left: auto !important;
+        z-index: auto !important;
+    }
+}
+
+@media only screen and (max-width: 991px),
+       only screen and (hover: none) and (pointer: coarse) {
+    .mobile-hide {
+        display: none !important;
+    }
+}
+@media only screen and (max-width: 991px),
+       only screen and (hover: none) and (pointer: coarse) {
+    th.mobile-hide,
+    td.mobile-hide {
+        display: none !important;
+    }
+}
+@media only screen and (max-width: 991px),
+       only screen and (hover: none) and (pointer: coarse) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .sticky-col-1,
+    .sticky-col-2,
+    .sticky-col-3,
+    .sticky-col-4,
+    .sticky-col-5 {
+        position: static !important;
+        left: auto !important;
+        z-index: auto !important;
+    }
+}
+
+/* Global table styles */
+
+.table-responsive-fixed {
+    overflow-x: auto;
+    position: relative;
+}
+
+table {
+    min-width: max-content;
+    font-size: 12px;
+}
+
+.consign-data-table th,
+.consign-data-table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.consign-data-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+}
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+
+/* Global input widths */
+
+.table input.char-3 {
+    width: 4ch !important;
+    min-width: 4ch !important;
+}
+
+.table input.char-4 {
+    width: 5ch !important;
+    min-width: 5ch !important;
+}
+
+.table input.char-6 {
+    width: 7ch !important;
+    min-width: 7ch !important;
+}
+.table input.char-8 {
+    width: 9ch !important;
+    min-width: 9ch !important;
+}
+
+.table input.char-10 {
+    width: 12ch !important;
+    min-width: 12ch !important;
+}

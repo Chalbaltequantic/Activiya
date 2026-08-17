@@ -192,7 +192,7 @@
 								<td class="sticky-col-1">{{ $row->reference_no }}</td>
 								<td class="sticky-col-2">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>
 							
-								<td class="sticky-col-3">{{ $row->destination_name_code }}</td>
+								<td class="sticky-col-3">{{ $row->destination_name_code }} {{$row->destination_name}}</td>
 								<td>{{ $row->t_mode }}</td>
 								<td>{{ $truck->description ?? 'NA' }}</td>
 						{{--	<td class="mobile-hide">{{ $row->zw_util }}%</td>

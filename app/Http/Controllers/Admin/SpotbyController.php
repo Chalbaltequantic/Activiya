@@ -618,8 +618,6 @@ class SpotbyController extends Controller
 						$historyQuote->is_qualified = true;
 					}
 				}
-				
-				
 		}
 		
 		

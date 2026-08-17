@@ -23,6 +23,7 @@ use App\Models\Ratedata;
 use App\Models\TruckMaster;
 use App\Models\Siteplant;
 use App\Models\Admin;
+use App\Models\TrackingStatusHistory;
 
 use Auth;
 
@@ -353,11 +354,25 @@ class TrackingController extends Controller
 		$userid = auth()->user()->id; //get loggedin user id	
 		$vendorCode = Auth::user()->vendor_code ?? '';
 		
-		$trackingdatalist = Tracking::whereNull('shipment_status')
+		/*$trackingdatalist = Tracking::whereNull('shipment_status')
 		->when(!empty($vendorCode), function ($query) use ($vendorCode) {
             $query->where('vendor_code', $vendorCode);
         })
-		->orderBy('created_at', 'desc')->get();
+		->orderBy('created_at', 'desc')->get();*/
+		
+		$trackingdatalist = Tracking::where(function ($query) {
+
+            $query->whereNull('shipment_status')
+                  ->orWhere('shipment_status', '!=', 'Reported');
+
+        })
+        ->when(!empty($vendorCode), function ($query) use ($vendorCode) {
+            $query->where('vendor_code', $vendorCode);
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+		
 		$updatedtrackingdatalist = Tracking::whereNotNull('shipment_status')
 		->when(!empty($vendorCode), function ($query) use ($vendorCode) {
             $query->where('vendor_code', $vendorCode);
@@ -402,7 +417,26 @@ class TrackingController extends Controller
 						$entry->tracking_link = $row['tracking_link'];
 						$entry->updatedby_vendor = Auth::user()->id;				
 						$entry->updatedby_vendor_at = $createddate;				
-						$entry->save();
+						//////$entry->save();
+						
+						if ($entry->save()) 
+						{
+							TrackingStatusHistory::create([
+								'tracking_id' => $entry->id,
+								'indent_no' => $indent_no,
+								'shipment_status' => $row['shipment_status'],
+								'transit_status' => $transit_status,
+								'distance_covered' => $row['distance_covered'] ?? null,
+								'distance_to_cover' => $row['distance_to_cover'] ?? null,
+								'current_location' => $row['current_location'] ?? null,
+								'tracking_link' => $row['tracking_link'] ?? null,
+								'driver_number' => $row['driver_number'] ?? null,
+								'updated_by' => Auth::user()->id,
+								'updated_by_type' => 'Vendor',
+								'status_updated_at' => $createddate,
+							]);
+						}
+						
 					}
 				} 
 				catch (\Exception $e) 
@@ -417,7 +451,7 @@ class TrackingController extends Controller
 			]);
 	}
 	
-	
+	/*
 	public function update_by_vendor_consign()
 	{
 		$userid = auth()->user()->id; //get loggedin user id	
@@ -429,8 +463,33 @@ class TrackingController extends Controller
             $query->where('vendor_code', $vendorCode);
         })
 		->orderBy('created_at', 'desc')->get();
+		
 		$updatedtrackingdatalist = Tracking::whereNotNull('reporting_date')		
 		->whereNotNull('reporting_time')
+		->when(!empty($vendorCode), function ($query) use ($vendorCode) {
+            $query->where('vendor_code', $vendorCode);
+        })
+		->orderBy('created_at', 'desc')->get();
+		return view('admin.tracking.manualupload_by_consignor_consignee_vendor', compact(['trackingdatalist', 'updatedtrackingdatalist']));
+	}*/
+	
+	public function update_by_vendor_consign()
+	{
+		$userid = auth()->user()->id; //get loggedin user id	
+		$vendorCode = Auth::user()->vendor_code ?? '';
+		
+		$trackingdatalist = Tracking::whereNotNull('shipment_status')
+		->where('shipment_status', 'Reported')
+		->where('distance_to_cover', 0)
+		->when(!empty($vendorCode), function ($query) use ($vendorCode) {
+            $query->where('vendor_code', $vendorCode);
+        })
+		->orderBy('created_at', 'desc')->get();
+		
+		$updatedtrackingdatalist = Tracking::whereNotNull('reporting_date')		
+		->whereNotNull('reporting_time')
+		->where('shipment_status', 'Reported')
+		->where('distance_to_cover', 0)
 		->when(!empty($vendorCode), function ($query) use ($vendorCode) {
             $query->where('vendor_code', $vendorCode);
         })

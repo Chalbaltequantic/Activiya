@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\TrackingStatusHistory;
 class Tracking extends Model
 {
     use HasFactory;
@@ -47,4 +47,13 @@ class Tracking extends Model
 							
 						  ];						  
 	
+	public function statusHistories()
+	{
+		return $this->hasMany(
+			TrackingStatusHistory::class,
+			'tracking_id'
+		)->orderBy('status_updated_at', 'desc');
+	}
+
 }
+

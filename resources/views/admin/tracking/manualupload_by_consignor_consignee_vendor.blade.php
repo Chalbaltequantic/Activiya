@@ -1,113 +1,61 @@
 @extends('admin.admin')
 @section('bodycontent')
+@push('style')
  <style>
-   .table-responsive-fixed {
-      overflow-x: auto;
-      position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
-    /* Sticky columns */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 99;
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 85px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 99;
-    }
- .sticky-col-3 {
-      position: sticky;
-      left: 158px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 99;
-    }
- .sticky-col-4 {
-      position: sticky;
-      left: 212px; /* Adjust based on col-1 width */
-      background: #fff;
-      z-index: 99;
-    }
-
-    /* Column widths */
-    .col-width {
-     /* min-width: 160px;*/
-    }
-
-    @media (max-width: 768px) {
-      .col-width {
-        min-width: 90px;
-      }
-
-      .sticky-col-2 {
-        left: 80px;
-      }
-    }
-	
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
+/* Sticky columns */
+.sticky-col-1 {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 99;
 }
 
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
+.sticky-col-2 {
+  position: sticky;
+  left: 85px; /* Adjust based on col-1 width */
+  background: #fff;
+  z-index: 99;
+}
+.sticky-col-3 {
+  position: sticky;
+  left: 158px; /* Adjust based on col-1 width */
+  background: #fff;
+  z-index: 99;
+}
+.sticky-col-4 {
+  position: sticky;
+  left: 212px; /* Adjust based on col-1 width */
+  background: #fff;
+  z-index: 99;
 }
 
-#input-table th,
-#input-table td {
-    min-width: 120px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    background: #fff;
-    text-align: left;
+/* Column widths */
+.col-width {
+ /* min-width: 160px;*/
 }
 
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-	
-	
-  </style>
+@media (max-width: 768px) {
+  .col-width {
+	min-width: 90px;
+  }
+
+  .sticky-col-2 {
+	left: 80px;
+  }
+}
+</style>
+@endpush
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Tracking data Update</h1>
+            <h1 class="m-0">Tracking Delivery Status</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
              <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-             <li class="breadcrumb-item active">Tracking data update</li>
+             <li class="breadcrumb-item active">Tracking Delivery Status</li>
 				
             </ol>
           </div><!-- /.col -->
@@ -248,8 +196,8 @@
 							  @endif
 					  
 							</tbody>
-							<tr><td colspan="20"></td>
-								<td colspan="2"> <button type="submit" class="btn btn-primary">Submit</button></td>
+							<tr>
+								<td colspan="26" class="text-right"> <button type="submit" class="btn btn-primary">Submit</button></td>
 								</tr>
 						</table>
 						</form>
