@@ -199,10 +199,13 @@
 							  @endif
 					  
 							</tbody>
-							<tr>
-								<td colspan="21" class="text-right"> <button type="submit" class="btn btn-primary">Submit</button></td>
-								</tr>
+							
 						</table>
+					@if(count($trackingdatalist) > 0)		
+						<div class="text-right my-3">
+						<button type="submit" class="btn btn-success">💾 Submit</button>
+						</div>
+					@endif	
 						</form>
 				 </div>
 				 </div>
