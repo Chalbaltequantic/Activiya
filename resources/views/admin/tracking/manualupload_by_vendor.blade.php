@@ -204,17 +204,9 @@
 						@if(count($trackingdatalist) > 0)		
 
 						<div class="tracking-submit-footer">
-
-							<span class="tracking-submit-message">
-								<i class="fas fa-info-circle mr-1"></i>
-								Update the required tracking information and click Submit
-							</span>
-
-							<button type="submit" class="btn btn-primary px-4">
-								<i class="fas fa-save mr-1"></i>
-								Submit
+							<button type="submit" class="btn btn-primary">
+								<i class="fas fa-save mr-1"></i>Submit
 							</button>
-
 						</div>
 						@endif
 						
