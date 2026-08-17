@@ -180,8 +180,7 @@ min-width: 80px;
 							   <td>
 							   <input type="text" name="data[{{ $loop->index }}][driver_number]"  class="char-10" value="{{$trackingdata->driver_number ?? ''}}">
 							   </td>
-							  <td>
-																
+							  <td>																
 								<select name="data[{{ $loop->index }}][shipment_status]">
 									<option value="On Track" {{ $trackingdata->shipment_status == 'On Track' ? 'selected' : '' }}>On Track</option>
 									<option value="Off Track" {{ $trackingdata->shipment_status == 'Off Track' ? 'selected' : '' }}>Off Track</option>
