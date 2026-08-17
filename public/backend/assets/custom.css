@@ -128,3 +128,30 @@ table {
     width: 12ch !important;
     min-width: 12ch !important;
 }
+
+
+  .tracking-submit-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 1000;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 10px 18px;
+
+        background: #ffffff;
+        border-top: 1px solid #dee2e6;
+
+        box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .tracking-submit-message {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .tracking-submit-footer .btn {
+        min-width: 120px;
+    }
