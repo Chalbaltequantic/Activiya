@@ -196,13 +196,13 @@
 							  @endif
 					  
 							</tbody>
-							
+							@if(count($trackingdatalist) > 0)
+							<tr>
+								<td colspan="26" class="text-right"> <button type="submit" class="btn btn-primary">Submit</button></td>
+								</tr>
+							@endif	
 						</table>
-						@if(count($trackingdatalist) > 0)		
-						<div class="text-right my-3">
-						<button type="submit" class="btn btn-success">💾 Submit</button>
-						</div>
-						@endif	
+						
 						
 						</form>
 				 </div>
