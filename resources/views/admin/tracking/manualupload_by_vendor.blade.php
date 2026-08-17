@@ -41,6 +41,23 @@
       }
     }
 	
+#billDataTable tfoot .submit-footer-row td {
+background: #ffffff;
+border-top: 1px solid #dee2e6;
+padding: 12px;
+}
+#billDataTable .sticky-submit-cell {
+position: sticky;
+right: 0;
+bottom: 0;
+z-index: 1100;
+min-width: 170px;
+text-align: right;
+background: #ffffff !important;
+box-shadow: -4px -2px 8px rgba(0, 0, 0, 0.08);    }
+#billDataTable .sticky-submit-cell .btn {
+min-width: 140px;
+}	
  </style>
 @endpush
 <!-- Content Header (Page header) -->
@@ -199,16 +216,24 @@
 							  @endif
 					  
 							</tbody>
-							
-						</table>
-						@if(count($trackingdatalist) > 0)		
+							@if(count($trackingdatalist) > 0)	
+							<tfoot>
 
-						<div class="tracking-submit-footer">
-							<button type="submit" class="btn btn-primary">
-								<i class="fas fa-save mr-1"></i>Submit
-							</button>
-						</div>
-						@endif
+								<tr class="submit-footer-row">
+									<td colspan="20"></td>
+									<td class="sticky-submit-cell">
+										<button type="submit" class="btn btn-primary">
+											<i class="fas fa-save mr-1"></i>Submit
+										</button>
+									</td>
+								</tr>
+							</tfoot>
+							@endif
+						</table>
+							
+
+						
+						
 						
 						</form>
 				 </div>
