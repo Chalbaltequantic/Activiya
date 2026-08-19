@@ -132,7 +132,7 @@
 								<th style="background: #c6e0b4; color: #0070c0;">Reason for<br>approval</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Send for <br>Approval</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Action</th>
-								<th class="text-center" style="background:#fce4d6; color:#c6e0b4; width:45px;"><input type="checkbox" id="selectAllIndents"></th>
+								<th class="text-center" style="background:#c6e0b4; color:#0070c0; width:45px;"><input type="checkbox" id="selectAllIndents"></th>
 													  
 								</tr>
 						  </thead>
