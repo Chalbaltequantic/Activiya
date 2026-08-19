@@ -1,31 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
+@push('style')
  <style>
-	.table-responsive-fixed {
-	overflow-x: auto;
-	position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
     /* Sticky columns */
     .sticky-col-1 {
       position: sticky;
@@ -59,47 +35,14 @@
       z-index: 99;
     }
 
-    /* Column widths */
-    . {
-      min-width: 100px;
-    }
-
     @media (max-width: 768px) {
       . {
         min-width: 90px;
-      }
-
-     
+      }     
     }
 	
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    min-width: 50px;
-    padding: 2px;
-    border: 0.5px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-	
   </style>
+  @endpush
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -148,10 +91,10 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link" href="{{route('admin.lopmanualupload')}}">Create</a></li>
-                   <li class="nav-item"><a class="nav-link" href="{{route('admin.loadSummary')}}">Unqualified Indent</a></li>
-				   <li class="nav-item"><a class="nav-link active" href="{{route('admin.qualifiedloadsummary')}}">Qualified Indent</a></li>
-					   {{--  <li class="nav-item"><a class="nav-link" href="{{route('admin.loadSummaryApproval')}}">Approve Indent</a></li> --}}
+                {{--  <li class="nav-item"><a class="nav-link" href="{{route('admin.lopmanualupload')}}">Create</a></li> --}}
+				 <li class="nav-item"><a class="nav-link active" href="{{route('admin.qualifiedloadsummary')}}">Qualified Indent</a></li>
+                 <li class="nav-item"><a class="nav-link" href="{{route('admin.loadSummary')}}">Unqualified Indent</a></li>
+				 
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -161,8 +104,8 @@
                   <div class="tab-pane active" id="timeline">
                     <!-- The timeline -->
                   	<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
-						<table id="appointdataTable" class="table table-bordered border-dark table-hover">
-							<thead>
+						<table id="billDataTable" class="table table-bordered border-dark table-hover">
+						<thead>
 							<tr>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-1">Reference<br>no</th>
 								<th style="background: #fce4d6; color: #0070c0;z-index:999;" class="sticky-col-2">Origin<br>name code</th>
@@ -172,15 +115,13 @@
 								<th style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>
+								<th style="background: #fce4d6; color: #0070c0;">Priority</th>
 								<th style="background: #c6e0b4; color: #0070c0;">View Items</th>
-								
-													  
-								</tr>
+							</tr>
 						  </thead>
 						<tbody>
 							@if(count($qualifiedloads) > 0)
-							 @foreach($qualifiedloads as $row)
-							  
+							 @foreach($qualifiedloads as $row)							  
 							<tr>
 								<td class="sticky-col-1">{{ $row->reference_no }}</td>
 								<td class="sticky-col-2">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>
@@ -191,16 +132,12 @@
 									<td>{{ $row->zw_util }}%</td>
 									<td>{{ $row->zv_util }}%</td>
 									<td class="fw-bold">{{ $row->gross_util }}%</td>
-
-									<td>
-										@php											
-											$color = 'success'; // green
-										@endphp
-
-										{{--<span class="btn btn-{{ $color }} btn-sm">
-											{{ ucfirst($color) }}
-										</span>--}}
-										
+									<td class="text-center">
+									@if($row->priority_display == 1)
+										<span class="badge badge-danger">{{$row->priority_display}}</span>
+									@endif
+									</td>
+									<td>									
 										<a href="{{ route('admin.load.summary.items', $row->reference_no) }}"
 										class="btn btn-sm btn-primary">View Item</a>
 									</td>
