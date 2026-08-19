@@ -236,6 +236,8 @@
 					@if(Gate::allows('admin.allocation'))
 					 <li class=""><a href="{{ route('admin.lop') }}" class="dropdown-item">Allocation</a></li>
 					@endif
+					<li class=""><a href="{{route('admin.qualifiedloadsummary')}}" class="dropdown-item">Indent</a></li>
+										
 					@if(Gate::allows('admin.autoindentallocation'))
 					 <li class=""><a href="{{ route('admin.loadsummary_auto_allocation') }}" class="dropdown-item">Auto Indent Allocation</a></li>	
 					@endif

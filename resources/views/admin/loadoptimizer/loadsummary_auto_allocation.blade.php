@@ -1,31 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
+@push('style')
  <style>
-	.table-responsive-fixed {
-	overflow-x: auto;
-	position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
     /* Sticky columns */
     .sticky-col-1 {
       position: sticky;
@@ -59,11 +35,6 @@
       z-index: 99;
     }
 
-    /* Column widths */
-    . {
-      min-width: 100px;
-    }
-
     @media (max-width: 768px) {
       . {
         min-width: 90px;
@@ -72,34 +43,8 @@
      
     }
 	
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    min-width: 50px;
-    padding: 2px;
-    border: 0.5px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-	
   </style>
+@endpush
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">

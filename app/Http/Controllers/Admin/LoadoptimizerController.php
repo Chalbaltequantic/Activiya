@@ -192,16 +192,6 @@ class LoadoptimizerController extends Controller
 	}
 	
 	
-	public function loadoptimizerdatalist(Request $request)
-    {
-        $title = 'Loadoptimizer Data Upload';
-        $pagetitle = $title.' Listing';
-		$user_role = Auth::user()->role_id;
-		$data = $request->all();        
-	    $lopdatalist = Loadoptimizer::orderBy('created_at', 'desc')->get();       
-        return view('admin.materialdata.materialdatalist',compact(['pagetitle','title','lopdatalist','user_role']));
-    }
-	
 	//AJAX: Fetch dependent data : origin city name , desination city, sku description
    
     public function fetchRowData(Request $request)
@@ -380,18 +370,104 @@ class LoadoptimizerController extends Controller
 
 		return view('admin.loadoptimizer.load_summary', compact('loads'));
 	}
-		
-		public function qualifiedloadsummary()
-		{
-			
-			// Fetch summaries (qualified first)
-			$qualifiedloads = LoadSummary::where('is_qualified', 1)->orderBy('is_qualified')
-				->orderBy('reference_no')
+	
+	//DELETE UNqualfied Load Summary
+	public function bulkDeleteLoadSummary(Request $request)
+	{
+		try {
+
+			$request->validate([
+				'ids'   => 'required|array|min:1',
+				'ids.*' => 'required|integer',
+			]);
+
+
+			$selectedIds = $request->input('ids', []);
+			$loads = LoadSummary::whereIn('id', $selectedIds)
+				->where('is_qualified', 0)
 				->get();
 
-			return view('admin.loadoptimizer.qualified_load_summary', compact('qualifiedloads'));
+
+			if ($loads->isEmpty()) {
+
+				return response()->json([
+					'success' => false,
+					'message' => 'No valid unqualified indent selected.'
+				], 422);
+			}
+
+			DB::transaction(function () use ($loads) {
+
+				foreach ($loads as $load) {
+
+					/* Delete items belonging to this generated Load Summary.
+					 It's NOT deleting the original load_optimizer records.
+					 */
+
+					DB::table('load_summary_items')
+						->where('reference_no', $load->reference_no)
+						->delete();
+
+					$load->delete();
+				}
+			});
+
+
+			return response()->json([
+				'success' => true,
+				'message' => $loads->count() . ' unqualified indent(s) deleted successfully.'
+			]);
+
+		} catch (\Illuminate\Validation\ValidationException $e) {
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Please select at least one indent.'
+			], 422);
+
+		} catch (\Exception $e) {
+
+			\Log::error(
+				'Unqualified indent bulk delete failed',
+				[
+					'ids'   => $request->input('ids', []),
+					'error' => $e->getMessage(),
+				]
+			);
+
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Unable to delete selected indent(s).'
+			], 500);
 		}
-		
+	}
+	
+
+	public function qualifiedloadsummary()
+		{
+			$qualifiedloads = LoadSummary::where('is_qualified', 1)
+				->orderBy('is_qualified')
+				->orderBy('reference_no')
+				->get();
+			foreach ($qualifiedloads as $load) {
+
+				$hasPriorityOne = DB::table('load_summary_items as lsi')
+					->join('load_optimizer as lo', 'lo.id', '=', 'lsi.load_optimizer_id')
+					->where('lsi.reference_no', $load->reference_no)
+					->whereNull('lo.deleted_at')
+					->where('lo.priority', 1)
+					->exists();
+
+				// for displaying in Blade
+				$load->priority_display = $hasPriorityOne ? 1 : '';
+			}
+
+			return view(
+				'admin.loadoptimizer.qualified_load_summary',
+				compact('qualifiedloads')
+			);
+		}	
 				
 		public function viewLoadedItems($referenceNo)
 		{
@@ -503,9 +579,7 @@ class LoadoptimizerController extends Controller
                 ->lockForUpdate()
                 ->findOrFail($id);
 
-            /** -----------------------------
-             * 1️ STORE FULL HISTORY
-             * -----------------------------*/
+            /* STORE FULL HISTORY */
 			 $created_by   = Auth::user()->id;
             LoadOptimizerItemHistory::create([
                 'load_optimizer_id' => $item->id,
@@ -525,10 +599,7 @@ class LoadoptimizerController extends Controller
                 'edited_at'         => now(),
             ]);
 
-            /** -----------------------------
-             * 2️ SOFT DELETE
-             * -----------------------------*/
-            $item->delete(); // uses SoftDeletes
+            $item->delete();
         });
 
         return response()->json([
@@ -537,24 +608,10 @@ class LoadoptimizerController extends Controller
         ]);
     }
 	
-	///Summary Approval / Reject
-	/*public function loadSummaryApproval()
-	{		
-		// Fetch summaries (unqualified first) to approve / reject
-		$loads = LoadSummary::where('is_qualified', 0)
-				->where('approval_status','SENT_FOR_APPROVAL')
-				->orderBy('id', 'desc')
-				->get();
-		return view('admin.loadoptimizer.approve_reject_load_summary', compact('loads'));
-	}*/
 	
 	public function loadSummaryApproval()
 	{
-		/**
-		 * ===============================
-		 * AUTO LOADS (load_summary)
-		 * ===============================
-		 */
+		/* AUTO LOADS (load_summary) */
 		$autoLoads = LoadSummary::where('is_qualified', 0)
 			->where('approval_status', 'SENT_FOR_APPROVAL')
 			->select([
@@ -575,11 +632,7 @@ class LoadoptimizerController extends Controller
 				DB::raw("'AUTO' as source_type")
 			]);
 
-		/**
-		 * ===============================
-		 * MANUAL LOADS (manual_load_summary)
-		 * ===============================
-		 */
+		/* MANUAL LOADS (manual_load_summary) */
 		$manualLoads = \DB::table('manual_load_summary')
 			->where('approval_status', 'SENT_FOR_APPROVAL')
 			->select([
@@ -600,11 +653,7 @@ class LoadoptimizerController extends Controller
 				DB::raw("'MANUAL' as source_type")
 			]);
 
-		/**
-		 * ===============================
-		 * MERGE + ORDER
-		 * ===============================
-		 */
+		/* MERGE Manual and Auto Indent */
 		$loads = $autoLoads
 			->unionAll($manualLoads)
 			->orderBy('id', 'desc')
@@ -678,16 +727,10 @@ class LoadoptimizerController extends Controller
 		}
 	}
 	
-	/**
-     *lop Allocation Automatic
-	 */
+	/*LOp Allocation Automatic*/
 	
 	public function loadsummary_auto_allocation()
 	{		
-		/*$qualifiedloads = LoadSummary::where('is_qualified', 1)									
-									->orderBy('is_qualified')
-									->orderBy('reference_no')
-									->get();*/
 		$autoLoads = DB::table('load_summary as ls')
         ->leftJoin('truck_master as tm', 'tm.id', '=', 'ls.truck_id')
         ->where('ls.is_qualified', 1)
@@ -716,9 +759,7 @@ class LoadoptimizerController extends Controller
         ]);
 
 
-    /* ======================
-     * MANUAL INDENT
-     * ====================== */
+    /*  MANUAL INDENT */
     $rateSub = DB::table('rate_master')
     ->select('t_code', 'truck_type')
     ->where('rank', 1)
@@ -759,196 +800,8 @@ class LoadoptimizerController extends Controller
 		return view('admin.loadoptimizer.loadsummary_auto_allocation', compact('qualifiedloads'));
 	}
 	
-	/**
-     * AJAX batch allocation
-     */
-  /*  public function processAutoAllocation(Request $request)
-	{
-		
-		// Ensure tracking row exists
-		$run = DB::table('allocation_runs')
-			->where('run_type', 'AUTO_ALLOCATION')
-			->first();
-
-		if (!$run) {
-			DB::table('allocation_runs')->insert([
-				'run_type'    => 'AUTO_ALLOCATION',
-				'last_run_at' => '2026-01-01 00:00:00',
-				'created_at'  => now(),
-				'updated_at'  => now(),
-			]);
-
-			$run = DB::table('allocation_runs')
-				->where('run_type', 'AUTO_ALLOCATION')
-				->first();
-		}
-
-		//Latest manual load time
-		$latestLoad = LoadSummary::max('created_at');
-
-		// No data yet
-		if (!$latestLoad) {
-			return response()->json([
-				'completed' => false,
-				'message'   => 'No Indent exist'
-			]);
-		}
-
-		// Stop if nothing new
-		if ($latestLoad <= $run->last_run_at) {
-			return response()->json([
-				'completed' => false,
-				'message'   => 'No new Indent found'
-			]);
-		}
-		
-		
-		//$limit  = 10;
-		//$offset = $request->offset ?? 0;
-		$created_by  = Auth::user()->id;
-		$createddate = now();
-
-		$errors = [];
-		$processed = 0;
-		
-		//Get all qualified load summary //////
-		
-		$loads = LoadSummary::where('is_qualified', 1)
-			->where(function ($q) {
-				$q->whereNull('vendor_code')
-				  ->orWhere('vendor_code', '')
-				  ->orWhere('vendor_code', 'NA');
-			})
-			->orderBy('reference_no')->get();
-			//->offset($offset)
-			//->limit($limit)
-			
-
-		if ($loads->isEmpty()) {
-			return response()->json([
-				'completed' => true,
-				'processed' => 0,
-				'errors'    => [],
-			]);
-		}
-
-		foreach ($loads as $load) {
-
-			try {
-
-					DB::transaction(function () use ($load, $created_by,$createddate,&$processed) 
-				{
-
-					// STEP 1: Fetch vendors 
-					$vendors = Ratedata::where('consignor_code', trim($load->origin_name_code))
-						->where('consignee_code', trim($load->destination_name_code))
-						->where('t_code', trim($load->truck_code))
-						->orderBy('rank')
-						->get();
-
-					if ($vendors->isEmpty()) {
-						throw new \Exception('No vendor rate found');
-					}
-
-					// STEP 2: Cycle total custom 3 
-					$cycleTotal = (int) $vendors->sum('custom3');
-					if ($cycleTotal <= 0) {
-						throw new \Exception('Invalid cycle total');
-					}
-					
-
-					// STEP 3: Slot calculation from custom 2 stored as in % 
-					$slots = [];
-					$usedSlots = 0;
-
-					foreach ($vendors as $vendor) {
-						$slot = round(($vendor->custom2 / 100) * $cycleTotal);
-						$slots[$vendor->rank] = $slot;
-						$usedSlots += $slot;
-					}
-
-					$remaining = $cycleTotal - $usedSlots;
-					if ($remaining > 0 && isset($slots[1])) {
-						$slots[1] += $remaining;
-					}
-
-					// STEP 4: Cycle position 
-					$cycleUsed = AllocationHistory::where([
-						'origin_code'      => $load->origin_name_code,
-						'destination_code' => $load->destination_name_code,
-						'truck_type'       => $load->truck_code,
-					])->count();
-
-					$cyclePosition = $cycleUsed % $cycleTotal;
-
-					// STEP 5: Vendor selection 
-					$running = 0;
-					$selectedVendor = null;
-
-					foreach ($vendors as $vendor) {
-						$running += $slots[$vendor->rank] ?? 0;
-						if ($cyclePosition < $running) {
-							$selectedVendor = $vendor;
-							break;
-						}
-					}
-
-					if (!$selectedVendor) {
-						throw new \Exception('Vendor selection failed');
-					}
-
-					// STEP 6: Update load summary table 
-					$load->vendor_name = $selectedVendor->vendor_name;
-					$load->vendor_code = $selectedVendor->vendor_code;
-					$load->vendor_rank = $selectedVendor->rank;
-					$load->vendor_code_source = 'Auto Allocation';
-					$load->vendor_code_updated_at = $createddate;
-					$load->save();
-
-					// STEP 7: History 
-					AllocationHistory::create([
-						'load_summary_id' => $load->id,
-						'vendor_code'     => $selectedVendor->vendor_code,
-						'vendor_name'     => $selectedVendor->vendor_name,
-						'vendor_rank'     => $selectedVendor->rank,
-						'origin_code'     => $load->origin_name_code,
-						'destination_code'=> $load->destination_name_code,
-						'truck_type'      => $load->truck_code,
-						'cycle_total'     => $cycleTotal,
-						'allocated_by'    => $created_by,
-						'allocated_at'    => $createddate,
-					]);
-
-					$processed++;
-				});
-
-			} catch (\Exception $e) {
-
-				$errors[] = [
-					'load_id'      => $load->id,
-					'reference_no' => $load->reference_no,
-					'origin'       => $load->origin_name_code,
-					'destination'  => $load->destination_name_code,
-					'truck'        => $load->truck_code,
-					'reason'       => $e->getMessage(),
-				];
-			}
-		}
-		//  UPDATE LAST RUN TIME
-    DB::table('allocation_runs')
-        ->where('run_type', 'AUTO_ALLOCATION')
-        ->update([
-            'last_run_at' => now(),
-            'updated_at'  => now()
-        ]);
-		return response()->json([
-			'completed' => true,
-			'processed' => $processed,
-			'failed'    => count($errors),
-			'errors'    => $errors,
-		]);
-	}
-*/
+	/* AJAX batch allocation  */
+  
 	public function processAutoAllocation(Request $request)
 	{
 		
@@ -1286,6 +1139,19 @@ class LoadoptimizerController extends Controller
 		])
 		->orderBy('rank')
 		->get();
+		
+		 $vendors = Ratedata::where('consignor_code',  $load->origin_name_code )
+        ->where('consignee_code', $load->destination_name_code )
+        ->where('t_code', $load->truck_code)
+        ->select(
+            'vendor_code',
+            'vendor_name',
+            'rank'
+        )
+        ->distinct()
+        ->orderBy('rank')
+        ->orderBy('vendor_name')
+        ->get();
 	
 
 		return response()->json([

@@ -1,31 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
+ @push('style') 
  <style>
-	.table-responsive-fixed {
-	overflow-x: auto;
-	position: relative;
-    }
-
-    table {
-      min-width: max-content;
-      font-size: 12px;
-    }
-
-    .consign-data-table th, .consign-data-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .consign-data-table thead th {
-      position: sticky;
-      top: 0;
-      background: #f8f9fa;
-    }
-
-    .consign-data-table .table th, .consign-data-table .table td {
-      padding: 5px 10px;
-    }
-
     /* Sticky columns */
     .sticky-col-1 {
       position: sticky;
@@ -59,47 +35,16 @@
       z-index: 99;
     }
 
-    /* Column widths */
-    . {
-      min-width: 100px;
-    }
+    
 
     @media (max-width: 768px) {
       . {
         min-width: 90px;
       }
-
-     
+ 
     }
-	
-.table-container {
-    max-height: 400px;   /* Set your desired table height */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-#input-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1200px; /* Optional: ensures columns don't shrink too much */
-}
-
-#input-table th,
-#input-table td {
-    min-width: 50px;
-    padding: 2px;
-    border: 0.5px solid #ccc;
-    background: #fff;
-    text-align: left;
-}
-
-#table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}	
-	
   </style>
+@endpush
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -160,6 +105,17 @@
                   <!-- /.tab-pane -->
                   <div class="tab-pane active" id="timeline">
                     <!-- The timeline -->
+					
+					<div class="d-flex justify-content-between align-items-center mb-2">
+
+						<div>
+							<span id="selectedIndentCount" class="text-muted">
+								0 selected
+							</span>
+						</div>
+						<button type="button" id="bulkDeleteIndentBtn" class="btn btn-danger btn-sm"								disabled><i class="fas fa-trash-alt mr-1"></i>Delete Selected</button>
+					</div>
+					
                   	<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 						<table id="appointdataTable" class="table table-bordered border-dark table-hover">
 							<thead>
@@ -176,6 +132,7 @@
 								<th style="background: #c6e0b4; color: #0070c0;">Reason for<br>approval</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Send for <br>Approval</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Action</th>
+								<th class="text-center" style="background:#fce4d6; color:#0070c0; width:45px;"><input type="checkbox" id="selectAllIndents"></th>
 													  
 								</tr>
 						  </thead>
@@ -183,7 +140,7 @@
 							@if(count($loads) > 0)
 							 @foreach($loads as $row)
 							  
-							<tr>
+							<tr id="loadRow_{{ $row->id }}">
 								<td class="">{{ $row->reference_no }}</td>
 								<td class="">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>
 								
@@ -228,6 +185,7 @@
 									<td><a href="{{ route('admin.load.summary.items', $row->reference_no) }}"
 										class="btn btn-sm btn-primary">Edit</a>
 									</td>	
+									<td class="text-center"><input type="checkbox" class="indent-checkbox" value="{{ $row->id }}"></td>
 								</tr> 
 						  @endforeach						 
 						  @endif		
@@ -397,5 +355,152 @@ $('.send-approval').click(function () {
     });
 });
 </script>
+<script>
 
+$(document).ready(function () {
+
+    function updateSelectedIndentCount()
+    {
+        let selectedCount =
+            $('.indent-checkbox:checked').length;
+        $('#selectedIndentCount').text(
+            selectedCount + ' selected'
+        );
+        $('#bulkDeleteIndentBtn').prop(
+            'disabled',
+            selectedCount === 0
+        );
+
+       let totalRows =
+            $('.indent-checkbox').length;
+        $('#selectAllIndents').prop(
+            'checked',
+            totalRows > 0 &&
+            selectedCount === totalRows
+        );
+    }
+
+    $('#selectAllIndents').on('change', function () {
+
+        $('.indent-checkbox').prop(
+            'checked',
+            $(this).is(':checked')
+        );
+        updateSelectedIndentCount();
+    });
+
+
+    /* Individual Checkbox */
+
+    $(document).on(
+        'change',
+        '.indent-checkbox',
+        function ()
+        {
+            updateSelectedIndentCount();
+        }
+    );
+
+    /*  Bulk Delete  */
+
+    $('#bulkDeleteIndentBtn').on('click', function () {
+        let selectedIds = [];
+        $('.indent-checkbox:checked').each(function () {
+            selectedIds.push(
+                $(this).val()
+            );
+        });
+
+        if (selectedIds.length === 0) {
+
+            Swal.fire(
+                'No Indent Selected',
+                'Please select at least one unqualified indent.',
+                'warning'
+            );
+
+            return;
+        }
+
+        Swal.fire({
+
+            icon: 'warning',
+
+            title: 'Delete Selected Indents?',
+
+            html:
+                '<b>' + selectedIds.length + '</b> unqualified indent(s) will be deleted.<br><br>' +
+                '<span class="text-danger">This action cannot be undone.</span>',
+
+            showCancelButton: true,
+
+            confirmButtonText: 'Yes, Delete',
+
+            cancelButtonText: 'Cancel',
+
+            confirmButtonColor: '#dc3545',
+
+            reverseButtons: true
+
+        }).then(function (result) {
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            Swal.fire({
+
+                title: 'Deleting Indents...',
+                text: 'Please wait.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: function () {
+                    Swal.showLoading();
+                }
+
+            });
+
+
+            /*AJAX Delete*/
+
+            $.ajax({
+
+                url: "{{ route('admin.loadsummary.bulk-delete') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    ids: selectedIds
+                },
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted',
+                        text: response.message
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (xhr) {
+                    let message =
+                        'Unable to delete selected indent(s).';
+                    if (
+                        xhr.responseJSON &&
+                        xhr.responseJSON.message
+                    ) {
+                        message =
+                            xhr.responseJSON.message;
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Delete Failed',
+                        text: message
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
 @endsection

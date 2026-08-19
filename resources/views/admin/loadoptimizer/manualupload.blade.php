@@ -52,8 +52,8 @@
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="{{route('admin.lopmanualupload')}}" data-toggle="tab">Create</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{route('admin.loadSummary')}}">Unqualified Indent</a></li>
-				 <li class="nav-item"><a class="nav-link" href="{{route('admin.qualifiedloadsummary')}}">Qualified Indent</a></li>	
-					 {{-- <li class="nav-item"><a class="nav-link" href="{{route('admin.loadSummaryApproval')}}">Approve Indent</a></li> --}}
+				 {{-- <li class="nav-item"><a class="nav-link" href="{{route('admin.qualifiedloadsummary')}}">Qualified Indent</a></li>	
+					 <li class="nav-item"><a class="nav-link" href="{{route('admin.loadSummaryApproval')}}">Approve Indent</a></li> --}}
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
