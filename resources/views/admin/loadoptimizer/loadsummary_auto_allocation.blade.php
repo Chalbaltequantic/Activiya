@@ -117,9 +117,9 @@
 								<th style="background: #fce4d6; color: #0070c0;">ZW uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Zv uti %</th>
 								<th style="background: #fce4d6; color: #0070c0;">Gross<br>utilization</th>
-								<th style="background: #c6e0b4; color: #0070c0;">Vendor<br>name</th>
-								<th style="background: #c6e0b4; color: #0070c0;">Vendor<br>rank</th>
-								<th style="background: #c6e0b4; color: #0070c0;">Source</th>
+								<th style="background: #fce4d6; color: #0070c0;">Vendor<br>name</th>
+								<th style="background: #fce4d6; color: #0070c0;">Vendor<br>rank</th>
+								<th style="background: #fce4d6; color: #0070c0;">Source</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Edit</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Send</th>
 													  
