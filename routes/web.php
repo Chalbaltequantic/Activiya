@@ -445,7 +445,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::get('loadoptimizer/load-summary', [App\Http\Controllers\Admin\LoadoptimizerController::class, 'loadSummary'])->name('loadSummary');
 	
 	//BULK DELETE Unqualified summary 
-	Route::post('loadsummary/bulk-delete',[App\Http\Controllers\Admin\LoadOptimizerController::class, 'bulkDeleteLoadSummary'])->name('loadsummary.bulk-delete');
+	Route::post('loadsummary/bulk-delete',[App\Http\Controllers\Admin\LoadoptimizerController::class, 'bulkDeleteLoadSummary'])->name('loadsummary.bulk-delete');
 	
 	//qualified load summary qualifiedloadsummary
 	Route::get('loadoptimizer/qualified-load-summary', [App\Http\Controllers\Admin\LoadoptimizerController::class, 'qualifiedloadsummary'])->name('qualifiedloadsummary');
