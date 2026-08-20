@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\DB;
 
@@ -1589,11 +1587,7 @@ class LoadoptimizerController extends Controller
 				DB::raw("'MANUAL' as source_type")
 			]);
 
-		/**
-		 * ===============================
-		 * MERGE + SORT
-		 * ===============================
-		 */
+		/* MERGE + SORT */
 		$loads = $autoLoads
 			->unionAll($manualLoads)
 			->orderByDesc('sent_at')
