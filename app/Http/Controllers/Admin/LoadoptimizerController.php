@@ -1192,10 +1192,10 @@ class LoadoptimizerController extends Controller
 			]);
 
 			$vedor_code_str_arr = explode("Rank",$request->vendor_code);
-			$vendor_code_str = $vedor_code_str_arr[0];
+			$vendor_code = $vedor_code_str_arr[0];
 			$vendor_rank = $vedor_code_str_arr[1];
 			// Update load
-			$load->vendor_code = $vendor_code;
+			$load->vendor_code = $request->vendor_code;
 			$load->vendor_name = $request->vendor_name;
 			$load->vendor_rank = $vendor_rank;
 			$load->vendor_code_source = 'Manual Edit';
