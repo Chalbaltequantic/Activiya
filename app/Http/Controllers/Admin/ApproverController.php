@@ -17,24 +17,11 @@ class ApproverController extends Controller
        
 		$this->middleware('auth:admin'); 
     }
-
-	/*public function index()
-    {
-        $loads = LoadApprovalHistory::with('loadsummary')
-            ->where('status', 'pending')
-            ->orderByDesc('id')
-            ->get();
-
-         return view('admin.loadoptimizer.approver_list', compact('loads'));
-    }*/
 	
 	public function index()
 	{
-		/**
-		 * ======================================
-		 * AUTO LOADS (load_summary)
-		 * ======================================
-		 */
+		/* AUTO LOADS (load_summary) */
+		
 		$autoLoads = DB::table('load_approval_history as lah')
 			->join('load_summary as ls', function ($join) {
 				$join->on('ls.id', '=', 'lah.load_summary_id')
@@ -57,11 +44,8 @@ class ApproverController extends Controller
 				DB::raw("'AUTO' as source_type")
 			]);
 
-		/**
-		 * ======================================
-		 * MANUAL LOADS (manual_load_summary)
-		 * ======================================
-		 */
+		/* MANUAL LOADS (manual_load_summary) */
+		
 		$manualLoads = DB::table('load_approval_history as lah')
 			->join('manual_load_summary as mls', function ($join) {
 				$join->on('mls.id', '=', 'lah.load_summary_id')
@@ -84,11 +68,7 @@ class ApproverController extends Controller
 				DB::raw("'MANUAL' as source_type")
 			]);
 
-		/**
-		 * ======================================
-		 * MERGE + SORT
-		 * ======================================
-		 */
+		/*  MERGE + SORT */
 		$loads = $autoLoads
 			->unionAll($manualLoads)
 			->orderByDesc('sent_at')
@@ -98,9 +78,8 @@ class ApproverController extends Controller
 	}
 
 	
-	 /**
-     *  Approve / Reject
-     */
+	 /*  Approve / Reject */
+	 
    public function action(Request $request)
     {
         $request->validate([
@@ -130,7 +109,7 @@ class ApproverController extends Controller
             // update approval history
             $approval->status      = $request->status;
             $approval->remarks     = $request->remarks;
-            $approval->approver_id = Auth::user()->id();
+            $approval->approver_id = Auth::user()->id;
             $approval->action_at   = now();
             $approval->save();
           
@@ -146,7 +125,7 @@ class ApproverController extends Controller
 
 			$load->vendor_approval_status  = $request->status;
 			$load->vendor_approval_remarks = $request->remarks;
-			$load->vendor_approved_by      = Auth::user()->id();
+			$load->vendor_approved_by      = Auth::user()->id;
 			$load->vendor_approved_at      = now();
 			$load->save();
 			
@@ -158,7 +137,7 @@ class ApproverController extends Controller
 				'new_status'      => $load->sent_status,
 				'reference_no'      => $reference_no,
 				'source_type'      => $source_type,
-				'changed_by_id'   => Auth::user()->id(),
+				'changed_by_id'   => Auth::user()->id,
 				'changed_by_role' => 'approver',
 				'created_at'      => now()
 			]);

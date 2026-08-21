@@ -1192,7 +1192,7 @@ class LoadoptimizerController extends Controller
 			]);
 
 			$vedor_code_str_arr = explode("Rank",$request->vendor_code);
-			$vendor_code = $vedor_code_str_arr[0];
+			$vendor_code_str = $vedor_code_str_arr[0];
 			$vendor_rank = $vedor_code_str_arr[1];
 			// Update load
 			$load->vendor_code = $vendor_code;
@@ -1363,11 +1363,7 @@ class LoadoptimizerController extends Controller
 	{
 		$user = Auth::user();
 
-		/**
-		 * ===============================
-		 * AUTO LOADS (load_summary)
-		 * ===============================
-		 */
+		/* AUTO LOADS (load_summary) */
 		$autoLoads = LoadSummary::query()
 			->whereHas('sendHistory', function ($q) use ($user) {
 				if (!empty($user->vendor_code)) {

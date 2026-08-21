@@ -182,7 +182,7 @@
 								<td class="sticky-col-1">{{ $row->reference_no }}</td>
 								<td class="sticky-col-2">{{ $row->origin_name_code }} {{ $row->origin_name }}</td>
 								
-								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_city }}</td>
+								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_name }}</td>
 								<td>{{ $row->t_mode }}</td>
 								<td>{{ $row->truck->description ?? 'NA' }}</td>
 								
@@ -191,15 +191,9 @@
 								<td class="fw-bold">{{ $row->sent_at  }}</td>
 								<td>
 								
-									 <button class="btn btn-success btn-sm" onclick="openApprovalModal( {{ $row->id }},'approved', '{{$row->reference_no}}', '{{$row->source_type}}'
-                                    )">
-                                    Approve
-                                </button>
+									<button class="btn btn-success btn-sm" onclick="openApprovalModal( '{{ $row->id }}','approved', '{{$row->reference_no}}', '{{$row->source_type}}')">Approve</button>
 
-                                <button
-                                    class="btn btn-danger btn-sm" onclick="openApprovalModal( {{ $row->id }}, 'rejected', '{{$row->reference_no}}', '{{$row->source_type}}' )">
-                                    Reject
-                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="openApprovalModal( {{ $row->id }}, 'rejected', '{{$row->reference_no}}', '{{$row->source_type}}' )">Reject</button>
 								
 								</td>
 							</tr> 
@@ -226,7 +220,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function openApprovalModal(approvalId, action, , reference_no, source_type) {
+function openApprovalModal(approvalId, action, reference_no, source_type) {
 
     Swal.fire({
         title: action === 'approved'
