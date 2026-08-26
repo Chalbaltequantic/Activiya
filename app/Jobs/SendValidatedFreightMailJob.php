@@ -49,11 +49,7 @@ class SendValidatedFreightMailJob implements ShouldQueue
         $freight_info_updated_at = $entry->freight_info_updated_at;
         $freight_invoice_no = $entry->freight_invoice_no;
 
-        /*
-        |--------------------------------------------------------------------------
-        | ATTACHMENT FILES
-        |--------------------------------------------------------------------------
-        */
+        /* ATTACHMENT FILES   */
 
         $files = [];
 
@@ -84,19 +80,10 @@ class SendValidatedFreightMailJob implements ShouldQueue
             }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | SUBJECT
-        |--------------------------------------------------------------------------
-        */
-
+      
         $subject = "Vendor name : $vendor_name & freight invoice no : $freight_invoice_no";
 
-        /*
-        |--------------------------------------------------------------------------
-        | EMAIL BODY
-        |--------------------------------------------------------------------------
-        */
+
 
         $body = '
         <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table">
@@ -145,11 +132,7 @@ class SendValidatedFreightMailJob implements ShouldQueue
 
         </div>';
 
-        /*
-        |--------------------------------------------------------------------------
-        | SEND TO ADMINS
-        |--------------------------------------------------------------------------
-        */
+        /* SEND TO ADMINS  */
 
         $admins = Admin::whereIn('role_id', [4, 6])
             ->where('status', '1')
@@ -178,11 +161,6 @@ class SendValidatedFreightMailJob implements ShouldQueue
             });
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | SEND COPY MAIL
-        |--------------------------------------------------------------------------
-        */
 
         /*$data = [
             'name' => 'Roshan Jha',

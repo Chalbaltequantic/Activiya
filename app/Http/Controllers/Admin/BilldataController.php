@@ -861,11 +861,7 @@ class BilldataController extends Controller
 		$pagetitle = $title.' Listing';
 		$created_by = Auth::user()->role_id;
 
-		/*
-		|--------------------------------------------------------------------------
-		| Pending validation entries
-		|--------------------------------------------------------------------------
-		*/
+		/* Pending validation */
 		$entries = Billdata::from('bill_data_upload as b')
 			->leftJoin('rate_master as rm', function ($join) {
 				$join->on('rm.id', '=', DB::raw("
@@ -902,11 +898,7 @@ class BilldataController extends Controller
 			->get();
 
 
-		/*
-		|--------------------------------------------------------------------------
-		| Already submitted / returned entries
-		|--------------------------------------------------------------------------
-		*/
+		/* Already submitted / returned entries*/
 		$updatedentries = Billdata::from('bill_data_upload as b')
 			->leftJoin('rate_master as rm', function ($join) {
 				$join->on('rm.id', '=', DB::raw("
@@ -1025,11 +1017,7 @@ class BilldataController extends Controller
 					continue;
 				}
 
-				/*
-				|--------------------------------------------------------------------------
-				| SUBMITTED
-				|--------------------------------------------------------------------------
-				*/
+				/* SUBMITTED */
 
 				if (in_array($id, $submittedIds)) {
 
@@ -1037,20 +1025,12 @@ class BilldataController extends Controller
 					$entry->submit = 1;
 					$entry->f_return = 0;
 
-					/*
-					|--------------------------------------------------------------------------
-					| SEND MAIL IN BACKGROUND
-					|--------------------------------------------------------------------------
-					*/
+					/* SEND MAIL IN BACKGROUND */
 
 					SendValidatedFreightMailJob::dispatch($entry->id);
 				}
 
-				/*
-				|--------------------------------------------------------------------------
-				| RETURNED
-				|--------------------------------------------------------------------------
-				*/
+				/*  RETURNED */
 
 				elseif (in_array($id, $returnedIds)) {
 

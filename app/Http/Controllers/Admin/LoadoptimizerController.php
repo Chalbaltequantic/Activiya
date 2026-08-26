@@ -879,11 +879,7 @@ class LoadoptimizerController extends Controller
 
 			try {
 
-				DB::transaction(function () use (
-					$load,
-					$created_by,
-					$createddate,
-					&$processed
+				DB::transaction(function () use ($load,	$created_by, $createddate,	&$processed
 				) {
 
 					/* STEP 1 Fetch Vendor Rate Records*/
@@ -1017,24 +1013,13 @@ class LoadoptimizerController extends Controller
 					}
 
 
-					/* STEP 7
-						Update Load Summary
-					*/
+					/* STEP 7: Update Load Summary */
 
-					$load->vendor_name =
-						$selectedVendor->vendor_name;
-
-					$load->vendor_code =
-						$selectedVendor->vendor_code;
-
-					$load->vendor_rank =
-						$selectedVendor->rank;
-
-					$load->vendor_code_source =
-						'Auto Allocation';
-
-					$load->vendor_code_updated_at =
-						$createddate;
+					$load->vendor_name = $selectedVendor->vendor_name;
+					$load->vendor_code = $selectedVendor->vendor_code;
+					$load->vendor_rank = $selectedVendor->rank;
+					$load->vendor_code_source =	'Auto Allocation';
+					$load->vendor_code_updated_at =	$createddate;
 
 					$load->save();
 
@@ -1056,8 +1041,8 @@ class LoadoptimizerController extends Controller
 						'allocated_at' =>$createddate,
 					]);
 
-
-					/*Mark Successfully Processed*/
+			/*Mark Successfully Processed*/
+			
 					$processed++;
 				});
 			} catch (\Throwable $exception) {
