@@ -201,6 +201,8 @@
 						  <th style="background: #fce4d6; color: #0070c0;">Created_date</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Return at</th>
 						  <th style="background: #fce4d6; color: #0070c0;">Submitted at</th>
+						   <th style="background: #fce4d6; color: #0070c0;">Inv No.</th>
+						    <th style="background: #fce4d6; color: #0070c0;">Inv Dt.</th>
 						  <th style="background: #fce4d6; color: #0070c0;">status </th>
 						  
 						  <th style="background: #c6e0b4; color: #0070c0;">Action</th>
@@ -251,6 +253,9 @@
 						  <td>
 						  {{ $billdata->freight_info_updated_at ? \Carbon\Carbon::parse($billdata->freight_info_updated_at)->format('Y-m-d') : '-' }}
 						  </td>
+						  <td>{{$billdata->freight_invoice_no}}</td>
+						  <td>{{ $billdata->freight_invoice_date ? \Carbon\Carbon::parse($billdata->freight_invoice_date)->format('Y-m-d') : '-' }}</td>
+						  
 						  <td>{!! ($billdata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
 						  
 						  <td>
