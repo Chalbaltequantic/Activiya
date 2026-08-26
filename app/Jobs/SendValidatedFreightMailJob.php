@@ -179,6 +179,6 @@ class SendValidatedFreightMailJob implements ShouldQueue
                     $message->attach($file);
                 }
             }
-        });*/
+        });
     }
 }
