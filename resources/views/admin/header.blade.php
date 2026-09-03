@@ -340,6 +340,8 @@
 					 
 					  <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
 					 </li>
+					 <li class=""><a href="{{route('admin.digiwim.bin-master.index')}}" class="dropdown-item">Bin Master</a>
+					 </li>
 					</ul>
 				</li>
 				@endif
