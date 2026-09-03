@@ -895,7 +895,30 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::get('freight-bill-processing-dashboard',[App\Http\Controllers\Admin\FreightBillProcessingReportController::class,'index'])
 	->name('freight-bill-processing.index');
 
-	Route::get('freight-bill-processing-dashboard/export-xls',[FreightBillProcessingReportController::class,'exportXls'])->name('freight-bill-processing.export-xls');	
+	Route::get('freight-bill-processing-dashboard/export-xls',[App\Http\Controllers\Admin\FreightBillProcessingReportController::class,'exportXls'])->name('freight-bill-processing.export-xls');	
+	
+	////BIN Master
 
+	Route::get('bin-master',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'index']
+	)->name('digiwim.bin-master.index');
+
+	Route::post('bin-master/import',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'import'])->name('digiwim.bin-master.import');
+
+	Route::get('bin-master/list',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'datalist'])->name('digiwim.bin-master.datalist');
+
+	Route::get('bin-master/manual-upload',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'manualupload'])->name('digiwim.bin-master.manual-upload');
+
+	Route::post('bin-master/save-manual-upload',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'save_manual_data'])->name('digiwim.bin-master.save-manual-upload');
+
+	Route::post('bin-master/fetch-plant',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'fetchPlantData'])->name('digiwim.bin-master.fetch-plant');
+
+	Route::get('bin-master/export',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'export'])->name('digiwim.bin-master.export');
+
+	Route::get('bin-master/{id}/edit',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'edit'])->name('digiwim.bin-master.edit');
+
+	Route::put('bin-master/{id}',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'update'])->name('digiwim.bin-master.update');
+
+	Route::delete('bin-master/{id}',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'delete'])->name('digiwim.bin-master.delete');
+	
 });
 
