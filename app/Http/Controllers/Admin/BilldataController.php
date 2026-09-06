@@ -45,7 +45,7 @@ class BilldataController extends Controller
         return view('admin.billdata.index',compact(['pagetitle','title']));
     }
 	
-	public function billdatalist(Request $request)
+	/*public function billdatalist(Request $request)
     {
         $title = 'Bill Data Upload';
         $pagetitle = $title.' Listing';
@@ -53,7 +53,368 @@ class BilldataController extends Controller
 		$data = $request->all();        
 	    $billdatalist = Billdata::orderBy('created_at', 'desc')->get();       
         return view('admin.billdata.billdatalist',compact(['pagetitle','title','billdatalist','user_role']));
-    }
+    }*/
+	
+	public function billdatalist(Request $request)
+	{
+		$title = 'Bill Data Upload';
+		$pagetitle = $title.' Listing';
+		$user_role = Auth::user()->role_id;
+		$data = $request->all();
+
+		$perPage = $request->get('per_page',25);
+
+		if(!in_array($perPage,[10,25,50,100]))
+		{
+			$perPage = 25;
+		}
+
+		$sortBy = $request->get('sort_by','created_at');
+		$sortDirection = $request->get('sort_direction','desc');
+
+		$allowedSortColumns = [
+			's5_consignor_short_name_and_location',
+			'd5_consignor_short_name_and_location',
+			'vendor_name',
+			'truck_type',
+			'consignor_name',
+			'consignor_code',
+			'consignor_location',
+			'consignee_name',
+			'consignee_code',
+			'consignee_location',
+			'ref1',
+			'vendor_code',
+			't_code',
+			'lr_no',
+			'lr_cn_date',
+			'a_amount',
+			'ref2',
+			'ref3',
+			'freight_type',
+			'ap_status',
+			'created_at',
+			'returned_at',
+			'freight_info_updated_at',
+			'freight_invoice_no',
+			'freight_invoice_date',
+			'status'
+		];
+
+		if(!in_array($sortBy,$allowedSortColumns))
+		{
+			$sortBy = 'created_at';
+		}
+
+		if(!in_array($sortDirection,['asc','desc']))
+		{
+			$sortDirection = 'desc';
+		}
+
+		$query = Billdata::query();
+
+		if($request->filled('search'))
+		{
+			$search = trim($request->search);
+
+			$query->where(function($q) use ($search)
+			{
+				$q->where('s5_consignor_short_name_and_location','like','%'.$search.'%')
+				->orWhere('d5_consignor_short_name_and_location','like','%'.$search.'%')
+				->orWhere('vendor_name','like','%'.$search.'%')
+				->orWhere('vendor_code','like','%'.$search.'%')
+				->orWhere('truck_type','like','%'.$search.'%')
+				->orWhere('consignor_name','like','%'.$search.'%')
+				->orWhere('consignor_code','like','%'.$search.'%')
+				->orWhere('consignor_location','like','%'.$search.'%')
+				->orWhere('consignee_name','like','%'.$search.'%')
+				->orWhere('consignee_code','like','%'.$search.'%')
+				->orWhere('consignee_location','like','%'.$search.'%')
+				->orWhere('ref1','like','%'.$search.'%')
+				->orWhere('ref2','like','%'.$search.'%')
+				->orWhere('ref3','like','%'.$search.'%')
+				->orWhere('t_code','like','%'.$search.'%')
+				->orWhere('lr_no','like','%'.$search.'%')
+				->orWhere('freight_type','like','%'.$search.'%')
+				->orWhere('ap_status','like','%'.$search.'%')
+				->orWhere('freight_invoice_no','like','%'.$search.'%');
+			});
+		}
+
+		$billdatalist = $query
+			->orderBy($sortBy,$sortDirection)
+			->paginate($perPage);
+
+		$billdatalist->appends($request->query());
+
+		if($request->ajax())
+		{
+			return view(
+				'admin.billdata.billdatalist_ajax',
+				compact(
+					'billdatalist',
+					'user_role',
+					'sortBy',
+					'sortDirection'
+				)
+			)->render();
+		}
+
+		return view(
+			'admin.billdata.billdatalist',
+			compact(
+				'pagetitle',
+				'title',
+				'billdatalist',
+				'user_role',
+				'perPage',
+				'sortBy',
+				'sortDirection'
+			)
+		);
+	}
+	
+	public function exportBilldata(Request $request)
+	{
+		
+		$sortBy = $request->get('sort_by','created_at');
+		$sortDirection = $request->get('sort_direction','desc');
+
+		$allowedSortColumns = [
+			's5_consignor_short_name_and_location',
+			'd5_consignor_short_name_and_location',
+			'vendor_name',
+			'truck_type',
+			'consignor_name',
+			'consignor_code',
+			'consignor_location',
+			'consignee_name',
+			'consignee_code',
+			'consignee_location',
+			'ref1',
+			'vendor_code',
+			't_code',
+			'lr_no',
+			'lr_cn_date',
+			'a_amount',
+			'ref2',
+			'ref3',
+			'freight_type',
+			'ap_status',
+			'created_at',
+			'returned_at',
+			'freight_info_updated_at',
+			'freight_invoice_no',
+			'freight_invoice_date',
+			'status'
+		];
+
+		if(!in_array($sortBy,$allowedSortColumns))
+		{
+			$sortBy = 'created_at';
+		}
+
+		if(!in_array($sortDirection,['asc','desc']))
+		{
+			$sortDirection = 'desc';
+		}
+
+		$query = Billdata::query();
+
+		if($request->filled('search'))
+		{
+			$search = trim($request->search);
+
+			$query->where(function($q) use ($search)
+			{
+				$q->where('s5_consignor_short_name_and_location','like','%'.$search.'%')
+				->orWhere('d5_consignor_short_name_and_location','like','%'.$search.'%')
+				->orWhere('vendor_name','like','%'.$search.'%')
+				->orWhere('vendor_code','like','%'.$search.'%')
+				->orWhere('truck_type','like','%'.$search.'%')
+				->orWhere('consignor_name','like','%'.$search.'%')
+				->orWhere('consignor_code','like','%'.$search.'%')
+				->orWhere('consignor_location','like','%'.$search.'%')
+				->orWhere('consignee_name','like','%'.$search.'%')
+				->orWhere('consignee_code','like','%'.$search.'%')
+				->orWhere('consignee_location','like','%'.$search.'%')
+				->orWhere('ref1','like','%'.$search.'%')
+				->orWhere('ref2','like','%'.$search.'%')
+				->orWhere('ref3','like','%'.$search.'%')
+				->orWhere('t_code','like','%'.$search.'%')
+				->orWhere('lr_no','like','%'.$search.'%')
+				->orWhere('freight_type','like','%'.$search.'%')
+				->orWhere('ap_status','like','%'.$search.'%')
+				->orWhere('freight_invoice_no','like','%'.$search.'%');
+			});
+		}
+
+		$billdata = $query->orderBy($sortBy,$sortDirection)->get();
+
+		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+		$sheet = $spreadsheet->getActiveSheet();
+
+		$sheet->setTitle('Bill Data');
+
+		$headings = [
+			'S5 Consignor Short Name & Location',
+			'D5 Consignor Short Name & Location',
+			'Vendor Name',
+			'Truck Type',
+			'Consignor Name',
+			'Consignor Code',
+			'Consignor Location',
+			'Consignee Name',
+			'Consignee Code',
+			'Consignee Location',
+			'Ref1',
+			'Vendor Code',
+			'T Code',
+			'LR/CN No.',
+			'LR CN Date',
+			'A Amount',
+			'Freight PO',
+			'Freight GRN',
+			'Freight Type',
+			'AP Status',
+			'Created Date',
+			'Return At',
+			'Submitted At',
+			'Invoice No.',
+			'Invoice Date',
+			'Status'
+		];
+
+
+		foreach($headings as $columnIndex => $heading)
+		{
+			$sheet->setCellValue(
+				[$columnIndex + 1,1],
+				$heading
+			);
+		}
+
+		$rowNumber = 2;
+		foreach($billdata as $row)
+		{
+			$sheet->setCellValue([1,$rowNumber],$row->s5_consignor_short_name_and_location);
+			$sheet->setCellValue([2,$rowNumber],$row->d5_consignor_short_name_and_location);
+			$sheet->setCellValue([3,$rowNumber],$row->vendor_name);
+			$sheet->setCellValue([4,$rowNumber],$row->truck_type);
+			$sheet->setCellValue([5,$rowNumber],$row->consignor_name);
+
+			$sheet->setCellValueExplicit(
+				[6,$rowNumber],
+				(string)$row->consignor_code,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValue([7,$rowNumber],$row->consignor_location);
+			$sheet->setCellValue([8,$rowNumber],$row->consignee_name);
+
+			$sheet->setCellValueExplicit(
+				[9,$rowNumber],
+				(string)$row->consignee_code,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValue([10,$rowNumber],$row->consignee_location);
+
+			$sheet->setCellValueExplicit(
+				[11,$rowNumber],
+				(string)$row->ref1,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValueExplicit(
+				[12,$rowNumber],
+				(string)$row->vendor_code,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValueExplicit(
+				[13,$rowNumber],
+				(string)$row->t_code,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValueExplicit(
+				[14,$rowNumber],
+				(string)$row->lr_no,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValue([15,$rowNumber],$row->lr_cn_date);
+			$sheet->setCellValue([16,$rowNumber],$row->a_amount);
+
+			$sheet->setCellValueExplicit(
+				[17,$rowNumber],
+				(string)$row->ref2,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValueExplicit(
+				[18,$rowNumber],
+				(string)$row->ref3,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValue([19,$rowNumber],$row->freight_type);
+			$sheet->setCellValue([20,$rowNumber],$row->ap_status);
+			$sheet->setCellValue([21,$rowNumber],$row->created_at);
+			$sheet->setCellValue([22,$rowNumber],$row->returned_at);
+			$sheet->setCellValue([23,$rowNumber],$row->freight_info_updated_at);
+
+			$sheet->setCellValueExplicit(
+				[24,$rowNumber],
+				(string)$row->freight_invoice_no,
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+
+			$sheet->setCellValue([25,$rowNumber],$row->freight_invoice_date);
+
+			$sheet->setCellValue(
+				[26,$rowNumber],
+				$row->status == 1 ? 'Active' : 'Inactive'
+			);
+
+			$rowNumber++;
+		}
+
+		$sheet->getStyle('A1:Z1')
+			->getFont()
+			->setBold(true);
+
+		$sheet->freezePane('A2');
+
+		$sheet->setAutoFilter('A1:Z1');
+
+		foreach(range('A','Z') as $column)
+		{
+			$sheet->getColumnDimension($column)->setAutoSize(true);
+		}
+
+		$fileName =	'bill-data-'.date('Y-m-d-H-i-s').'.xlsx';
+
+
+		$writer =	new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+
+		return response()->streamDownload(
+			function() use ($writer)
+			{
+				$writer->save('php://output');
+			},
+			$fileName,
+			[
+				'Content-Type' =>
+				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			]
+		);
+	}
+	
+	
 	
 	public function import(Request $request)
     {
@@ -773,87 +1134,6 @@ class BilldataController extends Controller
 	}
 	
 	///////////////////Freight data information validate 
-	
-
-	/*
-	
-	public function freight_info_validate_index()
-	{
-		$title = 'Bill Data freight details Validate';
-		$pagetitle = $title.' Listing';
-		$created_by = Auth::user()->role_id;
-
-		$entries = Billdata::from('bill_data_upload as b')
-			->leftJoin('rate_master as rm', function ($join) {
-				$join->on('rm.consignor_code', '=', 'b.consignor_code')
-					 ->on('rm.consignee_code', '=', 'b.consignee_code')
-					 ->on('rm.vendor_code', '=', 'b.vendor_code')
-					 ->on('rm.t_code', '=', 'b.t_code');
-			})
-			->select([
-				'b.*',
-				'rm.custom5 as rate_custom5',
-			])
-			->whereNotNull('b.freight_invoice_no')
-			->where('b.freight_invoice_no', '!=', '')
-			->where(function ($q) {
-				$q->whereNull('b.submit')
-				  ->orWhere('b.submit', 0);
-			})
-			->where(function ($q) {
-				$q->whereNull('b.f_return')
-				  ->orWhere('b.f_return', 0);
-			})
-			->orderBy('b.vendor_name', 'asc')
-			->orderBy('b.created_at', 'desc')
-			->get();
-
-
-		$updatedentries = Billdata::from('bill_data_upload as b')
-			->leftJoin('rate_master as rm', function ($join) {
-				$join->on('rm.consignor_code', '=', 'b.consignor_code')
-					 ->on('rm.consignee_code', '=', 'b.consignee_code')
-					 ->on('rm.vendor_code', '=', 'b.vendor_code')
-					 ->on('rm.t_code', '=', 'b.t_code');
-			})
-			->select([
-				'b.id',
-				'b.s5_consignor_short_name_and_location',
-				'b.d5_consignor_short_name_and_location',
-				'b.ref1',
-				'b.truck_type',
-				'b.lr_no',
-				'b.lr_cn_date',
-				'b.ref2',
-				'b.freight_invoice_no',
-				'b.freight_invoice_date',
-				'b.freight_amount',
-				'b.freight_invoice_file',
-				'b.pod_file',
-				'b.approval_file',
-				'b.validated_status',
-				'b.submit',
-				'b.f_return',
-				'b.validation_remark',
-				'b.vendor_name',
-				'rm.custom5 as rate_custom5',
-			])
-			->where('b.freight_invoice_no', '!=', '')
-			->whereNotNull('b.freight_invoice_date')
-			->whereNotNull('b.freight_amount')
-			->where(function ($q) {
-				$q->where('b.submit', 1)
-				  ->orWhere('b.f_return', 1);
-			})
-			->orderBy('b.vendor_name', 'asc')
-			->orderBy('b.created_at', 'desc')
-			->get();
-
-		return view(
-			'admin.billdata.freight_detail_validate',
-			compact('pagetitle', 'title', 'entries', 'updatedentries')
-		);
-	}*/
 	
 	public function freight_info_validate_index()
 	{

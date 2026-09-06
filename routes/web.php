@@ -90,6 +90,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::post('billdata/bulk-delete', [App\Http\Controllers\Admin\BilldataController::class, 'bulkDelete'])
     ->name('billdata.bulkDelete');
 	
+	Route::get('billdata/freight-shipment-history/export',[App\Http\Controllers\Admin\BilldataController::class,'exportBilldata'])->name('admin.billdata.export');
+	
 	///Bil data freight detail update by Account1 
 	
 	Route::get('freightdata/update-freight', [App\Http\Controllers\Admin\BilldataController::class, 'bill_data_freight_index'])->name('freightdata');
