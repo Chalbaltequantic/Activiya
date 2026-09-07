@@ -1,16 +1,10 @@
 <div class="card-body p-0">
-
 	@if($user_role == 1)
-		<form method="POST"  action="{{ route('admin.billdata.bulkDelete') }}"
-			  id="bulkDeleteForm">
+		<form method="POST"  action="{{ route('admin.billdata.bulkDelete') }}"  id="bulkDeleteForm">
 			@csrf
 	@endif
-
-
 	<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
-
 		<table id="billDataAjaxTable" class="table table-bordered border-dark table-hover">
-
 			<thead>
 				<tr>
 					<th style="background:#fce4d6;color:#0070c0;z-index:999;"
@@ -26,7 +20,6 @@
 						</a>
 					</th>
 					<th style="background:#fce4d6;color:#0070c0;z-index:999;"						class="{{ count($billdatalist) > 0 ? 'sticky-col-2' : '' }}">
-
 						<a href="javascript:void(0);" class="bill-sort" data-column="d5_consignor_short_name_and_location" style="color:#0070c0;text-decoration:none;">D5 consignor short<br>
 							name & location<span class="sort-icon">
 								@if($sortBy == 'd5_consignor_short_name_and_location')
@@ -69,7 +62,6 @@
 					<th style="background:#fce4d6;color:#0070c0;">
 
 						<a href="javascript:void(0);" class="bill-sort" data-column="consignor_name" style="color:#0070c0;text-decoration:none;">Consignor name
-
 							<span class="sort-icon">
 								@if($sortBy == 'consignor_name')
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
@@ -80,9 +72,7 @@
 						</a>
 					</th>
 					<th style="background:#fce4d6;color:#0070c0;">
-
 						<a href="javascript:void(0);" class="bill-sort" data-column="consignor_code" style="color:#0070c0;text-decoration:none;">Consignor<br>code
-
 							<span class="sort-icon">
 								@if($sortBy == 'consignor_code')
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
@@ -116,44 +106,30 @@
 								@endif
 
 							</span>
-
 						</a>
-
 					</th>
 
 
 					<th style="background:#fce4d6;color:#0070c0;">
-
 						<a href="javascript:void(0);" class="bill-sort" data-column="consignee_code" style="color:#0070c0;text-decoration:none;">Consignee<br>
 							Code
 							<span class="sort-icon">
 								@if($sortBy == 'consignee_code')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
 							</span>
 							</a>
 					</th>
 					<th style="background:#fce4d6;color:#0070c0;">
-
 						<a href="javascript:void(0);" class="bill-sort" data-column="consignee_location" style="color:#0070c0;text-decoration:none;">Consignee Location
 						<span class="sort-icon">
-
 								@if($sortBy == 'consignee_location')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
-
 							</span>
 						</a>
 					</th>
@@ -172,145 +148,61 @@
 
 					</th>
 
-
-					{{-- Vendor Code --}}
 					<th style="background:#fce4d6;color:#0070c0;">
-
-						<a href="javascript:void(0);"
-						   class="bill-sort"
-						   data-column="vendor_code"
-						   style="color:#0070c0;text-decoration:none;">
-
-							Vendor Code
-
+						<a href="javascript:void(0);" class="bill-sort" data-column="vendor_code"  style="color:#0070c0;text-decoration:none;">Vendor Code
 							<span class="sort-icon">
-
 								@if($sortBy == 'vendor_code')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
-
 							</span>
-
 						</a>
-
 					</th>
-
-
-					{{-- T Code --}}
 					<th style="background:#fce4d6;color:#0070c0;">
-
-						<a href="javascript:void(0);"
-						   class="bill-sort"
-						   data-column="t_code"
-						   style="color:#0070c0;text-decoration:none;">
-
-							T code
-
+						<a href="javascript:void(0);" class="bill-sort" data-column="t_code"
+						   style="color:#0070c0;text-decoration:none;">T code
 							<span class="sort-icon">
-
 								@if($sortBy == 't_code')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
-
 							</span>
-
 						</a>
-
 					</th>
-
-
-					{{-- LR No --}}
 					<th style="background:#fce4d6;color:#0070c0;">
-
-						<a href="javascript:void(0);"
-						   class="bill-sort"
-						   data-column="lr_no"
-						   style="color:#0070c0;text-decoration:none;">
-
-							LR/CN No.
-
+						<a href="javascript:void(0);" class="bill-sort" data-column="lr_no" style="color:#0070c0;text-decoration:none;">LR/CN No.
 							<span class="sort-icon">
-
 								@if($sortBy == 'lr_no')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
-
 							</span>
-
 						</a>
-
 					</th>
-
-
-					{{-- LR CN Date --}}
 					<th style="background:#fce4d6;color:#0070c0;">
-
-						<a href="javascript:void(0);"
-						   class="bill-sort"
-						   data-column="lr_cn_date"
-						   style="color:#0070c0;text-decoration:none;">
-
-							LR CN Date
-
+						<a href="javascript:void(0);" class="bill-sort" data-column="lr_cn_date" style="color:#0070c0;text-decoration:none;">LR CN Date
 							<span class="sort-icon">
-
 								@if($sortBy == 'lr_cn_date')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
-
 							</span>
-
 						</a>
-
 					</th>
-
-
-					{{-- A Amount --}}
 					<th style="background:#fce4d6;color:#0070c0;">
 
-						<a href="javascript:void(0);"
-						   class="bill-sort"
-						   data-column="a_amount"
-						   style="color:#0070c0;text-decoration:none;">
-
-							A amount
-
+						<a href="javascript:void(0);" class="bill-sort" data-column="a_amount"
+						   style="color:#0070c0;text-decoration:none;">A amount
 							<span class="sort-icon">
-
 								@if($sortBy == 'a_amount')
-
 									{{ $sortDirection == 'asc' ? '▲' : '▼' }}
-
 								@else
-
 									⇅
-
 								@endif
-
 							</span>
 
 						</a>
@@ -948,7 +840,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="float-right">
-					{{ $billdatalist->links() }}
+					{{ $billdatalist->onEachSide(1)->links('pagination::bootstrap-4') }}
 				</div>
 			</div>
 		</div>
