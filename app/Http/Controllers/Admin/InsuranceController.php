@@ -62,6 +62,7 @@ class InsuranceController extends Controller
                 $toCode = trim((string)($row['E'] ?? ''));
                 $toLocation = trim((string)($row['F'] ?? ''));
                 $transporter = trim((string)($row['I'] ?? ''));
+                $truckNumber = '';
                 $lrNo = trim((string)($row['J'] ?? ''));
                 $lrDate = $this->excelDate($row['K'] ?? null);
 
@@ -93,8 +94,8 @@ class InsuranceController extends Controller
                         }
 						
 						
-                        if ($truck_number == '' && !empty($preloading->truck_number)) {
-                            $truck_number = $preloading->truck_number;
+                        if ($truckNumber == '' && !empty($preloading->truck_number)) {
+                            $truckNumber = $preloading->truck_number;
                         }
 
                         if ($lrNo == '' && !empty($preloading->lr_no)) {
@@ -123,7 +124,7 @@ class InsuranceController extends Controller
                     'invoice_no' => $invoiceNo,
                     'invoice_date' => $this->excelDate($row['H'] ?? null),
                     'transporter_name' => $transporter,
-                    'truck_number' => $truck_number,
+                    'truck_no' => $truckNumber,
                     'lr_no' => $lrNo,
                     'lr_date' => $lrDate,
                     'damage_value' => $damage,
@@ -143,7 +144,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -188,6 +189,7 @@ class InsuranceController extends Controller
                 $fromLocation = trim((string)$request->input("from_location.$i"));
                 $toLocation = trim((string)$request->input("to_location.$i"));
                 $transporter = trim((string)$request->input("transporter_name.$i"));
+                $truckNumber = trim((string)$request->input("truck_no.$i"));
                 $lrNo = trim((string)$request->input("lr_no.$i"));
                 $lrDate = $request->input("lr_date.$i");
 
@@ -217,8 +219,8 @@ class InsuranceController extends Controller
                         if ($transporter == '' && !empty($preloading->transporter_name)) {
                             $transporter = $preloading->transporter_name;
                         }
-						if ($truck_number == '' && !empty($preloading->truck_number)) {
-                            $truck_number = $preloading->truck_number;
+						if ($truckNumber == '' && !empty($preloading->truck_number)) {
+                            $truckNumber = $preloading->truck_number;
                         }
 
                         if ($lrNo == '' && !empty($preloading->lr_no)) {
@@ -234,9 +236,6 @@ class InsuranceController extends Controller
                 $fromLocation = $this->fillLocation($fromCode, $fromLocation);
                 $toLocation = $this->fillLocation($toCode, $toLocation);
 
-                $damage = (float)str_replace(',', '', $request->input("damage_value.$i", 0));
-                $shortage = (float)str_replace(',', '', $request->input("shortage_value.$i", 0));
-
                 $insurance = Insurance::create([
                     'loss_date' => $lossDate ?: null,
                     'nature_of_claim' => $request->input("nature_of_claim.$i"),
@@ -247,7 +246,7 @@ class InsuranceController extends Controller
                     'invoice_no' => $invoiceNo,
                     'invoice_date' => $request->input("invoice_date.$i") ?: null,
                     'transporter_name' => $transporter,
-                    'truck_no' => $truck_number,
+                    'truck_no' => $truckNumber,
                     'lr_no' => $lrNo,
                     'lr_date' => $lrDate ?: null,
                     'created_by' => $createdBy
@@ -259,7 +258,7 @@ class InsuranceController extends Controller
             if (empty($insertedIds)) {
                 DB::rollBack();
 
-                return back()->with('error', 'Please enter at least one Insurance record.');
+                return back()->withInput()->with('error', 'Please enter at least one Insurance record.');
             }
 
             DB::commit();
@@ -274,7 +273,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -300,7 +299,7 @@ class InsuranceController extends Controller
 
         return response()->json([
             'success' => true,
-            'location_name' => $plant->plant_site_location_name ?? $plant->plant_site_name ?? ''
+            'location_name' => $plant->city ?? $plant->plant_site_name ?? ''
         ]);
     }
 
@@ -315,7 +314,7 @@ class InsuranceController extends Controller
             ]);
         }
 
-        $row = DB::table('digiwim_preloading')
+        $row = DB::table('digiwim_preloading_operations')
             ->where('invoice_challan_no', $invoiceNo)
             ->orderBy('id')
             ->first();
@@ -334,6 +333,7 @@ class InsuranceController extends Controller
             'to_location_code' => $row->consignee_code ?? '',
             'to_location' => $row->consignee_location ?? '',
             'transporter_name' => $row->transporter_name ?? '',
+            'truck_no' => $row->truck_number ?? '',
             'lr_no' => $row->lr_no ?? '',
             'lr_date' => $row->lr_date ?? ''
         ]);
@@ -447,6 +447,7 @@ class InsuranceController extends Controller
             'success' => true,
             'insurance_id' => $insurance->id,
             'invoice_no' => $insurance->invoice_no,
+            'lr_no' => $insurance->lr_no,
             'photo_count' => $insurance->photographs->count(),
             'remaining' => max(0, 10 - $insurance->photographs->count()),
             'photographs' => $insurance->photographs->map(function ($photo) {

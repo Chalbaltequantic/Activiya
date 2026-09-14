@@ -271,48 +271,48 @@
                                                 @for($i = 0; $i < 20; $i++)
                                                 <tr>
                                                     <td>
-                                                      <input type="date" name="loss_date[{{ $i }}]">
+                                                      <input type="date" name="loss_date[{{ $i }}]" value="{{ old('loss_date.'.$i) }}">
                                                     </td>
                                                     <td>
                                                         <select name="nature_of_claim[{{ $i }}]" class="">
-                                                            <option value="">Select</option>
-                                                            <option value="Shortage">Shortage</option>
-                                                            <option value="Damage">Damage</option>
-                                                            <option value="Shortage/Damage">Shortage/Damage</option>
+                                                            <option value="" {{ old('nature_of_claim.'.$i) == '' ? 'selected' : '' }}>Select</option>
+                                                            <option value="Shortage" {{ old('nature_of_claim.'.$i) == 'Shortage' ? 'selected' : '' }}>Shortage</option>
+                                                            <option value="Damage" {{ old('nature_of_claim.'.$i) == 'Damage' ? 'selected' : '' }}>Damage</option>
+                                                            <option value="Shortage/Damage" {{ old('nature_of_claim.'.$i) == 'Shortage/Damage' ? 'selected' : '' }}>Shortage/Damage</option>
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="from_location_code[{{ $i }}]" class="from-code">
+                                                        <input type="text" name="from_location_code[{{ $i }}]" class="from-code" value="{{ old('from_location_code.'.$i) }}">
                                                         <small class="lookup-note from-note"></small>
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="from_location[{{ $i }}]" class="from-location">
+                                                        <input type="text" name="from_location[{{ $i }}]" class="from-location" value="{{ old('from_location.'.$i) }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="to_location_code[{{ $i }}]" class="to-code">
+                                                        <input type="text" name="to_location_code[{{ $i }}]" class="to-code" value="{{ old('to_location_code.'.$i) }}">
                                                         <small class="lookup-note to-note"></small>
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="to_location[{{ $i }}]" class="to-location">
+                                                        <input type="text" name="to_location[{{ $i }}]" class="to-location" value="{{ old('to_location.'.$i) }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="invoice_no[{{ $i }}]" class="invoice-no">
+                                                        <input type="text" name="invoice_no[{{ $i }}]" class="invoice-no" value="{{ old('invoice_no.'.$i) }}">
                                                         <small class="lookup-note invoice-note"></small>
                                                     </td>
                                                     <td>
-                                                        <input type="date" name="invoice_date[{{ $i }}]">
+                                                        <input type="date" name="invoice_date[{{ $i }}]" value="{{ old('invoice_date.'.$i) }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="transporter_name[{{ $i }}]" class="transporter">
+                                                        <input type="text" name="transporter_name[{{ $i }}]" class="transporter" value="{{ old('transporter_name.'.$i) }}">
                                                     </td>
 													<td>
-                                                        <input type="text" name="truck-no[{{ $i }}]" class="truckno">
+                                                        <input type="text" name="truck_no[{{ $i }}]" class="truckno" value="{{ old('truck_no.'.$i) }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="lr_no[{{ $i }}]" class="lr-no">
+                                                        <input type="text" name="lr_no[{{ $i }}]" class="lr-no" value="{{ old('lr_no.'.$i) }}">
                                                     </td>
                                                     <td>
-                                                        <input type="date" name="lr_date[{{ $i }}]" class="lr-date">
+                                                        <input type="date" name="lr_date[{{ $i }}]" class="lr-date" value="{{ old('lr_date.'.$i) }}">
                                                     </td>
                                                    
                                                 </tr>
@@ -358,10 +358,11 @@
                                                 <th>Truck No.</th>
                                                 <th>LR No.</th>
                                                 <th>LR Date</th>
+												<th style="background:#c6e0b4;color:#0070c0;">Product</th>
                                                 <th style="background:#c6e0b4;color:#0070c0;">Invoice File</th>
                                                 <th style="background:#c6e0b4;color:#0070c0;">POD/LR Copy</th>
                                                 <th style="background:#c6e0b4;color:#0070c0;">Photographs</th>
-												<th style="background:#c6e0b4;color:#0070c0;">Action</th>
+												
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -381,16 +382,20 @@
                                                 <td>{{ $insurance->lr_no }}</td>
                                                 <td>{{ $insurance->lr_date ? $insurance->lr_date->format('Y-m-d') : '' }}</td>
                                                 
-
+												<td>
+													<a href="{{ route('admin.insurance.products', $insurance->id) }}" class="btn btn-primary btn-xs">
+														<i class="fas fa-plus"></i> Add Product
+													</a>
+												</td>
                                                 <!-- Invoice File -->
                                                 <td>
                                                     <div class="file-action-box" id="invoiceBox{{ $insurance->id }}">
                                                         @if($insurance->invoice_file)
-                                                        <a href="{{ asset($insurance->invoice_file) }}" target="_blank" class="btn btn-info btn-xs">
-                                                            <i class="fas fa-eye"></i> View
+                                                        <a href="{{ asset($insurance->invoice_file) }}" target="_blank" class="btn btn-info btn-xs" title="View">
+                                                            <i class="fas fa-eye"></i>
                                                         </a>
                                                         <button type="button" class="btn btn-danger btn-xs delete-invoice" data-id="{{ $insurance->id }}">
-                                                            <i class="fas fa-trash"></i> Delete
+                                                            <i class="fas fa-trash"></i> 
                                                         </button>
                                                         @else
                                                         <input type="file" class="form-control-file invoice-file" data-id="{{ $insurance->id }}" accept=".pdf,.jpg,.jpeg,.png">
@@ -402,11 +407,10 @@
                                                 <td>
                                                     <div class="file-action-box" id="podBox{{ $insurance->id }}">
                                                         @if($insurance->pod_lr_copy)
-                                                        <a href="{{ asset($insurance->pod_lr_copy) }}" target="_blank" class="btn btn-info btn-xs">
-                                                            <i class="fas fa-eye"></i> View
-                                                        </a>
+                                                        <a href="{{ asset($insurance->pod_lr_copy) }}" target="_blank" class="btn btn-info btn-xs" title="View">
+                                                            <i class="fas fa-eye"></i></a>
                                                         <button type="button" class="btn btn-danger btn-xs delete-pod" data-id="{{ $insurance->id }}">
-                                                            <i class="fas fa-trash"></i> Delete
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                         @else
                                                         <input type="file" class="form-control-file pod-file" data-id="{{ $insurance->id }}" accept=".pdf,.jpg,.jpeg,.png">
@@ -416,21 +420,31 @@
 
                                                 <!-- Photos -->
                                                 <td>
-                                                    <div class="photo-box" id="photoBox{{ $insurance->id }}"></div>
+                                                    <div class="mb-2">
+                                                        <button type="button"
+                                                            class="btn btn-info btn-xs view-photos"
+                                                            data-id="{{ $insurance->id }}"
+                                                            data-invoice="{{ $insurance->invoice_no }}"
+                                                            data-lr="{{ $insurance->lr_no }}">
+                                                            <i class="fas fa-images"></i>
+                                                            View(<span id="photoButtonCount{{ $insurance->id }}">{{ $insurance->photographs->count() }}</span>)
+                                                        </button>
+                                                    </div>
 
-                                                    <div class="mt-2" id="photoUploadArea{{ $insurance->id }}">
-                                                        <input type="file" class="form-control-file photo-files" data-id="{{ $insurance->id }}" accept=".jpg,.jpeg,.png" multiple>
+                                                    <div id="photoUploadArea{{ $insurance->id }}">
+                                                        <input type="file"
+                                                            class="form-control-file photo-files"
+                                                            data-id="{{ $insurance->id }}"
+                                                            accept=".jpg,.jpeg,.png"
+                                                            multiple>
+
                                                         <small class="text-muted">
                                                             <span id="photoCount{{ $insurance->id }}">{{ $insurance->photographs->count() }}</span> / 10 uploaded. Max 1 MB each.
                                                         </small>
                                                     </div>
                                                 </td>
 												
-												<td>
-													<a href="{{ route('admin.insurance.products', $insurance->id) }}" class="btn btn-primary btn-xs">
-														<i class="fas fa-plus"></i> Add Product
-													</a>
-												</td>
+												
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -465,22 +479,78 @@
     </div>
 </div>
 
+
+<!-- Photograph Modal -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoModalLabel">
+                    Insurance Photographs
+                </h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Invoice No.:</strong>
+                        <span id="photoModalInvoice"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>LR No.:</strong>
+                        <span id="photoModalLR"></span>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Photo</th>
+                                <th>File Name</th>
+                                <th>Invoice No.</th>
+                                <th>LR No.</th>
+                                <th>View</th>
+                                @if(Auth::guard('admin')->check())
+                                <th>Delete</th>
+                                @endif
+                            </tr>
+                        </thead>
+
+                        <tbody id="photoModalBody">
+                            <tr>
+                                <td colspan="7" class="text-center">No photographs found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    });
-
-    function calculateTotal(row) {
-        let damage = parseFloat(row.find('.damage').val()) || 0;
-        let shortage = parseFloat(row.find('.shortage').val()) || 0;
-        row.find('.total').val((damage + shortage).toFixed(2));
-    }
-
-    $(document).on('input change', '.damage, .shortage', function() {
-        calculateTotal($(this).closest('tr'));
     });
 
     function fetchLocation(row, type) {
@@ -548,6 +618,7 @@ $(document).ready(function() {
             setValue('.to-code', response.to_location_code);
             setValue('.to-location', response.to_location);
             setValue('.transporter', response.transporter_name);
+            setValue('.truckno', response.truck_no);
             setValue('.lr-no', response.lr_no);
             setValue('.lr-date', response.lr_date);
 
@@ -558,10 +629,6 @@ $(document).ready(function() {
     });
 
     $('#insuranceForm').on('submit', function() {
-        $('#insuranceTable tbody tr').each(function() {
-            calculateTotal($(this));
-        });
-
         $('#saveButton')
             .prop('disabled', true)
             .html('<i class="fas fa-spinner fa-spin"></i> Saving...');
@@ -711,29 +778,16 @@ $(document).ready(function() {
         });
     });
 
+    let currentPhotoInsuranceId = null;
+
     function loadPhotos(id) {
         $.get("{{ url('/admin/insurance') }}/" + id + "/photographs", function(response) {
             if (!response.success) {
                 return;
             }
 
-            let html = '';
-
-            $.each(response.photographs, function(index, photo) {
-                html +=
-                    '<div class="photo-item">' +
-                        '<a href="' + photo.url + '" target="_blank">' +
-                            '<img src="' + photo.url + '">' +
-                        '</a>' +
-                        '<div>' +
-                            '<a href="' + photo.url + '" target="_blank" class="btn btn-info btn-xs">View</a> ' +
-                            '<button type="button" class="btn btn-danger btn-xs delete-photo" data-id="' + photo.id + '" data-insurance="' + id + '">Delete</button>' +
-                        '</div>' +
-                    '</div>';
-            });
-
-            $('#photoBox' + id).html(html);
             $('#photoCount' + id).text(response.photo_count);
+            $('#photoButtonCount' + id).text(response.photo_count);
 
             if (response.remaining <= 0) {
                 $('#photoUploadArea' + id).hide();
@@ -742,6 +796,78 @@ $(document).ready(function() {
             }
         });
     }
+
+    function loadPhotoModal(id) {
+        currentPhotoInsuranceId = id;
+
+        $('#photoModalBody').html(
+            '<tr><td colspan="7" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>'
+        );
+
+        $.get("{{ url('/admin/insurance') }}/" + id + "/photographs", function(response) {
+            if (!response.success) {
+                $('#photoModalBody').html(
+                    '<tr><td colspan="7" class="text-center text-danger">Unable to load photographs.</td></tr>'
+                );
+                return;
+            }
+
+            $('#photoModalInvoice').text(response.invoice_no || '-');
+            $('#photoModalLR').text(response.lr_no || '-');
+
+            $('#photoCount' + id).text(response.photo_count);
+            $('#photoButtonCount' + id).text(response.photo_count);
+
+            if (response.remaining <= 0) {
+                $('#photoUploadArea' + id).hide();
+            } else {
+                $('#photoUploadArea' + id).show();
+            }
+
+            let html = '';
+
+            if (response.photographs.length === 0) {
+                html = '<tr><td colspan="7" class="text-center text-muted">No photographs uploaded.</td></tr>';
+            } else {
+                $.each(response.photographs, function(index, photo) {
+                    html += '<tr>';
+                    html += '<td>' + (index + 1) + '</td>';
+                    html += '<td><img src="' + photo.url + '" style="width:80px;height:60px;object-fit:cover;border:1px solid #ccc;"></td>';
+                    html += '<td>' + escapePhotoText(photo.original_name || '') + '</td>';
+                    html += '<td>' + escapePhotoText(response.invoice_no || '') + '</td>';
+                    html += '<td>' + escapePhotoText(response.lr_no || '') + '</td>';
+                    html += '<td><a href="' + photo.url + '" target="_blank" class="btn btn-info btn-xs"><i class="fas fa-eye"></i> View</a></td>';
+
+                    @if(Auth::guard('admin')->check())
+                    html += '<td><button type="button" class="btn btn-danger btn-xs delete-photo" data-id="' + photo.id + '" data-insurance="' + id + '"><i class="fas fa-trash"></i> Delete</button></td>';
+                    @endif
+
+                    html += '</tr>';
+                });
+            }
+
+            $('#photoModalBody').html(html);
+        }).fail(function() {
+            $('#photoModalBody').html(
+                '<tr><td colspan="7" class="text-center text-danger">Unable to load photographs.</td></tr>'
+            );
+        });
+    }
+
+    function escapePhotoText(value) {
+        return $('<div>').text(value).html();
+    }
+
+    $(document).on('click', '.view-photos', function() {
+        let id = $(this).data('id');
+
+        $('#photoModalInvoice').text($(this).data('invoice') || '-');
+        $('#photoModalLR').text($(this).data('lr') || '-');
+
+        $('#photoModal').modal('show');
+
+        loadPhotoModal(id);
+    });
 
     @foreach($savedInsurance as $insurance)
     loadPhotos({{ $insurance->id }});
@@ -792,6 +918,10 @@ $(document).ready(function() {
 
                 $('.photo-files[data-id="' + id + '"]').val('');
                 loadPhotos(id);
+
+                if (currentPhotoInsuranceId == id && $('#photoModal').hasClass('show')) {
+                    loadPhotoModal(id);
+                }
             },
             error: function(xhr) {
                 let message = 'Unable to upload photographs.';
@@ -819,6 +949,10 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     loadPhotos(insuranceId);
+
+                    if (currentPhotoInsuranceId == insuranceId) {
+                        loadPhotoModal(insuranceId);
+                    }
                 } else {
                     alert(response.message || 'Unable to delete photograph.');
                 }
