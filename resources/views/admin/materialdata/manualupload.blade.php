@@ -69,6 +69,8 @@
 						<th style="background: #fce4d6; color: #0070c0;">Associated</th>
 						<th style="background: #fce4d6; color: #0070c0;">Parent</th>
 						<th style="background: #fce4d6; color: #0070c0;">Child</th>
+						<th style="background: #fce4d6; color: #0070c0;">MRP</th>
+						<th style="background: #fce4d6; color: #0070c0;">Recovery MRP</th>
 						
 					  
 					</tr>
@@ -100,6 +102,8 @@
 						  <td><input type="text" name="associated[]" id="" value="{{ old('associated')[$i] ?? '' }}"></td>
 						  <td class="char-4"><input type="text" name="parent[]" id="" value="{{ old('parent')[$i] ?? '' }}"></td>
 						  <td class="char-4"><input type="text" name="child[]" id="" value="{{ old('child')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="mrp[]" id="" value="{{ old('mrp')[$i] ?? '' }}"></td>
+						  <td class="char-10"><input type="text" name="recovery_mrp[]" id="" value="{{ old('recovery_mrp')[$i] ?? '' }}"></td>
 						  
 						</tr>  
 					@endfor	

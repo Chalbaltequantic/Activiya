@@ -31,6 +31,8 @@ class Material extends Model
 							'associated',
 							'parent',
 							'child',
+							'mrp',
+							'recovery_mrp',
 							'updated_at',
 							'updated_by',
 							'status'

@@ -127,13 +127,15 @@
 						
 						@if(Gate::allows('admin.validatefreightdata'))
 						   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.validatefreightdata') }}" class="dropdown-item">Validate Freight Bills</a></li>
-						@endif
-
-						  
+						@endif						  
 						  
 						@if(Auth::user() && (Auth::user()->role_id == 1 ))
 						   <li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.freight-bill-processing.index') }}" class="dropdown-item">View Report</a></li>
 						 @endif
+						 
+						 @if(Gate::allows('admin.invoice'))
+							<li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.invoice.list') }}" class="dropdown-item">Invoice</a></li>
+						@endif
 					</ul>
 				</li>
 				 @endif
@@ -299,9 +301,7 @@
 					</ul>
 				</li>
 				@endif
-				@if(Gate::allows('admin.invoice'))
-					<li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.invoice.list') }}" class="nav-link">Invoice</a></li>
-				@endif
+				
 				 @if(Auth::user() &&  Auth::user()->role_id==1) 
 				 <li class="nav-item dropdown">
 					<a id="dropdownSubMenu21" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Digi Wim</a>
@@ -340,11 +340,19 @@
 					 
 					  <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
 					 </li>
-					 <li class=""><a href="{{route('admin.digiwim.bin-master.index')}}" class="dropdown-item">Bin Master</a>
-					 </li>
 					</ul>
 				</li>
 				@endif
+							
+				<li class="nav-item dropdown">
+					<a id="dropdownSubMenu22" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Insurance</a>
+					<ul aria-labelledby="dropdownSubMenu22" class="dropdown-menu border-0 shadow">	
+					
+						<li class=""><a href="{{ route('admin.insurance.index') }}" class="dropdown-item">GI Consignee Upload</a></li>
+						<li class=""><a href="{{ route('admin.insurance.t-vendor') }}" class="dropdown-item">T Vendor</a></li>
+					 </ul>
+				</li>	 
+				
 				
 				@if(Auth::check() && !empty(Auth::user()->vendor_code))
 				<li class="nav-item dropdown" id="spotbuyNotificationDropdown">

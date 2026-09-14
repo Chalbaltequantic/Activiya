@@ -97,6 +97,8 @@ class MaterialController extends Controller
                     'associated' => $row['R'] ?? null,
                     'parent' => $row['S'] ?? null,
                     'child' => $row['T'] ?? null,
+                    'mrp' => $row['U'] ?? null,
+                    'recovery_mrp' => $row['V'] ?? null,
                     'created_at' => $createddate,
                     'created_by' => Auth::user()->id,
                     'status' => '1'
@@ -177,6 +179,8 @@ class MaterialController extends Controller
 				'associated' => $request->associated,
 				'parent' => $request->parent,
 				'child' => $request->child,
+				'mrp' => $request->mrp ?? null,
+                'recovery_mrp' => $request->recovery_mrp ?? null,
 				'updated_at' => Carbon::now(),
 				'updated_by' => Auth::user()->id,
 				'status' => $request->status,
@@ -228,6 +232,8 @@ class MaterialController extends Controller
 		$associated = $request->input('associated', []);
 		$parent = $request->input('parent', []);
 		$child = $request->input('child', []);
+		$mrp = $request->input('mrp',[]) ;
+        $recovery_mrp = $request->input('recovery_mrp', []);
 		
 		$count = count($material_code);
 		
@@ -266,6 +272,8 @@ class MaterialController extends Controller
 						'associated' => $associated[$i] ?? null,
 						'parent' => $parent[$i] ?? null,
 						'child' => $child[$i] ?? null,
+						'mrp' => $mrp[$i] ?? null,
+						'recovery_mrp' => $recovery_mrp[$i] ?? null,
 						'created_at' => $createddate,
 						'created_by' => Auth::user()->id,
 						'status' => '1'

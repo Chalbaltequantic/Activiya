@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\AdminUserController as UserController;
 use App\Http\Controllers\Admin\TruckMasterController;
 use App\Http\Controllers\Admin\SpotbyController;
 use App\Http\Controllers\Admin\ConsigneeReturnDurationController;
+use App\Http\Controllers\Admin\InsuranceController;
+use App\Http\Controllers\Admin\InsuranceProductController;
 
 
 /*
@@ -90,7 +92,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::post('billdata/bulk-delete', [App\Http\Controllers\Admin\BilldataController::class, 'bulkDelete'])
     ->name('billdata.bulkDelete');
 	
-	Route::get('billdata/freight-shipment-history/export',[App\Http\Controllers\Admin\BilldataController::class,'exportBilldata'])->name('admin.billdata.export');
+	Route::get('billdata/freight-shipment-history/export',[App\Http\Controllers\Admin\BilldataController::class,'exportBilldata'])->name('billdata.export');
 	
 	///Bil data freight detail update by Account1 
 	
@@ -709,9 +711,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	
 	
-	/*----------------------------------------------------------
-	 |						DIGI WIM PRELOADING                          |
-	------------------------------------------------------------*/
+	/*	DIGI WIM PRELOADING  */
 	Route::get('digiwim/preloading', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'index'])->name('digiWimPreloading');
 	
 	Route::post('digiwim/preloading/import', [App\Http\Controllers\Admin\DigiwimPreloadingController::class, 'import'])->name('digiwim_preloading.import');
@@ -921,6 +921,46 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::put('bin-master/{id}',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'update'])->name('digiwim.bin-master.update');
 
 	Route::delete('bin-master/{id}',[App\Http\Controllers\Admin\DigiwimBinMasterController::class, 'delete'])->name('digiwim.bin-master.delete');
+	
+	/*---------INSURANCE ------------*/	
+
+	Route::get('insurance', [InsuranceController::class, 'index'])->name('insurance.index');
+	Route::post('insurance/import', [InsuranceController::class, 'import'])->name('insurance.import');
+
+	Route::get('insurance/manual-upload', [InsuranceController::class, 'manualupload'])->name('insurance.manual-upload');
+	Route::post('insurance/manual-upload', [InsuranceController::class, 'saveManualData'])->name('insurance.save-manual-upload');
+
+	Route::get('insurance/list', [InsuranceController::class, 'datalist'])->name('insurance.datalist');
+	Route::get('insurance/export', [InsuranceController::class, 'export'])->name('insurance.export');
+
+	Route::get('insurance/t-vendor', [InsuranceController::class, 'tVendor'])->name('insurance.t-vendor');
+	Route::post('insurance/{id}/t-vendor-document', [InsuranceController::class, 'uploadTVendorDocument'])->name('insurance.t-vendor-document.upload');
+	Route::delete('insurance/{id}/t-vendor-document', [InsuranceController::class, 'deleteTVendorDocument'])->name('insurance.t-vendor-document.delete');
+	Route::get('insurance/{id}/t-vendor-history/{documentType}', [InsuranceController::class, 'tVendorHistory'])->name('insurance.t-vendor-history');
+
+	Route::post('insurance/fetch-location', [InsuranceController::class, 'fetchLocation'])->name('insurance.fetch-location');
+	Route::post('insurance/fetch-invoice', [InsuranceController::class, 'fetchInvoice'])->name('insurance.fetch-invoice');
+
+	Route::post('insurance/{id}/invoice', [InsuranceController::class, 'uploadInvoice'])->name('insurance.invoice.upload');
+	Route::delete('insurance/{id}/invoice', [InsuranceController::class, 'deleteInvoice'])->name('insurance.invoice.delete');
+
+	Route::post('insurance/{id}/pod', [InsuranceController::class, 'uploadPod'])->name('insurance.pod.upload');
+	Route::delete('insurance/{id}/pod', [InsuranceController::class, 'deletePod'])->name('insurance.pod.delete');
+
+	Route::get('insurance/{id}/photographs', [InsuranceController::class, 'photographList'])->name('insurance.photographs');
+	Route::post('insurance/{id}/photographs', [InsuranceController::class, 'uploadPhotographs'])->name('insurance.photographs.upload');
+	Route::delete('insurance/photographs/{photoId}', [InsuranceController::class, 'deletePhotograph'])->name('insurance.photographs.delete');
+	
+	///Insurance product
+
+	Route::get('insurance/{insurance}/products', [InsuranceProductController::class, 'index'])
+		->name('insurance.products');
+
+	Route::post('insurance/{insurance}/products', [InsuranceProductController::class, 'store'])
+		->name('insurance.products.store');
+
+	Route::post('insurance/{insurance}/products/lookup', [InsuranceProductController::class, 'lookupProduct'])
+    ->name('insurance.products.lookup');
 	
 });
 

@@ -171,8 +171,8 @@
 						<th style="background: #fce4d6; color: #0070c0;">Brand</th>
 						<th style="background: #fce4d6; color: #0070c0;">Sub brand</th>
 						<th style="background: #fce4d6; color: #0070c0;">Stack norms</th>
-						<th style="background: #fce4d6; color: #0070c0;">Custom</th>
-						<th style="background: #fce4d6; color: #0070c0;">Custom 1</th>
+						<th style="background: #fce4d6; color: #0070c0;">MRP</th>
+						<th style="background: #fce4d6; color: #0070c0;">Recovery MRP</th>
 						<th style="background: #fce4d6; color: #0070c0;">Parent</th>
 						<th style="background: #fce4d6; color: #0070c0;">Child</th>
 						<th style="background: #fce4d6; color: #0070c0;">Created at</th>
@@ -203,8 +203,8 @@
 						  <td>{{$materialdata->brand}}</td>
 						  <td>{{$materialdata->sub_brand}}</td>
 						  <td>{{$materialdata->thickness}}</td>
-						  <td>{{$materialdata->load_sequence}}</td>
-						  <td>{{$materialdata->associated}}</td>
+						  <td>{{$materialdata->mrp}}</td>
+						  <td>{{$materialdata->recovery_mrp}}</td>
 						  <td>{{$materialdata->parent}}</td>
 						  <td>{{$materialdata->child}}</td>
 						  <td>{{$materialdata->created_at}}</td>
