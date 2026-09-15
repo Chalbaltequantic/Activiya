@@ -138,9 +138,9 @@ class MaterialController extends Controller
 	
 	public function getMaterialdataDetails($id)
 	{
-		$Materialdata = Material::find($id);
+		$materialdata = Material::find($id);
 		$userid = auth()->user()->id; //get loggedin user id		
-		return view('admin.materialdata.editMaterialdata', compact('Materialdata'));
+		return view('admin.materialdata.editmaterialdata', compact('materialdata'));
 	}
 
 	public function save_Materialdata(Request $request)
@@ -185,7 +185,7 @@ class MaterialController extends Controller
 				'updated_by' => Auth::user()->id,
 				'status' => $request->status,
 			]);
-			return Redirect('/admin/materialdata')->with('success', 'Data updated successfully!');
+			return Redirect('/admin/materialdata/material-data-list')->with('success', 'Data updated successfully!');
 		
 	}
 	
