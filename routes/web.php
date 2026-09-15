@@ -17,44 +17,25 @@ use App\Http\Controllers\Admin\SpotbyController;
 use App\Http\Controllers\Admin\ConsigneeReturnDurationController;
 use App\Http\Controllers\Admin\InsuranceController;
 use App\Http\Controllers\Admin\InsuranceProductController;
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\Admin\InsuranceClaimController;
 
 /*Route::get('/', function () {
     return view('welcome');
 });
 */
 
-
-
-
 Auth::routes();
-
 
 Route::get('/', [LoginController::class, 'showAdminLoginForm'])->name('admin.login-view');
 Route::post('/', [LoginController::class, 'adminLogin'])->name('admin.login');
 
 Route::get('/admin',[LoginController::class,'showAdminLoginForm'])->name('admin.adminlogin-view');
 Route::post('/admin',[LoginController::class,'adminLogin'])->name('admin.adminlogin');
-//
 
-//
 Route::get('/admin/register',[RegisterController::class,'showAdminRegisterForm'])->name('admin.register-view');
 Route::post('/admin/register',[RegisterController::class,'createAdmin'])->name('admin.register');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
 
 // user and role Management
 Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
@@ -961,6 +942,14 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 
 	Route::post('insurance/{insurance}/products/lookup', [InsuranceProductController::class, 'lookupProduct'])
     ->name('insurance.products.lookup');
+	
+	//Insurance Claim log
+	
+	Route::get('insurance/claim-bills', [InsuranceClaimController::class, 'index'])
+    ->name('insurance.claim-bills');
+
+	Route::get('insurance/{id}/claim-bill', [InsuranceClaimController::class, 'show'])
+    ->name('insurance.claim-bill');
 	
 });
 

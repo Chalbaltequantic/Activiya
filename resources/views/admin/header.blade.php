@@ -349,7 +349,10 @@
 					<ul aria-labelledby="dropdownSubMenu22" class="dropdown-menu border-0 shadow">	
 					
 						<li class=""><a href="{{ route('admin.insurance.index') }}" class="dropdown-item">GI Consignee Upload</a></li>
-						<li class=""><a href="{{ route('admin.insurance.t-vendor') }}" class="dropdown-item">T Vendor</a></li>
+						<li class=""><a href="{{ route('admin.insurance.t-vendor') }}" class="dropdown-item">T Vendor</a></li>						
+						<li class=""><a href="{{ route('admin.insurance.claim-bills') }}" class="dropdown-item">Insurance Claim</a></li>
+						
+						
 					 </ul>
 				</li>	 
 				

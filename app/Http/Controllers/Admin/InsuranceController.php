@@ -114,7 +114,7 @@ class InsuranceController extends Controller
                 $damage = (float)str_replace(',', '', $row['L'] ?? 0);
                 $shortage = (float)str_replace(',', '', $row['M'] ?? 0);
 
-                Insurance::create([
+                $insurance = Insurance::create([
                     'loss_date' => $this->excelDate($row['A'] ?? null),
                     'nature_of_claim' => trim((string)($row['B'] ?? '')),
                     'from_location_code' => $fromCode,
@@ -132,6 +132,9 @@ class InsuranceController extends Controller
                     'total_value' => $damage + $shortage,
                     'created_by' => $createdBy
                 ]);
+				
+				$insurance->claim_no = $this->generateClaimNo($insurance->id);
+				$insurance->save();
 
                 $inserted++;
             }
@@ -167,7 +170,28 @@ class InsuranceController extends Controller
             'activeTab'
         ));
     }
+	
+	private function generateClaimNo($insuranceId)
+	{
+		$year = date('Y');
+		$month = date('n');
 
+		if ($month >= 4) {
+			$startYear = $year;
+			$endYear = $year + 1;
+		} else {
+			$startYear = $year - 1;
+			$endYear = $year;
+		}
+
+		$financialYear = substr($startYear, -2) . '-' . substr($endYear, -2);
+
+		$claimNumber = 1000 + $insuranceId;
+
+		return 'ZWPL/' . $financialYear . '/' . $claimNumber;
+	}
+	
+	
     public function saveManualData(Request $request)
     {
         $createdBy = Auth::guard('admin')->id();
@@ -251,6 +275,10 @@ class InsuranceController extends Controller
                     'lr_date' => $lrDate ?: null,
                     'created_by' => $createdBy
                 ]);
+				
+				$insurance->claim_no = $this->generateClaimNo($insurance->id);
+				$insurance->save();
+
 
                 $insertedIds[] = $insurance->id;
             }

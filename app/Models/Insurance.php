@@ -12,6 +12,7 @@ class Insurance extends Model
     protected $table = 'insurance';
 
     protected $fillable = [
+		'claim_no',
         'loss_date',
         'nature_of_claim',
         'from_location_code',
@@ -21,6 +22,7 @@ class Insurance extends Model
         'invoice_no',
         'invoice_date',
         'transporter_name',
+		'truck_no',
         'lr_no',
         'lr_date',
         'damage_value',
