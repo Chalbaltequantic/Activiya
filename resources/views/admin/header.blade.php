@@ -302,44 +302,80 @@
 				</li>
 				@endif
 				
-				 @if(Auth::user() &&  Auth::user()->role_id==1) 
+				{{-- @if(Auth::user() &&  Auth::user()->role_id==1) --}}
+					@if(Gate::allows('admin.digiwim.bin-master.index') || Gate::allows('admin.digiwim.addupload') 
+					|| Gate::allows('admin.digiwim.unloading') 
+					|| Gate::allows('admin.digiwim.createunloading') 
+					|| Gate::allows('admin.digiwim.addupload.preloading') 
+					|| Gate::allows('admin.digiwim.preloading.datalist')
+					|| Gate::allows('admin.digiwim.preloading.list')
+					|| Gate::allows('admin.digiwim.ledger')
+					|| Gate::allows('admin.digiwim.Inventory')
+					|| Gate::allows('admin.digiwim.egr')
+					|| Gate::allows('admin.digiwim.egp') 
+					|| Gate::allows('admin.digiwim.ira')
+					|| Gate::allows('admin.digiwim.mgoods.po.uploads')
+					) 
 				 <li class="nav-item dropdown">
 					<a id="dropdownSubMenu21" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Digi Wim</a>
 					<ul aria-labelledby="dropdownSubMenu21" class="dropdown-menu border-0 shadow">	
 					
+					@if(Gate::allows('admin.digiwim.addupload'))
 					 <li class=""><a href="{{ route('admin.digiWim') }}" class="dropdown-item">Add/Upload Digi Wim</a></li>
-					
+					@endif
+					@if(Gate::allows('admin.digiwim.bin-master.index'))
 					 <li class=""><a href="{{ route('admin.digiwimdatalist') }}" class="dropdown-item">Data List</a></li>
-					 
+					@endif 
+					@if(Gate::allows('admin.digiwim.unloading'))
 					 <li class=""><a href="{{ route('admin.digiwim.operation.list') }}" class="dropdown-item">Unloading List</a>
 					 </li>
+					 @endif
+					 
+					 @if(Gate::allows('aadmin.digiwim.createunloading'))
 					 <li class=""><a href="{{ route('admin.digiwim.operation.create') }}" class="dropdown-item">Create Unloading</a>
 					 </li>
+					 @endif
 					 
-					 <li class=""><a href="{{ route('admin.digiWimPreloading') }}" class="dropdown-item">Add/Upload Digi Wim Preloading</a></li>					
-					 <li class=""><a href="{{ route('admin.digiwimpreloadingdatalist') }}" class="dropdown-item">Preloading Data List</a></li>					 
+					 @if(Gate::allows('admin.digiwim.addupload.preloading'))
+					 <li class=""><a href="{{ route('admin.digiWimPreloading') }}" class="dropdown-item">Add/Upload Digi Wim Preloading</a></li>
+					@endif
+					
+					@if(Gate::allows('admin.digiwim.preloading.datalist'))
+					 <li class=""><a href="{{ route('admin.digiwimpreloadingdatalist') }}" class="dropdown-item">Preloading Data List</a></li>
+					@endif
+					@if(Gate::allows('admin.digiwim.preloading.list'))
 					 <li class=""><a href="{{ route('admin.digiwimpreloading.operation.list') }}" class="dropdown-item">Preloading List</a>
 					 </li>
+					@endif 
+					@if(Gate::allows('admin.digiwim.addupload.preloading'))
 					 <li class=""><a href="{{ route('admin.digiwimpreloading.operation.create') }}" class="dropdown-item">Create Preloading</a>
 					 </li>
-					 
+					@endif 
+					@if(Gate::allows('admin.digiwim.ledger')) 
 					 <li class=""><a href="{{ route('admin.digiwim.ledger') }}" class="dropdown-item">Ledger</a>
 					 </li>
-					 
+					@endif
+					@if(Gate::allows('admin.digiwim.Inventory'))	
 					  <li class=""><a href="{{ route('admin.digiwim.inventory') }}" class="dropdown-item">Inventory</a>
 					 </li>
-					 
+					@endif
+					@if(Gate::allows('admin.digiwim.egr'))	
 					  <li class=""><a href="{{ route('admin.digiwim-egr.index') }}" class="dropdown-item">EGR </a>
 					 </li>
-					 
+					@endif
+
+					@if(Gate::allows('admin.digiwim.egp'))	
 					 <li class=""><a href="{{ route('admin.digiwim-egp.index') }}" class="dropdown-item">EGP </a>
 					 </li>
-					 
+					@endif
+					@if(Gate::allows('admin.digiwim.mgoods.po.uploads'))	
 					  <li class=""><a href="{{route('admin.digiwim-goods-po.index')}}" class="dropdown-item">M Goods Po Upload </a>
 					 </li>
-					 
+					@endif 
+					@if(Gate::allows('admin.digiwim.ira'))
 					  <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
 					 </li>
+					@endif
 					</ul>
 				</li>
 				@endif

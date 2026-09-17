@@ -75,10 +75,10 @@
                                         <label class="custom-control-label" for="select-all">Select All</label>
                                     </div>
                                 </div>
-                                @forelse($modules->chunk(2) as $key=>$chunks)
+                                @forelse($modules->chunk(3) as $key=>$chunks)
                                     <div class="form-row">
                                         @foreach ($chunks as $key => $module)
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <h5>Module : {{ $module->name }}</h5>
                                                 @foreach ($module->permissions as $key => $permission)
                                                     <div class="mb-3 ml-4">
@@ -91,6 +91,7 @@
                                                                 for="permission-{{ $permission->id }}">{{ $permission->name }}</label>
                                                         </div>
                                                     </div>
+													<hr>
                                                 @endforeach
                                             </div>
                                         @endforeach
