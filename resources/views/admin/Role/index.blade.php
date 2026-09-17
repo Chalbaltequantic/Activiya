@@ -50,17 +50,37 @@
                                         <tr>
                                             <td class="text-center text-muted">{{ $key + 1 }}</td>
                                             <td class="text-center">{{ $role->name }}</td>
-                                            @if ($role->permissions->count() > 0)
-                                                <td class="text-center">
-                                                    {{role_permission_list_format($role)}}  <div class="badge badge-primary">{{ $role->permissions->count() }}</div>
-                                                  {{-- {{ json_encode($role->permissions)}} --}}
-                                                    {{-- {{json_encode($role->permissions())}} --}}
-                                                </td>
-                                            @else
-                                                <td class="text-center">
-                                                    <div class="badge badge-danger">No permissions Found :( </div>
-                                                </td>
-                                            @endif
+                                          @if($role->permissions->count() > 0)
+
+											<td class="text-left">
+
+												@foreach($role->permissions as $permission)
+
+													{{ $permission->name }}@if(!$loop->last), @endif
+
+													@if(($loop->iteration % 4) == 0)
+														<br>
+													@endif
+
+												@endforeach
+
+												<span class="badge badge-primary ml-2">
+													{{ $role->permissions->count() }}
+												</span>
+
+											</td>
+
+											@else
+
+											<td class="text-center">
+
+												<span class="badge badge-danger">
+													No permissions Found :(
+												</span>
+
+											</td>
+
+											@endif
 
                                             <td class="text-center">
                                                 <div class=" ">{{ $role->updated_at->diffForHumans() }}</div>
