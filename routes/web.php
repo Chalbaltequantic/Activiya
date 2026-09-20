@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\ConsigneeReturnDurationController;
 use App\Http\Controllers\Admin\InsuranceController;
 use App\Http\Controllers\Admin\InsuranceProductController;
 use App\Http\Controllers\Admin\InsuranceClaimController;
+use App\Http\Controllers\Admin\SmartPoController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -950,6 +951,20 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 
 	Route::get('insurance/{id}/claim-bill', [InsuranceClaimController::class, 'show'])
     ->name('insurance.claim-bill');
+	
+	
+	////Purchase order pdf upload and extract data
+	
+	Route::prefix('smart-po')->name('smart-po.')->group(function () {
+
+        Route::get('/', [SmartPoController::class, 'index'])->name('index');
+        Route::get('/upload',[SmartPoController::class, 'upload'])->name('upload');
+        Route::post('/upload',[SmartPoController::class, 'processUpload'])->name('process');
+        Route::get('/{id}/view',[SmartPoController::class, 'show'])->name('show');
+        Route::get('/{id}/original',[SmartPoController::class, 'original'])->name('original');
+        Route::get('/{id}/excel',[SmartPoController::class, 'excel'] )->name('excel');
+        Route::get('/{id}/pdf',[SmartPoController::class, 'pdf'])->name('pdf');
+    });
 	
 });
 

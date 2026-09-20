@@ -30,5 +30,15 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+	'po_reader' => [
+		'url' => env(
+			'PO_READER_URL',
+			'http://127.0.0.1:5002'
+		),
+
+		'api_key' => env(
+			'PO_READER_API_KEY'
+		),
+	],
 
 ];

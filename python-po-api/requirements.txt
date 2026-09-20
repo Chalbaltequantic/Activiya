@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+pytesseract
+Pillow
+opencv-python-headless
+numpy
+PyMuPDF
+pdfplumber
