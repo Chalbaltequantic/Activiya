@@ -373,9 +373,14 @@
 					 </li>
 					@endif 
 					@if(Gate::allows('admin.digiwim.ira'))
-					  <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
+					 <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
 					 </li>
-					@endif
+					@endif					
+					 
+					 <li class=""><a href="{{ route('admin.smart-po.upload') }}" class="dropdown-item">Upload PO</a>
+					 </li>
+					 <li class=""><a href="{{ route('admin.smart-po.index') }}" class="dropdown-item">PO Data List</a>
+					 </li>					 
 					</ul>
 				</li>
 				@endif
