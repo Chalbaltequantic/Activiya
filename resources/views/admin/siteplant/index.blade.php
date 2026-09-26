@@ -167,7 +167,7 @@
 						   
 						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
 						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
-						 @if(Auth::user() && (Auth::user()->role_id == 1))			
+						 @if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 13) )			
 						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
 					    @endif
 						</tr>
@@ -209,7 +209,7 @@
 						    <td>{{$siteplantdata->company_type}}</td>
 						  <td>{{$siteplantdata->created_at}}</td>
 						  <td>{!! ($siteplantdata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
-						   @if(Auth::user() && (Auth::user()->role_id == 1))	
+						   @if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 13) )	
 						  <td><a class="btn btn-info btn-sm" href="{{url('admin/siteplant/editsiteplantdata/'.$siteplantdata->id)}}">
                               <i class="fas fa-pencil-alt">
                               </i>

@@ -167,7 +167,8 @@
 						 
 						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
 						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
-						  	@if($user_role==1)
+						  {{--	@if($user_role==1) --}}
+						  @if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 13) )
 						  <th style="background: #c6e0b4; color: #0070c0;" class="">Action</th>
 							@endif
 						</tr>
@@ -208,7 +209,8 @@
 						  <td>{{$ratedata->custom5}}</td>
 						  <td>{{$ratedata->created_at}}</td>
 						    <td>{!! ($ratedata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
-						  	@if($user_role==1)
+								{{--	@if($user_role==1) --}}
+							@if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 13) )	
 						  <td><a class="btn btn-info btn-sm" href="{{url('admin/ratedata/editratedata/'.$ratedata->id)}}">
                               <i class="fas fa-pencil-alt">
                               </i>
