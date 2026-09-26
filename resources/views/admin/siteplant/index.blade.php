@@ -215,6 +215,8 @@
                               </i>
                               Edit
                           </a>
+						  @endif
+						   @if(Auth::user() && (Auth::user()->role_id == 1 ) )	
                           <a class="btn btn-danger btn-sm" href="{{url('admin/deletesiteplantdata/'.$siteplantdata->id)}}" onclick="return confirm('Are your sure you want to delete this data');">
                               <i class="fas fa-trash">
                               </i>

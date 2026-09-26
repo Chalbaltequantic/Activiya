@@ -210,12 +210,15 @@
 						  <td>{{$ratedata->created_at}}</td>
 						    <td>{!! ($ratedata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
 								{{--	@if($user_role==1) --}}
-							@if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 13) )	
+							
+							@if(Auth::user() && (Auth::user()->role_id == 1 || Auth::user()->role_id == 13) )						  
 						  <td><a class="btn btn-info btn-sm" href="{{url('admin/ratedata/editratedata/'.$ratedata->id)}}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                           </a>
+						  @endif
+						  @if(Auth::user() && (Auth::user()->role_id == 1s) )
                           <a class="btn btn-danger btn-sm" href="{{url('admin/deleteratedata/'.$ratedata->id)}}" onclick="return confirm('Are your sure you want to delete this data');">
                               <i class="fas fa-trash">
                               </i>
