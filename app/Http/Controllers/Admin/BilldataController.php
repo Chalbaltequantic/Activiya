@@ -1218,7 +1218,10 @@ class BilldataController extends Controller
 				'b.vendor_name',
 				'rm.custom5 as rate_custom5',
 			])
-			->where('rm.custom5', '!=', 'RC')
+			->where(function ($q) {
+    $q->whereRaw("UPPER(TRIM(rm.custom5)) <> 'RC'")
+      ->orWhereNull('rm.custom5');
+})
 			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
@@ -1230,7 +1233,7 @@ class BilldataController extends Controller
 			->orderBy('b.vendor_name', 'asc')
 			->orderBy('b.created_at', 'desc')
 			->get();
-dd($updatedentries);
+
 		return view(
 			'admin.billdata.freight_detail_validate',
 			compact('pagetitle', 'title', 'entries', 'updatedentries')
