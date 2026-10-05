@@ -1218,10 +1218,7 @@ class BilldataController extends Controller
 				'b.vendor_name',
 				'rm.custom5 as rate_custom5',
 			])
-			->where(function ($q) {
-    $q->whereRaw("UPPER(TRIM(rm.custom5)) <> 'RC'")
-      ->orWhereNull('rm.custom5');
-})
+			->whereRaw("COALESCE(UPPER(TRIM(rm.custom5)), '') <> 'RC'")
 			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
