@@ -337,7 +337,7 @@
 							<td>{{ $updatedbilldata->freight_invoice_no }}</td>
 							<td>{{ $updatedbilldata->freight_invoice_date }}</td>
 							<td>{{ number_format($updatedbilldata->freight_amount) }}</td>
-							<td>{{ $billdata->rate_custom5 ?? 'NA' }}</td>
+							<td>{{ $updatedbilldata->rate_custom5 ?? 'NA' }}</td>
 							<td>
 								
 								<span class="uploaded-file" id="invoice-{{ $updatedbilldata->id }}">
