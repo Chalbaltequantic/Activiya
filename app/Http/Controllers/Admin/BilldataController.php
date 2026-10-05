@@ -1218,7 +1218,6 @@ class BilldataController extends Controller
 				'b.vendor_name',
 				'rm.custom5 as rate_custom5',
 			])
-			->whereRaw("COALESCE(UPPER(TRIM(rm.custom5)), '') <> 'RC'")
 			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
@@ -1230,30 +1229,7 @@ class BilldataController extends Controller
 			->orderBy('b.vendor_name', 'asc')
 			->orderBy('b.created_at', 'desc')
 			->get();
-dd([
-    'total' => $updatedentries->count(),
 
-    'custom5_counts' => $updatedentries
-        ->groupBy(function ($row) {
-            return $row->rate_custom5 ?? 'NULL';
-        })
-        ->map(function ($rows) {
-            return $rows->count();
-        }),
-
-    'first_20' => $updatedentries
-        ->take(20)
-        ->map(function ($row) {
-            return [
-                'id' => $row->id,
-                'lr_no' => $row->lr_no,
-                'custom5' => $row->rate_custom5,
-                'submit' => $row->submit,
-                'f_return' => $row->f_return,
-            ];
-        })
-        ->toArray(),
-]);
 		return view(
 			'admin.billdata.freight_detail_validate',
 			compact('pagetitle', 'title', 'entries', 'updatedentries')
