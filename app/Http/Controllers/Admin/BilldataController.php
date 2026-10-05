@@ -1230,7 +1230,7 @@ class BilldataController extends Controller
 			->orderBy('b.vendor_name', 'asc')
 			->orderBy('b.created_at', 'desc')
 			->get();
-
+dd($updatedentries);
 		return view(
 			'admin.billdata.freight_detail_validate',
 			compact('pagetitle', 'title', 'entries', 'updatedentries')
