@@ -1177,7 +1177,6 @@ class BilldataController extends Controller
 			->orderBy('b.created_at', 'desc')
 			->get();
 
-
 		/* Already submitted / returned entries*/
 		$updatedentries = Billdata::from('bill_data_upload as b')
 			->leftJoin('rate_master as rm', function ($join) {
