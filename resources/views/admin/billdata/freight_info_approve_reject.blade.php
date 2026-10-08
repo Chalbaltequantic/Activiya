@@ -136,19 +136,19 @@
                                                     <th style="background: #fce4d6; color: #0070c0;">Vendor name</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">LR/CN No.</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">LR/CN Date</th>
-                                                    <th style="background: #fce4d6; color: #0070c0;">Truck Type</th>
-                                                    <th style="background: #fce4d6; color: #0070c0;">Freight PO</th>
+                                                    <th style="background: #fce4d6; color: #0070c0;">Truck<br>Type</th>
+                                                    <th style="background: #fce4d6; color: #0070c0;">Freight<br>PO</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">Freight<br>Invoice No.</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">Invoice Dt.</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">Amount</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">Custom 5</th>
-                                                    <th style="background: #fce4d6; color: #0070c0;">Freight Invoice</th>
+                                                    <th style="background: #fce4d6; color: #0070c0;">Freight<br>Invoice</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">POD</th>
                                                     <th style="background: #fce4d6; color: #0070c0;">Approvals</th>
-                                                    <th style="background: #fce4d6; color: #0070c0;">Validation Status</th>
-                                                    <th style="background: #fce4d6; color: #0070c0;">Validation Remark</th>
+                                                    <th style="background: #fce4d6; color: #0070c0;">Validation<br>Status</th>
+                                                    <th style="background: #fce4d6; color: #0070c0;">Validation<br>Remark</th>
 													 <th class="action-header text-center" style="background: #ddebf7; color: #0070c0;">
-                                                        <input type="checkbox" id="selectAll" title="Select All">
+                                                     <input type="checkbox" id="selectAll" title="Select All">
                                                     </th>
 													<th style="background: #ddebf7; color: #0070c0;">Remarks</th>
                                                 </tr>
@@ -251,11 +251,11 @@
                                                 <th style="background: #fce4d6; color: #0070c0;">Invoice Dt.</th>
                                                 <th style="background: #fce4d6; color: #0070c0;">Amount</th>
                                                 <th style="background: #fce4d6; color: #0070c0;">Custom 5</th>
-                                                <th style="background: #fce4d6; color: #0070c0;">Freight Invoice</th>
+                                                <th style="background: #fce4d6; color: #0070c0;">Freight<br>Invoice</th>
                                                 <th style="background: #fce4d6; color: #0070c0;">POD</th>
                                                 <th style="background: #fce4d6; color: #0070c0;">Approvals</th>
                                                 <th style="background: #fce4d6; color: #0070c0;">Status</th>
-                                                <th style="background: #fce4d6; color: #0070c0;">Approval Remark</th>
+                                                <th style="background: #fce4d6; color: #0070c0;">Approval<br>Remark</th>
                                                 <th style="background: #fce4d6; color: #0070c0;">Approved At</th>
                                             </tr>
                                         </thead>
