@@ -663,7 +663,7 @@
 								</div>	
 								@endif
 								
-								@if(Gate::allows('admin.digiwim.createuploadin'))
+								@if(Gate::allows('admin.digiwim.createuploading'))
 								 
 								 <div class="col-md-3 col-6 mb-4">
 									<a href="{{ route('admin.digiwim.operation.create') }}" class="dashboard-link">
