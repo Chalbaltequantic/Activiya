@@ -330,12 +330,12 @@
 					@if(Gate::allows('admin.digiwim.bin-master.index'))
 					 <li class=""><a href="{{ route('admin.digiwimdatalist') }}" class="dropdown-item">Data List</a></li>
 					@endif 
-					@if(Gate::allows('admin.digiwim.unloading'))
+					@if(Gate::allows('admin.digiwim.uploading'))
 					 <li class=""><a href="{{ route('admin.digiwim.operation.list') }}" class="dropdown-item">Unloading List</a>
 					 </li>
 					 @endif
 					 
-					 @if(Gate::allows('admin.digiwim.createunloading'))
+					 @if(Gate::allows('admin.digiwim.createuploadin'))
 					 <li class=""><a href="{{ route('admin.digiwim.operation.create') }}" class="dropdown-item">Create Unloading</a>
 					 </li>
 					 @endif
@@ -395,9 +395,7 @@
 					
 						<li class=""><a href="{{ route('admin.insurance.index') }}" class="dropdown-item">GI Consignee Upload</a></li>
 						<li class=""><a href="{{ route('admin.insurance.t-vendor') }}" class="dropdown-item">T Vendor</a></li>						
-						<li class=""><a href="{{ route('admin.insurance.claim-bills') }}" class="dropdown-item">Insurance Claim</a></li>
-						
-						
+						<li class=""><a href="{{ route('admin.insurance.claim-bills') }}" class="dropdown-item">Insurance Claim</a></li>						
 					 </ul>
 				</li>	 
 				

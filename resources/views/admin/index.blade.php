@@ -654,7 +654,7 @@
 									</a>
 								</div>
 								@endif
-								@if(Gate::allows('admin.digiwim.unloading'))
+								@if(Gate::allows('admin.digiwim.uploading'))
 								<div class="col-md-3 col-6 mb-4">
 									<a href="{{ route('admin.digiwim.operation.list') }}" class="dashboard-link">
 										<i class="fas fa-truck-loading dashboard-icon text-warning"></i>
@@ -663,7 +663,7 @@
 								</div>	
 								@endif
 								
-								@if(Gate::allows('admin.digiwim.createunloading'))
+								@if(Gate::allows('admin.digiwim.createuploadin'))
 								 
 								 <div class="col-md-3 col-6 mb-4">
 									<a href="{{ route('admin.digiwim.operation.create') }}" class="dashboard-link">
