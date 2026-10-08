@@ -1,5 +1,6 @@
 @extends('admin.admin')
 @section('bodycontent')
+@push('style')
  <style>
    .table-responsive-fixed {
       overflow-x: auto;
@@ -97,6 +98,7 @@
 	
 	
   </style>
+ @endpush
 <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">

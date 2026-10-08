@@ -160,10 +160,9 @@
               <div class="card-body">
                 <div class="tab-content">
                   <div class="active tab-pane" id="activity">
-                  
-					<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
-						    <form method="POST" action="{{ route('admin.freight.store') }}" id="freightValidationForm">
-								@csrf
+                  <form method="POST" action="{{ route('admin.freight.store') }}" id="freightValidationForm">
+				    @csrf
+					<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">						    
 								<table class="table table-bordered border-dark table-hover billDataTable1" id="table">
 								  <thead>
 									<tr>
@@ -268,20 +267,18 @@
 							  @endif
 							  
 						   </tbody>
-						    <tr><td colspan="14"></td>
-							<td colspan="3"> 
-							
-							<button type="button" class="btn btn-primary" id="validateBtn">Validate</button>
-							<button type="submit" class="btn btn-success">Send</button>
-							 
-							<td colspan="2"></td>
-							</tr>
-						   
+						    					   
 					  </table>
-					  
-					</form>
-					 
 					</div>
+					@if(count($entries) > 0)
+					<div class="row text-right">
+						<div class="col-md-12">
+							<button type="button" class="btn btn-primary" id="validateBtn">Validate</button>
+							<button type="submit" class="btn btn-success">Send For Approval</button>					
+						</div>
+					</div>
+					@endif
+					</form>
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="timeline">
@@ -313,8 +310,7 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Validate</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Submit</th> 
 								<th style="background: #fce4d6; color: #0070c0;" class="">Return</th>
-								<th style="background: #fce4d6; color: #0070c0;">Remark</th>
-								
+								<th style="background: #fce4d6; color: #0070c0;">Remark</th>						
 
 							</tr>
 						  </thead>

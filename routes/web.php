@@ -98,6 +98,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::post('freight-returned/update', [App\Http\Controllers\Admin\BilldataController::class, 'updateReturnedFreightAjax'])
     ->name('freight.returned.ajax.update');
 	
+	
+	//Approve/ Reject Validated Freight Info Data
+	Route::get('freight-info-approve-reject', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject'])->name('freight.approve.reject');
+
+	Route::post('freight-info-approve-reject', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject_store'])->name('freight.approve.reject.store');
+	
 	///////SIte plant Data Route
 	
 	Route::post('siteplantimport', [App\Http\Controllers\Admin\SiteplantController::class, 'import'])->name('siteplantexcel.import');

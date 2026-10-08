@@ -60,39 +60,94 @@
 				<div class="card-header p-0 border-bottom-0">
 					<ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
 
-						<li class="nav-item">
-							<a class="nav-link active" id="masters-tab" data-toggle="pill"
-							   href="#masters" role="tab">Masters</a>
-						</li>
+						<ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
 
-						<li class="nav-item">
-							<a class="nav-link" id="freight-tab" data-toggle="pill"
-							   href="#freight" role="tab">Freight Shipment</a>
-						</li>
-		
-						<li class="nav-item">
-							<a class="nav-link" id="appointment-tab" data-toggle="pill"
-							   href="#appointment" role="tab">Appointment</a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link active" id="masters-tab" data-toggle="pill"
+								   href="#masters" role="tab">
+									<i class="fas fa-cogs mr-2 text-secondary"></i>
+									Masters
+								</a>
+							</li>
 
-						<li class="nav-item">
-							<a class="nav-link" id="quotation-tab" data-toggle="pill"
-							   href="#quotation" role="tab">Quotation</a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link" id="freight-tab" data-toggle="pill"
+								   href="#freight" role="tab">
+									<i class="fas fa-truck-moving mr-2 text-primary"></i>
+									Freight Shipment
+								</a>
+							</li>
 
-						<li class="nav-item">
-							<a class="nav-link" id="tracking-tab" data-toggle="pill"
-							   href="#tracking" role="tab">In Tracking</a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link" id="appointment-tab" data-toggle="pill"
+								   href="#appointment" role="tab">
+									<i class="fas fa-calendar-check mr-2 text-success"></i>
+									Appointment
+								</a>
+							</li>
 
-						<li class="nav-item">
-							<a class="nav-link" id="lot-tab" data-toggle="pill"
-							   href="#lot" role="tab">LOT</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="preapmnt-tab" data-toggle="pill"
-							   href="#preapmnt" role="tab">Pre Appointment</a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link" id="quotation-tab" data-toggle="pill"
+								   href="#quotation" role="tab">
+									<i class="fas fa-file-invoice-dollar mr-2 text-warning"></i>
+									Quotation
+								</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" id="tracking-tab" data-toggle="pill"
+								   href="#tracking" role="tab">
+									<i class="fas fa-route mr-2 text-info"></i>
+									In Tracking
+								</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" id="lot-tab" data-toggle="pill"
+								   href="#lot" role="tab">
+									<i class="fas fa-layer-group mr-2 text-danger"></i>
+									LOT
+								</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" id="preapmnt-tab" data-toggle="pill"
+								   href="#preapmnt" role="tab">
+									<i class="fas fa-calendar-alt mr-2 text-primary"></i>
+									Pre Appointment
+								</a>
+							</li>
+							
+							@if(Gate::allows('admin.digiwim.bin-master.index') || Gate::allows('admin.digiwim.addupload') 
+							|| Gate::allows('admin.digiwim.unloading') 
+							|| Gate::allows('admin.digiwim.createunloading') 
+							|| Gate::allows('admin.digiwim.addupload.preloading') 
+							|| Gate::allows('admin.digiwim.preloading.datalist')
+							|| Gate::allows('admin.digiwim.preloading.list')
+							|| Gate::allows('admin.digiwim.ledger')
+							|| Gate::allows('admin.digiwim.Inventory')
+							|| Gate::allows('admin.digiwim.egr')
+							|| Gate::allows('admin.digiwim.egp') 
+							|| Gate::allows('admin.digiwim.ira')
+							|| Gate::allows('admin.digiwim.mgoods.po.uploads')
+							) 
+							<li class="nav-item">
+								<a class="nav-link" id="digiwim-tab" data-toggle="pill"
+								   href="#digiwim" role="tab">
+									<i class="fas fa-weight-hanging mr-2 text-dark"></i>
+									Digi Wim
+								</a>
+							</li>
+							@endif
+							<li class="nav-item">
+								<a class="nav-link" id="insurance-tab" data-toggle="pill"
+								   href="#insurance" role="tab">
+									<i class="fas fa-shield-alt mr-2 text-primary"></i>
+									Insurance
+								</a>
+							</li>
+
+						</ul>
 
 					</ul>
 				</div>
@@ -575,6 +630,170 @@
 									</a>
 								</div>
 								@endif
+							</div>
+						</div>
+						
+						
+						{{-- Digi Wim --}}
+						
+						<div class="tab-pane fade" id="digiwim" role="tabpanel">
+							<div class="row text-center">
+								@if(Gate::allows('admin.digiwim.addupload'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiWim') }}" class="dashboard-link">
+										<i class="fas fa-upload dashboard-icon text-primary"></i>
+										<p>Add / Upload Digi Wim</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.bin-master.index'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwimdatalist') }}" class="dashboard-link">
+										<i class="fas fa-list-alt dashboard-icon text-success"></i>
+										<p>Data List</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.unloading'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwim.operation.list') }}" class="dashboard-link">
+										<i class="fas fa-truck-loading dashboard-icon text-warning"></i>
+										<p>Unloading List</p>
+									</a>
+								</div>	
+								@endif
+								
+								@if(Gate::allows('admin.digiwim.createunloading'))
+								 
+								 <div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwim.operation.create') }}" class="dashboard-link">
+										<i class="fas fa-truck-loading dashboard-icon text-warning"></i>
+										<p>Create Unloading</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.addupload.preloading'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiWimPreloading') }}" class="dashboard-link">
+										<i class="fas fa-truck-loading dashboard-icon text-warning"></i>
+										<p>Add / Upload Digi Wim Preloading</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.preloading.datalist'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwimpreloadingdatalist') }}" class="dashboard-link">
+										<i class="fas fa-clipboard-list dashboard-icon text-info"></i>
+										<p>Preloading Data List</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.preloading.list'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwimpreloading.operation.list') }}" class="dashboard-link">
+										<i class="fas fa-list dashboard-icon text-danger"></i>
+										<p>Preloading List</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.addupload.preloading'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwimpreloading.operation.create') }}" class="dashboard-link">
+										<i class="fas fa-plus-circle dashboard-icon text-primary"></i>
+										<p>Create Preloading</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.ledger')) 
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwim.ledger') }}" class="dashboard-link">
+										<i class="fas fa-book dashboard-icon text-success"></i>
+										<p>Ledger</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.Inventory'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwim.inventory') }}" class="dashboard-link">
+										<i class="fas fa-boxes dashboard-icon text-warning"></i>
+										<p>Inventory</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.egr'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwim-egr.index') }}" class="dashboard-link">
+										<i class="fas fa-receipt dashboard-icon text-info"></i>
+										<p>EGR</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.egp'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.digiwim-egp.index') }}" class="dashboard-link">
+										<i class="fas fa-file-alt dashboard-icon text-danger"></i>
+										<p>EGP</p>
+									</a>
+								</div>
+								@endif	
+								@if(Gate::allows('admin.digiwim.mgoods.po.uploads'))		
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{route('admin.digiwim-goods-po.index')}}" class="dashboard-link">
+										<i class="fas fa-file-import dashboard-icon text-secondary"></i>
+										<p>M Goods PO Upload</p>
+									</a>
+								</div>
+								@endif
+								@if(Gate::allows('admin.digiwim.ira'))
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dashboard-link">
+										<i class="fas fa-file-signature dashboard-icon text-primary"></i>
+										<p>IRA</p>
+									</a>
+								</div>
+								@endif
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.smart-po.upload') }}" class="dashboard-link">
+										<i class="fas fa-file-upload dashboard-icon text-success"></i>
+										<p>Upload PO</p>
+									</a>
+								</div>
+
+								<div class="col-md-3 col-6 mb-4">
+									<a href="{{ route('admin.smart-po.index') }}" class="dashboard-link">
+										<i class="fas fa-file-invoice dashboard-icon text-warning"></i>
+										<p>PO Data List</p>
+									</a>
+								</div>
+
+							</div>
+						</div>
+
+						{{-- Insurance --}}
+						<div class="tab-pane fade" id="insurance" role="tabpanel">
+							<div class="row text-center">
+								
+								<div class="col-md-4 col-6 mb-4">
+									<a href="{{ route('admin.insurance.index') }}" class="dashboard-link">
+										<i class="fas fa-file-upload dashboard-icon text-primary"></i>
+										<p>GI Consignee Upload</p>
+									</a>
+								</div>
+								
+								<div class="col-md-4 col-6 mb-4">
+									<a href="{{ route('admin.insurance.t-vendor') }}" class="dashboard-link">
+										<i class="fas fa-truck dashboard-icon text-success"></i>
+										<p>T Vendor</p>
+									</a>
+								</div>
+
+								<div class="col-md-4 col-6 mb-4">
+									<a href="{{ route('admin.insurance.claim-bills') }}" class="dashboard-link">
+										<i class="fas fa-shield-alt dashboard-icon text-danger"></i>
+										<p>Insurance Claim</p>
+									</a>
+								</div>
+
 							</div>
 						</div>
 					</div>

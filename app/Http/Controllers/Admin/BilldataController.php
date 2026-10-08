@@ -24,6 +24,7 @@ use App\Models\TruckMaster;
 use App\Models\Siteplant;
 use App\Models\Admin;
 use App\Models\Tracking;
+use App\Models\FreightBillApprovalHistory;
 
 use App\Jobs\SendValidatedFreightMailJob;
 use Auth;
@@ -1177,6 +1178,7 @@ class BilldataController extends Controller
 			->orderBy('b.created_at', 'desc')
 			->get();
 
+
 		/* Already submitted / returned entries*/
 		$updatedentries = Billdata::from('bill_data_upload as b')
 			->leftJoin('rate_master as rm', function ($join) {
@@ -1305,12 +1307,11 @@ class BilldataController extends Controller
 					$entry->f_return = 0;
 
 					/* SEND MAIL IN BACKGROUND */
-
-					SendValidatedFreightMailJob::dispatch($entry->id);
+					// Send email commented as mail need to send when Freight bill Approved
+					//SendValidatedFreightMailJob::dispatch($entry->id);
 				}
 
 				/*  RETURNED */
-
 				elseif (in_array($id, $returnedIds)) {
 
 					$entry->validated_status = 'returned';
@@ -1503,5 +1504,278 @@ class BilldataController extends Controller
 		Billdata::whereIn('id', $request->ids)->delete();
 
 		return redirect()->back()->with('success', 'Selected freight shipment records deleted successfully.');
+	}
+	
+	//Approve / Reject Validated and submitted Freight
+	
+	public function freight_info_approve_reject()
+	{
+		$title = 'Freight Bill Approve / Reject';
+		$pagetitle = $title.' Listing';
+
+		$entries = Billdata::from('bill_data_upload as b')
+
+			->leftJoin('rate_master as rm', function ($join) {
+
+				$join->on('rm.id', '=', DB::raw("
+					(
+						SELECT rm2.id
+						FROM rate_master rm2
+						WHERE rm2.consignor_code = b.consignor_code
+						  AND rm2.consignee_code = b.consignee_code
+						  AND rm2.vendor_code = b.vendor_code
+						  AND rm2.t_code = b.t_code
+						  AND DATE(rm2.validity_start) <= DATE(b.lr_cn_date)
+						  AND DATE(rm2.validity_end) >= DATE(b.lr_cn_date)
+						ORDER BY rm2.validity_start DESC, rm2.id DESC
+						LIMIT 1
+					)
+				"));
+			})
+
+			->leftJoin('freight_bill_approval_histories as fah', function ($join) {
+
+				$join->on('fah.bill_data_id', '=', 'b.id')
+					->whereRaw("
+						fah.id = (
+							SELECT MAX(fah2.id)
+							FROM freight_bill_approval_histories fah2
+							WHERE fah2.bill_data_id = b.id
+						)
+					");
+			})
+
+			->select([
+				'b.id',
+				'b.s5_consignor_short_name_and_location',
+				'b.d5_consignor_short_name_and_location',
+				'b.ref1',
+				'b.truck_type',
+				'b.lr_no',
+				'b.lr_cn_date',
+				'b.ref2',
+				'b.freight_invoice_no',
+				'b.freight_invoice_date',
+				'b.freight_amount',
+				'b.freight_invoice_file',
+				'b.pod_file',
+				'b.approval_file',
+				'b.validated_status',
+				'b.submit',
+				'b.f_return',
+				'b.validation_remark',
+				'b.vendor_name',
+				'rm.custom5 as rate_custom5',
+			])
+
+			->whereNotNull('b.freight_invoice_no')
+			->where('b.freight_invoice_no', '!=', '')
+			->whereNotNull('b.freight_invoice_date')
+			->whereNotNull('b.freight_amount')
+			->where('b.submit', 1)			
+			->whereNull('fah.id') 						/* No approval/rejection action taken yet. */
+			->orderBy('b.vendor_name', 'asc')
+			->orderBy('b.created_at', 'desc')
+			->get();
+
+
+		/* Approved Tab
+		 Only bills whose latest approval-history record is APPROVED.
+		 Rejected bills are deliberately not included.		|
+		*/
+
+		$approvedentries = Billdata::from('bill_data_upload as b')
+
+			->leftJoin('rate_master as rm', function ($join) {
+
+				$join->on('rm.id', '=', DB::raw("
+					(
+						SELECT rm2.id
+						FROM rate_master rm2
+						WHERE rm2.consignor_code = b.consignor_code
+						  AND rm2.consignee_code = b.consignee_code
+						  AND rm2.vendor_code = b.vendor_code
+						  AND rm2.t_code = b.t_code
+						  AND DATE(rm2.validity_start) <= DATE(b.lr_cn_date)
+						  AND DATE(rm2.validity_end) >= DATE(b.lr_cn_date)
+						ORDER BY rm2.validity_start DESC, rm2.id DESC
+						LIMIT 1
+					)
+				"));
+			})
+
+			->join('freight_bill_approval_histories as fah', function ($join) {
+
+				$join->on('fah.bill_data_id', '=', 'b.id')
+					->whereRaw("
+						fah.id = (
+							SELECT MAX(fah2.id)
+							FROM freight_bill_approval_histories fah2
+							WHERE fah2.bill_data_id = b.id
+						)
+					");
+			})
+
+			->select([
+				'b.id',
+				'b.s5_consignor_short_name_and_location',
+				'b.d5_consignor_short_name_and_location',
+				'b.ref1',
+				'b.truck_type',
+				'b.lr_no',
+				'b.lr_cn_date',
+				'b.ref2',
+				'b.freight_invoice_no',
+				'b.freight_invoice_date',
+				'b.freight_amount',
+				'b.freight_invoice_file',
+				'b.pod_file',
+				'b.approval_file',
+				'b.validated_status',
+				'b.submit',
+				'b.f_return',
+				'b.validation_remark',
+				'b.vendor_name',
+				'rm.custom5 as rate_custom5',
+
+				'fah.status as approval_status',
+				'fah.remark as approval_remark',
+				'fah.action_by as approved_by',
+				'fah.created_at as approved_at',
+			])
+
+			->where('fah.status', 'approved')
+			->orderBy('fah.created_at', 'desc')
+			->get();
+
+
+		return view('admin.billdata.freight_info_approve_reject',			
+		compact(
+				'pagetitle',
+				'title',
+				'entries',
+				'approvedentries'
+			)
+		);
+	}
+
+	//// Approve / Reject freight storeValidatedData
+
+	public function freight_info_approve_reject_store(Request $request)
+	{
+		$request->validate([
+			'selected_ids' => 'required|array|min:1',
+			'selected_ids.*' => 'required|integer|distinct|exists:bill_data_upload,id',
+			'action' => 'required|in:approve,reject',
+			'remarks' => 'nullable|array',
+			'remarks.*' => 'nullable|string|max:2000',
+		]);
+
+		$selectedIds = $request->input('selected_ids', []);
+		$remarks = $request->input('remarks', []);
+		$action = $request->input('action');
+		$adminId = Auth::guard('admin')->id();
+
+		// Rejection remark is mandatory for every selected bill.
+		if ($action === 'reject') {
+			foreach ($selectedIds as $billId) {
+				if (trim((string) ($remarks[$billId] ?? '')) === '') {
+					return redirect()->back()
+						->withInput()
+						->with('error', 'Please enter a rejection remark for every selected freight bill.');
+				}
+			}
+		}
+
+		$approvedBillIds = [];
+		$processed = 0;
+
+		try {
+			DB::transaction(function () use ($selectedIds, $remarks, $action, $adminId, &$approvedBillIds, &$processed) {
+				foreach ($selectedIds as $billId) {
+					// Lock the bill to prevent simultaneous approval/rejection.
+					$entry = Billdata::where('id', $billId)
+						->where('submit', 1)
+						->where(function ($query) {
+							$query->whereNull('f_return')->orWhere('f_return', 0);
+						})
+						->lockForUpdate()
+						->first();
+
+					if (!$entry) {
+						continue;
+					}
+
+					// Prevent duplicate approval or rejection.
+					$latestHistory = FreightBillApprovalHistory::where('bill_data_id', $entry->id)
+						->orderByDesc('id')
+						->first();
+
+					if ($latestHistory) {
+						continue;
+					}
+
+					$status = $action === 'approve' ? 'approved' : 'rejected';
+					$remark = trim((string) ($remarks[$billId] ?? ''));
+
+					// Save approval/rejection history without modifying bill_data_upload.
+					FreightBillApprovalHistory::create([
+						'bill_data_id' => $entry->id,
+						'status' => $status,
+						'remark' => $remark !== '' ? $remark : null,
+						'action_by' => $adminId,
+					]);
+
+					// Collect only approved bills for email dispatch.
+					if ($action === 'approve') {
+						$approvedBillIds[] = $entry->id;
+					}
+
+					$processed++;
+				}
+			});
+
+		} catch (\Exception $e) {
+			Log::error('Freight bill approve/reject error: '.$e->getMessage());
+
+			return redirect()->back()->with(
+				'error',
+				'Unable to process freight bills. Please try again.'
+			);
+		}
+
+		if ($processed === 0) {
+			return redirect()->back()->with(
+				'error',
+				'Selected freight bills have already been processed or are not available for approval.'
+			);
+		}
+
+		// Send existing freight email only for approved bills, after DB commit.
+		$emailDispatchFailed = false;
+
+		foreach ($approvedBillIds as $approvedBillId) {
+			try {
+				SendValidatedFreightMailJob::dispatch($approvedBillId);
+			} catch (\Exception $e) {
+				$emailDispatchFailed = true;
+
+				Log::error('Approved freight bill email dispatch failed', [
+					'bill_id' => $approvedBillId,
+					'error' => $e->getMessage(),
+				]);
+			}
+		}
+
+		$message = $processed.' freight bill(s) '.($action === 'approve' ? 'approved' : 'rejected').' successfully.';
+
+		if ($emailDispatchFailed) {
+			return redirect()->back()->with(
+				'error',
+				$message.' However, some email jobs could not be dispatched. Please check the logs.'
+			);
+		}
+
+		return redirect()->back()->with('success', $message);
 	}
 }

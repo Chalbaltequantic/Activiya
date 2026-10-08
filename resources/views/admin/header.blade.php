@@ -136,6 +136,10 @@
 						 @if(Gate::allows('admin.invoice'))
 							<li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.invoice.list') }}" class="dropdown-item">Invoice</a></li>
 						@endif
+						<li class="{{ request()->routeIs('admin.freight.approve.reject*') ? 'active' : '' }}">
+							<a href="{{ route('admin.freight.approve.reject') }}" class="dropdown-item">Freight Bill Approve / Reject
+							</a>
+						</li>
 					</ul>
 				</li>
 				 @endif
@@ -331,7 +335,7 @@
 					 </li>
 					 @endif
 					 
-					 @if(Gate::allows('aadmin.digiwim.createunloading'))
+					 @if(Gate::allows('admin.digiwim.createunloading'))
 					 <li class=""><a href="{{ route('admin.digiwim.operation.create') }}" class="dropdown-item">Create Unloading</a>
 					 </li>
 					 @endif
@@ -449,9 +453,8 @@
 							   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 								<i class="fas fa-sign-out-alt"></i> Logout
 							</a>
-
 							<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-								@csrf
+							@csrf
 							</form>
 
 						</li>
