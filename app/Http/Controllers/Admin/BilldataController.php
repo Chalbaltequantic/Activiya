@@ -1572,7 +1572,7 @@ class BilldataController extends Controller
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
 			->whereNotNull('b.freight_amount')
-			->where('b.created_at', '>', '2026-10-05 00:00:00');
+			->where('b.created_at', '>', '2026-10-05 00:00:00')
 			->where('b.submit', 1)			
 			->whereNull('fah.id') 						/* No approval/rejection action taken yet. */
 			->orderBy('b.vendor_name', 'asc')
@@ -1646,7 +1646,7 @@ class BilldataController extends Controller
 			])
 
 			->where('fah.status', 'approved')
-			->where('b.created_at', '>', '2026-10-05 00:00:00');			
+			->where('b.created_at', '>', '2026-10-05 00:00:00')			
 			->orderBy('fah.created_at', 'desc')
 			->get();
 
