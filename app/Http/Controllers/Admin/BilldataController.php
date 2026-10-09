@@ -1507,46 +1507,20 @@ class BilldataController extends Controller
 	}
 	
 	//Approve / Reject Validated and submitted Freight
-	
-	public function freight_info_approve_reject()
+	private function freightApprovalBaseQuery()
 	{
-		$title = 'Freight Bill Approve / Reject';
-		$pagetitle = $title.' Listing';
-
-		$entries = Billdata::from('bill_data_upload as b')
-
-			->leftJoin('rate_master as rm', function ($join) {
-
-				$join->on('rm.id', '=', DB::raw("
-					(
-						SELECT rm2.id
-						FROM rate_master rm2
-						WHERE rm2.consignor_code = b.consignor_code
-						  AND rm2.consignee_code = b.consignee_code
-						  AND rm2.vendor_code = b.vendor_code
-						  AND rm2.t_code = b.t_code
-						  AND DATE(rm2.validity_start) <= DATE(b.lr_cn_date)
-						  AND DATE(rm2.validity_end) >= DATE(b.lr_cn_date)
-						ORDER BY rm2.validity_start DESC, rm2.id DESC
-						LIMIT 1
-					)
-				"));
-			})
-
+		return DB::table('bill_data_upload as b')
 			->leftJoin('freight_bill_approval_histories as fah', function ($join) {
-
 				$join->on('fah.bill_data_id', '=', 'b.id')
-					->whereRaw("
-						fah.id = (
-							SELECT MAX(fah2.id)
-							FROM freight_bill_approval_histories fah2
-							WHERE fah2.bill_data_id = b.id
-						)
-					");
+					->whereRaw('fah.id = (
+						SELECT MAX(h2.id)
+						FROM freight_bill_approval_histories h2
+						WHERE h2.bill_data_id = b.id
+					)');
 			})
-
 			->select([
 				'b.id',
+				'b.created_at',
 				'b.s5_consignor_short_name_and_location',
 				'b.d5_consignor_short_name_and_location',
 				'b.ref1',
@@ -1565,102 +1539,205 @@ class BilldataController extends Controller
 				'b.f_return',
 				'b.validation_remark',
 				'b.vendor_name',
-				'rm.custom5 as rate_custom5',
-			])
-
-			->whereNotNull('b.freight_invoice_no')
-			->where('b.freight_invoice_no', '!=', '')
-			->whereNotNull('b.freight_invoice_date')
-			->whereNotNull('b.freight_amount')
-			->where('b.created_at', '>', '2026-10-05 00:00:00')
-			->where('b.submit', 1)			
-			->whereNull('fah.id') 						/* No approval/rejection action taken yet. */
-			->orderBy('b.vendor_name', 'asc')
-			->orderBy('b.created_at', 'desc')
-			->get();
-
-
-		/* Approved Tab
-		 Only bills whose latest approval-history record is APPROVED.
-		 Rejected bills are deliberately not included.		|
-		*/
-
-		$approvedentries = Billdata::from('bill_data_upload as b')
-
-			->leftJoin('rate_master as rm', function ($join) {
-
-				$join->on('rm.id', '=', DB::raw("
-					(
-						SELECT rm2.id
-						FROM rate_master rm2
-						WHERE rm2.consignor_code = b.consignor_code
-						  AND rm2.consignee_code = b.consignee_code
-						  AND rm2.vendor_code = b.vendor_code
-						  AND rm2.t_code = b.t_code
-						  AND DATE(rm2.validity_start) <= DATE(b.lr_cn_date)
-						  AND DATE(rm2.validity_end) >= DATE(b.lr_cn_date)
-						ORDER BY rm2.validity_start DESC, rm2.id DESC
-						LIMIT 1
-					)
-				"));
-			})
-
-			->join('freight_bill_approval_histories as fah', function ($join) {
-
-				$join->on('fah.bill_data_id', '=', 'b.id')
-					->whereRaw("
-						fah.id = (
-							SELECT MAX(fah2.id)
-							FROM freight_bill_approval_histories fah2
-							WHERE fah2.bill_data_id = b.id
-						)
-					");
-			})
-
-			->select([
-				'b.id',
-				'b.s5_consignor_short_name_and_location',
-				'b.d5_consignor_short_name_and_location',
-				'b.ref1',
-				'b.truck_type',
-				'b.lr_no',
-				'b.lr_cn_date',
-				'b.ref2',
-				'b.freight_invoice_no',
-				'b.freight_invoice_date',
-				'b.freight_amount',
-				'b.freight_invoice_file',
-				'b.pod_file',
-				'b.approval_file',
-				'b.validated_status',
-				'b.submit',
-				'b.f_return',
-				'b.validation_remark',
-				'b.vendor_name',
-				'rm.custom5 as rate_custom5',
-
 				'fah.status as approval_status',
 				'fah.remark as approval_remark',
 				'fah.action_by as approved_by',
 				'fah.created_at as approved_at',
 			])
-
-			->where('fah.status', 'approved')
-			->where('b.created_at', '>', '2026-10-05 00:00:00')			
-			->orderBy('fah.created_at', 'desc')
-			->get();
-
-
-		return view('admin.billdata.freight_info_approve_reject',			
-		compact(
-				'pagetitle',
-				'title',
-				'entries',
-				'approvedentries'
-			)
-		);
+			->where('b.created_at', '>=', '2026-10-05 00:00:00')
+			->whereNotNull('b.freight_invoice_no')
+			->where('b.freight_invoice_no', '!=', '')
+			->whereNotNull('b.freight_invoice_date')
+			->whereNotNull('b.freight_amount');
 	}
 
+	private function applyFreightApprovalFilters($query, Request $request)
+	{
+		$search = trim((string) $request->input('search', ''));
+
+		if ($search !== '') {
+			$query->where(function ($q) use ($search) {
+				$q->where('b.vendor_name', 'like', '%'.$search.'%')
+					->orWhere('b.lr_no', 'like', '%'.$search.'%')
+					->orWhere('b.freight_invoice_no', 'like', '%'.$search.'%')
+					->orWhere('b.ref1', 'like', '%'.$search.'%')
+					->orWhere('b.ref2', 'like', '%'.$search.'%');
+			});
+		}
+
+		if ($request->filled('vendor_name')) {
+			$query->where('b.vendor_name', 'like', '%'.trim($request->vendor_name).'%');
+		}
+
+		if ($request->filled('lr_no')) {
+			$query->where('b.lr_no', 'like', '%'.trim($request->lr_no).'%');
+		}
+
+		if ($request->filled('invoice_no')) {
+			$query->where('b.freight_invoice_no', 'like', '%'.trim($request->invoice_no).'%');
+		}
+
+		if ($request->filled('date_from')) {
+			$query->whereDate('b.created_at', '>=', $request->date_from);
+		}
+
+		if ($request->filled('date_to')) {
+			$query->whereDate('b.created_at', '<=', $request->date_to);
+		}
+
+		$sortColumns = [
+			'created_at' => 'b.created_at',
+			'consignor' => 'b.s5_consignor_short_name_and_location',
+			'destination' => 'b.d5_consignor_short_name_and_location',
+			'ref1' => 'b.ref1',
+			'vendor_name' => 'b.vendor_name',
+			'lr_no' => 'b.lr_no',
+			'lr_date' => 'b.lr_cn_date',
+			'truck_type' => 'b.truck_type',
+			'ref2' => 'b.ref2',
+			'invoice_no' => 'b.freight_invoice_no',
+			'invoice_date' => 'b.freight_invoice_date',
+			'amount' => 'b.freight_amount',
+			'status' => 'b.validated_status',
+		];
+
+		$sortBy = (string) $request->input('sort_by', 'created_at');
+		$sortOrder = strtolower((string) $request->input('sort_order', 'desc'));
+
+		if (!array_key_exists($sortBy, $sortColumns)) {
+			$sortBy = 'created_at';
+		}
+
+		if (!in_array($sortOrder, ['asc', 'desc'], true)) {
+			$sortOrder = 'desc';
+		}
+
+		return $query
+			->orderBy($sortColumns[$sortBy], $sortOrder)
+			->orderBy('b.id', 'desc');
+	}
+
+	private function freightApprovalTabCounts()
+	{
+		$pendingCount = DB::table('bill_data_upload as b')
+			->where('b.created_at', '>=', '2026-10-05 00:00:00')
+			->whereNotNull('b.freight_invoice_no')
+			->where('b.freight_invoice_no', '!=', '')
+			->whereNotNull('b.freight_invoice_date')
+			->whereNotNull('b.freight_amount')
+			->where('b.submit', 1)
+			->where(function ($q) {
+				$q->whereNull('b.f_return')->orWhere('b.f_return', 0);
+			})
+			->whereNotExists(function ($q) {
+				$q->selectRaw('1')
+					->from('freight_bill_approval_histories as h')
+					->whereColumn('h.bill_data_id', 'b.id');
+			})
+			->count();
+
+		$approvedCount = DB::table('bill_data_upload as b')
+			->join('freight_bill_approval_histories as fah', function ($join) {
+				$join->on('fah.bill_data_id', '=', 'b.id')
+					->whereRaw('fah.id = (
+						SELECT MAX(h2.id)
+						FROM freight_bill_approval_histories h2
+						WHERE h2.bill_data_id = b.id
+					)');
+			})
+			->where('b.created_at', '>=', '2026-10-05 00:00:00')
+			->whereNotNull('b.freight_invoice_no')
+			->where('b.freight_invoice_no', '!=', '')
+			->whereNotNull('b.freight_invoice_date')
+			->whereNotNull('b.freight_amount')
+			->where('fah.status', 'approved')
+			->count();
+
+		return compact('pendingCount', 'approvedCount');
+	}
+
+	public function freight_info_approve_reject(Request $request)
+	{
+		$request->validate([
+			'search' => 'nullable|string|max:255',
+			'vendor_name' => 'nullable|string|max:255',
+			'lr_no' => 'nullable|string|max:255',
+			'invoice_no' => 'nullable|string|max:255',
+			'date_from' => 'nullable|date',
+			'date_to' => 'nullable|date|after_or_equal:date_from',
+			'sort_by' => 'nullable|in:created_at,consignor,destination,ref1,vendor_name,lr_no,lr_date,truck_type,ref2,invoice_no,invoice_date,amount,status',
+			'sort_order' => 'nullable|in:asc,desc',
+			'per_page' => 'nullable|integer|in:10,25,50,100,200',
+		]);
+
+		$title = 'Freight Bill Approve / Reject';
+		$pagetitle = $title.' Listing';
+		$perPage = (int) $request->input('per_page', 25);
+
+		$query = $this->freightApprovalBaseQuery()
+			->where('b.submit', 1)
+			->where(function ($q) {
+				$q->whereNull('b.f_return')->orWhere('b.f_return', 0);
+			})
+			->whereNull('fah.id');
+
+		$entries = $this->applyFreightApprovalFilters($query, $request)
+			->paginate($perPage)
+			->withQueryString();
+
+		$counts = $this->freightApprovalTabCounts();
+		$pendingCount = $counts['pendingCount'];
+		$approvedCount = $counts['approvedCount'];
+
+		return view('admin.billdata.freight_info_approve_reject', compact(
+			'title',
+			'pagetitle',
+			'entries',
+			'perPage',
+			'pendingCount',
+			'approvedCount'
+		));
+	}
+
+	public function freight_info_approved(Request $request)
+	{
+		$request->validate([
+			'search' => 'nullable|string|max:255',
+			'vendor_name' => 'nullable|string|max:255',
+			'lr_no' => 'nullable|string|max:255',
+			'invoice_no' => 'nullable|string|max:255',
+			'date_from' => 'nullable|date',
+			'date_to' => 'nullable|date|after_or_equal:date_from',
+			'sort_by' => 'nullable|in:created_at,consignor,destination,ref1,vendor_name,lr_no,lr_date,truck_type,ref2,invoice_no,invoice_date,amount,status',
+			'sort_order' => 'nullable|in:asc,desc',
+			'per_page' => 'nullable|integer|in:10,25,50,100,200',
+		]);
+
+		$title = 'Approved Freight Bills';
+		$pagetitle = $title.' Listing';
+		$perPage = (int) $request->input('per_page', 25);
+
+		$query = $this->freightApprovalBaseQuery()
+			->where('fah.status', 'approved');
+
+		$approvedentries = $this->applyFreightApprovalFilters($query, $request)
+			->paginate($perPage)
+			->withQueryString();
+
+		$counts = $this->freightApprovalTabCounts();
+		$pendingCount = $counts['pendingCount'];
+		$approvedCount = $counts['approvedCount'];
+
+		return view('admin.billdata.freight_info_approved', compact(
+			'title',
+			'pagetitle',
+			'approvedentries',
+			'perPage',
+			'pendingCount',
+			'approvedCount'
+		));
+	}
+	
 	//// Approve / Reject freight storeValidatedData
 
 	public function freight_info_approve_reject_store(Request $request)

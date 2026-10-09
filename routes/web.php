@@ -100,9 +100,20 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	
 	//Approve/ Reject Validated Freight Info Data
-	Route::get('freight-info-approve-reject', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject'])->name('freight.approve.reject');
+	/*Route::get('freight-info-approve-reject', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject'])->name('freight.approve.reject');
 
 	Route::post('freight-info-approve-reject', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject_store'])->name('freight.approve.reject.store');
+	*/
+	
+	Route::get('/freight-info-approve-reject', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject'])
+    ->name('freight.approve.reject');
+
+	Route::post('/freight-info-approve-reject/store', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approve_reject_store'])
+		->name('freight.approve.reject.store');
+
+	Route::get('/freight-info-approved', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approved'])
+		->name('freight.approved');
+	
 	
 	///////SIte plant Data Route
 	
