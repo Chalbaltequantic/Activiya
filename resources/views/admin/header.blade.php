@@ -136,10 +136,12 @@
 						 @if(Gate::allows('admin.invoice'))
 							<li class="{{ request()->is('admin/freightdata*') ? 'active' : '' }}"><a href="{{ route('admin.invoice.list') }}" class="dropdown-item">Invoice</a></li>
 						@endif
+						@if(Auth::user() && (Auth::user()->role_id == 8 || Auth::user()->role_id == 4 || Auth::user()->role_id==1))
 						<li class="{{ request()->routeIs('admin.freight.approve.reject*') ? 'active' : '' }}">
 							<a href="{{ route('admin.freight.approve.reject') }}" class="dropdown-item">Freight Bill Approve / Reject
 							</a>
 						</li>
+						@endif
 					</ul>
 				</li>
 				 @endif
