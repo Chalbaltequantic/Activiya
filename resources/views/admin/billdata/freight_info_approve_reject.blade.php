@@ -256,7 +256,7 @@
                                             @endif
                                         </td>
                                         <td class="remark-col">{{ $billdata->validation_remark ?? 'NA' }}</td>
-                                        <td class="">
+                                        <td style="text-align:center;">
                                             <input type="checkbox" name="selected_ids[]" value="{{ $billdata->id }}" class="approval-checkbox">
                                         </td>
                                         <td class="input-col">
