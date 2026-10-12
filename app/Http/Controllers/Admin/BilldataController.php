@@ -1548,7 +1548,7 @@ class BilldataController extends Controller
 				'fah.action_by as approved_by',
 				'fah.created_at as approved_at',
 			])
-			->where('b.created_at', '>=', '2026-10-05 00:00:00')
+			->where('b.validated_at', '>=', '2026-10-05 00:00:00')
 			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
@@ -1624,7 +1624,7 @@ class BilldataController extends Controller
 	private function freightApprovalTabCounts()
 	{
 		$pendingCount = DB::table('bill_data_upload as b')
-			->where('b.created_at', '>=', '2026-10-05 00:00:00')
+			->where('b.validated_at', '>=', '2026-10-05 00:00:00')
 			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
@@ -1649,7 +1649,7 @@ class BilldataController extends Controller
 						WHERE h2.bill_data_id = b.id
 					)');
 			})
-			->where('b.created_at', '>=', '2026-10-05 00:00:00')
+			->where('b.validated_at', '>=', '2026-10-05 00:00:00')
 			->whereNotNull('b.freight_invoice_no')
 			->where('b.freight_invoice_no', '!=', '')
 			->whereNotNull('b.freight_invoice_date')
