@@ -1289,6 +1289,8 @@ class BilldataController extends Controller
 		DB::beginTransaction();
 
 		try {
+				$created_by = Auth::user()->id; 		
+				$createddate = date('Y-m-d H:i:s');
 
 			foreach ($validatedIds as $index => $id) {
 
@@ -1305,7 +1307,9 @@ class BilldataController extends Controller
 					$entry->validated_status = 'submitted';
 					$entry->submit = 1;
 					$entry->f_return = 0;
-
+					$entry->validated_by = $created_by;
+					$entry->validated_at = $createddate; 
+					
 					/* SEND MAIL IN BACKGROUND */
 					// Send email commented as mail need to send when Freight bill Approved
 					//SendValidatedFreightMailJob::dispatch($entry->id);
