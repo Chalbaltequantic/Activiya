@@ -27,9 +27,7 @@ class SmartPoController extends Controller
    private function userId(): int
     {
         $id = Auth::guard('admin')->id();
-
         abort_unless($id, 403);
-
         return (int) $id;
     }
 
@@ -199,10 +197,7 @@ class SmartPoController extends Controller
 
 				$failed++;
 
-				$errors[] =
-					$file->getClientOriginalName()
-					. ': '
-					. $e->getMessage();
+				$errors[] = $file->getClientOriginalName(). ': '. $e->getMessage();
 			}
 		}
 
@@ -233,34 +228,20 @@ class SmartPoController extends Controller
 				'No PO files could be processed.';
 
 			if (!empty($errors)) {
-				$errorMessage .=
-					' Error: ' .
-					implode(' | ', $errors);
+				$errorMessage .= ' Error: ' . implode(' | ', $errors);
 			}
 
-			return redirect()
-				->route('admin.smart-po.index')
-				->with(
-					'error',
-					$errorMessage
-				);
+			return redirect()->route('admin.smart-po.index')->with( 'error', $errorMessage );
 		}
 
-        $message = $processed .
-            ' PO file(s) processed successfully.';
+        $message = $processed . ' PO file(s) processed successfully.';
 
         if ($failed > 0) {
-            $message .= ' ' .
-                $failed .
-                ' file(s) failed.';
+            $message .= ' ' . $failed . ' file(s) failed.';
         }
 
         return redirect()
-            ->route('admin.smart-po.index')
-            ->with(
-                'success',
-                $message
-            );
+            ->route('admin.smart-po.index')->with( 'success', $message );
     }
 
     private function processSingleFile(
@@ -286,28 +267,13 @@ class SmartPoController extends Controller
             $file->getClientOriginalExtension()
         );
 
-        $storedFilename =
-            now()->format('YmdHis') .
-            '_' .
-            Str::random(12) .
-            '.' .
-            $extension;
+        $storedFilename = now()->format('YmdHis') . '_' . Str::random(12) . '.' . $extension;
 
-        $file->move(
-            $directory,
-            $storedFilename
-        );
+        $file->move( $directory,  $storedFilename );
 
-        $absolutePath =
-            $directory .
-            DIRECTORY_SEPARATOR .
-            $storedFilename;
+        $absolutePath = $directory . DIRECTORY_SEPARATOR . $storedFilename;
 
-        $relativePath =
-            'uploads/purchase-orders/' .
-            $userId .
-            '/' .
-            $storedFilename;
+        $relativePath = 'uploads/purchase-orders/' . $userId . '/' . $storedFilename;
 
         try {
             $response = Http::timeout(120)
@@ -805,13 +771,9 @@ class SmartPoController extends Controller
 
         $row = 12;
 
-        foreach (
-            $headers as $column => $header
-        ) {
-            $sheet->setCellValue(
-                chr(65 + $column) . $row,
-                $header
-            );
+        foreach ( $headers as $column => $header ) 
+		{
+            $sheet->setCellValue( chr(65 + $column) . $row,  $header );
         }
 
         $row++;

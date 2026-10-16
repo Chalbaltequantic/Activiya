@@ -1,0 +1,16 @@
+@extends('admin.admin')
+@section('bodycontent')
+<div class="content-header px-0 pt-0"><div class="d-flex justify-content-between align-items-center flex-wrap"><h1 class="m-0">Upload Goods Receipt Notes</h1><div><a href="{{ route('admin.smart-grn.index') }}" class="btn btn-primary"><i class="fas fa-list"></i> GRN Data List</a></div></div></div>
+@if($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+<div class="card card-primary"><div class="card-header bg-primary"><h3 class="card-title">Upload GRN Files</h3></div>
+<form action="{{ route('admin.smart-grn.process') }}" method="POST" enctype="multipart/form-data" id="grnUploadForm">@csrf
+<div class="card-body"><p class="mb-2"><strong><i class="fas fa-magic mr-1"></i> Automatic GRN Processing</strong></p><p class="text-muted mb-4">Upload one or multiple goods receipt notes. The system will identify the supported GRN format and extract its details.</p>
+<div class="form-group"><label for="grn_files">Goods Receipt Note Files <span class="text-danger">*</span></label>
+<label for="grn_files" id="grnDropZone" class="d-flex flex-column align-items-center justify-content-center text-center w-100" style="min-height:310px;border:2px dashed #cbd5e1;border-radius:5px;background:#f8f9fa;cursor:pointer;padding:28px">
+<i class="fas fa-cloud-upload-alt text-primary" style="font-size:72px"></i><span class="h3 mt-4 mb-2" style="font-weight:400">Select Goods Receipt Note Files</span><span class="text-muted">Click here to browse and select one or multiple files</span><small class="text-muted mt-3">PDF, JPG, JPEG, PNG, BMP, TIF or TIFF — up to 20 files, 20 MB each</small><span class="text-primary mt-3" id="grnSelection"></span>
+</label><input type="file" name="grn_files[]" id="grn_files" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tif,.tiff" multiple required class="d-none"></div>
+</div><div class="card-footer"><button type="submit" id="grnSubmit" class="btn btn-primary mr-2"><i class="fas fa-cogs"></i> Upload &amp; Process GRN</button><a href="{{ route('admin.smart-grn.index') }}" class="btn btn-default"><i class="fas fa-list"></i> GRN Data List</a></div></form></div>
+<script>
+(function(){var input=document.getElementById('grn_files'),drop=document.getElementById('grnDropZone'),label=document.getElementById('grnSelection'),form=document.getElementById('grnUploadForm'),button=document.getElementById('grnSubmit');function update(){var files=Array.from(input.files);label.textContent=files.length?(files.length+' file(s) selected: '+files.map(function(f){return f.name}).join(', ')):'';}input.addEventListener('change',update);['dragenter','dragover'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.style.borderColor='#007bff';});});['dragleave','drop'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.style.borderColor='#cbd5e1';});});drop.addEventListener('drop',function(ev){if(ev.dataTransfer&&ev.dataTransfer.files.length){input.files=ev.dataTransfer.files;update();}});form.addEventListener('submit',function(ev){if(input.files.length>20){ev.preventDefault();alert('Select a maximum of 20 files.');return;}button.disabled=true;button.innerHTML='<i class="fas fa-spinner fa-spin"></i> Processing GRN...';});})();
+</script>
+@endsection

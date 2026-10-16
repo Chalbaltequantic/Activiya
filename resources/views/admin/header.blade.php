@@ -383,10 +383,10 @@
 					 </li>
 					@endif					
 					 
-					 <li class=""><a href="{{ route('admin.smart-po.upload') }}" class="dropdown-item">Upload PO</a>
-					 </li>
-					 <li class=""><a href="{{ route('admin.smart-po.index') }}" class="dropdown-item">PO Data List</a>
-					 </li>					 
+						<li class=""><a href="{{ route('admin.smart-po.upload') }}" class="dropdown-item">Upload PO</a></li>
+						<li class=""><a href="{{ route('admin.smart-po.index') }}" class="dropdown-item">PO Data List</a></li>
+						<li class=""><a href="{{ route('admin.smart-grn.upload') }}" class="dropdown-item">Upload GRN</a></li>
+						<li class=""><a href="{{ route('admin.smart-grn.index') }}" class="dropdown-item">GRN Data List</a></li>
 					</ul>
 				</li>
 				@endif

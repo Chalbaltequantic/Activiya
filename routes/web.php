@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\InsuranceController;
 use App\Http\Controllers\Admin\InsuranceProductController;
 use App\Http\Controllers\Admin\InsuranceClaimController;
 use App\Http\Controllers\Admin\SmartPoController;
+use App\Http\Controllers\Admin\SmartGrnController;
+use App\Http\Controllers\Admin\GrnCompareController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -981,6 +983,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
         Route::get('/{id}/original',[SmartPoController::class, 'original'])->name('original');
         Route::get('/{id}/excel',[SmartPoController::class, 'excel'] )->name('excel');
         Route::get('/{id}/pdf',[SmartPoController::class, 'pdf'])->name('pdf');
+    });
+	/////GRN 
+	Route::prefix('smart-grn')->name('smart-grn.')->group(function () {
+        Route::get('/', [SmartGrnController::class, 'index'])->name('index');
+        Route::get('/upload', [SmartGrnController::class, 'create'])->name('upload');
+        Route::post('/upload', [SmartGrnController::class, 'store'])->name('process');
+        Route::get('/{grn}', [SmartGrnController::class, 'show'])->name('show');
+        Route::get('/{grn}/original', [SmartGrnController::class, 'download'])->name('original');
+        Route::get('/{grn}/excel', [SmartGrnController::class, 'export'])->name('excel');
+        Route::get('/{grn}/compare', [GrnCompareController::class, 'show'])->name('compare');
+        Route::get('/{grn}/compare/excel', [GrnCompareController::class, 'excel'])->name('compare.excel');
+        Route::get('/{grn}/compare/pdf', [GrnCompareController::class, 'pdf'])->name('compare.pdf');
     });
 	
 });
