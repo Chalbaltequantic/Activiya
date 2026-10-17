@@ -74,6 +74,27 @@ class PoGrnListController extends Controller
         $rows = $query->orderByDesc('purchase_orders.id')
             ->paginate($perPage)->withQueryString();
 
+        // Load item rows only for the currently displayed PO page.
+        $poIds = $rows->getCollection()->pluck('id')->all();
+        $grnIds = $rows->getCollection()->pluck('grn_id')->filter()->unique()->values()->all();
+        $poItems = empty($poIds) ? collect() : DB::table('purchase_order_items')
+            ->whereIn('purchase_order_id', $poIds)->orderBy('id')->get()->groupBy('purchase_order_id');
+        $grnItems = empty($grnIds) ? collect() : DB::table('grn_items')
+            ->whereIn('grn_id', $grnIds)->orderBy('id')->get()->groupBy('grn_id');
+
+        foreach ($rows->getCollection() as $row) {
+            $poLines = $poItems->get($row->id, collect());
+            $grnLines = $row->grn_id ? $grnItems->get($row->grn_id, collect()) : collect();
+            $row->grn_items_count = $row->grn_id ? $grnLines->count() : null;
+            $row->comparison = $this->compareLines($poLines, $grnLines, (bool) $row->grn_id);
+            $row->matched_count = $row->comparison->where('status', 'Matched')->count();
+            $row->variance_count = $row->grn_id
+                ? $row->comparison->filter(fn ($line) => $line['status'] !== 'Matched')->count()
+                : null;
+            $row->reconciliation_status = ! $row->grn_id ? 'GRN Pending'
+                : ($row->variance_count === 0 ? 'Matched' : 'Variance');
+        }
+
         // GRNs with no PO owned by this admin. Display separately so they are not lost.
         $unmatchedGrns = Grn::query()
             ->where('uploaded_by', $adminId)
@@ -99,6 +120,68 @@ class PoGrnListController extends Controller
             ->orderByDesc('id')
             ->paginate($perPage, ['*'], 'unmatched_page')->withQueryString();
 
+        $unmatchedIds = $unmatchedGrns->getCollection()->pluck('id')->all();
+        $unmatchedCounts = empty($unmatchedIds) ? collect() : DB::table('grn_items')
+            ->whereIn('grn_id', $unmatchedIds)->select('grn_id')
+            ->selectRaw('COUNT(*) as total')->groupBy('grn_id')->pluck('total', 'grn_id');
+        foreach ($unmatchedGrns->getCollection() as $grn) {
+            $grn->line_count = (int) ($unmatchedCounts->get($grn->id, 0));
+        }
+
         return view('admin.smart-grn.po-grn-list', compact('rows', 'unmatchedGrns', 'search', 'status', 'perPage'));
     }
+    /** Compare the latest parsed GRN with PO lines, preserving unmatched lines. */
+    private function compareLines($poLines, $grnLines, bool $hasGrn)
+    {
+        $normalize = fn ($value) => strtoupper(trim((string) ($value ?? '')));
+        $used = [];
+        $result = collect();
+
+        foreach ($poLines as $po) {
+            $poCode = $normalize($po->item_code ?? null);
+            $poEan = $normalize($po->ean ?? null);
+            $candidates = $grnLines->filter(function ($grn) use ($poCode, $poEan, $normalize, $used) {
+                if (isset($used[$grn->id])) return false;
+                $code = $normalize($grn->item_code ?? null);
+                $ean = $normalize($grn->ean ?? null);
+                return ($poEan !== '' && $poEan === $ean)
+                    || ($poCode !== '' && $poCode === $code);
+            });
+            $match = $candidates->count() === 1 ? $candidates->first() : null;
+            if ($match) $used[$match->id] = true;
+            $poQty = (float) ($po->quantity ?? 0);
+            $accepted = $match && $match->accepted_qty !== null ? (float) $match->accepted_qty : null;
+            $difference = $accepted === null ? null : $accepted - $poQty;
+            $status = ! $hasGrn ? 'GRN Pending'
+                : ($candidates->count() > 1 ? 'Ambiguous'
+                : (! $match ? 'Missing in GRN'
+                : ($accepted === null ? 'Accepted Qty Missing'
+                : (abs($difference) < 0.00001 ? 'Matched' : ($difference < 0 ? 'Short' : 'Excess')))));
+            $result->push([
+                'po_line' => $po->line_no ?? null, 'grn_line' => $match->line_no ?? null,
+                'item_code' => $po->item_code ?: ($match->item_code ?? null),
+                'ean' => $po->ean ?: ($match->ean ?? null),
+                'description' => $po->description ?: ($match->description ?? null),
+                'po_qty' => $poQty,
+                'received' => $match->received_qty ?? null,
+                'accepted' => $accepted, 'difference' => $difference, 'status' => $status,
+            ]);
+        }
+
+        if ($hasGrn) {
+            foreach ($grnLines as $grn) {
+                if (isset($used[$grn->id])) continue;
+                $result->push([
+                    'po_line' => null, 'grn_line' => $grn->line_no ?? null,
+                    'item_code' => $grn->item_code ?? null, 'ean' => $grn->ean ?? null,
+                    'description' => $grn->description ?? null, 'po_qty' => null,
+                    'received' => $grn->received_qty ?? null,
+                    'accepted' => $grn->accepted_qty ?? null,
+                    'difference' => null, 'status' => 'Unmatched GRN Item',
+                ]);
+            }
+        }
+        return $result;
+    }
+
 }

@@ -23,7 +23,7 @@
         <form method="GET" action="{{ route('admin.smart-grn.reconciliation.index') }}" class="form-row mb-3">
             <div class="col-md-5 mb-2">
                 <input type="text" name="search" class="form-control" value="{{ $search }}"
-                       placeholder="Search PO, GRN, or supplier">
+                       placeholder="Search PO number, GRN number or supplier">
             </div>
             <div class="col-md-3 mb-2">
                 <select name="status" class="form-control">
@@ -45,6 +45,7 @@
             </div>
         </form>
 
+        <p class="text-muted small">Summary only: PO/GRN dates, suppliers, item counts, matched and variance counts. GRN item counts and reconciliation use the latest parsed GRN; the GRNs column shows the number of linked parsed GRNs.</p>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover table-sm">
                 <thead class="thead-light">
@@ -57,6 +58,9 @@
                         <th>GRN Number</th>
                         <th>GRN Date</th>
                         <th>GRN Supplier</th>
+                        <th>GRN Items</th>
+                        <th>Matched</th>
+                        <th>Variance</th>
                         <th>GRNs</th>
                         <th>Status</th>
                         <th style="min-width:170px">Actions</th>
@@ -73,12 +77,17 @@
                             <td>{{ $row->grn_number ?: '--' }}</td>
                             <td>{{ $row->grn_date ? \Illuminate\Support\Carbon::parse($row->grn_date)->format('d-m-Y') : '--' }}</td>
                             <td>{{ $row->grn_supplier ?: '--' }}</td>
+                            <td>{{ $row->grn_items_count ?? '--' }}</td>
+                            <td>{{ $row->grn_id ? $row->matched_count : '--' }}</td>
+                            <td>{{ $row->variance_count ?? '--' }}</td>
                             <td>{{ $row->grn_count ?: '--' }}</td>
                             <td>
-                                @if ($row->grn_id)
-                                    <span class="badge badge-success">GRN Found</span>
-                                @else
+                                @if (! $row->grn_id)
                                     <span class="badge badge-warning">GRN Pending</span>
+                                @elseif ($row->reconciliation_status === 'Matched')
+                                    <span class="badge badge-success">Matched</span>
+                                @else
+                                    <span class="badge badge-danger">Variance</span>
                                 @endif
                             </td>
                             <td>
@@ -93,7 +102,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="11" class="text-center text-muted py-4">No purchase orders found.</td></tr>
+                        <tr><td colspan="14" class="text-center text-muted py-4">No purchase orders found.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -111,20 +120,23 @@
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-sm">
                 <thead class="thead-light">
-                    <tr><th>PO Number</th><th>PO Details</th><th>GRN Number</th><th>GRN Date</th><th>Supplier</th><th>Action</th></tr>
+                    <tr><th>PO Number</th><th>PO Date</th><th>PO Items</th><th>GRN Number</th><th>GRN Date</th><th>GRN Supplier</th><th>GRN Items</th><th>Status</th><th>Action</th></tr>
                 </thead>
                 <tbody>
                     @forelse ($unmatchedGrns as $grn)
                         <tr>
                             <td>{{ $grn->po_number ?: '--' }}</td>
                             <td>--</td>
+                            <td>--</td>
                             <td>{{ $grn->grn_number ?: '--' }}</td>
                             <td>{{ $grn->grn_date ? $grn->grn_date->format('d-m-Y') : '--' }}</td>
                             <td>{{ $grn->supplier_name ?: '--' }}</td>
+                            <td>{{ $grn->line_count }}</td>
+                            <td><span class="badge badge-warning">PO Missing</span></td>
                             <td><a class="btn btn-sm btn-primary" href="{{ route('admin.smart-grn.show', ['grn' => $grn->id]) }}">View GRN</a></td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="text-center text-muted py-3">No unmatched GRNs found.</td></tr>
+                        <tr><td colspan="9" class="text-center text-muted py-3">No unmatched GRNs found.</td></tr>
                     @endforelse
                 </tbody>
             </table>
