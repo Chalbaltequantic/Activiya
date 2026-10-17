@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\InsuranceClaimController;
 use App\Http\Controllers\Admin\SmartPoController;
 use App\Http\Controllers\Admin\SmartGrnController;
 use App\Http\Controllers\Admin\GrnCompareController;
-
+use App\Http\Controllers\Admin\PoGrnListController;
 /*Route::get('/', function () {
     return view('welcome');
 });
@@ -989,6 +989,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
         Route::get('/', [SmartGrnController::class, 'index'])->name('index');
         Route::get('/upload', [SmartGrnController::class, 'create'])->name('upload');
         Route::post('/upload', [SmartGrnController::class, 'store'])->name('process');
+		Route::get('smart-grn/reconciliation', [PoGrnListController::class, 'index'])->name('reconciliation.index');
+		
         Route::get('/{grn}', [SmartGrnController::class, 'show'])->name('show');
         Route::get('/{grn}/original', [SmartGrnController::class, 'download'])->name('original');
         Route::get('/{grn}/excel', [SmartGrnController::class, 'export'])->name('excel');

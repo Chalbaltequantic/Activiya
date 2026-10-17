@@ -387,6 +387,8 @@
 						<li class=""><a href="{{ route('admin.smart-po.index') }}" class="dropdown-item">PO Data List</a></li>
 						<li class=""><a href="{{ route('admin.smart-grn.upload') }}" class="dropdown-item">Upload GRN</a></li>
 						<li class=""><a href="{{ route('admin.smart-grn.index') }}" class="dropdown-item">GRN Data List</a></li>
+						
+						<li class=""><a href="{{ route('admin.smart-grn.reconciliation.index') }}" class="dropdown-item">PO vs GRN</a></li>
 					</ul>
 				</li>
 				@endif
