@@ -590,61 +590,32 @@ class SmartPoController extends Controller
         array $result
     ): void {
         PurchaseOrder::create([
-            'po_import_id' =>
-                $import->id,
-
-            'po_template_id' =>
-                null,
-
-            'created_by' =>
-                $userId,
-
-            'original_filename' =>
-                $originalFilename,
-
-            'file_path' =>
-                $relativePath,
-
-            'raw_text' =>
-                $result['raw_text']
-                ?? null,
-
-            'extracted_json' =>
-                $result,
-
-            'processing_status' =>
-                'detection_failed',
-
-            'processing_remark' =>
-                $result['message']
-                ?? 'Unable to identify PO format.',
+            'po_import_id' =>$import->id,
+			'po_template_id' => null,
+			'created_by' =>$userId,
+			'original_filename' => $originalFilename,
+			'file_path' =>  $relativePath,
+			'raw_text' => $result['raw_text'] ?? null,
+			'extracted_json' => $result,
+			'processing_status' => 'detection_failed',
+			'processing_remark' => $result['message'] ?? 'Unable to identify PO format.',
         ]);
     }
 
     public function show(int $id)
     {
-        $purchaseOrder =
-            $this->ownedPo($id);
+        $purchaseOrder = $this->ownedPo($id);
 
-        return view(
-            'admin.smart-po.show',
-            compact('purchaseOrder')
-        );
+        return view( 'admin.smart-po.show', compact('purchaseOrder') );
     }
 
     public function original(int $id)
     {
-        $purchaseOrder =
-            $this->ownedPo($id);
+        $purchaseOrder =  $this->ownedPo($id);
 
-        $path = public_path(
-            $purchaseOrder->file_path
-        );
+        $path = public_path( $purchaseOrder->file_path );
 
-        abort_unless(
-            File::exists($path),
-            404
-        );
+        abort_unless( File::exists($path), 404  );
 
         return response()->file(
             $path
@@ -655,18 +626,13 @@ class SmartPoController extends Controller
     {
         $po = $this->ownedPo($id);
 
-        $spreadsheet =
-            new Spreadsheet();
+        $spreadsheet =  new Spreadsheet();
 
-        $sheet =
-            $spreadsheet->getActiveSheet();
+        $sheet =  $spreadsheet->getActiveSheet();
 
         $sheet->setTitle('Purchase Order');
 
-        $sheet->setCellValue(
-            'A1',
-            'Purchase Order'
-        );
+        $sheet->setCellValue(  'A1',  'Purchase Order'  );
 
         $sheet->setCellValue(
             'A3',
@@ -779,16 +745,9 @@ class SmartPoController extends Controller
         $row++;
 
         foreach ($po->items as $item) {
-            $sheet->setCellValue(
-                'A' . $row,
-                $item->line_no
-            );
+            $sheet->setCellValue('A' . $row,$item->line_no);
 
-            $sheet->setCellValueExplicit(
-                'B' . $row,
-                (string) $item->item_code,
-                DataType::TYPE_STRING
-            );
+            $sheet->setCellValueExplicit('B' . $row, (string) $item->item_code, DataType::TYPE_STRING );
 
             $sheet->setCellValue(
                 'C' . $row,
