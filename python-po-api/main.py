@@ -24,6 +24,7 @@ from parsers.citymall_parser import CityMallParser
 from parsers.walmart_parser import WalmartParser
 
 from parsers.zepto_parser import ZeptoParser
+from parsers.reliance_parser import RelianceParser
 
 # =========================================================
 
@@ -80,6 +81,7 @@ PARSERS = {
     "walmart": WalmartParser(),
 
     "zepto": ZeptoParser(),
+    "reliance": RelianceParser(),
 
 }
 
@@ -96,6 +98,7 @@ TEMPLATE_NAMES = {
     "walmart": "Walmart",
 
     "zepto": "Zepto Limited",
+    "reliance": "Reliance Retail Limited",
 
 }
 
@@ -176,6 +179,7 @@ def detect_po_format(text):
             "amazon": 0,
 
             "zepto": 0,
+            "reliance": 0,
 
         }
 
@@ -194,6 +198,7 @@ def detect_po_format(text):
             "amazon": 0,
 
         "zepto": 0,
+        "reliance": 0,
 
     }
 
@@ -359,6 +364,14 @@ def detect_po_format(text):
 
     # -----------------------------------------------------
 
+    # RELIANCE: require buyer identity and PO-specific document markers.
+    if (
+        "RELIANCE RETAIL LIMITED" in text_upper
+        and "PURCHASE ORDER" in text_upper
+        and ("PO NO." in text_upper or "ARTICLE NO." in text_upper)
+    ):
+        scores["reliance"] += 12
+
     # FIND HIGHEST SCORE
 
     # -----------------------------------------------------
@@ -446,6 +459,7 @@ def health():
             "amazon",
 
             "zepto",
+            "reliance",
 
         ],
 
@@ -865,29 +879,16 @@ async def read_po(
 
         # =================================================
 
-        try:
-
-            purchase_order = parser.parse(
-
-                raw_text,
-
-                tables
-
-            )
-
-        except TypeError as first_error:
-
+        if detected_code == "reliance" and extension == ".pdf":
+            purchase_order = parser.parse_pdf(temp_path)
+        else:
             try:
-
-                purchase_order = parser.parse(
-
-                    raw_text
-
-                )
-
-            except TypeError:
-
-                raise first_error
+                purchase_order = parser.parse(raw_text, tables)
+            except TypeError as first_error:
+                try:
+                    purchase_order = parser.parse(raw_text)
+                except TypeError:
+                    raise first_error
 
         # =================================================
 
