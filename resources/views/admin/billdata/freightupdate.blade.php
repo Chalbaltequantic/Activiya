@@ -220,7 +220,8 @@
 											<input type="text" name="data[{{ $loop->index }}][freight_invoice_no]" value="{{ $billdata->freight_invoice_no }}">
 										</td>
 										<td>
-											<input type="text" name="data[{{ $loop->index }}][freight_invoice_date]" value="{{ $billdata->freight_invoice_date }}">
+											<input type="text" name="data[{{ $loop->index }}][freight_invoice_date]" value="{{ $billdata->freight_invoice_date }}" placeholder="dd/mm/yyyy"
+>
 										</td>
 										<td>
 											<input type="number" name="data[{{ $loop->index }}][freight_amount]" value="{{ number_format($billdata->freight_amount) }}">
