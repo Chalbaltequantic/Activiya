@@ -1061,7 +1061,7 @@ class BilldataController extends Controller
         return view('admin.billdata.freightupdate',compact(['pagetitle','title','entries','updatedentries']));
     }
 	
-	public function updateMultiple(Request $request)
+	/*public function updateMultiple(Request $request)
 	{
 		$amountMismatches = [];
         $fileErrors = [];
@@ -1082,7 +1082,10 @@ class BilldataController extends Controller
 			$expectedAmount = (int)$entry->a_amount; 
 			
 			$freight_inv_dt = $row['freight_invoice_date'];
-			$freightinv_date = Carbon::parse($freight_inv_dt)->format('Y-m-d');
+			//$freightinv_date = Carbon::parse($freight_inv_dt)->format('Y-m-d');
+
+			$date = Carbon::createFromFormat('!d/m/Y', $freight_inv_dt);
+			$freightinv_date = $date->format('Y-m-d');
 			
 			$lr_no = $entry->lr_no;
 			
@@ -1132,7 +1135,103 @@ class BilldataController extends Controller
             'fileErrors' => $fileErrors,
             'saveErrors' => $saveErrors,
 			]);
+	}*/
+	
+	
+	public function updateMultiple(Request $request)
+	{
+		$amountMismatches = [];
+		$fileErrors = [];
+		$saveErrors = [];
+		$dateErrors = [];
+		$successCount = 0;
+
+		foreach ($request->data as $row)
+		{
+			$entry = Billdata::find($row['id']);
+			if (!$entry) {
+				continue; // skip if entry not found
+			}
+
+			// Normalize entered amount (remove commas)
+			//$enteredAmount = (int)str_replace(',', '', $row['amount']);
+			$enteredAmount = (int)preg_replace("/,+/", "", $row['freight_amount']);
+			$expectedAmount = (int)$entry->a_amount;
+
+			$lr_no = $entry->lr_no;
+
+			// Validate Freight Invoice Date (dd/mm/yyyy)
+			$freight_inv_dt = trim((string)($row['freight_invoice_date'] ?? ''));
+
+			$dateValidator = \Illuminate\Support\Facades\Validator::make(
+				['freight_invoice_date' => $freight_inv_dt],
+				['freight_invoice_date' => 'required|date_format:d/m/Y']
+			);
+
+			if ($dateValidator->fails()) {
+				$dateErrors[] = [
+					'id' => $entry->id,
+					'order_ref_no' => $entry->ref1 ?? 'N/A',
+					'lr_no' => $lr_no,
+					'entered' => $freight_inv_dt,
+					'expected' => 'dd/mm/yyyy (e.g. 17/10/2026)'
+				];
+				continue;
+			}
+
+			// Convert valid date to MySQL format
+			$date = Carbon::createFromFormat('!d/m/Y', $freight_inv_dt);
+			$freightinv_date = $date->format('Y-m-d');
+
+			if ($enteredAmount !== $expectedAmount) {
+				$amountMismatches[] = [
+					'id' => $entry->id,
+					'order_ref_no' => $entry->ref1 ?? 'N/A',
+					'entered' => $row['freight_amount'],
+					'expected' => number_format($expectedAmount)
+				];
+				continue;
+			}
+
+			$createddate = date('Y-m-d');
+
+			try {
+				$entry->freight_invoice_no = $row['freight_invoice_no'];
+				$entry->freight_invoice_date = $freightinv_date;
+				$entry->freight_amount = $enteredAmount;
+				$entry->freight_info_updated_by = Auth::user()->id;
+				$entry->freight_info_updated_at = $createddate;
+				$entry->save();
+				$successCount++;
+			}
+			catch (\Exception $e)
+			{
+				Log::error("Save failed for LR No: {$lr_no} — Error: " . $e->getMessage());
+
+				$saveErrors[] = "Unexpected error while saving data for LR No: {$lr_no}";
+			}
+		} //for loop
+
+		// Prepare messages
+		$successMessage = null;
+
+		if ($successCount > 0) {
+			$successMessage = "{$successCount} record(s) updated successfully.";
+		}
+
+		if ($successCount === 0 && empty($amountMismatches) && empty($saveErrors) && empty($dateErrors)) {
+			$successMessage = "No changes were made.";
+		}
+
+		return redirect()->back()->with([
+			'success' => $successMessage,
+			'mismatches' => $amountMismatches,
+			'fileErrors' => $fileErrors,
+			'saveErrors' => $saveErrors,
+			'dateErrors' => $dateErrors,
+		]);
 	}
+
 	
 	///////////////////Freight data information validate 
 	
