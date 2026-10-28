@@ -1044,17 +1044,25 @@ class BilldataController extends Controller
 		} 
 		else 
 		{        
-			$entries = Billdata::orderBy('updated_at', 'desc')->get(); 
+			$entries = Billdata::select([
+				'id', 's5_consignor_short_name_and_location', 'd5_consignor_short_name_and_location', 
+				'ref1', 'truck_type', 'lr_no', 'lr_cn_date',
+				'ref2', 'ref3', 'a_amount', 'vendor_code'
+			])
+			->whereNull('freight_invoice_no')
+			->whereNull('freight_invoice_date')
+			->whereNull('freight_amount')
+			->get();
+			
 			$updatedentries = Billdata::select([
 				'id', 's5_consignor_short_name_and_location', 'd5_consignor_short_name_and_location', 
 				'ref1', 'truck_type', 'lr_no', 'lr_cn_date',
-				'ref1', 'ref2', 'freight_invoice_no', 'freight_invoice_date', 'freight_amount',
-				'freight_invoice_file', 'pod_file', 'approval_file', 'validated_status','submit', 'f_return', 'validation_remark', 'vendor_code'
+				'ref2', 'ref3', 'freight_invoice_no', 'freight_invoice_date', 'freight_amount',
+				'freight_invoice_file', 'pod_file', 'approval_file', 'validated_status','submit', 'f_return', 'validation_remark','vendor_code'
 			])
 			->where('freight_invoice_no','<>','')
-			->where('freight_invoice_date', '<>','')
+			->whereNotNull('freight_invoice_date')
 			->where('freight_amount', '<>','')
-			//->whereDate('created_at', Carbon::today())
 			->get();
 		}  
 		
