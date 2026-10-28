@@ -126,27 +126,44 @@
           <div class="col-lg-12">
             <div class="card">
 					
-				@if(session('mismatches') || session('saveErrors'))
-					<div class="alert alert-warning alert-dismissible fade show " style="display: none; max-height: 300px; overflow-y: auto;">
-						<strong>Errors:</strong>
-							<ul>
-								@foreach((array) session('mismatches') as $item)
-								<li>Amount mismatch for Ref No: {{ $item['order_ref_no'] }}</li>
-								@endforeach
-								
-								@foreach((array) session('saveErrors') as $saveError)
-								<li>{{ $saveError }}</li>
-								@endforeach
-							</ul>
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-					</div>
-				@endif	
+                @php
+                    $mismatches = (array) session('mismatches', []);
+                    $dateErrors = (array) session('dateErrors', []);
+                    $saveErrors = (array) session('saveErrors', []);
+                    $fileErrors = (array) session('fileErrors', []);
+                @endphp
 
-			@if(session('success'))
-				<div class="alert alert-success">
-					{{ session('success') }}
-				</div>
-			@endif				
+                @if(count($mismatches) || count($dateErrors) || count($saveErrors) || count($fileErrors) || $errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show mb-2" role="alert" style="max-height: 300px; overflow-y: auto;">
+                        <strong>Some freight records could not be updated:</strong>
+                        <ul class="mb-0 mt-2">
+                            @foreach($mismatches as $item)
+                                <li>Amount mismatch for Ref No: {{ $item['order_ref_no'] ?? 'N/A' }} (Entered: {{ $item['entered'] ?? 'N/A' }}, Expected: {{ $item['expected'] ?? 'N/A' }})</li>
+                            @endforeach
+                            @foreach($dateErrors as $item)
+                                <li>Invalid invoice date for LR No: {{ $item['lr_no'] ?? 'N/A' }} / Ref No: {{ $item['order_ref_no'] ?? 'N/A' }} (Entered: {{ $item['entered'] ?: 'Empty' }}, Expected: {{ $item['expected'] ?? 'dd/mm/yyyy' }})</li>
+                            @endforeach
+                            @foreach($saveErrors as $saveError)
+                                <li>{{ $saveError }}</li>
+                            @endforeach
+                            @foreach($fileErrors as $fileError)
+                                <li>{{ is_array($fileError) ? implode(', ', $fileError) : $fileError }}</li>
+                            @endforeach
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                @endif
+
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show mb-2" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                @endif
+
             </div>
           </div>
 		</div>
@@ -165,9 +182,9 @@
                 <div class="tab-content">
                   <div class="active tab-pane" id="activity">
                   
-					<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
-						<form method="POST" action="{{ route('admin.freightdata.updateMultiple') }}">
-							@csrf
+                    <form method="POST" action="{{ route('admin.freightdata.updateMultiple') }}">
+                        @csrf
+                    <div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">
 								<table class="table table-bordered border-dark table-hover" id="table"  style="table-layout:auto; width:auto;">
 								  <thead>
 									<tr>
@@ -199,14 +216,15 @@
 								  </thead>
 								  <tbody>
 									@php
-										$mismatchedIds = collect(session('mismatches'))->pluck('id')->toArray();
+										$mismatchedIds = collect(session('mismatches', []))->pluck('id')->toArray();
+                                        $invalidDateIds = collect(session('dateErrors', []))->pluck('id')->toArray();
 										
 									@endphp
 									  @php($i=1)
 									  @if(count($entries) > 0)
 									  @foreach($entries as $billdata)
 								  
-									<tr class="{{ in_array($billdata->id, $mismatchedIds) ? 'table-danger mismatch-row' : '' }}" data-entry-id="{{ $billdata->id }}">
+									<tr class="{{ (in_array($billdata->id, $mismatchedIds) || in_array($billdata->id, $invalidDateIds)) ? 'table-danger mismatch-row' : '' }}" data-entry-id="{{ $billdata->id }}">
 										<td class="sticky-col-1">{{$billdata->s5_consignor_short_name_and_location}}</td>
 										<td class="sticky-col-2">{{$billdata->d5_consignor_short_name_and_location}}</td>
 										<td class="sticky-col-3">{{$billdata->ref1}}</td>
@@ -217,14 +235,13 @@
 										<td>{{$billdata->ref3}}</td>
 									  
 										<td>
-											<input type="text" name="data[{{ $loop->index }}][freight_invoice_no]" value="{{ $billdata->freight_invoice_no }}">
+											<input type="text" name="data[{{ $loop->index }}][freight_invoice_no]" value="{{ old('data.'.$loop->index.'.freight_invoice_no', $billdata->freight_invoice_no) }}">
 										</td>
 										<td>
-											<input type="text" name="data[{{ $loop->index }}][freight_invoice_date]" value="{{ $billdata->freight_invoice_date }}" placeholder="dd/mm/yyyy"
->
+											<input type="text" name="data[{{ $loop->index }}][freight_invoice_date]" value="{{ old('data.'.$loop->index.'.freight_invoice_date', $billdata->freight_invoice_date ? (preg_match('/^\d{4}-\d{2}-\d{2}/', (string) $billdata->freight_invoice_date) ? date('d/m/Y', strtotime($billdata->freight_invoice_date)) : $billdata->freight_invoice_date) : '') }}" placeholder="dd/mm/yyyy" maxlength="10">
 										</td>
 										<td>
-											<input type="number" name="data[{{ $loop->index }}][freight_amount]" value="{{ number_format($billdata->freight_amount) }}">
+											<input type="number" step="any" name="data[{{ $loop->index }}][freight_amount]" value="{{ old('data.'.$loop->index.'.freight_amount', $billdata->freight_amount) }}">
 										</td>
 											<input type="hidden" name="data[{{ $loop->index }}][id]" value="{{ $billdata->id }}">
 											<input type="hidden" name="data[{{ $loop->index }}][lr_no]" value="{{ $billdata->lr_no }}">
@@ -359,8 +376,7 @@
 								!!}
 								
 								@if($updatedbilldata->f_return == 1)
-								<button type="button"
-									class="btn btn-sm btn-warning edit-returned-btn"
+								<button type="button" class="btn btn-sm btn-warning edit-returned-btn"
 									data-id="{{ $updatedbilldata->id }}"
 									data-invoice-no="{{ $updatedbilldata->freight_invoice_no }}"
 									data-invoice-date="{{ $updatedbilldata->freight_invoice_date }}"
@@ -650,7 +666,7 @@ $(document).ready(function () {
 		const maxSize = 2 * 1024 * 1024; // 2 MB
 
 		let invoiceFile = $('#freight_invoice_file')[0];
-		let podFile = $('#pod_file')[0];
+		let podFile = $('#pod_file')[0]; // POD field is currently commented out
 
 		if (
 			invoiceFile.files.length > 0 &&
@@ -664,18 +680,7 @@ $(document).ready(function () {
 			return false;
 		}
 
-		/*if (
-			podFile.files.length > 0 &&
-			podFile.files[0].size > maxSize
-		) {
-			Swal.fire({
-				icon: 'error',
-				title: 'File Too Large',
-				text: 'POD file size cannot exceed 2 MB.'
-			});
-			return false;
-		}*/
-
+		
         let formData = new FormData(this);
 
         Swal.fire({

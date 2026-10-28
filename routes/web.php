@@ -22,6 +22,11 @@ use App\Http\Controllers\Admin\SmartPoController;
 use App\Http\Controllers\Admin\SmartGrnController;
 use App\Http\Controllers\Admin\GrnCompareController;
 use App\Http\Controllers\Admin\PoGrnListController;
+
+use App\Http\Controllers\Admin\TransportRateMasterController; ///PTL AIR MODE etc
+use App\Http\Controllers\Admin\SlabMasterController;
+
+
 /*Route::get('/', function () {
     return view('welcome');
 });
@@ -663,7 +668,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	
 	/*----------------------------------------------------------
-	 |						DIGI WIM                           |
+						DIGI WIM                           
 	------------------------------------------------------------*/
 	Route::get('digiwim', [App\Http\Controllers\Admin\DigiWimController::class, 'index'])->name('digiWim');
 	
@@ -820,42 +825,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 
 	/* Pending IRA */
 
-	Route::get(
-		'digiwim-inventory-ira',
-		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'index']
-	)->name('digiwim-inventory-ira.index');
-
+	Route::get('digiwim-inventory-ira',[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'index'])->name('digiwim-inventory-ira.index');
 
 	/* Add IRA Activity (AJAX) */
 
-	Route::post(
-		'digiwim-inventory-ira/add-activity',
-		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'addActivity']
-	)->name('digiwim-inventory-ira.add-activity');
-
-
+	Route::post('digiwim-inventory-ira/add-activity',[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'addActivity'])->name('digiwim-inventory-ira.add-activity');
 	/* End IRA (AJAX) */
 
-	Route::post(
-		'digiwim-inventory-ira/end-activity',
-		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'endActivity']
-	)->name('digiwim-inventory-ira.end-activity');
-
-
+	Route::post('digiwim-inventory-ira/end-activity',[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'endActivity'])->name('digiwim-inventory-ira.end-activity');
 	/* IRA History */
-
-	Route::get(
-		'digiwim-inventory-ira/history',
-		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'history']
-	)->name('digiwim-inventory-ira.history');
-
+	Route::get('digiwim-inventory-ira/history',[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'history'])->name('digiwim-inventory-ira.history');
 
 	/* View IRA Activities (AJAX) */
-
-	Route::get(
-		'digiwim-inventory-ira/view-activities/{id}',
-		[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'viewActivities']
-	)
+	Route::get('digiwim-inventory-ira/view-activities/{id}',[App\Http\Controllers\Admin\DigiwimInventoryIraController::class, 'viewActivities'])
 	->whereNumber('id')
 	->name('digiwim-inventory-ira.view-activities');
 
@@ -879,24 +861,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	///Load Box count from V placement screen
 	
-	Route::post('load-box-count/store', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'store'])
-    ->name('load.boxcount.store');
+	Route::post('load-box-count/store', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'store'])->name('load.boxcount.store');
 
-	Route::get('load-box-count/list/{load_id}/{source_type}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'list'])
-		->name('load.boxcount.list');
+	Route::get('load-box-count/list/{load_id}/{source_type}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'list'])->name('load.boxcount.list');
 
-	Route::delete('load-box-count/delete/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'destroy'])
-		->name('load.boxcount.delete');
+	Route::delete('load-box-count/delete/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'destroy'])->name('load.boxcount.delete');
 	
 	Route::post('load-box-count/update-count/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'updateCount'])
     ->name('load.boxcount.updateCount');
 
-	Route::post('load-box-count/update-remark/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'updateRemark'])
-    ->name('load.boxcount.updateRemark');	
+	Route::post('load-box-count/update-remark/{id}', [App\Http\Controllers\Admin\LoadBoxCountController::class, 'updateRemark'])->name('load.boxcount.updateRemark');	
 		
 		/*Report for Freight Bill Processing Dashboard	*/
-	Route::get('freight-bill-processing-dashboard',[App\Http\Controllers\Admin\FreightBillProcessingReportController::class,'index'])
-	->name('freight-bill-processing.index');
+	Route::get('freight-bill-processing-dashboard',[App\Http\Controllers\Admin\FreightBillProcessingReportController::class,'index'])->name('freight-bill-processing.index');
 
 	Route::get('freight-bill-processing-dashboard/export-xls',[App\Http\Controllers\Admin\FreightBillProcessingReportController::class,'exportXls'])->name('freight-bill-processing.export-xls');	
 	
@@ -998,6 +975,38 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
         Route::get('/{grn}/compare/excel', [GrnCompareController::class, 'excel'])->name('compare.excel');
         Route::get('/{grn}/compare/pdf', [GrnCompareController::class, 'pdf'])->name('compare.pdf');
     });
+	
+	////////PTL and Other Transport module
+	
+	Route::prefix('transport-rate-master')->name('transport-rate-master.')->group(function () {
+    Route::get('/', [TransportRateMasterController::class, 'index'])->name('index');
+    Route::post('/import', [TransportRateMasterController::class, 'import'])->name('import');
+    Route::get('/manual', [TransportRateMasterController::class, 'manual'])->name('manual');
+    Route::post('/manual', [TransportRateMasterController::class, 'saveManual'])->name('manual.save');
+    Route::post('/lookup', [TransportRateMasterController::class, 'lookup'])->name('lookup');
+    Route::get('/list', [TransportRateMasterController::class, 'listing'])->name('list');
+    Route::get('/export', [TransportRateMasterController::class, 'export'])->name('export');
+    Route::get('/template', [TransportRateMasterController::class, 'template'])->name('template');
+    Route::get('/{rate}/edit', [TransportRateMasterController::class, 'edit'])->name('edit');
+    Route::put('/{rate}', [TransportRateMasterController::class, 'update'])->name('update');
+    Route::delete('/{rate}', [TransportRateMasterController::class, 'destroy'])->name('delete');
+	});
+
+
+	// Add this route group once to routes/web.php:
+	Route::prefix('slab-master')->name('slab-master.')->group(function () {
+		Route::get('/', [SlabMasterController::class, 'index'])->name('index');
+		Route::post('/import', [SlabMasterController::class, 'import'])->name('import');
+		Route::get('/manual', [SlabMasterController::class, 'manualupload'])->name('manual');
+		Route::post('/manual', [SlabMasterController::class, 'save_manual_data'])->name('manual.save');
+		Route::post('/lookup', [SlabMasterController::class, 'fetchPlantData'])->name('lookup');
+		Route::get('/list', [SlabMasterController::class, 'datalist'])->name('list');
+		Route::get('/export', [SlabMasterController::class, 'export'])->name('export');
+		Route::get('/template', [SlabMasterController::class, 'template'])->name('template');
+		Route::get('/{id}/edit', [SlabMasterController::class, 'edit'])->name('edit');
+		Route::put('/{id}', [SlabMasterController::class, 'update'])->name('update');
+		Route::delete('/{id}', [SlabMasterController::class, 'delete'])->name('delete');
+	});
 	
 });
 

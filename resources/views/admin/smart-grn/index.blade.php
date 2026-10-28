@@ -1,6 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
-<div class="content-header px-0 pt-0"><div class="d-flex justify-content-between align-items-center flex-wrap"><h1 class="m-0">GRN Data List</h1><a href="{{ route('admin.smart-grn.upload') }}" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Upload GRN</a></div></div>
+<div class="content-header px-0 pt-0">
+<div class="d-flex justify-content-between align-items-center flex-wrap"><h1 class="m-0">GRN Data List</h1><a href="{{ route('admin.smart-grn.upload') }}" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Upload GRN</a></div></div>
 @if(session('status'))<div class="alert alert-info">{{ session('status') }}</div>@endif
 <div class="card card-primary"><div class="card-header bg-primary"><h3 class="card-title">Uploaded Goods Receipt Notes</h3></div><div class="card-body">
 <form method="GET" action="{{ route('admin.smart-grn.index') }}" class="form-row mb-3"><div class="col-md-5 mb-2"><input name="search" value="{{ request('search') }}" class="form-control" placeholder="Search GRN number or PO number"></div><div class="col-md-3 mb-2"><select name="client" class="form-control"><option value="">All Clients</option><option value="reliance" {{ request('client') === 'reliance' ? 'selected' : '' }}>Reliance</option></select></div><div class="col-auto mb-2"><button class="btn btn-primary"><i class="fas fa-search"></i> Search</button> <a href="{{ route('admin.smart-grn.index') }}" class="btn btn-default">Reset</a></div></form>

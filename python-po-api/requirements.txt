@@ -8,3 +8,6 @@ opencv-python-headless
 numpy
 PyMuPDF
 pdfplumber
+
+
+92737939bcf92124f7c12ec063a951b0cf40640e7029cf4483a23816c4fce7cb

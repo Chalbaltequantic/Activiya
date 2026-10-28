@@ -166,6 +166,7 @@
 								<th style="background: #fce4d6; color: #0070c0;" class="">Destination<br>name code</th>
 								<th style="background: #fce4d6; color: #0070c0;">Mode</th>
 								<th style="background: #fce4d6; color: #0070c0;">Truck Type</th>
+								<th style="background: #fce4d6; color: #0070c0;">Gross Util</th>
 								
 								<th style="background: #c6e0b4; color: #0070c0;">Vendor<br>name</th>
 								<th style="background: #c6e0b4; color: #0070c0;">Remarks</th>
