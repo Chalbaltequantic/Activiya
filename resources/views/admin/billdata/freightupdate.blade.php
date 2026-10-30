@@ -138,7 +138,7 @@
                         <strong>Some freight records could not be updated:</strong>
                         <ul class="mb-0 mt-2">
                             @foreach($mismatches as $item)
-                                <li>Amount mismatch for Ref No: {{ $item['order_ref_no'] ?? 'N/A' }} (Entered: {{ $item['entered'] ?? 'N/A' }}, Expected: {{ $item['expected'] ?? 'N/A' }})</li>
+                                <li>Amount mismatch for Ref No: {{ $item['order_ref_no'] ?? 'N/A' }} (Entered: {{ $item['entered']  ?? 'N/A' }})</li>
                             @endforeach
                             @foreach($dateErrors as $item)
                                 <li>Invalid invoice date for LR No: {{ $item['lr_no'] ?? 'N/A' }} / Ref No: {{ $item['order_ref_no'] ?? 'N/A' }} (Entered: {{ $item['entered'] ?: 'Empty' }}, Expected: {{ $item['expected'] ?? 'dd/mm/yyyy' }})</li>

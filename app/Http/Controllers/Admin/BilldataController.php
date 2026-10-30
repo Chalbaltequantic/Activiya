@@ -1205,7 +1205,7 @@ class BilldataController extends Controller
 					'id' => $entry->id,
 					'order_ref_no' => $entry->ref1 ?? 'N/A',
 					'entered' => $row['freight_amount'],
-					'expected' => number_format($expectedAmount)
+					'expected' => $expectedAmount
 				];
 				continue;
 			}
@@ -1240,7 +1240,7 @@ class BilldataController extends Controller
 			$successMessage = "No changes were made.";
 		}
 
-		return redirect()->back()->with([
+		return redirect()->back()->withInput()->with([
 			'success' => $successMessage,
 			'mismatches' => $amountMismatches,
 			'fileErrors' => $fileErrors,
