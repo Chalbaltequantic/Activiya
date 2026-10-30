@@ -1160,7 +1160,17 @@ class BilldataController extends Controller
 			if (!$entry) {
 				continue; // skip if entry not found
 			}
+			// Check whether all three freight invoice fields are entered
+			$freightInvoiceNo = trim($row['freight_invoice_no'] ?? '');
+			$freight_inv_dt = trim($row['freight_invoice_date'] ?? '');
+			$freightAmount = trim($row['freight_amount'] ?? '');
 
+			// Skip the row if any of the three fields is blank
+			if ($freightInvoiceNo === '' || $freight_inv_dt === '' || $freightAmount === '')
+			{
+				continue;
+			}
+			
 			// Normalize entered amount (remove commas)
 			//$enteredAmount = (int)str_replace(',', '', $row['amount']);
 			$enteredAmount = (int)preg_replace("/,+/", "", $row['freight_amount']);
@@ -1169,7 +1179,6 @@ class BilldataController extends Controller
 			$lr_no = $entry->lr_no;
 
 			// Validate Freight Invoice Date (dd/mm/yyyy)
-			$freight_inv_dt = trim((string)($row['freight_invoice_date'] ?? ''));
 
 			$dateValidator = \Illuminate\Support\Facades\Validator::make(
 				['freight_invoice_date' => $freight_inv_dt],
