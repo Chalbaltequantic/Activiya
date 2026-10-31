@@ -224,10 +224,9 @@
                         <tbody>
                             @forelse($datalist as $key => $rate)
                                 <tr>
-                                    <td>{{ $datalist->firstItem() + $key }}</td>
-                                    <td>{{ $rate->lane_name }}</td>
-                                    <td>{{ $rate->from_code }}</td>
-                                    <td>{{ $rate->from_name }}</td>
+                                    <td class="sticky-col-1">{{ $rate->lane_name }}</td>
+                                    <td class="sticky-col-2">{{ $rate->from_code }}</td>
+                                    <td class="sticky-col-3">{{ $rate->from_name }}</td>
                                     <td>{{ $rate->origin_region }}</td>
                                     <td>{{ $rate->to_name }}</td>
                                     <td>{{ $rate->to_code }}</td>

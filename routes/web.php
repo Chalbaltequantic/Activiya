@@ -25,6 +25,8 @@ use App\Http\Controllers\Admin\PoGrnListController;
 
 use App\Http\Controllers\Admin\TransportRateMasterController; ///PTL AIR MODE etc
 use App\Http\Controllers\Admin\SlabMasterController;
+use App\Http\Controllers\Admin\LoadUnloadMasterController;
+
 
 
 /*Route::get('/', function () {
@@ -667,9 +669,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
     ->name('lr.list');	
 	
 	
-	/*----------------------------------------------------------
-						DIGI WIM                           
-	------------------------------------------------------------*/
+	/*--------				DIGI WIM                           ------------*/
+	
 	Route::get('digiwim', [App\Http\Controllers\Admin\DigiWimController::class, 'index'])->name('digiWim');
 	
 	Route::post('digiwimimport', [App\Http\Controllers\Admin\DigiWimController::class, 'import'])->name('digiwim.import');
@@ -1006,6 +1007,23 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 		Route::get('/{id}/edit', [SlabMasterController::class, 'edit'])->name('edit');
 		Route::put('/{id}', [SlabMasterController::class, 'update'])->name('update');
 		Route::delete('/{id}', [SlabMasterController::class, 'delete'])->name('delete');
+	});
+	
+	
+	/***************************LOAD UNLOAD ****************/
+	
+	Route::prefix('load-unload-master')->name('load-unload-master.')->group(function () {
+    Route::get('/', [LoadUnloadMasterController::class, 'index'])->name('index');
+    Route::post('/import', [LoadUnloadMasterController::class, 'import'])->name('import');
+    Route::get('/manual', [LoadUnloadMasterController::class, 'manualupload'])->name('manual');
+    Route::post('/manual', [LoadUnloadMasterController::class, 'save_manual_data'])->name('manual.save');
+    Route::post('/lookup', [LoadUnloadMasterController::class, 'fetchMasterData'])->name('lookup');
+    Route::get('/list', [LoadUnloadMasterController::class, 'datalist'])->name('list');
+    Route::get('/export', [LoadUnloadMasterController::class, 'export'])->name('export');
+    Route::get('/template', [LoadUnloadMasterController::class, 'template'])->name('template');
+    Route::get('/{id}/edit', [LoadUnloadMasterController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [LoadUnloadMasterController::class, 'update'])->name('update');
+    Route::delete('/{id}', [LoadUnloadMasterController::class, 'delete'])->name('delete');
 	});
 	
 });

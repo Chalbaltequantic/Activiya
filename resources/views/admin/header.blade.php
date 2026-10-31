@@ -71,6 +71,8 @@
 					 
 					  <li class="{{ request()->is('admin/ratedata*') ? 'active' : '' }}" style="z-index:1100;"><a href="{{ route('admin.slab-master.index') }}" class="dropdown-item">PTL Slab Master</a></li>
 					  
+					  
+					  <li class="{{ request()->is('admin/ratedata*') ? 'active' : '' }}" style="z-index:1100;"><a href="{{ route('admin.load-unload-master.index') }}" class="dropdown-item">Load Unload Master</a></li>
 					 
 					 @if(Gate::allows('admin.truck_master.index'))
 						<li class="{{ request()->is('admin/ratedata*') ? 'active' : '' }}" style="z-index:1100;"><a href="{{ route('admin.truck_master.index') }}" class="dropdown-item">Truck Master</a></li>
