@@ -43,6 +43,13 @@ class Billdata extends Model
 							'submit',
 							'f_return',
 							'remark',
+							'custom1',
+							'custom2',
+							'custom3',
+							'freight_info_updated_by',
+							'freight_info_updated_at',
+							'chargeable_weight',
+							'actual_gross_weight',
 							'validated_by',
 							'validated_at',
 							

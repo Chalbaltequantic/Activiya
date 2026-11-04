@@ -186,6 +186,7 @@
 								<td class="sticky-col-3">{{ $row->destination_name_code }} {{ $row->destination_name }}</td>
 								<td>{{ $row->t_mode }}</td>
 								<td>{{ $row->truck->description ?? 'NA' }}</td>
+								<td>{{ $row->truck->gross_util ?? 'NA' }}</td>
 								
 								<td class="fw-bold">{{ $row->vendor_name }}</td>
 								<td class="fw-bold">{{ $row->sent_remarks  }}</td>

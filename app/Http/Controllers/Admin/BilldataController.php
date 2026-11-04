@@ -565,6 +565,7 @@ class BilldataController extends Controller
                 ->where('consignee_code', $data['consignee_code'])
                 ->where('vendor_code', $data['vendor_code'])
                 ->where('t_code', $data['t_code'])
+				->where('mode', $data['custom'])
 				 ->whereDate('validity_start', '<=', $data['lr_cn_date'])
 				->whereDate('validity_end', '>=', $data['lr_cn_date'])
                 ->first();
@@ -713,7 +714,7 @@ class BilldataController extends Controller
 				'updated_at' => Carbon::now(),
 				'status' => $request->status,
 			]);
-			return Redirect('/admin/freight-shipment-history')->with('success', 'DSata updated successfully!');
+			return Redirect('/admin/freight-shipment-history')->with('success', 'Data updated successfully!');
 		
 	}
 	
@@ -906,6 +907,7 @@ class BilldataController extends Controller
 							->where('consignee_code', $data['consignee_code'])
 							->where('vendor_code', $data['vendor_code'])
 							->where('t_code', $data['t_code'])
+							->where('mode', $data['custom'])
 							->whereDate('validity_start', '<=', $lr_cndate)
 							->whereDate('validity_end', '>=', $lr_cndate)
 							->first();

@@ -48,35 +48,38 @@
 				<table class="table table-bordered border-dark table-hover" id="table">
 				  <thead>
 					<tr>
-						<th style="background: #fce4d6; color: #0070c0;" class="">Consignor name</th>
-						<th style="background: #fce4d6; color: #0070c0;" class="">Consignor code</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Consignor location</th>
-						<th style="background: #fce4d6; color: #0070c0;" >S5 consignor <br>short name & location</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consignor name</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consignor code</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consignor location</th>
+						<th style="background: #fce4d6; color: #0070c0;">S5 consignor <br>short name & location</th>
 
-						<th style="background: #fce4d6; color: #0070c0;" >Consignee Name</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Consignee Code</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Consignee Location</th>
-						<th style="background: #fce4d6; color: #0070c0;" >D5 consignor short <br>name & location</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Mode</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Logic</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consignee Name</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consignee Code</th>
+						<th style="background: #fce4d6; color: #0070c0;">Consignee Location</th>
+						<th style="background: #fce4d6; color: #0070c0;">D5 consignor short <br>name & location</th>
+						<th style="background: #fce4d6; color: #0070c0;">Mode</th>
+						<th style="background: #fce4d6; color: #0070c0;">Logic</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" >Vendor Code</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Vendor Name</th>
-						<th style="background: #fce4d6; color: #0070c0;" >T code</th> 
-						<th style="background: #fce4d6; color: #0070c0;" >Truck type</th>
-						<th style="background: #fce4d6; color: #0070c0;" >A amount </th>
+						<th style="background: #fce4d6; color: #0070c0;">Vendor Code</th>
+						<th style="background: #fce4d6; color: #0070c0;">Vendor Name</th>
+						<th style="background: #fce4d6; color: #0070c0;">T code</th> 
+						<th style="background: #fce4d6; color: #0070c0;">Truck type</th>
+						<th style="background: #fce4d6; color: #0070c0;">A amount </th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" >Validity start</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Validity end</th>
-						<th style="background: #fce4d6; color: #0070c0;" >TAT</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Rank</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Distance</th>
+						<th style="background: #fce4d6; color: #0070c0;">Validity start</th>
+						<th style="background: #fce4d6; color: #0070c0;">Validity end</th>
+						<th style="background: #fce4d6; color: #0070c0;">TAT</th>
+						<th style="background: #fce4d6; color: #0070c0;">Rank</th>
+						<th style="background: #fce4d6; color: #0070c0;">Distance</th>
 						
-						<th style="background: #fce4d6; color: #0070c0;" >Custom 1</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Custom 2</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Custom 3</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Custom 4</th>
-						<th style="background: #fce4d6; color: #0070c0;" >Custom 5</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom 1</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom 2</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom 3</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom 4</th>
+						<th style="background: #fce4d6; color: #0070c0;">Custom 5</th>
+						<th style="background: #fce4d6; color: #0070c0;">From Region</th>
+						<th style="background: #fce4d6; color: #0070c0;">To Region</th>
+						<th style="background: #fce4d6; color: #0070c0;">Company Code</th>
 						
 					  
 					</tr>
@@ -111,6 +114,9 @@
 						  <td class="char-4"><input type="text" name="custom3[]" id="" value=""></td>
 						  <td><input type="text" name="custom4[]" id="" value=""></td>
 						  <td><input type="text" name="custom5[]" id="" value=""></td>
+						  <td><input type="text" name="from_region[]" id="" value=""></td>
+						  <td><input type="text" name="to_region[]" id="" value=""></td>
+						  <td><input type="text" name="company_code[]" id="" value=""></td>
 						</tr>  
 					@endfor	
 				  </tbody>

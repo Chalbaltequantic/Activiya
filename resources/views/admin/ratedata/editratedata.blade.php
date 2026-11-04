@@ -227,6 +227,30 @@
 				<span class="text-danger">{{$message}}</span>
 				@enderror
 			  </div>
+			  
+			  <div class="form-group col-md-6">
+				<label for="from_region">From Region</label>
+				<input type="text" id="from_region" name="from_region" class="form-control" value="{{$ratedata->from_region}}">
+				@error('from_region')
+				<span class="text-danger">{{$message}}</span>
+				@enderror
+			  </div>
+			  
+			  <div class="form-group col-md-6">
+				<label for="to_region">To Region</label>
+				<input type="text" id="to_region" name="to_region" class="form-control" value="{{$ratedata->to_region}}">
+				@error('to_region')
+				<span class="text-danger">{{$message}}</span>
+				@enderror
+			  </div>
+			  
+			  <div class="form-group col-md-6">
+				<label for="company_code">Company Code</label>
+				<input type="text" id="company_code" name="company_code" class="form-control" value="{{$ratedata->company_code}}">
+				@error('company_code')
+				<span class="text-danger">{{$message}}</span>
+				@enderror
+			  </div>
 			
 			  <div class="form-group col-md-6">
 				<label for="inputStatus">Status</label>

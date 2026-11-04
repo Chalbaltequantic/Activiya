@@ -175,7 +175,8 @@
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Update Freight Invoice </a></li>
                   <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Attach Freight Documents</a></li>
-
+				  <li class="nav-item"><a class="nav-link" href="{{ route('admin.nonftl.bulk-invoices.index') }}">Non-FTL Bulk Invoice Upload</a>
+				  </li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">

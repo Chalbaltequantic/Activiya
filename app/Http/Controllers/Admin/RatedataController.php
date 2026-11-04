@@ -94,6 +94,9 @@ class RatedataController extends Controller
                     'custom3' => $row['W'] ?? null,
                     'custom4' => $row['X'] ?? null,
                     'custom5' => $row['Y'] ?? null,
+                    'from_region' => $row['Z'] ?? null,
+                    'to_region' => $row['AA'] ?? null,
+                    'company_code' => $row['AB'] ?? null,
                     'created_at' => $createddate,
                     'created_by' => Auth::user()->id,
                     'status' => '1'
@@ -168,6 +171,9 @@ class RatedataController extends Controller
 				'custom3' => $request->custom3,
 				'custom4' => $request->custom4,
 				'custom5' => $request->custom5,
+				'from_region' => $request->from_region,
+				'to_region' => $request->to_region,
+				'company_code' => $request->company_code,
 				'updated_at' => Carbon::now(),
 				'status' => $request->status,
 			]);
@@ -222,6 +228,9 @@ class RatedataController extends Controller
 		$custom3 = $request->input('custom3', []);
 		$custom4 = $request->input('custom4', []);
 		$custom5 = $request->input('custom5', []);
+		$from_region = $request->input('from_region', []);
+		$to_region = $request->input('to_region', []);
+		$company_code = $request->input('company_code', []);
 		
 		//print_r($consignor_name); exit;
 		
@@ -270,6 +279,9 @@ class RatedataController extends Controller
 						'custom3' => $custom3[$i] ?? null,
 						'custom4' => $custom4[$i] ?? null,
 						'custom5' => $custom5[$i] ?? null,
+						'from_region' => $from_region[$i] ?? null,
+						'to_region' => $to_region[$i] ?? null,
+						'company_code' => $company_code[$i] ?? null,
 						'created_at' => $createddate,
 						'created_by' => Auth::user()->id,
 						'status' => '1'

@@ -164,6 +164,9 @@
 						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 3</th>
 						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 4</th>
 						  <th style="background: #fce4d6; color: #0070c0;" class="">Custom 5</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">From Region</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">To Region</th>
+						  <th style="background: #fce4d6; color: #0070c0;" class="">Company Code</th>
 						 
 						  <th style="background: #fce4d6; color: #0070c0;" class="">Created date</th>
 						  <th style="background: #fce4d6; color: #0070c0;" class="">status </th>
@@ -207,6 +210,9 @@
 						  <td>{{$ratedata->custom3}}</td>
 						  <td>{{$ratedata->custom4}}</td>
 						  <td>{{$ratedata->custom5}}</td>
+						  <td>{{$ratedata->from_region}}</td>
+						  <td>{{$ratedata->to_region}}</td>
+						  <td>{{$ratedata->company_code}}</td>
 						  <td>{{$ratedata->created_at}}</td>
 						    <td>{!! ($ratedata->status == 1)?"<span class='badge bg-success'>Active</span>":"<span class='badge bg-warning'>Inactive</span>" !!}</td>
 								{{--	@if($user_role==1) --}}

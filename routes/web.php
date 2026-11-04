@@ -123,6 +123,21 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	Route::get('/freight-info-approved', [App\Http\Controllers\Admin\BilldataController::class, 'freight_info_approved'])
 		->name('freight.approved');
 	
+	//NOT FTL Bill Data UPLOAD Route
+	
+	Route::post('nonftlfreight/import', [App\Http\Controllers\Admin\NonftlBilldataController::class, 'import'])->name('excel.nonftlimport');
+	
+	Route::get('nonftlfreight/manual-upload', [App\Http\Controllers\Admin\NonftlBilldataController::class, 'nonftlmanualupload'])->name('nonftlmanualupload');
+	
+	Route::post('nonftlfreight/save_manual_upload', [App\Http\Controllers\Admin\nonftlBilldataController::class, 'save_nonftlmanual_billdata'])->name('nonftlfreightdata.save_nonftlmanual_billdata');
+	
+	Route::get('nonftlfreight/bulk-invoices', [App\Http\Controllers\Admin\NonFtlBulkInvoiceController::class, 'index'])
+        ->name('nonftl.bulk-invoices.index');
+
+    Route::post('nonftlfreight/bulk-invoices', [App\Http\Controllers\Admin\NonFtlBulkInvoiceController::class, 'upload'])
+        ->name('nonftl.bulk-invoices.upload');
+
+    Route::get('nonftlfreight/bulk-invoices/{bill}/view', [App\Http\Controllers\Admin\NonFtlBulkInvoiceController::class, 'view'])->name('nonftl.bulk-invoices.view');	
 	
 	///////SIte plant Data Route
 	
