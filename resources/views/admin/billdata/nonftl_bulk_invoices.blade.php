@@ -38,9 +38,9 @@
             <form action="{{ route('admin.nonftl.bulk-invoices.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="invoice_files">Select PDF invoices (up to 100 files, 10 MB each)</label>
+                    <label for="invoice_files">Select PDF invoices (up to 25 files, 1 MB each)</label>
                     <input type="file" class="form-control-file" name="invoice_files[]" id="invoice_files" accept=".pdf,application/pdf" multiple required>
-                    <small class="form-text text-muted">Examples: INV1001.pdf, INV1002.pdf. Existing attachments will not be replaced.</small>
+                    <small class="form-text text-muted"> You can upload up to 25 PDF invoices at once. Each PDF must not exceed 2 MB. Filename must match the Invoice Number (e.g. INV10025.pdf).</small>
                 </div>
                 <button type="submit" class="btn btn-primary">Upload and Match Invoices</button>
             </form>
@@ -86,4 +86,33 @@
         </div>
     </div>
 </div>
+<script>
+document.getElementById('invoice_files').addEventListener('change', function () {
+
+    const files = this.files;
+    const maxFiles = 25;
+    const maxSize = 2 * 1024 * 1024;
+
+    if (files.length > maxFiles) {
+        alert('You can select a maximum of 25 PDF invoices.');
+        this.value = '';
+        return;
+    }
+
+    for (let file of files) {
+
+        if (file.size > maxSize) {
+            alert(file.name + ' exceeds the 2 MB limit.');
+            this.value = '';
+            return;
+        }
+
+        if (!file.name.toLowerCase().endsWith('.pdf')) {
+            alert('Only PDF files are allowed.');
+            this.value = '';
+            return;
+        }
+    }
+});
+</script>
 @endsection
