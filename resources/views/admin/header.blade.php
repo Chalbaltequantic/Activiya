@@ -284,10 +284,22 @@
 				</li>
 				@endif
 				
-				 @if(Gate::allows('admin.preappointment.adduploadd.shipments') || Gate::allows('admin.pre.appointment.shipment.history') || Gate::allows('admin.pre.appointment.request.board') || Gate::allows('admin.update.preappointment.status') || Gate::allows('admin.preappointment.delivery.stage.status') || Gate::allows('admin.pre.appointment.upload.pod'))
+				 @if(Gate::allows('admin.preappointment.adduploadd.shipments') || Gate::allows('admin.pre.appointment.shipment.history') || Gate::allows('admin.pre.appointment.request.board') || Gate::allows('admin.update.preappointment.status') || Gate::allows('admin.preappointment.delivery.stage.status') || Gate::allows('admin.pre.appointment.upload.pod') ||  				 
+				 Gate::allows('admin.upload.po') ||
+				 Gate::allows('admin.upload.po.datalist') ||
+				 Gate::allows('admin.upload.grn') ||
+				 Gate::allows('admin.grn.list') ||
+				 Gate::allows('admin.poVSgrn.list')				 
+				 )
 				 <li class="nav-item dropdown">
 					<a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pre Appointment</a>
-					<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">	
+					<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+					@if(Gate::allows('admin.upload.po'))
+					<li class=""><a href="{{ route('admin.smart-po.upload') }}" class="dropdown-item">Upload PO</a></li>
+					@endif
+					@if(Gate::allows('admin.upload.po.datalist'))
+					<li class=""><a href="{{ route('admin.smart-po.index') }}" class="dropdown-item">PO Data List</a></li>
+					@endif
 					@if(Gate::allows('admin.preappointment.adduploadd.shipments'))
 					 <li class=""><a href="{{ route('admin.preappointment') }}" class="dropdown-item">Add/Upload Shipments</a></li>
 					@endif
@@ -311,6 +323,15 @@
 					@if(Gate::allows('admin.pre.appointment.upload.pod'))
 					  <li class=""><a href="{{ route('admin.preappointments.podfile') }}" class="dropdown-item">Upload POD</a></li>
 					@endif 
+					@if(Gate::allows('admin.upload.grn'))
+					<li class=""><a href="{{ route('admin.smart-grn.upload') }}" class="dropdown-item">Upload GRN</a></li>
+					@endif
+					@if(Gate::allows('admin.grn.list'))
+					<li class=""><a href="{{ route('admin.smart-grn.index') }}" class="dropdown-item">GRN Data List</a></li>
+					@endif	
+					@if(Gate::allows('admin.poVSgrn.list'))
+					<li class=""><a href="{{ route('admin.smart-grn.reconciliation.index') }}" class="dropdown-item">PO vs GRN</a></li>
+					@endif
 					</ul>
 				</li>
 				@endif
@@ -388,14 +409,9 @@
 					@if(Gate::allows('admin.digiwim.ira'))
 					 <li class=""><a href="{{route('admin.digiwim-inventory-ira.index')}}" class="dropdown-item">IRA</a>
 					 </li>
-					@endif					
-					 
-						<li class=""><a href="{{ route('admin.smart-po.upload') }}" class="dropdown-item">Upload PO</a></li>
-						<li class=""><a href="{{ route('admin.smart-po.index') }}" class="dropdown-item">PO Data List</a></li>
-						<li class=""><a href="{{ route('admin.smart-grn.upload') }}" class="dropdown-item">Upload GRN</a></li>
-						<li class=""><a href="{{ route('admin.smart-grn.index') }}" class="dropdown-item">GRN Data List</a></li>
+					@endif						 
 						
-						<li class=""><a href="{{ route('admin.smart-grn.reconciliation.index') }}" class="dropdown-item">PO vs GRN</a></li>
+						
 					</ul>
 				</li>
 				@endif
