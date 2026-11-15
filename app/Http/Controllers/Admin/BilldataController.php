@@ -1417,6 +1417,31 @@ class BilldataController extends Controller
 				if (!$entry) {
 					continue;
 				}
+				
+				// OCR VALIDATION CHECK
+				// Never trust the frontend checkbox alone.
+
+				$ocrResult = \App\Models\FreightOcrResult::where('billdata_id',$entry->id)->orderByDesc('id')->first();
+
+				// Prevent submission when OCR has not passed.
+				if ($ocrResult && in_array($id, $submittedIds) && $ocrResult->status !== 'valid')
+				{
+					throw new \RuntimeException(
+						'Cannot submit LR ' . $entry->lr_no .
+						': OCR status is ' . $ocrResult->status .
+						'. ' . $ocrResult->remarks
+					);
+				}
+
+				// Prevent returning records while OCR is incomplete.
+				if ($ocrResult && in_array($id, $returnedIds) && 
+				!in_array($ocrResult->status,	['invalid', 'valid'],true))
+				{
+					throw new \RuntimeException(
+						'Cannot return LR ' . $entry->lr_no .
+						' while OCR is ' . $ocrResult->status
+					);
+				}
 
 				/* SUBMITTED */
 

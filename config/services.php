@@ -40,5 +40,11 @@ return [
 			'PO_READER_API_KEY'
 		),
 	],
+	'freight_ocr' => [
+	'url' => env('FREIGHT_OCR_URL','http://127.0.0.1:5002'), 
+	 'api_key' => env('FREIGHT_API_KEY'),
+     'timeout' => env('FREIGHT_OCR_TIMEOUT', 120),
+     'connect_timeout' => env('FREIGHT_OCR_CONNECT_TIMEOUT', 10),],
+
 
 ];

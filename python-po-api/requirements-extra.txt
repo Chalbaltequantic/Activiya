@@ -1,0 +1,7 @@
+# Existing document_reader.py dependencies should already be installed.
+# Only install missing dependencies in the SAME Python environment as the existing PO/GRN service.
+fastapi
+python-multipart
+python-dotenv
+PyMuPDF
+Pillow

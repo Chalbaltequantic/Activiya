@@ -36,6 +36,8 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 
 from grn.api import router as grn_router
 
+from freight_reader.api import router as freight_router
+
 PO_API_KEY = os.getenv(
 
     "PO_API_KEY",
@@ -62,6 +64,9 @@ app = FastAPI(
 
 app.include_router(grn_router)
 
+# FOR INVOICE and LR PARSING, USE THE FREIGHT API ROUTER
+
+app.include_router(freight_router)
 # =========================================================
 
 # SUPPORTED PARSERS

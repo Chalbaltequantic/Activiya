@@ -100,12 +100,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
 	
 	
 	// Validate selected rows via AJAX
-		Route::post('freight/validate', [App\Http\Controllers\Admin\BilldataController::class, 'validateAjax'])->name('freight.validate');
-		Route::post('freight/store', [App\Http\Controllers\Admin\BilldataController::class, 'storeValidatedData'])->name('freight.store');
+	Route::post('freight/validate', [App\Http\Controllers\Admin\BilldataController::class, 'validateAjax'])->name('freight.validate');
+	Route::post('freight/store', [App\Http\Controllers\Admin\BilldataController::class, 'storeValidatedData'])->name('freight.store');
+	
+	/////Automate Validation using uploaded invoice extracted data 
+	Route::post('freight-ocr/start',  [App\Http\Controllers\Admin\FreightOcrController::class, 'start'] )->name('freight-ocr.start');
 
+	Route::get( 'freight-ocr/{batch}/status', [App\Http\Controllers\Admin\FreightOcrController::class, 'status'])->name('freight-ocr.status');
+
+	Route::post( 'freight-ocr/{batch}/retry', [App\Http\Controllers\Admin\FreightOcrController::class, 'retry'] )->name('freight-ocr.retry');
+	
 	//////Edit Returned freight
-	Route::post('freight-returned/update', [App\Http\Controllers\Admin\BilldataController::class, 'updateReturnedFreightAjax'])
-    ->name('freight.returned.ajax.update');
+	Route::post('freight-returned/update', [App\Http\Controllers\Admin\BilldataController::class, 'updateReturnedFreightAjax'])->name('freight.returned.ajax.update');
 	
 	
 	//Approve/ Reject Validated Freight Info Data

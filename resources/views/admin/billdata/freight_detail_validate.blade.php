@@ -1,5 +1,7 @@
 @extends('admin.admin')
 @section('bodycontent')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
  <style>
       .table-responsive-fixed {
       overflow-x: auto;
@@ -160,6 +162,9 @@
               <div class="card-body">
                 <div class="tab-content">
                   <div class="active tab-pane" id="activity">
+				  {{-- NEW: Asynchronous Python OCR validation --}}
+					@include('admin.billdata.freight_ocr_panel')
+				   
                   <form method="POST" action="{{ route('admin.freight.store') }}" id="freightValidationForm">
 				    @csrf
 					<div class="table-responsive-fixed border rounded shadow-sm bg-white consign-data-table table-container">						    
@@ -416,7 +421,6 @@
 </div>
 <!-- /.content -->
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 document.getElementById('selectAllValidate').addEventListener('change', function () {
