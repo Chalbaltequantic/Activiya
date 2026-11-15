@@ -25,6 +25,7 @@ use App\Models\Siteplant;
 use App\Models\Admin;
 use App\Models\Tracking;
 use App\Models\FreightBillApprovalHistory;
+use App\Models\FreightValidationHistory;
 
 use App\Jobs\SendValidatedFreightMailJob;
 use Auth;
@@ -1355,49 +1356,95 @@ class BilldataController extends Controller
 		);
 	}
 	
+
+	
 	public function validateAjax(Request $request)
 	{
 		$results = [];
 
-		foreach ($request->rows as $row) {
+		foreach ($request->input('rows', []) as $row) {
+
+			if (empty($row['id'])) {
+				continue;
+			}
+
 			$entry = Billdata::find($row['id']);
-			if (!$entry) continue;
+
+			if (!$entry) {
+				continue;
+			}
 
 			$valid = true;
-			
-			if ((float) preg_replace('/[^0-9.]/', '', $entry->a_amount) !== (float) preg_replace('/[^0-9.]/', '', $entry['freight_amount'])) {
+
+			// Existing amount validation
+			if (
+				(float) preg_replace('/[^0-9.]/', '', $entry->a_amount) !==
+				(float) preg_replace('/[^0-9.]/', '', $entry['freight_amount'])
+			) {
 				$valid = false;
 			}
 
-			if (empty($entry->freight_invoice_file) || empty($entry->pod_file)) {
-				//$valid = false;
+			// Existing Invoice/POD check remains disabled
+			if (
+				empty($entry->freight_invoice_file) ||
+				empty($entry->pod_file)
+			) {
+				// $valid = false;
 			}
 
-			if ($entry->freight_type === 'ADHOC' && empty($entry->approval_file)) {
-				
+			// Transport mode is stored in the custom field
+			$mode = strtolower(trim((string) $entry->custom));
+
+			// ADHOC approval file is mandatory for FTL only
+			if (
+				$mode === 'ftl' &&
+				$entry->freight_type === 'ADHOC' &&
+				empty($entry->approval_file)
+			) {
 				$valid = false;
 			}
 
+			// Preserve existing response structure
 			$results[] = [
-				'id' => $entry->id,
+				'id'    => $entry->id,
 				'valid' => $valid,
 			];
 		}
 
 		return response()->json($results);
 	}
+
 	
 	public function storeValidatedData(Request $request)
 	{
-		$validatedIds = $request->input('validated_ids', []);
-		$submittedIds = $request->input('submitted_ids', []);
-		$returnedIds = $request->input('returned_ids', []);
-		$remarks = $request->input('remark', []);
-		
-		$returned_at = date('Y-m-d H:i:s');
-		
-		if (empty($validatedIds)) {
+		// Preserve original indexes for correct remark mapping
+		$validatedIds = (array) $request->input('validated_ids', []);
 
+		$submittedIds = array_values(array_filter(
+			array_map('strval', (array) $request->input('submitted_ids', [])),
+			fn($id) => trim($id) !== ''
+		));
+
+		$returnedIds = array_values(array_filter(
+			array_map('strval', (array) $request->input('returned_ids', [])),
+			fn($id) => trim($id) !== ''
+		));
+
+		$remarks = (array) $request->input('remark', []);
+
+		$returned_at = date('Y-m-d H:i:s');
+
+		// Check whether at least one valid ID is selected
+		$hasSelectedIds = false;
+
+		foreach ($validatedIds as $id) {
+			if (trim((string) $id) !== '') {
+				$hasSelectedIds = true;
+				break;
+			}
+		}
+
+		if (!$hasSelectedIds) {
 			return redirect()->back()->with(
 				'error',
 				'No records selected.'
@@ -1407,66 +1454,97 @@ class BilldataController extends Controller
 		DB::beginTransaction();
 
 		try {
-				$created_by = Auth::user()->id; 		
-				$createddate = date('Y-m-d H:i:s');
+
+			$created_by = Auth::user()->id;
+			$createddate = date('Y-m-d H:i:s');
 
 			foreach ($validatedIds as $index => $id) {
+
+				// Skip empty IDs without changing original indexes
+				if (trim((string) $id) === '') {
+					continue;
+				}
 
 				$entry = Billdata::find($id);
 
 				if (!$entry) {
 					continue;
 				}
-				
-				// OCR VALIDATION CHECK
-				// Never trust the frontend checkbox alone.
 
-				$ocrResult = \App\Models\FreightOcrResult::where('billdata_id',$entry->id)->orderByDesc('id')->first();
+				// Preserve original server-side OCR validation
+				// Existing manual flows remain intact when no OCR exists
+				$ocrResult = \App\Models\FreightOcrResult::where(
+					'billdata_id',
+					$entry->id
+				)
+				->orderByDesc('id')
+				->first();
 
-				// Prevent submission when OCR has not passed.
-				if ($ocrResult && in_array($id, $submittedIds) && $ocrResult->status !== 'valid')
-				{
+				// Existing OCR Submit restriction
+				if (
+					$ocrResult &&
+					in_array((string) $id, $submittedIds, true) &&
+					$ocrResult->status !== 'valid'
+				) {
 					throw new \RuntimeException(
-						'Cannot submit LR ' . $entry->lr_no .
-						': OCR status is ' . $ocrResult->status .
-						'. ' . $ocrResult->remarks
+						'Cannot submit LR ' .
+						$entry->lr_no .
+						': OCR status is ' .
+						$ocrResult->status .
+						'. ' .
+						$ocrResult->remarks
 					);
 				}
 
-				// Prevent returning records while OCR is incomplete.
-				if ($ocrResult && in_array($id, $returnedIds) && 
-				!in_array($ocrResult->status,	['invalid', 'valid'],true))
-				{
+				// Existing OCR Return restriction
+				if (
+					$ocrResult &&
+					in_array((string) $id, $returnedIds, true) &&
+					!in_array(
+						$ocrResult->status,
+						['invalid', 'valid'],
+						true
+					)
+				) {
 					throw new \RuntimeException(
-						'Cannot return LR ' . $entry->lr_no .
-						' while OCR is ' . $ocrResult->status
+						'Cannot return LR ' .
+						$entry->lr_no .
+						' while OCR is ' .
+						$ocrResult->status
 					);
 				}
 
-				/* SUBMITTED */
-
-				if (in_array($id, $submittedIds)) {
+				/*
+				 * SUBMITTED
+				 */
+				if (in_array((string) $id, $submittedIds, true)) {
 
 					$entry->validated_status = 'submitted';
 					$entry->submit = 1;
 					$entry->f_return = 0;
+
 					$entry->validated_by = $created_by;
-					$entry->validated_at = $createddate; 
-					
-					/* SEND MAIL IN BACKGROUND */
-					// Send email commented as mail need to send when Freight bill Approved
-					//SendValidatedFreightMailJob::dispatch($entry->id);
+					$entry->validated_at = $createddate;
+
+					// Existing email dispatch remains disabled
+					// Mail is sent after freight bill approval
+					// SendValidatedFreightMailJob::dispatch($entry->id);
+
 				}
 
-				/*  RETURNED */
-				elseif (in_array($id, $returnedIds)) {
+				/*
+				 * RETURNED
+				 */
+				elseif (in_array((string) $id, $returnedIds, true)) {
 
 					$entry->validated_status = 'returned';
 					$entry->submit = 0;
 					$entry->f_return = 1;
-					$entry->returned_at  = $returned_at;
+
+					$entry->returned_at = $returned_at;
 				}
 
+				// Preserve original row-to-remark mapping
 				$entry->validation_remark = $remarks[$index] ?? '';
 
 				$entry->save();
@@ -1489,10 +1567,39 @@ class BilldataController extends Controller
 			);
 		}
 	}
-	
+
+	private function freightHistorySnapshot(Billdata $entry): array
+	{
+		return $entry->only([
+			'vendor_code', 'freight_invoice_no', 'freight_invoice_date', 'freight_amount',
+			'freight_invoice_file', 'pod_file', 'approval_file', 'lr_no', 'ref2', 'ref3',
+			'validated_status', 'submit', 'f_return', 'validation_remark', 'returned_at',
+			'validated_at', 'validated_by',
+		]);
+	}
+
+	private function recordFreightHistory(Billdata $entry, string $action, array $old, ?string $remark, ?int $actor): void
+	{
+		FreightValidationHistory::create([
+			'billdata_id' => $entry->id, 'action' => $action,
+			'old_status' => $old['validated_status'] ?? null,
+			'new_status' => $entry->validated_status,
+			'remarks' => $remark, 'old_values' => $old,
+			'new_values' => $this->freightHistorySnapshot($entry),
+			'action_by' => $actor, 'action_by_role' => 'admin',
+		]);
+	}
+
+	public function freightValidationHistory($id)
+	{
+		Billdata::findOrFail($id);
+		return response()->json(FreightValidationHistory::where('billdata_id', $id)
+			->orderByDesc('id')->get());
+	}
+
 	//Update ReturnedFreight//////
 	
-	public function updateReturnedFreightAjax(Request $request)
+	/*public function updateReturnedFreightAjax(Request $request)
 	{
 		$request->validate([
 			'id'                   => 'required|exists:bill_data_upload,id',
@@ -1513,6 +1620,10 @@ class BilldataController extends Controller
 
 		try {
 			$entry = Billdata::findOrFail($request->id);
+			if ($entry->validated_status !== 'returned') {
+				return response()->json(['status' => false, 'message' => 'Only returned bills can be corrected.'], 422);
+			}
+			$old = $this->freightHistorySnapshot($entry);
 
 			$entry->freight_invoice_no = $request->freight_invoice_no;
 
@@ -1541,7 +1652,10 @@ class BilldataController extends Controller
 			$entry->f_return = null;
 			$entry->validation_remark = null;
 
-			$entry->save();
+			DB::transaction(function () use ($entry, $old) {
+				$entry->save();
+				$this->recordFreightHistory($entry, 'corrected', $old, 'Returned bill corrected; ready for revalidation.', Auth::guard('admin')->id());
+			});
 
 			return response()->json([
 				'status' => true,
@@ -1549,6 +1663,117 @@ class BilldataController extends Controller
 			]);
 
 		} catch (\Exception $e) {
+			return response()->json([
+				'status' => false,
+				'message' => $e->getMessage()
+			], 500);
+		}
+	}
+*/
+
+	
+	public function updateReturnedFreightAjax(Request $request)
+	{
+		$request->validate([
+			'id' => 'required|exists:bill_data_upload,id',
+
+			'freight_invoice_no' => 'required',
+			'freight_invoice_date' => 'required|date',
+			'freight_amount' => 'required|numeric|min:1',
+
+			'freight_invoice_file' =>
+				'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+
+			'pod_file' =>
+				'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+
+		], [
+			'freight_invoice_file.max' =>
+				'Invoice file size cannot exceed 2 MB.',
+
+			'freight_invoice_file.mimes' =>
+				'Invoice file must be PDF, JPG, JPEG or PNG.',
+
+			'pod_file.max' =>
+				'POD file size cannot exceed 2 MB.',
+
+			'pod_file.mimes' =>
+				'POD file must be PDF, JPG, JPEG or PNG.',
+		]);
+
+		try {
+
+			$entry = Billdata::findOrFail($request->id);
+
+			// Update freight invoice details
+			$entry->freight_invoice_no =
+				$request->freight_invoice_no;
+
+			$entry->freight_invoice_date =
+				$request->freight_invoice_date;
+
+			$entry->freight_amount =
+				$request->freight_amount;
+
+			/*
+			 * UPDATE INVOICE FILE
+			 */
+			if ($request->hasFile('freight_invoice_file')) {
+
+				$file = $request->file('freight_invoice_file');
+
+				$filename = time() .
+					'_invoice_' .
+					$file->getClientOriginalName();
+
+				$file->move(
+					public_path('uploads/invoice'),
+					$filename
+				);
+
+				$entry->freight_invoice_file =
+					'uploads/invoice/' . $filename;
+			}
+
+			/*
+			 * UPDATE POD FILE
+			 */
+			if ($request->hasFile('pod_file')) {
+
+				$file = $request->file('pod_file');
+
+				$filename = time() .
+					'_pod_' .
+					$file->getClientOriginalName();
+
+				$file->move(
+					public_path('uploads/pod'),
+					$filename
+				);
+
+				$entry->pod_file =
+					'uploads/pod/' . $filename;
+			}
+
+			/*
+			 * RESET VALIDATION STATUS
+			 * Existing functionality preserved
+			 */
+			$entry->validated_status = null;
+			$entry->submit = null;
+			$entry->f_return = null;
+			$entry->validation_remark = null;
+
+			$entry->save();
+
+			return response()->json([
+				'status' => true,
+				'message' =>
+					'Returned item updated successfully and moved back to validation list.'
+			]);
+
+		} catch (\Exception $e) {
+
 			return response()->json([
 				'status' => false,
 				'message' => $e->getMessage()
@@ -1951,6 +2176,7 @@ class BilldataController extends Controller
 						'remark' => $remark !== '' ? $remark : null,
 						'action_by' => $adminId,
 					]);
+					$this->recordFreightHistory($entry, $status, $this->freightHistorySnapshot($entry), $remark, $adminId);
 
 					// Collect only approved bills for email dispatch.
 					if ($action === 'approve') {
