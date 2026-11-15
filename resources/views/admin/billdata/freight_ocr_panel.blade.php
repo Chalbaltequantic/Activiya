@@ -1,10 +1,10 @@
 <div class="card card-outline card-info mt-3" id="freight-ocr-panel">
     <div class="card-header">
-        <strong>Asynchronous Invoice OCR Validation</strong>
+        <strong>Asynchronous Invoice AI Validation</strong>
     </div>
     <div class="card-body">
-        <button type="button" class="btn btn-info" id="startFreightOcr">Validate Selected Invoices with OCR</button>
-        <button type="button" class="btn btn-outline-warning" id="retryFreightOcr" style="display:none">Retry Failed OCR</button>
+        <button type="button" class="btn btn-info" id="startFreightOcr">Validate Selected Invoices with AI</button>
+        <button type="button" class="btn btn-outline-warning" id="retryFreightOcr" style="display:none">Retry Failed </button>
         <div class="progress mt-3" style="height:22px">
             <div class="progress-bar" id="freightOcrProgress" style="width:0%">0%</div>
         </div>
