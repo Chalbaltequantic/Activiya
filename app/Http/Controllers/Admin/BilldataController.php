@@ -1415,7 +1415,7 @@ class BilldataController extends Controller
 	}
 
 	
-	public function storeValidatedData(Request $request)
+/*	public function storeValidatedData(Request $request)
 	{
 		// Preserve original indexes for correct remark mapping
 		$validatedIds = (array) $request->input('validated_ids', []);
@@ -1517,7 +1517,7 @@ class BilldataController extends Controller
 				/*
 				 * SUBMITTED
 				 */
-				if (in_array((string) $id, $submittedIds, true)) {
+	/*			if (in_array((string) $id, $submittedIds, true)) {
 
 					$entry->validated_status = 'submitted';
 					$entry->submit = 1;
@@ -1535,7 +1535,7 @@ class BilldataController extends Controller
 				/*
 				 * RETURNED
 				 */
-				elseif (in_array((string) $id, $returnedIds, true)) {
+		/*		elseif (in_array((string) $id, $returnedIds, true)) {
 
 					$entry->validated_status = 'returned';
 					$entry->submit = 0;
@@ -1567,6 +1567,282 @@ class BilldataController extends Controller
 			);
 		}
 	}
+*/
+
+		
+	public function storeValidatedData(Request $request)
+	{
+		// Preserve original indexes for correct remark mapping
+		$validatedIds = (array) $request->input('validated_ids', []);
+
+		$submittedIds = array_values(array_filter(
+			array_map('strval', (array) $request->input('submitted_ids', [])),
+			fn($id) => trim($id) !== ''
+		));
+
+		$returnedIds = array_values(array_filter(
+			array_map('strval', (array) $request->input('returned_ids', [])),
+			fn($id) => trim($id) !== ''
+		));
+
+		$remarks = (array) $request->input('remark', []);
+
+		$returned_at = date('Y-m-d H:i:s');
+
+		// Check whether at least one valid ID is selected
+		$hasSelectedIds = false;
+
+		foreach ($validatedIds as $id) {
+			if (trim((string) $id) !== '') {
+				$hasSelectedIds = true;
+				break;
+			}
+		}
+
+		if (!$hasSelectedIds) {
+			return redirect()->back()->with(
+				'error',
+				'Please select at least one freight record before submitting.'
+			);
+		}
+
+		DB::beginTransaction();
+
+		try {
+
+			$created_by = Auth::user()->id;
+			$createddate = date('Y-m-d H:i:s');
+
+			foreach ($validatedIds as $index => $id) {
+
+				// Skip empty IDs without changing original indexes
+				if (trim((string) $id) === '') {
+					continue;
+				}
+
+				$entry = Billdata::find($id);
+
+				if (!$entry) {
+					continue;
+				}
+
+				// Identify the selected action
+				$isSubmitting = in_array(
+					(string) $id,
+					$submittedIds,
+					true
+				);
+
+				$isReturning = in_array(
+					(string) $id,
+					$returnedIds,
+					true
+				);
+
+				/*
+				 * CHECK WHETHER AN INVOICE DOCUMENT IS ATTACHED
+				 *
+				 * A blank database field means no invoice document
+				 * was uploaded for this freight record.
+				 *
+				 * Do not check physical file existence here because
+				 * a missing file must not bypass OCR verification.
+				 */
+				$invoiceFile = trim(
+					(string) ($entry->freight_invoice_file ?? '')
+				);
+
+				$hasInvoiceFile = ($invoiceFile !== '');
+
+				/*
+				 * EXISTING OCR RESULT
+				 *
+				 * Preserve existing lookup and latest-result logic.
+				 */
+				$ocrResult = \App\Models\FreightOcrResult::where(
+					'billdata_id',
+					$entry->id
+				)
+				->orderByDesc('id')
+				->first();
+
+				/*
+				 * OCR STATUS MESSAGES
+				 *
+				 * Display business-friendly messages to the client.
+				 * Database OCR status values remain unchanged.
+				 */
+				$ocrMessages = [
+
+					'queued' =>
+						'Automatic invoice verification has not started yet. '
+						. 'Please wait a moment and try again. '
+						. 'If the status does not change, contact the administrator.',
+
+					'processing' =>
+						'The uploaded invoice is currently being verified. '
+						. 'Please wait until verification is completed '
+						. 'before submitting this freight record.',
+
+					'invalid' =>
+						'The invoice details could not be verified successfully. '
+						. 'Please check the invoice number, invoice date '
+						. 'and freight amount against the uploaded invoice. '
+						. 'Correct any differences and verify again.',
+
+					'review' =>
+						'This invoice requires manual review. '
+						. 'Please check the uploaded invoice document '
+						. 'and confirm the invoice details before submitting.',
+
+					'failed' =>
+						'The system was unable to complete invoice verification. '
+						. 'Please check that the uploaded invoice is clear '
+						. 'and readable, then try verification again. '
+						. 'If the problem continues, contact the administrator.',
+
+				];
+
+				/*
+				 * OCR SUBMIT VALIDATION
+				 *
+				 * If an invoice file is attached, preserve the
+				 * existing requirement for a valid OCR result.
+				 *
+				 * If no invoice file is attached, skip the OCR
+				 * restriction and continue with existing manual
+				 * freight validation.
+				 */
+				if (
+					$isSubmitting &&
+					$hasInvoiceFile &&
+					$ocrResult &&
+					$ocrResult->status !== 'valid'
+				) {
+
+					$ocrStatus = strtolower(
+						trim((string) $ocrResult->status)
+					);
+
+					$message = $ocrMessages[$ocrStatus]
+						?? 'Automatic invoice verification is not complete. '
+						. 'Please check the verification result '
+						. 'before submitting this freight record.';
+
+					throw new \RuntimeException(
+						'Cannot submit LR No. ' .
+						$entry->lr_no .
+						'. ' .
+						$message
+					);
+				}
+
+				/*
+				 * OCR RETURN VALIDATION
+				 *
+				 * Preserve the existing OCR Return restriction
+				 * when an invoice document is attached.
+				 *
+				 * No invoice document:
+				 * Existing manual Return workflow remains available.
+				 */
+				if (
+					$isReturning &&
+					$hasInvoiceFile &&
+					$ocrResult &&
+					!in_array(
+						$ocrResult->status,
+						['invalid', 'valid'],
+						true
+					)
+				) {
+
+					$ocrStatus = strtolower(
+						trim((string) $ocrResult->status)
+					);
+
+					$returnMessages = [
+
+						'queued' =>'Automatic invoice verification has not started yet. Please wait until verification is completed. before returning this freight record.',
+
+						'processing' => 'Invoice verification is currently in progress. Please wait for the verification process to finish before returning this record.',
+
+						'review' =>'This invoice requires manual review. Please complete the review before returning this freight record.',
+
+						'failed' =>'Invoice verification could not be completed. Please resolve the verification issue before returning this freight record.',
+
+					];
+
+					$message = $returnMessages[$ocrStatus] ?? 'Invoice verification is not complete. Please check the verification result before returning this freight record.';
+
+					throw new \RuntimeException(
+						'Cannot return LR No. ' .
+						$entry->lr_no .
+						'. ' .
+						$message
+					);
+				}
+
+				/*
+				 * SUBMITTED
+				 *
+				 * Existing functionality preserved.
+				 */
+				if ($isSubmitting) {
+
+					$entry->validated_status = 'submitted';
+					$entry->submit = 1;
+					$entry->f_return = 0;
+
+					$entry->validated_by = $created_by;
+					$entry->validated_at = $createddate;
+
+					// Existing email dispatch remains disabled
+					// Mail is sent after freight bill approval
+					// SendValidatedFreightMailJob::dispatch($entry->id);
+
+				}
+
+				/*
+				 * RETURNED
+				 *
+				 * Existing functionality preserved.
+				 */
+				elseif ($isReturning) {
+
+					$entry->validated_status = 'returned';
+					$entry->submit = 0;
+					$entry->f_return = 1;
+
+					$entry->returned_at = $returned_at;
+				}
+
+				/*
+				 * Preserve original row-to-remark mapping
+				 */
+				$entry->validation_remark = $remarks[$index] ?? '';
+
+				$entry->save();
+			}
+
+			DB::commit();
+
+			return redirect()->back()->with(
+				'success',
+				'Records updated successfully. Emails are processing in background.'
+			);
+
+		} catch (\Exception $e) {
+
+			DB::rollBack();
+
+			return redirect()->back()->with(
+				'error',
+				$e->getMessage()
+			);
+		}
+	}
+
 
 	private function freightHistorySnapshot(Billdata $entry): array
 	{
