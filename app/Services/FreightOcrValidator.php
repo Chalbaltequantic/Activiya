@@ -187,7 +187,7 @@ class FreightOcrValidator
         // Customer/site mapping default: consignee_code -> site_plant.plant_site_code.
         // If the invoice's billed customer is the consignor, change the field below.
         $siteCode = $bill->consignee_code;
-        $customerGstin = DB::table('site_plant')->where('plant_site_code', $siteCode)->value('gstin_number');
+        $customerGstin = DB::table('site_plants')->where('plant_site_code', $siteCode)->value('gstin_number');
         $customerOcr = $invoice['customer_gstin'] ?? $invoice['customer_gstin_number'] ?? null;
         $note = $this->gstinRemark('Customer (site '.$siteCode.')', $customerGstin, $customerOcr);
         if ($note) {
