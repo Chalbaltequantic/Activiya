@@ -562,6 +562,12 @@ class BilldataController extends Controller
 			
 			$today = date('Y-m-d');
 			
+			if(empty($data['custom']))
+			{
+				$errorRows[] = ['row' => $rowNumber, 'reason' => 'Mode can not be empty'];
+                continue;
+			}
+			
             $rateRecord = Ratedata::where('consignor_code', $data['consignor_code'])
                 ->where('consignee_code', $data['consignee_code'])
                 ->where('vendor_code', $data['vendor_code'])
@@ -859,7 +865,12 @@ class BilldataController extends Controller
 				
 			$data_tracking['delivery_due_date'] = date('Y-m-d', strtotime($dispatchdate . ' +' . $tat . ' days'));
 			
-
+					//check Mode
+					if(empty($data['custom']))
+					{
+						$errorRows[] = ['row' => $rowNumber, 'reason' => 'Mode can not be empty'];
+						continue;
+					}
 						// Check vendor code
 					if(!empty($data['vendor_code']))
 					{
@@ -1002,8 +1013,8 @@ class BilldataController extends Controller
 			
         } catch (\Exception $e) {
             DB::rollback();
-           // return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
-			return redirect()->back()->with('error', 'Error: Something went wrong.');
+           // return redirect()->back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+			return redirect()->back()->withInput()->with('error', 'Error: Something went wrong.');
         }
 		
 	}
