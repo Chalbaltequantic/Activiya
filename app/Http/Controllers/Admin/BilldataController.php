@@ -1013,8 +1013,8 @@ class BilldataController extends Controller
 			
         } catch (\Exception $e) {
             DB::rollback();
-           return redirect()->back()->withInput()->with('error', 'Error: ' . $e->getMessage());
-			//return redirect()->back()->withInput()->with('error', 'Error: Something went wrong.');
+           //return redirect()->back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+			return redirect()->back()->withInput()->with('error', 'Error: Something went wrong.');
         }
 		
 	}
