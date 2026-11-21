@@ -35,6 +35,11 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+		'vendor_pods' => [
+			'driver' => 'local',
+			'root' => storage_path('app/private'),
+			'throw' => false,
+		],
 
         'public' => [
             'driver' => 'local',

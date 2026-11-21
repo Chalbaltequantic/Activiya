@@ -60,29 +60,7 @@ class VendorPodController extends Controller
         return mb_strtoupper(trim($lr), 'UTF-8');
     }
 
-   /* public function index(Request $request)
-    {
-        $title = 'Vendor POD Upload';
-        $pagetitle = 'Vendor POD Upload / Listing';
-        $isAdmin = $this->isAdmin();
-        $vendorCode = $isAdmin ? null : $this->vendorCode();
-        $query = $this->allowedQuery()->latest('id');
-
-        if ($request->filled('search')) {
-            $search = trim((string) $request->search);
-            $query->where(function ($q) use ($search) {
-                $q->where('invoice_no', 'like', "%{$search}%")
-                  ->orWhere('lr_no', 'like', "%{$search}%");
-            });
-        }
-        if ($isAdmin && $request->filled('vendor_code')) {
-            $query->where('vendor_code', trim((string) $request->vendor_code));
-        }
-
-        $entries = $query->paginate(20)->withQueryString();
-        return view('admin.vendor_pod.index', compact('title', 'pagetitle', 'isAdmin', 'vendorCode', 'entries'));
-    }*/
-	
+  	
 	public function index()
 	{
 		$title = 'Vendor POD Upload';
@@ -145,9 +123,9 @@ class VendorPodController extends Controller
             ], [
                 'invoice_no' => ['required', 'string', 'max:100'],
                 'lr_no' => ['required', 'string', 'max:100'],
-                'pod_front' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
-                'pod_back' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
-                'other_document' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
+                'pod_front' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
+                'pod_back' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
+                'other_document' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
             ]);
 
             if ($validator->fails()) {
@@ -164,9 +142,14 @@ class VendorPodController extends Controller
 
             $paths = [];
             try {
-                $paths['pod_front_path'] = $front->store('vendor-pods/front', 'local');
-                $paths['pod_back_path'] = $back->store('vendor-pods/back', 'local');
-                $paths['other_document_path'] = $other->store('vendor-pods/other', 'local');
+               
+				//$paths['pod_front_path'] = $front->store('vendor-pods/front', 'local');
+                //$paths['pod_back_path'] = $back->store('vendor-pods/back', 'local');
+                //$paths['other_document_path'] = $other->store('vendor-pods/other', 'local');
+				
+				$paths['pod_front_path'] = $front->store('vendor-pods/front', 'vendor_pods');
+				$paths['pod_back_path'] = $back->store('vendor-pods/back', 'vendor_pods');
+				$paths['other_document_path'] = $other->store('vendor-pods/other', 'vendor_pods');
 
                 VendorPod::create(array_merge([
                     'vendor_code' => $vendorCode,
@@ -214,9 +197,9 @@ class VendorPodController extends Controller
         $pod = VendorPod::findOrFail($id);
         $request->validate([
             'invoice_no' => ['required', 'string', 'max:100'],
-            'pod_front' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
-            'pod_back' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
-            'other_document' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
+            'pod_front' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
+            'pod_back' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
+            'other_document' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
         ]);
 
         $changes = ['invoice_no' => trim((string) $request->invoice_no), 'updated_by' => Auth::id()];
