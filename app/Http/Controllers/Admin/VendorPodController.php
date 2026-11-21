@@ -174,7 +174,7 @@ class VendorPodController extends Controller
             ->with('rowErrors', $skipped);
     }
 
-    public function file(int $id, string $type)
+   /* public function file(int $id, string $type)
     {
         $pod = $this->allowedQuery()->findOrFail($id);
         $columns = [
@@ -189,7 +189,35 @@ class VendorPodController extends Controller
             'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
             'X-Content-Type-Options' => 'nosniff',
         ]);
-    }
+    }*/
+	
+	
+	public function file(int $id, string $type)
+	{
+		$pod = $this->allowedQuery()->findOrFail($id);
+		$columns = [
+			'front' => 'pod_front_path',
+			'back'  => 'pod_back_path',
+			'other' => 'other_document_path',
+		];
+		abort_unless(isset($columns[$type]), 404);
+		$path = $pod->{$columns[$type]};
+
+		abort_unless($path && Storage::disk('vendor_pods')->exists($path), 404, 'File not found.');
+
+		return Storage::disk('vendor_pods')->response($path,
+			basename($path),
+			[
+				'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
+				'X-Content-Type-Options' => 'nosniff',
+			]
+		);
+	}
+
+	
+	
+	
+	
 
     public function update(Request $request, int $id)
     {

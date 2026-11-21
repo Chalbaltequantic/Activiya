@@ -122,13 +122,43 @@
                                     <td>{{ $entry->vendor_code }}</td>
                                     <td>{{ $entry->invoice_no }}</td>
                                     <td>{{ $entry->lr_no }}</td>
-                                    @foreach(['front'=>'POD Front', 'back'=>'POD Back', 'other'=>'Other Document'] as $type=>$label)
-                                        <td>
-                                            @if($entry->{$type === 'other' ? 'other_document_path' : 'pod_'.$type.'_path'})
-                                                <a href="{{ route('admin.vendor-pods.file', [$entry->id, $type]) }}" target="_blank" rel="noopener">View {{ $label }}</a>
-                                            @else - @endif
-                                        </td>
-                                    @endforeach
+																	   
+									{{-- POD Front --}}
+									<td>
+										@if($entry->pod_front_path)
+											<a href="{{ route('admin.vendor-pods.file', [$entry->id, 'front']) }}"
+											   target="_blank" rel="noopener" class="btn btn-sm btn-primary">
+												<i class="fas fa-eye"></i> Front
+											</a>
+										@else
+											-
+										@endif
+									</td>
+
+									{{-- POD Back --}}
+									<td>
+										@if($entry->pod_back_path)
+											<a href="{{ route('admin.vendor-pods.file', [$entry->id, 'back']) }}"
+											   target="_blank" rel="noopener" class="btn btn-sm btn-primary">
+												<i class="fas fa-eye"></i> Back
+											</a>
+										@else
+											-
+										@endif
+									</td>
+
+									{{-- Other Document --}}
+									<td>
+										@if($entry->other_document_path)
+											<a href="{{ route('admin.vendor-pods.file', [$entry->id, 'other']) }}"
+											   target="_blank" rel="noopener" class="btn btn-sm btn-primary">
+												<i class="fas fa-eye"></i> Other
+											</a>
+										@else
+											-
+										@endif
+									</td>
+
                                     <td>{{ optional($entry->created_at)->format('d/m/Y H:i') }}</td>
                                     @if($isAdmin)
                                         <td>
