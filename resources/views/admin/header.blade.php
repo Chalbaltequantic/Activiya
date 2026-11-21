@@ -153,7 +153,7 @@
 						{{--	@if(Auth::user() && (Auth::user()->role_id == 8 || Auth::user()->role_id == 4 || Auth::user()->role_id==1))--}}
 						<li class="{{ request()->routeIs('admin.vendor-pods.*') ? 'active' : '' }}">
 							<a href="{{ route('admin.vendor-pods.index') }}" class="dropdown-item">
-								<i class="nav-icon fas fa-file-upload"></i>
+								{{--<i class="nav-icon fas fa-file-upload"></i>--}}
 								<p>Vendor POD Upload</p>
 							</a>
 							
