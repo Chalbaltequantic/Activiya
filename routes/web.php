@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\PoGrnListController;
 use App\Http\Controllers\Admin\TransportRateMasterController; ///PTL AIR MODE etc
 use App\Http\Controllers\Admin\SlabMasterController;
 use App\Http\Controllers\Admin\LoadUnloadMasterController;
+use App\Http\Controllers\Admin\VendorPodController;
 
 
 
@@ -1046,6 +1047,16 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin/'], function () {
     Route::put('/{id}', [LoadUnloadMasterController::class, 'update'])->name('update');
     Route::delete('/{id}', [LoadUnloadMasterController::class, 'delete'])->name('delete');
 	});
+	
+	
+	///Vendor POD file(Front & Back) and Document upload (App\Http\Controllers\Admin\VendorPodController)
+	
+	Route::get('vendor-pods', [VendorPodController::class, 'index'])->name('vendor-pods.index');
+    Route::post('vendor-pods', [VendorPodController::class, 'store'])->name('vendor-pods.store');
+    Route::get('vendor-pods/{id}/file/{type}', [VendorPodController::class, 'file'])
+        ->whereNumber('id')->where('type', 'front|back|other')->name('vendor-pods.file');
+    Route::put('vendor-pods/{id}', [VendorPodController::class, 'update'])->whereNumber('id')->name('vendor-pods.update');
+    Route::delete('vendor-pods/{id}', [VendorPodController::class, 'destroy'])->whereNumber('id')->name('vendor-pods.destroy');
 	
 });
 
